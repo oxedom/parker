@@ -1,0 +1,49 @@
+language: node_js
+
+sudo: required
+
+matrix:
+  include:
+    # default OpenCV Version (3.4.6)
+    - os: linux
+      node_js: 10
+    # OpenCV 4.1.0
+    - os: linux
+      node_js: 10
+      env:
+        - OPENCV4NODEJS_AUTOBUILD_OPENCV_VERSION=4.1.0
+
+before_install:
+  - sudo apt-get update
+  # install tools for reading images from disk
+  - sudo apt-get install libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev
+  # install video codecs
+  - sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+  - sudo apt-get install libxvidcore-dev libx264-dev
+  # install cmake
+  - wget http://www.cmake.org/files/v3.4/cmake-3.4.1.tar.gz
+  - tar -xvzf cmake-3.4.1.tar.gz
+  - cd cmake-3.4.1/
+  - ./configure
+  - make
+  - cd ..
+  - cmake --version
+
+install:
+  # install and run tests of opencv-build
+  - npm install
+  - npm test
+
+  # install opencv4nodejs and run tests
+  - git clone https://github.com/justadudewhohacks/opencv4nodejs
+  - cd opencv4nodejs
+  - npm test
+  # uninstall npm version of opencv-build
+  - npm uninstall opencv-build
+  # install new opencv-build version
+  - npm install ../
+  - npm install
+  - cd test
+  - npm install
+  - npm run test-docker
+

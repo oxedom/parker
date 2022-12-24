@@ -1,0 +1,1 @@
+cmd_Release/opencv4nodejs.node := ln -f "Release/obj.target/opencv4nodejs.node" "Release/opencv4nodejs.node" 2>/dev/null || (rm -rf "Release/opencv4nodejs.node" && cp -af "Release/obj.target/opencv4nodejs.node" "Release/opencv4nodejs.node")

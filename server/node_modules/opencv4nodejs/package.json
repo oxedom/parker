@@ -1,0 +1,49 @@
+{
+  "name": "opencv4nodejs",
+  "version": "5.6.0",
+  "description": "Asynchronous OpenCV 3.x nodejs bindings with JavaScript and TypeScript API.",
+  "keywords": [
+    "opencv",
+    "cv",
+    "computer vision",
+    "face",
+    "detection",
+    "recognition",
+    "machine",
+    "learning",
+    "neural",
+    "network",
+    "async",
+    "typescript"
+  ],
+  "author": "justadudewhohacks",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justadudewhohacks/opencv4nodejs"
+  },
+  "bugs": {
+    "url": "https://github.com/justadudewhohacks/opencv4nodejs/issues"
+  },
+  "homepage": "https://github.com/justadudewhohacks/opencv4nodejs#readme",
+  "main": "./lib/opencv4nodejs.js",
+  "typings": "./lib/index.d.ts",
+  "scripts": {
+    "install": "node ./install/install.js",
+    "configure": "node-gyp configure",
+    "build": "node-gyp configure build --jobs max",
+    "rebuild": "node-gyp rebuild --jobs max",
+    "clean": "node-gyp clean",
+    "build-debug": "BINDINGS_DEBUG=true node ./install/install.js"
+  },
+  "gypfile": true,
+  "dependencies": {
+    "nan": "^2.14.0",
+    "native-node-utils": "^0.2.7",
+    "npmlog": "^4.1.2",
+    "opencv-build": "^0.1.9"
+  },
+  "optionalDependencies": {
+    "@types/node": ">6"
+  }
+}
