@@ -1,12 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import io from 'socket.io-client';
 
+
+import React, { useEffect, useRef, useState, useCallback} from "react";
+import io from 'socket.io-client';
 
 const socket = io('http://localhost:2000/')
 
 const Camera = () => {
 
   const [videoOutput, setVideoOutput] = useState()
+  const [framesCount, setFrames] = useState(0)
+  const inputRef = useRef(null);
+  const outputRef = useRef(null)
+
+
   const getFrame = (videoStream) => {
     // create a canvas element to draw the video frame on
     const canvas = document.createElement('canvas');
@@ -24,52 +30,72 @@ const Camera = () => {
     return imageData;
   };
 
-  const videoRef = useRef(null);
+
   const getVideo = () => {
     socket.connect()
     navigator.mediaDevices
       .getUserMedia({ video: { width:  720} })
       .then(stream => {
         
-        let video = videoRef.current;
+        //Gets the current screen
+        let video = inputRef.current;
+        //Sets the Src of video Object
         video.srcObject = stream;
+        //Plays the video
         video.play();
-        // socket.emit('stream', stream);
-
-        
-
 
         setInterval(() => {
-          // draw the current video frame onto the canvas
-       
-          // get the image data from the canvas
-          const result = getFrame(video)
-     
-          // send the image data over the socket connection as a binary string
-          socket.emit('stream', result );
-        }, 1000 / 30); // send 30 frames per second
+    
+      //Sets the output base 64 Images to videooutput
+      socket.on('output', (data) => { setVideoOutput(data)}) 
+          
+
+
+     // get a single frame from the video stream
+      const frame = getFrame(video);
+      // send the frame over the socket connection
+          
+      socket.emit('stream', frame);
+    
+
+
+        }, 1000)
 
 
       })
       .catch(err => {
         console.error("error:", err);
       });
-    socket.on('output', (data) => {setVideoOutput(data)}) 
   };
 
     useEffect(() => {
     getVideo();
-  }, [videoRef]);
+  }, []);
 
 
+
+  const updateOutput = () => {
+    let output = outputRef.current;
+    if(videoOutput != null) {  output.src = videoOutput;}
+
+    window.requestAnimationFrame(updateOutput);
+  }
+
+
+  useEffect(() => {
+
+      updateOutput()
+   
+    updateOutput();
+  }, [videoOutput]);
 
   return (
     <div>
       <div>
-  
-        <video ref={videoRef} />
+        <h1> Client </h1>
+        <video ref={inputRef} />
         <h1> Server </h1>
-        <image ref={videoOutput}> </image>
+        <img alt='sever' ref={outputRef} /> 
       </div>
     </div>
   );
