@@ -35,15 +35,19 @@ app.use(cors());
 
     socket.on('stream', data => {
 
-      
-      const imageBuffer = Buffer.from(data, 'base64');
-      // const image = cv.imdecode(imageBuffer)
-      // const grayImage = image.cvtColor(cv.COLOR_BGR2GRAY);
+  
+      const base64Image =  data.split(';base64,').pop();
+     
+      const frame = cv.imdecode(Buffer.from(base64Image, 'base64'));
 
 
+   
+    const blackAndWhiteFrame = frame.cvtColor(cv.COLOR_BGR2GRAY);
+    const outputData = cv.imencode('.jpg', blackAndWhiteFrame).toString('base64');
+    const final = `data:image/jpeg;base64,${outputData}`
 
-      socket.emit('output', data);
-      // socket.emit('matt', imageBuffer);
+      socket.emit('output', final);
+      // socket.emit('matt', final);
   });
 
 
