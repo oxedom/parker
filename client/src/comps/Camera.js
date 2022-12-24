@@ -1,6 +1,7 @@
 
 
-import React, { useEffect, useRef, useState, useCallback} from "react";
+
+import React, { useEffect, useRef, useState} from "react";
 import io from 'socket.io-client';
 
 const socket = io('http://localhost:2000/')
@@ -8,7 +9,7 @@ const socket = io('http://localhost:2000/')
 const Camera = () => {
 
   const [videoOutput, setVideoOutput] = useState()
-  const [framesCount, setFrames] = useState(0)
+
   const inputRef = useRef(null);
   const outputRef = useRef(null)
 
@@ -45,21 +46,20 @@ const Camera = () => {
         video.play();
 
         setInterval(() => {
-    
+      
       //Sets the output base 64 Images to videooutput
       socket.on('output', (data) => { setVideoOutput(data)}) 
-          
-
-
+      socket.on('matt', (data) => { console.log(data);}) 
+        
      // get a single frame from the video stream
       const frame = getFrame(video);
       // send the frame over the socket connection
-          
-      socket.emit('stream', frame);
+      if(videoOutput !== null) {socket.emit('stream', frame);}
+
     
 
-
-        }, 1000)
+        //23 Frame per secound
+        }, 41)
 
 
       })
@@ -70,22 +70,23 @@ const Camera = () => {
 
     useEffect(() => {
     getVideo();
-  }, []);
+  }, [inputRef]);
 
 
 
-  const updateOutput = () => {
-    let output = outputRef.current;
-    if(videoOutput != null) {  output.src = videoOutput;}
 
-    window.requestAnimationFrame(updateOutput);
-  }
 
 
   useEffect(() => {
+    const updateOutput = () => {
 
-      updateOutput()
-   
+      let output = outputRef.current;
+      if(videoOutput != null) {  output.src = videoOutput;}
+  
+      window.requestAnimationFrame(updateOutput);
+    }
+
+
     updateOutput();
   }, [videoOutput]);
 
@@ -93,6 +94,7 @@ const Camera = () => {
     <div>
       <div>
         <h1> Client </h1>
+
         <video ref={inputRef} />
         <h1> Server </h1>
         <img alt='sever' ref={outputRef} /> 
