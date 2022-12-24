@@ -1,10 +1,10 @@
 import './App.css';
-import Webcam from './comps/Webcam';
+import Camera from './comps/Camera';
 
 function App() {
   return (
     <div className="App">
-      <Webcam></Webcam>
+      <Camera></Camera>
     </div>
   );
 }
