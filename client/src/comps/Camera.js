@@ -59,7 +59,7 @@ const Camera = () => {
     
 
         //23 Frame per secound
-        }, 41)
+        }, 1000)
 
 
       })

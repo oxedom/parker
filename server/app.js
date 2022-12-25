@@ -43,9 +43,11 @@ app.use(cors());
       console.log(faces);
    
     const blackAndWhiteFrame = frame.cvtColor(cv.COLOR_BGR2GRAY);
-
+    const resized_blackAndWhiteFrame = blackAndWhiteFrame.resize(100,100)
     const outputData = cv.imencode('.jpg', blackAndWhiteFrame).toString('base64');
+
     const final = `data:image/jpeg;base64,${outputData}`
+    
 
       socket.emit('output', final);
       // socket.emit('matt', final);
