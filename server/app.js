@@ -35,14 +35,15 @@ app.use(cors());
 
     socket.on('stream', data => {
 
-  
+      const faceClassifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_DEFAULT)
       const base64Image =  data.split(';base64,').pop();
      
       const frame = cv.imdecode(Buffer.from(base64Image, 'base64'));
-
-
+      const faces = faceClassifier.detectMultiScale(frame).objects;
+      console.log(faces);
    
     const blackAndWhiteFrame = frame.cvtColor(cv.COLOR_BGR2GRAY);
+
     const outputData = cv.imencode('.jpg', blackAndWhiteFrame).toString('base64');
     const final = `data:image/jpeg;base64,${outputData}`
 
