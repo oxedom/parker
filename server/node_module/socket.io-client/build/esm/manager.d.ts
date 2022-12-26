@@ -1,5 +1,5 @@
 import { Socket as Engine, SocketOptions as EngineOptions } from "engine.io-client";
-import { Socket, SocketOptions, DisconnectDescription } from "./socket.js";
+import { Socket, SocketOptions, DisconnectDescription } from "socket.io-client/build/esm/socket.js";
 import { Packet } from "socket.io-parser";
 import { DefaultEventsMap, EventsMap, Emitter } from "@socket.io/component-emitter";
 export interface ManagerOptions extends EngineOptions {

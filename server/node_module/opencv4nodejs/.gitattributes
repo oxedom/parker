@@ -1,3 +1,0 @@
-*.sh* text eol=lf
-*.d.ts linguist-vendored=false
-/examples/* linguist-documentation=false

@@ -1,5 +1,5 @@
 import { Packet } from "socket.io-parser";
-import { Manager } from "./manager.js";
+import { Manager } from "socket.io-client/build/esm/manager.js";
 import { DefaultEventsMap, EventNames, EventParams, EventsMap, Emitter } from "@socket.io/component-emitter";
 export interface SocketOptions {
     /**

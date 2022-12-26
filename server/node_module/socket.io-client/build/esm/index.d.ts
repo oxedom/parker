@@ -1,5 +1,5 @@
-import { Manager, ManagerOptions } from "./manager.js";
-import { Socket, SocketOptions } from "./socket.js";
+import { Manager, ManagerOptions } from "socket.io-client/build/esm/manager.js";
+import { Socket, SocketOptions } from "socket.io-client/build/esm/socket.js";
 /**
  * Looks up an existing `Manager` for multiplexing.
  * If the user summons:
