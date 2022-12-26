@@ -1,35 +1,24 @@
 from flask import Flask
-from flask_socketio import SocketIO,emit
-# import cv2
-# import numpy as np
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-# def isValidBase64Image(str):
-#     regex = /^data:image\/(png|jpeg|jpg|gif|bmp|webp);base64,[A-Za-z0-9+/]+=*$/
-#     return regex.test(str)
-
-@SocketIO.on('connect',)
-def on_connect():
-    print("Client connected")
-
-
-@SocketIO.on('disconnect')
-def on_disconnect():
-    print("Client disconnected")
-
-@SocketIO.on('message')
-def on_message(message):
-    print("Message", message)
-    emit('reply', message)
-
-# @SocketIO.on('connection')
-# def handle_connection():
-#     @socketio.on('stream')
-#     def handle_stream(data):
-#         emit('output', data)    
+import base64
+import cv2
+import numpy as np
+import socketio
 
 app = Flask(__name__)
+sio = socketio.Server()
 
+@sio.on('stream')
+def handle_stream(data):
+  # decode the image data and convert it to a NumPy array
+  image = base64.b64decode(data)
+  image = np.frombuffer(image, dtype=np.uint8)
+  # convert the image to a OpenCV image and display it
+  image = cv2.imdecode(image, cv2.IMREAD_UNCHANGED)
+  cv2.imshow('image', image)
+  # send the image back to the client
+  image = cv2.imencode('.jpg', image)[1]
+  image = base64.b64encode(image).decode()
+  sio.emit('output', image)
 
-# if __name__ == '__main__':
-app.run()
+if __name__ == '__main__':
+  sio.run(app, host='localhost', port=5000)

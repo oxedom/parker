@@ -33,7 +33,7 @@ const Camera = () => {
 
 
   const getVideo = () => {
-    socket.connect()
+    // socket.connect()
     navigator.mediaDevices
       .getUserMedia({ video: { width:  720} })
       .then(stream => {
@@ -45,21 +45,20 @@ const Camera = () => {
         //Plays the video
         video.play();
 
-        // setInterval(() => {
+        setInterval(() => {
       
       //Sets the output base 64 Images to videooutput
       socket.on('output', (data) => { setVideoOutput(data)}) 
-      socket.on('matt', (data) => { console.log(data);}) 
         
      // get a single frame from the video stream
       const frame = getFrame(video);
       // send the frame over the socket connection
       if(videoOutput !== null) {socket.emit('stream', frame);}
-
-    
-
+ 
+     
+ 
         //23 Frame per secound
-        // }, 10)
+        }, 10)
 
 
       })
