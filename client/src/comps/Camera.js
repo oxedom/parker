@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState} from "react";
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:5000/')
+const socket = io('http://localhost:2000/')
 
 const Camera = () => {
 
@@ -22,10 +22,11 @@ const Camera = () => {
     // set the canvas width and height to match the video dimensions
     canvas.width = videoStream.videoWidth;
     canvas.height = videoStream.videoHeight;
-  
+
     // draw the current video frame onto the canvas
     ctx.drawImage(videoStream, 0, 0, canvas.width, canvas.height);
     // get the image data from the canvas
+
     const imageData = canvas.toDataURL('image/jpeg');
   
     return imageData;
@@ -33,7 +34,7 @@ const Camera = () => {
 
 
   const getVideo = () => {
-    // socket.connect()
+    socket.connect()
     navigator.mediaDevices
       .getUserMedia({ video: { width:  720} })
       .then(stream => {
@@ -52,13 +53,14 @@ const Camera = () => {
         
      // get a single frame from the video stream
       const frame = getFrame(video);
+
       // send the frame over the socket connection
       if(videoOutput !== null) {socket.emit('stream', frame);}
  
      
  
-        //23 Frame per secound
-        }, 10)
+        //1 Frame per secound
+        }, 1000)
 
 
       })
@@ -68,6 +70,7 @@ const Camera = () => {
   };
 
     useEffect(() => {
+
     getVideo();
   }, [inputRef]);
 
