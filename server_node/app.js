@@ -3,42 +3,37 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
+const io_client = require('socket.io-client');
 const io = require('socket.io')(server, {  cors: {
   origin: "http://localhost:3000",
   methods: ["GET", "POST"]
 }});
 
-
-function isValidBase64Image(str) {
-  const regex = /^data:image\/(png|jpeg|jpg|gif|bmp|webp);base64,[A-Za-z0-9+/]+=*$/;
-  return regex.test(str);
-}
-
-
+const python_socket = io_client('http://localhost:5000')
 const cv = require('opencv4nodejs');
 const cors = require('cors');
-
-
-
-
-
-
+python_socket.connect()
+//CORS
 app.use(cors());
 
-
+  
   io.on('connection', socket => {
+   
+
     console.log('Connection made')
     socket.on('stream', data => {
-    //  console.log(data);
 
-      const faceClassifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_DEFAULT)
-    //   const base64Image =  data.split(';base64,').pop();
-    //   const frame = cv.imdecode(Buffer.from(base64Image, 'base64'));
 
-        const frame = cv.imdecode(data)
 
-      const faces = faceClassifier.detectMultiScale(frame).objects;
-      console.log(faces);
+        //Face classifer model;
+    const faceClassifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_DEFAULT)
+
+    //decode Javascript buffer Array 
+     const frame = cv.imdecode(data)
+
+     //Detect faces
+    const faces = faceClassifier.detectMultiScale(frame).objects;
+
     
     //     const blackAndWhiteFrame = frame.cvtColor(cv.COLOR_BGR2GRAY);
     //     const resized_blackAndWhiteFrame = blackAndWhiteFrame.resize(100,100)
