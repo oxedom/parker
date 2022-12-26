@@ -11,7 +11,11 @@ socketio = SocketIO(app)
 def handle_message(buffer):
     # print('I got a buffer')
     # array = np.frombuffer(buffer, dtype=np.uint8)
-    socketio.emit('gray', buffer)
+    print(buffer)
+    cv2.imdecode(buffer, cv2.IMREAD_UNCHANGED)
+ 
+    # mat = np.asarray(buffer, dtype=np.uint8)     
+    # socketio.emit('gray', mat)
 
     
 

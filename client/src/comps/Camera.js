@@ -71,8 +71,13 @@ const Camera = () => {
           const capturedImage = await imageCapture.takePhoto()
           const imageBuffer = await capturedImage.arrayBuffer()
           // const image_text = await capturedImage.text()
-          socket.emit('stream', imageBuffer);  
           
+          const fd = new FormData()
+          fd.append('blob', capturedImage)
+          socket.emit('stream', capturedImage);  
+          
+
+          //Handle what node gives back
           socket.on('output', (data) => { 
 
         

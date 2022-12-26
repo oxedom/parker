@@ -13,6 +13,7 @@ const io = require('socket.io')(server, {  cors: {
 const python_socket = io_client('http://localhost:5000')
 
 const cors = require('cors');
+const { log } = require('console');
 python_socket.connect()
 //CORS
 app.use(cors());
@@ -20,9 +21,9 @@ app.use(cors());
   
   io.on('connection', socket => {
    
-
     console.log('Connection made')
     socket.on('stream', data => {
+    console.log(data);
 
     python_socket.emit('buffer', data)
 
@@ -35,7 +36,7 @@ app.use(cors());
      
 
      python_socket.on('gray', data => {
-      console.log('yes');
+      console.log(data);
   
      })
      //Detect faces
