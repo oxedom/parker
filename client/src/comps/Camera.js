@@ -78,8 +78,9 @@ const Camera = () => {
 
 
 
-
+  //Handles updating the 
   useEffect(() => {
+    console.log('Run')
     const updateOutput = () => {
 
       let output = outputRef.current;
