@@ -15,6 +15,7 @@ function isValidBase64Image(str) {
 
 const cv = require('opencv4nodejs');
 const cors = require('cors');
+const { drawDetection } = require('opencv4nodejs');
 
 
 
@@ -35,21 +36,30 @@ app.use(cors());
 
     socket.on('stream', data => {
 
-      const faceClassifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_DEFAULT)
-      const base64Image =  data.split(';base64,').pop();
+      // const faceClassifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_DEFAULT)
+      // const base64Image =  data.split(';base64,').pop();
      
-      const frame = cv.imdecode(Buffer.from(base64Image, 'base64'));
-      const faces = faceClassifier.detectMultiScale(frame).objects;
-      console.log(faces);
-   
-    const blackAndWhiteFrame = frame.cvtColor(cv.COLOR_BGR2GRAY);
-    const resized_blackAndWhiteFrame = blackAndWhiteFrame.resize(100,100)
-    const outputData = cv.imencode('.jpg', blackAndWhiteFrame).toString('base64');
+      // const frame = cv.imdecode(Buffer.from(base64Image, 'base64'));
+      // const faces = faceClassifier.detectMultiScale(frame).objects;
+      // faces.forEach(face => {
 
-    const final = `data:image/jpeg;base64,${outputData}`
+        
+      //   const faceROI = frame.getRegion(face)
+      //   frame = frame.drawCircle(1,2)
+
+        // cv.rectangle( faceROI, new cv.Point(0, 0), new cv.Point(faceROI.cols - 1, faceROI.rows - 1), new cv.Vec(255, 0, 0), 2);
+        
+
+
+      // })
+  
+    // const blackAndWhiteFrame = frame.cvtColor(cv.COLOR_BGR2GRAY);
+    // const outputData = cv.imencode('.jpg', blackAndWhiteFrame).toString('base64');
+
+    // const final = `data:image/jpeg;base64,${outputData}`
     
 
-      socket.emit('output', final);
+      socket.emit('output', data);
       // socket.emit('matt', final);
   });
 

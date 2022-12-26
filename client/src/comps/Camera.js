@@ -45,7 +45,7 @@ const Camera = () => {
         //Plays the video
         video.play();
 
-        setInterval(() => {
+        // setInterval(() => {
       
       //Sets the output base 64 Images to videooutput
       socket.on('output', (data) => { setVideoOutput(data)}) 
@@ -59,7 +59,7 @@ const Camera = () => {
     
 
         //23 Frame per secound
-        }, 1000)
+        // }, 10)
 
 
       })
