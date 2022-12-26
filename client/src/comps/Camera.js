@@ -8,7 +8,23 @@ const socket = io('http://localhost:2000/')
 
 const Camera = () => {
 
-  const [videoOutput, setVideoOutput] = useState()
+
+  function isValidBase64Image(str) {
+    const regex = /^data:image\/(png|jpeg|jpg|gif|bmp|webp);base64,[A-Za-z0-9+/]+=*$/;
+    return regex.test(str);
+  }
+  
+
+  const updateOutput = (outputFrame) => {
+
+
+    let output = outputRef.current;
+    output.src = outputFrame;
+
+    window.requestAnimationFrame(updateOutput);
+  }
+
+
 
   const inputRef = useRef(null);
   const outputRef = useRef(null)
@@ -46,19 +62,36 @@ const Camera = () => {
         //Plays the video
         video.play();
 
-        setInterval(() => {
-      
-      //Sets the output base 64 Images to videooutput
-      socket.on('output', (data) => { setVideoOutput(data)}) 
+
+
+        setInterval(async () => {
+
+          const track = stream.getVideoTracks()[0]
+          let imageCapture = new ImageCapture(track)
+          const capturedImage = await imageCapture.takePhoto()
+          const imageBuffer = await capturedImage.arrayBuffer()
+          // const image_text = await capturedImage.text()
+          socket.emit('stream', imageBuffer);  
+          
+          socket.on('output', (data) => { 
+
         
+            
+      
+          })
+          
+          
+          // })
+
+          // console.log(stream.getVideoTracks());
+      //Sets the output base 64 Images to videooutput
+ 
+
      // get a single frame from the video stream
-      const frame = getFrame(video);
+      // const frame = getFrame(video);
 
       // send the frame over the socket connection
-      if(videoOutput !== null) {socket.emit('stream', frame);}
- 
-     
- 
+      // socket.emit('stream', frame);
         //1 Frame per secound
         }, 1000)
 
@@ -78,20 +111,6 @@ const Camera = () => {
 
 
 
-  //Handles updating the 
-  useEffect(() => {
-    console.log('Run')
-    const updateOutput = () => {
-
-      let output = outputRef.current;
-      if(videoOutput != null) {  output.src = videoOutput;}
-  
-      window.requestAnimationFrame(updateOutput);
-    }
-
-
-    updateOutput();
-  }, [videoOutput]);
 
   return (
     <div>
