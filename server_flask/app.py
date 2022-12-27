@@ -45,7 +45,7 @@ def handle_cv():
     gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     faces_rect = haar_cascade.detectMultiScale(
-        gray_image, scaleFactor=1.1, minNeighbors=9)
+        gray_image, scaleFactor=2.1, minNeighbors=9)
     # retval, buffer = cv2.imencode('.jpg', img)
 
     for (x, y, w, h) in faces_rect:
