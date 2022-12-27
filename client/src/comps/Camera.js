@@ -70,8 +70,6 @@ const Camera = () => {
           const capturedImage = await imageCapture.takePhoto()
           const imageBuffer = await capturedImage.arrayBuffer()
 
-        
-          // const image_text = await capturedImage.text()
 
 
           socket.emit('stream', imageBuffer);  

@@ -29,39 +29,20 @@ app.use(cors());
     socket.on('stream', async imageBuffer => {
   
 
-      const decoded_buffer = await cv.imdecodeAsync(imageBuffer)
-
-
-      const payload = new Response(JSON.stringify('Hello, world!'), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }})
+    
 
       try {
-        const response = await axios.post('http://localhost:5000/cv2', { message: imageBuffer} )
+    
+        const response = await axios.post('http://localhost:5000/cv2', { buffer: imageBuffer})
+        console.log(response.data);
       } catch (error) {
         
-      }
+      } 
    
       // python_socket.emit('buffer', decoded_buffer)
-      console.log(response.data);
+ 
       
      
-
-    //  python_socket.on('gray', data => {
-    //   console.log(data);
-  
-    //  })
-     //Detect faces
-    // const faces = faceClassifier.detectMultiScale(frame).objects;
-
-    
-    //     const blackAndWhiteFrame = frame.cvtColor(cv.COLOR_BGR2GRAY);
-    //     const resized_blackAndWhiteFrame = blackAndWhiteFrame.resize(100,100)
-    //     const outputData = cv.imencode('.jpg', blackAndWhiteFrame).toString('base64');
-
-    //     const final = `data:image/jpeg;base64,${outputData}`
-        
-
       socket.emit('output', '');
   });
 
