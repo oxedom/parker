@@ -5,40 +5,52 @@ const app = express();
 const server = require('http').createServer(app);
 const io_client = require('socket.io-client');
 const cv = require('opencv4nodejs');
+
 const io = require('socket.io')(server, {  cors: {
   origin: "http://localhost:3000",
   methods: ["GET", "POST"]
 }});
 
-const python_socket = io_client('http://localhost:5000')
+// const python_socket = io_client('http://localhost:5000')
 
 const cors = require('cors');
-const { log } = require('console');
-python_socket.connect()
+
+
+const { default: axios } = require('axios');
+
+// python_socket.connect()
 //CORS
 app.use(cors());
 
-  
+
   io.on('connection', socket => {
-   
+
     console.log('Connection made')
-    socket.on('stream', data => {
-    console.log(data);
+    socket.on('stream', async imageBuffer => {
+  
 
-    python_socket.emit('buffer', data)
+      const decoded_buffer = await cv.imdecodeAsync(imageBuffer)
 
 
-        //Face classifer model;
-    // const faceClassifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_DEFAULT)
+      const payload = new Response(JSON.stringify('Hello, world!'), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }})
 
-    //decode Javascript buffer Array 
-    //  const frame = cv.imdecode(data)
+      try {
+        const response = await axios.post('http://localhost:5000/cv2', { message: imageBuffer} )
+      } catch (error) {
+        
+      }
+   
+      // python_socket.emit('buffer', decoded_buffer)
+      console.log(response.data);
+      
      
 
-     python_socket.on('gray', data => {
-      console.log(data);
+    //  python_socket.on('gray', data => {
+    //   console.log(data);
   
-     })
+    //  })
      //Detect faces
     // const faces = faceClassifier.detectMultiScale(frame).objects;
 

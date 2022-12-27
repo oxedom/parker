@@ -9,11 +9,7 @@ const socket = io('http://localhost:2000/')
 const Camera = () => {
 
 
-  function isValidBase64Image(str) {
-    const regex = /^data:image\/(png|jpeg|jpg|gif|bmp|webp);base64,[A-Za-z0-9+/]+=*$/;
-    return regex.test(str);
-  }
-  
+ 
 
   const updateOutput = (outputFrame) => {
 
@@ -51,10 +47,13 @@ const Camera = () => {
 
   const getVideo = () => {
     socket.connect()
+
+
     navigator.mediaDevices
       .getUserMedia({ video: { width:  720} })
       .then(stream => {
-        
+       
+   
         //Gets the current screen
         let video = inputRef.current;
         //Sets the Src of video Object
@@ -65,16 +64,17 @@ const Camera = () => {
 
 
         setInterval(async () => {
-
+    
           const track = stream.getVideoTracks()[0]
           let imageCapture = new ImageCapture(track)
           const capturedImage = await imageCapture.takePhoto()
           const imageBuffer = await capturedImage.arrayBuffer()
+
+        
           // const image_text = await capturedImage.text()
-          
-          const fd = new FormData()
-          fd.append('blob', capturedImage)
-          socket.emit('stream', capturedImage);  
+
+
+          socket.emit('stream', imageBuffer);  
           
 
           //Handle what node gives back
@@ -86,18 +86,8 @@ const Camera = () => {
           })
           
           
-          // })
+     
 
-          // console.log(stream.getVideoTracks());
-      //Sets the output base 64 Images to videooutput
- 
-
-     // get a single frame from the video stream
-      // const frame = getFrame(video);
-
-      // send the frame over the socket connection
-      // socket.emit('stream', frame);
-        //1 Frame per secound
         }, 1000)
 
 
@@ -107,12 +97,12 @@ const Camera = () => {
       });
   };
 
-    useEffect(() => {
+  //   useEffect(() => {
 
-    getVideo();
-  }, [inputRef]);
+  //   getVideo();
+  // }, [inputRef]);
 
-
+  getVideo()
 
 
 
