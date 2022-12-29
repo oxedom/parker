@@ -6,7 +6,8 @@ import numpy as np
 from flask_cors import CORS
 import json
 from pathlib import Path
-
+net = cv2.dnn.readNetFromDarknet('yolov3.cfg', 'yolov3.weights')
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -15,6 +16,8 @@ haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 app.config['SECRET_KEY'] = 'secret!'
 
+ln = net.getLayerNames()
+print(len(ln), ln)
 
 
 
@@ -45,14 +48,26 @@ def handle_cv():
     dim = (300,int(h * r))
     resized = cv2.resize(gray_image, dim)
 
-    faces_rect = haar_cascade.detectMultiScale(resized, scaleFactor=2.1, minNeighbors=9)
+    #Bluring image so it to remove noise that confuses algos
+    blurred = cv2.GaussianBlur(resized, (3, 3), 0)
+
+
+    #Algo for Detecting faces returns array of all XY cords of face [[106  48  50  50]]
+    # 106,48 is pt1 top left, 48,50 is bottom right of Face
+    faces_rect = haar_cascade.detectMultiScale(gray_image, scaleFactor=2.1, minNeighbors=9)
+    
     print(faces_rect)
     # retval, buffer = cv2.imencode('.jpg', img)
     if len(faces_rect) > 0:
         for (x, y, w, h) in faces_rect:
-            cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), thickness=2)
+
+            cv2.rectangle(img, (x, y), (x+w, y+h), (255, 255, 0), 2)
+            cv2.putText(img, "Open CV", (10,25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+            # cv2.circle(img, (x, y), (2) , (255, 0, 0), -1)
             # cv2.imwrite('image.jpg', img)
-            cv2.imshow('Photo', resized)
+            edged = cv2.Canny(gray_image, 30, 150)
+            cv2.imshow("Edged", edged)
+            cv2.imshow('Photo', img)
             cv2.waitKey(0)
 
 
