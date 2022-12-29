@@ -117,11 +117,11 @@ def handle_cv3():
     img_ratio = 300.0 / img_width
     dim = (300,int(img_height * img_ratio))
 
- 
+    img = cv2.GaussianBlur(img, (3, 3), 0)
     blob = cv2.dnn.blobFromImage(img, 1/255.0 ,(img_width ,img_height), swapRB=True, crop=False)
   
     r = blob[0, 0, :, :]
-
+    r0 = blob[0, 0, :, :]
     ln = net.getLayerNames()
     ln = [ln[i-1] for i in net.getUnconnectedOutLayers()]
 
@@ -138,16 +138,20 @@ def handle_cv3():
 
     def tracker2(x):
         confidence = x/100
+        r = r0.copy()
         for output in np.vstack(outputs):
             if output[4] > confidence:
                 x, y, w, h = output[:4]
-                p0 = int((x-w/2)*img_width), int((y-h/2)*img_width)
-                p1 = int((x+w/2)*img_height), int((y+h/2)*img_height)
+                p0 = int((x-w/2)*img_height), int((y-h/2)*img_height)
+                p1 = int((x+w/2)*img_width), int((y+h/2)*img_width)
                 cv2.rectangle(r, p0, p1, 1, 1)
                 cv2.imshow('blob', r)
                 cv2.waitKey(0)   
 
+
     tracker2(50)
+
+
     return ''
   
 
