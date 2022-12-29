@@ -83,11 +83,16 @@ def handle_cv2():
             cv2.waitKey(0)
 
 
-
+    img_encode = cv2.imencode('.jpg', img)[1]
+    # Converting the image into numpy array
+    data_encode = np.array(img_encode)
+    byte_encode = data_encode.tobytes()
+    im_b64 = base64.b64encode(byte_encode)
+    im_b64_utf8 = im_b64.decode('utf-8')
 
     # print(img)
     
-    return ''
+    return f"data:image/jpg;base64,{im_b64_utf8}"
  
 
 
