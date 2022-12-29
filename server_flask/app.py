@@ -15,14 +15,6 @@ haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 app.config['SECRET_KEY'] = 'secret!'
 
-# Root directory of the project
-ROOT_DIR = Path(".")
-
-# Directory to save logs and trained model
-MODEL_DIR = os.path.join(ROOT_DIR, "logs")
-
-# Local path to trained weights file
-COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_balloon.h5")
 
 
 
@@ -36,23 +28,32 @@ def handle_cv():
     
     buffer_object = json.loads(server_object_str)['buffer']['data']
 
-    # array = np.frombuffer(bytearray(buffer_object), np.uint8)
-
+  
+    #Convert the buffer_object from the JS to a bytearray
     data = bytearray(buffer_object)
-
+    #Convert to to a npArray
     arr = np.frombuffer(data, np.uint8)
+    #Decode npArray to Image
     img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+    # Height Width and Depth of the Image
+    (h, w, d) = img.shape
+    #Greyscaling the Image
     gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    faces_rect = haar_cascade.detectMultiScale(
-        gray_image, scaleFactor=2.1, minNeighbors=9)
+    #Mainting aspect Ratio on Grey Image and resizing it
+    r = 300.0 / w
+    dim = (300,int(h * r))
+    resized = cv2.resize(gray_image, dim)
+
+    faces_rect = haar_cascade.detectMultiScale(resized, scaleFactor=2.1, minNeighbors=9)
+    print(faces_rect)
     # retval, buffer = cv2.imencode('.jpg', img)
-
-    for (x, y, w, h) in faces_rect:
-        cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), thickness=2)
-
-    cv2.imwrite('image.jpg', img)
-
+    if len(faces_rect) > 0:
+        for (x, y, w, h) in faces_rect:
+            cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), thickness=2)
+            # cv2.imwrite('image.jpg', img)
+            cv2.imshow('Photo', resized)
+            cv2.waitKey(0)
 
 
 
