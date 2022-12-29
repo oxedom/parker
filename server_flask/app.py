@@ -96,8 +96,8 @@ def handle_cv2():
 @app.route('/cv3', methods=['POST'])
 def handle_cv3():
         # serverObject with buffer props that contains RAW image buffer from client
-    server_object = request.get_json()
-   
+    server_object = request.get_json('imageBuffer')
+
     # Convert the dictionary object to a string
     server_object_str = json.dumps(server_object)
 
@@ -105,12 +105,12 @@ def handle_cv3():
 
     #Convert the buffer_object from the JS to a bytearray
     data = bytearray(buffer_object)
-    print(data)
+    
     #Convert to to a npArray
     arr = np.frombuffer(data, np.uint8)
     #Decode npArray to Image
     img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-    # img = cv2.imread("dog.jpg")
+    
 
     #Image to Blob
     (img_height, img_width, img_depth) = img.shape
@@ -179,10 +179,11 @@ def handle_cv3():
     data_encode = np.array(img_encode)
     byte_encode = data_encode.tobytes()
     im_b64 = base64.b64encode(byte_encode)
+    im_b64_utf8 = im_b64.decode('utf-8')
 
-    return im_b64
+
+    return f"data:image/jpg;base64,{im_b64_utf8}"
   
-
 
     
 

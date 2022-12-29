@@ -1,16 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
+import React, { useRef } from "react";
 import axios from 'axios';
 
 const flask_url = "http://localhost:5000/cv3";
 
 const Camera = () => {
-  const updateOutput = (outputFrame) => {
-    let output = outputRef.current;
-    output.src = outputFrame;
 
-    window.requestAnimationFrame(updateOutput);
-  };
+
+  function isBase64Image(imageString) {
+    const pattern = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+    return pattern.test(imageString);
+  }
 
   const inputRef = useRef(null);
   const outputRef = useRef(null);
@@ -50,15 +49,27 @@ const Camera = () => {
           const track = stream.getVideoTracks()[0];
           let imageCapture = new ImageCapture(track);
           const capturedImage = await imageCapture.takePhoto();
-          const imageBuffer = await capturedImage.arrayBuffer();
+          let imageBuffer = await capturedImage.arrayBuffer();
+          imageBuffer = new Uint8Array(imageBuffer);
 
-          const res = await axios.post(flask_url, { buffer: imageBuffer})
-          const base64 = `data:image/jpg;base64,${res.data}`
-          updateOutput(base64)
+       
+            const res = await axios.post(flask_url, {buffer: [...imageBuffer]})
+            let output = outputRef.current;
+            output.src = res.data;
+            // window.requestAnimationFrame();
+      
+       
+                // updateOutput(base64)
+              
+         
+            
+  
+          
+
 
           //Handle what node gives back
       
-        }, 10000);
+        }, 5000);
       })
       .catch((err) => {
         console.error("error:", err);
