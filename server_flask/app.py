@@ -17,13 +17,12 @@ haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 app.config['SECRET_KEY'] = 'secret!'
 
-ln = net.getLayerNames()
-print(len(ln), ln)
+
 
 
 
 @app.route('/cv2', methods=['POST'])
-def handle_cv():
+def handle_cv2():
     # serverObject with buffer props that contains RAW image buffer from client
     server_object = request.get_json()
 
@@ -79,17 +78,17 @@ def handle_cv():
     return ''
  
     # Convert the array buffer to a NumPy array
- @app.route('/cv3', methods=['POST'])
-def handle_cv():
-    # serverObject with buffer props that contains RAW image buffer from client
+@app.route('/cv3', methods=['POST'])
+def handle_cv3():
+        # serverObject with buffer props that contains RAW image buffer from client
     server_object = request.get_json()
 
     # Convert the dictionary object to a string
     server_object_str = json.dumps(server_object)
-    
+
     buffer_object = json.loads(server_object_str)['buffer']['data']
 
-  
+
     #Convert the buffer_object from the JS to a bytearray
     data = bytearray(buffer_object)
     #Convert to to a npArray
@@ -97,12 +96,17 @@ def handle_cv():
     #Decode npArray to Image
     img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
 
- 
+
     #Image to Blob
-    blob = cv2.dnn.blobFromImage(img, 1/255.0, (416, 416), swapRB=True, crop=False)
+    (h, w, d) = img.shape
+    r = 300.0 / w
+    dim = (300,int(h * r))
+    print(dim)
+ 
+    blob = cv2.dnn.blobFromImage(img, 1/255.0 ,dim, swapRB=True, crop=False)
     r = blob[0, 0, :, :]
     cv2.imshow('blob', r)
-
+    cv2.waitKey(0)
 
 
  
