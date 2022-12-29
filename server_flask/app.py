@@ -68,7 +68,6 @@ def handle_cv2():
     # 106,48 is pt1 top left, 48,50 is bottom right of Face
     faces_rect = haar_cascade.detectMultiScale(gray_image, scaleFactor=2.1, minNeighbors=9)
     
-    print(faces_rect)
     # retval, buffer = cv2.imencode('.jpg', img)
     if len(faces_rect) > 0:
         for (x, y, w, h) in faces_rect:
@@ -125,8 +124,8 @@ def handle_cv3():
     ln = net.getLayerNames()
     ln = [ln[i-1] for i in net.getUnconnectedOutLayers()]
 
-
-
+    output_layers = net.getUnconnectedOutLayersNames()
+    layer_outputs = net.forward(output_layers)
 
 
     net.setInput(blob)
@@ -134,22 +133,32 @@ def handle_cv3():
     outputs = net.forward(ln)
     t = time.time()
 
+
+
     print('time=', t-t0)
 
-    def tracker2(x):
-        confidence = x/100
-        r = r0.copy()
-        for output in np.vstack(outputs):
-            if output[4] > confidence:
-                x, y, w, h = output[:4]
-                p0 = int((x-w/2)*img_height), int((y-h/2)*img_height)
-                p1 = int((x+w/2)*img_width), int((y+h/2)*img_width)
-                cv2.rectangle(r, p0, p1, 1, 1)
-                cv2.imshow('blob', r)
-                cv2.waitKey(0)   
+    boxes = []
+    confidences = []
+    classIDs = []
 
 
-    tracker2(50)
+
+    # def tracker2(x):
+    #     confidence = x/100
+    #     r = r0.copy()
+    #     for output in np.vstack(outputs):
+    #         if output[4] > confidence:
+    #             x, y, w, h = output[:4]
+    #             p0 = int((x-w/2)*img_height), int((y-h/2)*img_height)
+    #             p1 = int((x+w/2)*img_width), int((y+h/2)*img_width)
+    #             cv2.rectangle(r, p0, p1, 1, 1)
+    #             cv2.imshow('blob', r)
+    #             cv2.waitKey(0)   
+
+
+    # tracker2(50)
+
+
 
 
     return ''
