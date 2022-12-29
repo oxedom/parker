@@ -55,7 +55,8 @@ const Camera = () => {
        
             const res = await axios.post(flask_url, {buffer: [...imageBuffer]})
             let output = outputRef.current;
-            output.src = res.data;
+            output.src = res.data.img
+            console.log(res.data.api_data);
             // window.requestAnimationFrame();
       
        
@@ -69,7 +70,7 @@ const Camera = () => {
 
           //Handle what node gives back
       
-        }, 5000);
+        }, 1);
       })
       .catch((err) => {
         console.error("error:", err);

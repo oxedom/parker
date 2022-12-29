@@ -182,8 +182,16 @@ def handle_cv3():
     im_b64_utf8 = im_b64.decode('utf-8')
 
 
-    return f"data:image/jpg;base64,{im_b64_utf8}"
-  
+    
+    resObj = {
+        "img":f"data:image/jpg;base64,{im_b64_utf8}",
+        "meta data": {
+            "boxes": boxes,
+            "confidences": confidences,
+        }
+        }
+    # return f"data:image/jpg;base64,{im_b64_utf8}"
+    return resObj
 
     
 
