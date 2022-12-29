@@ -55,7 +55,7 @@ const Camera = () => {
 
           //Handle what node gives back
           socket.on("output", (data) => {});
-        }, 5000);
+        }, 2000);
       })
       .catch((err) => {
         console.error("error:", err);

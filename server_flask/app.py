@@ -22,6 +22,7 @@ net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 
 
 
+
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
@@ -116,47 +117,61 @@ def handle_cv3():
     img_ratio = 300.0 / img_width
     dim = (300,int(img_height * img_ratio))
 
+
     img = cv2.GaussianBlur(img, (3, 3), 0)
-    blob = cv2.dnn.blobFromImage(img, 1/255.0 ,(img_width ,img_height), swapRB=True, crop=False)
+    blob = cv2.dnn.blobFromImage(img, 1/255.0 ,(320 ,320), swapRB=True, crop=False)
   
     r = blob[0, 0, :, :]
     r0 = blob[0, 0, :, :]
-    ln = net.getLayerNames()
-    ln = [ln[i-1] for i in net.getUnconnectedOutLayers()]
 
-    output_layers = net.getUnconnectedOutLayersNames()
-    layer_outputs = net.forward(output_layers)
-
+    layer_names = net.getLayerNames()
+    output_layers = [layer_names[i-1] for i in net.getUnconnectedOutLayers()]
 
     net.setInput(blob)
+
     t0 = time.time()
-    outputs = net.forward(ln)
+    outputs = net.forward(output_layers)
     t = time.time()
 
 
 
     print('time=', t-t0)
 
-    boxes = []
+    class_ids = []
     confidences = []
-    classIDs = []
+    boxes = []
+    for out in outputs:
+        for detection in out:
+            scores = detection[5:]
+            class_id = np.argmax(scores)
+            confidence = scores[class_id]
+            if confidence > 0.8:
+                # Object detected
+                center_x = int(detection[0] * img_width)
+                center_y = int(detection[1] * img_height)
+                w = int(detection[2] * img_height)
+                h = int(detection[3] * img_height)
+                # Rectangle coordinates
+                x = int(center_x - w / 2)
+                y = int(center_y - h / 2)
+                boxes.append([x, y, w, h])
+                confidences.append(float(confidence))
+                class_ids.append(class_id)
+
+    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
+    font = cv2.FONT_HERSHEY_PLAIN
+    for i in range(len(boxes)):
+        if i in indexes:
+            x, y, w, h = boxes[i]
+            label = str(classes[class_ids[i]])
+            print(class_ids)
+            color = colors[i]
+            cv2.rectangle(img, (x, y), (x + w, y + h), 255, 2)
+            cv2.putText(img, label, (x, y + 30), font, 3, 255, 3)
+    cv2.imshow("Image", img)
+    cv2.waitKey(0)
 
 
-
-    # def tracker2(x):
-    #     confidence = x/100
-    #     r = r0.copy()
-    #     for output in np.vstack(outputs):
-    #         if output[4] > confidence:
-    #             x, y, w, h = output[:4]
-    #             p0 = int((x-w/2)*img_height), int((y-h/2)*img_height)
-    #             p1 = int((x+w/2)*img_width), int((y+h/2)*img_width)
-    #             cv2.rectangle(r, p0, p1, 1, 1)
-    #             cv2.imshow('blob', r)
-    #             cv2.waitKey(0)   
-
-
-    # tracker2(50)
 
 
 
