@@ -7,7 +7,7 @@ from flask_cors import CORS
 import json
 from pathlib import Path
 import time
-
+import base64
 
 # Load names of classes and get random colors
 classes = open('coco.names').read().strip().split('\n')
@@ -24,8 +24,8 @@ net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-
+# cors = CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 app.config['SECRET_KEY'] = 'secret!'
@@ -97,20 +97,20 @@ def handle_cv2():
 def handle_cv3():
         # serverObject with buffer props that contains RAW image buffer from client
     server_object = request.get_json()
-
+   
     # Convert the dictionary object to a string
     server_object_str = json.dumps(server_object)
 
-    buffer_object = json.loads(server_object_str)['buffer']['data']
-
+    buffer_object = json.loads(server_object_str)['buffer']
 
     #Convert the buffer_object from the JS to a bytearray
     data = bytearray(buffer_object)
+    print(data)
     #Convert to to a npArray
     arr = np.frombuffer(data, np.uint8)
     #Decode npArray to Image
     img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-
+    # img = cv2.imread("dog.jpg")
 
     #Image to Blob
     (img_height, img_width, img_depth) = img.shape
@@ -169,15 +169,18 @@ def handle_cv3():
             cv2.rectangle(img, (x, y), (x + w, y + h), 255, 2)
             cv2.putText(img, label, (x, y + 30), font, 3, 255, 3)
             cv2.putText(img, confidenceLevel, (x, y + 60), font, 3, 255, 3)
-    cv2.imshow("Image", img)
-    cv2.waitKey(0)
+
+ 
 
 
 
+    img_encode = cv2.imencode('.jpg', img)[1]
+    # Converting the image into numpy array
+    data_encode = np.array(img_encode)
+    byte_encode = data_encode.tobytes()
+    im_b64 = base64.b64encode(byte_encode)
 
-
-
-    return ''
+    return im_b64
   
 
 

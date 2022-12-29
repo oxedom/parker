@@ -22,7 +22,10 @@ app.use(cors());
       try {
     
         const response = await axios.post('http://localhost:5000/cv3', { buffer: imageBuffer})
-        // console.log(response.data);
+        const imgBase = Buffer.from(response.data).toString('base64')
+   
+        // socket.emit('output', `data:image/png;base64, ${imgBase}==` );
+
       } catch (error) {
         
       } 
@@ -31,7 +34,7 @@ app.use(cors());
  
       
      
-      socket.emit('output', '');
+
   });
 
 

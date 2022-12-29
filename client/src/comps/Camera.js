@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
+import axios from 'axios';
 
-const socket = io("http://localhost:2000/");
+const flask_url = "http://localhost:5000/cv3";
 
 const Camera = () => {
   const updateOutput = (outputFrame) => {
@@ -33,7 +34,7 @@ const Camera = () => {
   };
 
   const getVideo = () => {
-    socket.connect();
+    
 
     navigator.mediaDevices
       .getUserMedia({ video: { width: 720 } })
@@ -51,16 +52,19 @@ const Camera = () => {
           const capturedImage = await imageCapture.takePhoto();
           const imageBuffer = await capturedImage.arrayBuffer();
 
-          socket.emit("stream", imageBuffer);
+          const res = await axios.post(flask_url, { buffer: imageBuffer})
+          const base64 = `data:image/jpg;base64,${res.data}`
+          updateOutput(base64)
 
           //Handle what node gives back
-          socket.on("output", (data) => {});
-        }, 2000);
+      
+        }, 10000);
       })
       .catch((err) => {
         console.error("error:", err);
       });
   };
+
 
   //   useEffect(() => {
 
