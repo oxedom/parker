@@ -6,6 +6,7 @@ import numpy as np
 from flask_cors import CORS
 import json
 from pathlib import Path
+
 net = cv2.dnn.readNetFromDarknet('yolov3.cfg', 'yolov3.weights')
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 
@@ -78,6 +79,35 @@ def handle_cv():
     return ''
  
     # Convert the array buffer to a NumPy array
+ @app.route('/cv3', methods=['POST'])
+def handle_cv():
+    # serverObject with buffer props that contains RAW image buffer from client
+    server_object = request.get_json()
+
+    # Convert the dictionary object to a string
+    server_object_str = json.dumps(server_object)
+    
+    buffer_object = json.loads(server_object_str)['buffer']['data']
+
+  
+    #Convert the buffer_object from the JS to a bytearray
+    data = bytearray(buffer_object)
+    #Convert to to a npArray
+    arr = np.frombuffer(data, np.uint8)
+    #Decode npArray to Image
+    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+
+ 
+    #Image to Blob
+    blob = cv2.dnn.blobFromImage(img, 1/255.0, (416, 416), swapRB=True, crop=False)
+    r = blob[0, 0, :, :]
+    cv2.imshow('blob', r)
+
+
+
+ 
+    
+    return ''
   
 
 

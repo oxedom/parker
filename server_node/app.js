@@ -33,7 +33,7 @@ app.use(cors());
 
       try {
     
-        const response = await axios.post('http://localhost:5000/cv2', { buffer: imageBuffer})
+        const response = await axios.post('http://localhost:5000/cv3', { buffer: imageBuffer})
         console.log(response.data);
       } catch (error) {
         
