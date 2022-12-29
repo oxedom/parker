@@ -6,9 +6,21 @@ import numpy as np
 from flask_cors import CORS
 import json
 from pathlib import Path
+import time
 
+
+# Load names of classes and get random colors
+classes = open('coco.names').read().strip().split('\n')
+np.random.seed(42)
+colors = np.random.randint(0, 255, size=(len(classes), 3), dtype='uint8')
+
+
+# Give the configuration and weight files for the model and load the network.
 net = cv2.dnn.readNetFromDarknet('yolov3.cfg', 'yolov3.weights')
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+# net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
+
+
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -77,6 +89,9 @@ def handle_cv2():
     
     return ''
  
+
+
+
     # Convert the array buffer to a NumPy array
 @app.route('/cv3', methods=['POST'])
 def handle_cv3():
@@ -98,19 +113,41 @@ def handle_cv3():
 
 
     #Image to Blob
-    (h, w, d) = img.shape
-    r = 300.0 / w
-    dim = (300,int(h * r))
-    print(dim)
+    (img_height, img_width, img_depth) = img.shape
+    img_ratio = 300.0 / img_width
+    dim = (300,int(img_height * img_ratio))
+
  
-    blob = cv2.dnn.blobFromImage(img, 1/255.0 ,dim, swapRB=True, crop=False)
+    blob = cv2.dnn.blobFromImage(img, 1/255.0 ,(img_width ,img_height), swapRB=True, crop=False)
+  
     r = blob[0, 0, :, :]
-    cv2.imshow('blob', r)
-    cv2.waitKey(0)
+
+    ln = net.getLayerNames()
+    ln = [ln[i-1] for i in net.getUnconnectedOutLayers()]
 
 
- 
-    
+
+
+
+    net.setInput(blob)
+    t0 = time.time()
+    outputs = net.forward(ln)
+    t = time.time()
+
+    print('time=', t-t0)
+
+    def tracker2(x):
+        confidence = x/100
+        for output in np.vstack(outputs):
+            if output[4] > confidence:
+                x, y, w, h = output[:4]
+                p0 = int((x-w/2)*img_width), int((y-h/2)*img_width)
+                p1 = int((x+w/2)*img_height), int((y+h/2)*img_height)
+                cv2.rectangle(r, p0, p1, 1, 1)
+                cv2.imshow('blob', r)
+                cv2.waitKey(0)   
+
+    tracker2(50)
     return ''
   
 
