@@ -173,7 +173,7 @@ def handle_cv3():
             color = colors[i]
             cv2.rectangle(img, (x, y), (x + w, y + h), 255, 2)
             cv2.putText(img, label, (x, y + 30), font, 3, 255, 3)
-            cv2.putText(img, confidenceLevel, (x, y + 60), font, 3, 255, 3)
+            cv2.putText(img, confidenceLevel, (x, 50), font, 3, 255, 3)
 
  
 

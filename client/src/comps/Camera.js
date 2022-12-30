@@ -70,7 +70,7 @@ const Camera = () => {
 
           //Handle what node gives back
       
-        }, 1);
+        }, 1000);
       })
       .catch((err) => {
         console.error("error:", err);
