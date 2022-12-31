@@ -30,18 +30,24 @@ haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 app.config['SECRET_KEY'] = 'secret!'
 
 
+def parseReqtoBuffer(reqObject):
 
+    #Request object -> get Json
+    server_object = reqObject.get_json()
+
+    #Parse JSON to Python Object
+    server_object_str = json.dumps(server_object)
+    
+    #Load buffer Object from buffer prop from object
+    buffer_object = json.loads(server_object_str)['buffer']
+
+    return buffer_object
 
 
 @app.route('/cv2', methods=['POST'])
 def handle_cv2():
     # serverObject with buffer props that contains RAW image buffer from client
-    server_object = request.get_json()
-
-    # Convert the dictionary object to a string
-    server_object_str = json.dumps(server_object)
-    
-    buffer_object = json.loads(server_object_str)['buffer']['data']
+    buffer_object = parseReqtoBuffer(request)
 
   
     #Convert the buffer_object from the JS to a bytearray
@@ -50,6 +56,7 @@ def handle_cv2():
     arr = np.frombuffer(data, np.uint8)
     #Decode npArray to Image
     img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+
     # Height Width and Depth of the Image
     (h, w, d) = img.shape
     #Greyscaling the Image
@@ -63,23 +70,15 @@ def handle_cv2():
     #Bluring image so it to remove noise that confuses algos
     blurred = cv2.GaussianBlur(resized, (3, 3), 0)
 
-
+ 
     #Algo for Detecting faces returns array of all XY cords of face [[106  48  50  50]]
-    # 106,48 is pt1 top left, 48,50 is bottom right of Face
-    faces_rect = haar_cascade.detectMultiScale(gray_image, scaleFactor=2.1, minNeighbors=9)
-    
-    # retval, buffer = cv2.imencode('.jpg', img)
-    if len(faces_rect) > 0:
-        for (x, y, w, h) in faces_rect:
 
-            cv2.rectangle(img, (x, y), (x+w, y+h), (255, 255, 0), 2)
-            cv2.putText(img, "Open CV", (10,25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-            # cv2.circle(img, (x, y), (2) , (255, 0, 0), -1)
-            # cv2.imwrite('image.jpg', img)
-            edged = cv2.Canny(gray_image, 30, 150)
-            cv2.imshow("Edged", edged)
-            cv2.imshow('Photo', img)
-            cv2.waitKey(0)
+    # 106,48 is pt1 top left, 48,50 is bottom right of Face
+    faces_rect = haar_cascade.detectMultiScale(blurred, scaleFactor=2.1, minNeighbors=9)
+    
+    for (x, y, w, h) in faces_rect:
+        cv2.rectangle(img, (x, y), (x+w, y+h), (255, 255, 0), 2)
+        cv2.putText(img, "Open CV", (10,25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
 
     img_encode = cv2.imencode('.jpg', img)[1]
@@ -89,9 +88,15 @@ def handle_cv2():
     im_b64 = base64.b64encode(byte_encode)
     im_b64_utf8 = im_b64.decode('utf-8')
 
-    # print(img)
-    
-    return f"data:image/jpg;base64,{im_b64_utf8}"
+    resObj = {
+        "img":f"data:image/jpg;base64,{im_b64_utf8}",
+        "meta data": {
+            "faces": faces_rect
+            
+        }
+        }
+    # return f"data:image/jpg;base64,{im_b64_utf8}"
+    return resObj
  
 
 
@@ -99,13 +104,14 @@ def handle_cv2():
     # Convert the array buffer to a NumPy array
 @app.route('/cv3', methods=['POST'])
 def handle_cv3():
-        # serverObject with buffer props that contains RAW image buffer from client
-    server_object = request.get_json('imageBuffer')
 
-    # Convert the dictionary object to a string
-    server_object_str = json.dumps(server_object)
+    buffer_object = parseReqtoBuffer(request)    
+    # server_object = request.get_json('imageBuffer')
 
-    buffer_object = json.loads(server_object_str)['buffer']
+    # # Convert the dictionary object to a string
+    # server_object_str = json.dumps(server_object)
+
+    # buffer_object = json.loads(server_object_str)['buffer']
 
     #Convert the buffer_object from the JS to a bytearray
     data = bytearray(buffer_object)
