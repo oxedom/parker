@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Copy the current directory contents into the container at /app 
 ADD . /app
+RUN chmod +x app.py
 
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
@@ -14,5 +15,5 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
-
-CMD ["python", "-m", "flask", "run", "PWD"]
+RUN pwd
+CMD ["uwsgi", "app.ini"]
