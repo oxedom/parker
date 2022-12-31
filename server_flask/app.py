@@ -1,5 +1,4 @@
 from flask import Flask,request
-# from flask_socketio import SocketIO, send
 import os
 import cv2
 import numpy as np
