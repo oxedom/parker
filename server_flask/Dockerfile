@@ -7,7 +7,6 @@ ADD . /app
 RUN chmod +x app.py
 
 ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
 RUN apt-get update
 RUN apt-get install 'libgl1-mesa-dev' -y
 # Install the dependencies
@@ -15,5 +14,4 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
-RUN pwd
 CMD ["uwsgi", "app.ini"]
