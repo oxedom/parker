@@ -22,7 +22,7 @@ net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../build', static_url_path='/')
 # cors = CORS(app, resources={r"/*": {"origins": "*"}})
 CORS(app)
 haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -44,7 +44,7 @@ def parseReqtoBuffer(reqObject):
     return buffer_object
 
 
-@app.route('/cv2', methods=['POST'])
+@app.route('/api/haar_cascade', methods=['POST'])
 def handle_cv2():
     # serverObject with buffer props that contains RAW image buffer from client
     buffer_object = parseReqtoBuffer(request)
@@ -102,7 +102,7 @@ def handle_cv2():
 
 
     # Convert the array buffer to a NumPy array
-@app.route('/cv3', methods=['POST'])
+@app.route('/api/yolo3', methods=['POST'])
 def handle_cv3():
 
     buffer_object = parseReqtoBuffer(request)    
