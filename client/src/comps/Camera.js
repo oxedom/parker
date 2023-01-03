@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import axios from 'axios';
 
-const flask_url = "http://localhost:5000/cv2";
+const flask_url = "https://www.sam-brink.com/api/cv3";
 
 const Camera = () => {
 

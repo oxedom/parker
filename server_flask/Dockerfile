@@ -7,7 +7,7 @@ RUN chmod +x app.py
 
 ENV FLASK_APP=app.py
 RUN apt-get update
-RUN apt-get install 'libgl1-mesa-dev' -y
+RUN apt-get install -y
 # Install the dependencies
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt

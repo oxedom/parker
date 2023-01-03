@@ -8,6 +8,8 @@ from pathlib import Path
 import time
 import base64
 
+
+
 # Load names of classes and get random colors
 classes = open('coco.names').read().strip().split('\n')
 np.random.seed(42)
@@ -44,8 +46,8 @@ def parseReqtoBuffer(reqObject):
     return buffer_object
 
 
-@app.route('/api/haar_cascade', methods=['POST'])
-def handle_cv2():
+@app.route('/cv/haar_cascade', methods=['POST'])
+def handle_haar_cascade():
     # serverObject with buffer props that contains RAW image buffer from client
     buffer_object = parseReqtoBuffer(request)
 
@@ -99,11 +101,13 @@ def handle_cv2():
     return resObj
  
 
-
+@app.route('/hello', methods=['GET'])
+def handle_hello():
+    return {'hello':'world'}
 
     # Convert the array buffer to a NumPy array
-@app.route('/api/yolo3', methods=['POST'])
-def handle_cv3():
+@app.route('/cv/yolo', methods=['POST'])
+def handle_yolo():
 
     buffer_object = parseReqtoBuffer(request)    
     # server_object = request.get_json('imageBuffer')
@@ -205,8 +209,6 @@ def handle_cv3():
 
     
 
-if __name__ == '__main__':
-    # socketio.run(app)
-    app.run(host='0.0.0.0')
+
 
 
