@@ -13,7 +13,8 @@
     <canvas id="canvas" width=300 height=300 style="position: absolute; border: 1px solid red; background-color: transparent;">
 
     </canvas>
-    <img src="https://www.freepnglogos.com/uploads/pig-png/pig-dayz-wiki-0.png" style="z-index: -1;" id="input"></img>
+    <video oncontextmenu="return false" id="input"></video>
+    <img id=video='video-canvas' src="https://www.freepnglogos.com/uploads/pig-png/pig-dayz-wiki-0.png" style="z-index: -1;" id="input"></img>
    </div>
     
 
@@ -22,43 +23,47 @@
 <script>
 
 // const flask_url = 'https://www.sam-brink.com/cv/yolo'
-// const getVideo = () => {
-//     navigator.mediaDevices
-//       .getUserMedia({ video: { width: 720 } })
-//       .then((stream) => {
-//         //Gets the current screen
-//         let video = document.getElementById('input')
-//         //Sets the Src of video Object
-//         video.srcObject = stream;
-//         //Plays the video
-//         video.play();
-
-//         setInterval(async () => {
-//           const track = stream.getVideoTracks()[0];
-//           let imageCapture = new ImageCapture(track);
-//           const capturedImage = await imageCapture.takePhoto();
-//           let imageBuffer = await capturedImage.arrayBuffer();
-//           imageBuffer = new Uint8Array(imageBuffer);
-
-//             // const res = await fetch(flask_url, {
-//             //                     method: 'POST',
-//             //                     headers: {'Content-Type': 'application/json'},
-//             //                     body: (JSON.stringify({buffer: [...imageBuffer]}))
-//             //                     })
-                
-//             // const output = document.getElementById('output')
-//             // const resJson = await res.json()
-        
-//             // output.src = resJson.img
+const getVideo = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: { width: 720 } })
+      .then((stream) => {
+        //Gets the current screen
+        let video = document.getElementById('input')
+        // let video_canvas = getElementById('video-canvas')
+        //Sets the Src of video Object
+        video.srcObject = stream
       
-//         }, 10);
-//       })
-//       .catch((err) => {
-//         console.error("error:", err);
-//       }); }
+        //Plays the video
+        video.play()
 
 
-//     getVideo()
+        setInterval(async () => {
+          const track = stream.getVideoTracks()[0];
+          let imageCapture = new ImageCapture(track);
+          const capturedImage = await imageCapture.takePhoto();
+
+          let imageBuffer = await capturedImage.arrayBuffer();
+          imageBuffer = new Uint8Array(imageBuffer);
+
+            // const res = await fetch(flask_url, {
+            //                     method: 'POST',
+            //                     headers: {'Content-Type': 'application/json'},
+            //                     body: (JSON.stringify({buffer: [...imageBuffer]}))
+            //                     })
+                
+            // const output = document.getElementById('output')
+            // const resJson = await res.json()
+        
+            // output.src = resJson.img
+      
+        }, 10);
+      })
+      .catch((err) => {
+        console.error("error:", err);
+      }); }
+
+
+    getVideo()
    
 
 </script>
