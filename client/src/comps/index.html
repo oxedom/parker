@@ -1,18 +1,18 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveServer</title>
+    <title>Document</title>
 </head>
 <body>
-    <h1> Client </h1>
-    <video id="input"></video>
-    <h1> Server </h1>
-    <img id="output"/>
+<video id="input"></video>
+<img id="output"/>
 </body>
 <script>
-const flask_url = 'https://www.sam-brink.com/api/cv/yolo'
+
+const flask_url = 'https://www.sam-brink.com/cv/yolo'
 const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({ video: { width: 720 } })
@@ -34,12 +34,12 @@ const getVideo = () => {
             const res = await fetch(flask_url, {
                                 method: 'POST',
                                 headers: {'Content-Type': 'application/json'},
-                                body: ({buffer: [...imageBuffer]})
+                                body: (JSON.stringify({buffer: [...imageBuffer]}))
                                 })
-                  
+                
             const output = document.getElementById('output')
             const resJson = await res.json()
-            console.log(resJson);
+        
             output.src = resJson.img
       
         }, 4000);
@@ -48,9 +48,10 @@ const getVideo = () => {
         console.error("error:", err);
       }); }
 
- setTimeout(() => {
+
     getVideo()
- }, 1000)     
+   
 
 </script>
 </html>
+
