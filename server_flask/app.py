@@ -46,7 +46,7 @@ def parseReqtoBuffer(reqObject):
     return buffer_object
 
 
-@app.route('/cv/haar_cascade', methods=['POST'])
+@app.route('/api/cv/haar_cascade', methods=['POST'])
 def handle_haar_cascade():
     # serverObject with buffer props that contains RAW image buffer from client
     buffer_object = parseReqtoBuffer(request)
@@ -99,14 +99,14 @@ def handle_haar_cascade():
         }
     # return f"data:image/jpg;base64,{im_b64_utf8}"
     return resObj
- 
+  
 
-@app.route('/hello', methods=['GET'])
+@app.route('/api/hello', methods=['GET'])
 def handle_hello():
     return {'hello':'world'}
 
     # Convert the array buffer to a NumPy array
-@app.route('/cv/yolo', methods=['POST'])
+@app.route('/api/cv/yolo', methods=['POST'])
 def handle_yolo():
 
     buffer_object = parseReqtoBuffer(request)    
