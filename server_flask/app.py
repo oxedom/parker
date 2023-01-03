@@ -207,7 +207,8 @@ def handle_yolo():
     # return f"data:image/jpg;base64,{im_b64_utf8}"
     return resObj
 
-    
+if __name__ == '__main__':
+    app.run()
 
 
 

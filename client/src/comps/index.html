@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveServer</title>
+</head>
+<body>
+    <h1> Client </h1>
+    <video id="input"></video>
+    <h1> Server </h1>
+    <img id="output"/>
+</body>
+<script>
+const flask_url = 'https://www.sam-brink.com/api/cv/yolo'
+const getVideo = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: { width: 720 } })
+      .then((stream) => {
+        //Gets the current screen
+        let video = document.getElementById('input')
+        //Sets the Src of video Object
+        video.srcObject = stream;
+        //Plays the video
+        video.play();
+
+        setInterval(async () => {
+          const track = stream.getVideoTracks()[0];
+          let imageCapture = new ImageCapture(track);
+          const capturedImage = await imageCapture.takePhoto();
+          let imageBuffer = await capturedImage.arrayBuffer();
+          imageBuffer = new Uint8Array(imageBuffer);
+
+            const res = await fetch(flask_url, {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: ({buffer: [...imageBuffer]})
+                                })
+                  
+            const output = document.getElementById('output')
+            const resJson = await res.json()
+            console.log(resJson);
+            output.src = resJson.img
+      
+        }, 4000);
+      })
+      .catch((err) => {
+        console.error("error:", err);
+      }); }
+
+ setTimeout(() => {
+    getVideo()
+ }, 1000)     
+
+</script>
+</html>
