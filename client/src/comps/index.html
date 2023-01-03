@@ -7,12 +7,20 @@
     <title>Document</title>
 </head>
 <body>
-<video id="input"></video>
+
+  <div id="canvasWrapper" style="position: relative;">
+    <canvas id="overlay" width=300 height=300 style="position: absolute;"></canvas>
+    <canvas id="canvas" width=300 height=300 style="position: absolute; border: 1px solid red; background-color: transparent;">
+    <video id="input"></video>
+    </canvas>
+   </div>
+    
+
 <img id="output"/>
 </body>
 <script>
 
-const flask_url = 'https://www.sam-brink.com/cv/yolo'
+// const flask_url = 'https://www.sam-brink.com/cv/yolo'
 const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({ video: { width: 720 } })
@@ -42,7 +50,7 @@ const getVideo = () => {
         
             output.src = resJson.img
       
-        }, 0);
+        }, 100000);
       })
       .catch((err) => {
         console.error("error:", err);
@@ -53,5 +61,6 @@ const getVideo = () => {
    
 
 </script>
+<script src="draw.js"></script>
 </html>
 

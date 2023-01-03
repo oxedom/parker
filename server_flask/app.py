@@ -173,6 +173,7 @@ def handle_yolo():
                 class_ids.append(class_id)
 
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
+
     font = cv2.FONT_HERSHEY_PLAIN
     for i in range(len(boxes)):
         if i in indexes:
@@ -206,6 +207,7 @@ def handle_yolo():
         }
     # return f"data:image/jpg;base64,{im_b64_utf8}"
     return resObj
+
 
 if __name__ == '__main__':
     app.run()

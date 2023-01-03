@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import axios from 'axios';
 
-const samUrl = 'https://www.sam-brink.com/cv/yolo'
-const localUrl = 'http://127.0.0.1:5000/cv/yolo'
-const flask_url = samUrl
+const samUrl = 'https://www.sam-brink.com/api/cv/yolo'
+const localUrl = 'http://127.0.0.1:5000/api/cv/yolo'
+const flask_url = localUrl
 
 const Camera = () => {
 
@@ -54,11 +54,21 @@ const Camera = () => {
           let imageBuffer = await capturedImage.arrayBuffer();
           imageBuffer = new Uint8Array(imageBuffer);
 
+          var c = document.createElement('canvas')
+   
+          var ctx = c.getContext("2d")
+        
+          ctx.beginPath();
+          ctx.rect(20, 20, 150, 100);
+          ctx.stroke();
+
+
             const res = await axios.post(flask_url, {buffer: [...imageBuffer]})
             let output = outputRef.current;
             output.src = res.data.img
             console.log(res.data);
             // window.requestAnimationFrame();
+
       
        
                 // updateOutput(base64)
