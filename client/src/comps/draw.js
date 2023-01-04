@@ -1,20 +1,109 @@
-// const input = document.getElementById('input')
+let input_imageCapture;
+const canvasWraperRef = document.getElementById('canvasWrapper')
+const videoInputRef = document.getElementById('input')
+const overlayRef = document.getElementById('overlay')
+const canvasRef = document.getElementById('canvas')
+const inputCanvasRef = document.getElementById('input-canvas')
+let sizeSet = false;
+
+const arrOfScreens = [ videoInputRef , overlayRef , canvasRef , inputCanvasRef]
+
+const onTakePhotoButtonClick = async () => {
+
+  try {
+  const blob = await input_imageCapture.takePhoto()
+  const imageBitmap = await createImageBitmap(blob)
+  drawCanvas(inputCanvasRef, imageBitmap);
+  } catch (error) {
+    console.log(error);
+  }
+
+ 
+}
+
+
+function drawCanvas(canvas, img) {
+  canvas.width = getComputedStyle(canvas).width.split('px')[0];
+  canvas.height = getComputedStyle(canvas).height.split('px')[0];
+  let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
+  let x = (canvas.width - img.width * ratio) / 2;
+  let y = (canvas.height - img.height * ratio) / 2;
+  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+  canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
+      x, y, img.width * ratio, img.height * ratio);
+}
+
+//Sets the size of all the canvas to be the same
+const setSize = (width, height) => {
+  arrOfScreens.forEach(screen => {
+    screen.width = width
+    screen.height = height
+  })
+sizeSet = true;
+}
+
+const getVideo = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: { width: 720 } })
+      .then((stream) => {
+        //Gets the current screen
+        let video = document.getElementById('input')
+        //Sets the Src of video Object
+        video.srcObject = stream
+        //Plays the video
+        video.play()
+
+        //Interval that captures image from Steam, converts to array buffer and 
+        //sends it to API as a bufferArray, waiting for response and sets the base64 to 
+        //the image SRC on output
+        setInterval(async () => {
+          const track = stream.getVideoTracks()[0];
+
+          let {width, height} = track.getSettings()
+        
+          if(!sizeSet) { setSize(width,height)}
+          let imageCapture = new ImageCapture(track);
+          input_imageCapture = imageCapture;
+          const capturedImage = await imageCapture.takePhoto();
+          
+          let imageBuffer = await capturedImage.arrayBuffer();
+          imageBuffer = new Uint8Array(imageBuffer);
+          //Sets the Canvas to the current Image that has been capatured
+          onTakePhotoButtonClick()
+
+          // const res = await fetch(flask_url, {
+          //                     method: 'POST',
+          //                     headers: {'Content-Type': 'application/json'},
+          //                     body: (JSON.stringify({buffer: [...imageBuffer]}))
+          //                     })
+              
+          // const output = document.getElementById('output')
+          // const resJson = await res.json()
+      
+          // output.src = resJson.img
+      
+        }, 10);
+      })
+
+
+      .catch((err) => {
+        console.error("error:", err);
+      }); }
+
+
+    getVideo()
+
 // get references to the canvas and context
-const canvas = document.getElementById("canvas");
-const overlay = document.getElementById("overlay");
-const ctx = canvas.getContext("2d");
-const ctxo = overlay.getContext("2d");
+const ctx = canvasRef.getContext("2d");
+const ctxo = overlayRef.getContext("2d");
 
 ctx.strokeStyle = "blue";
-ctx.lineWidth = 3;
+ctx.lineWidth = 10;
 ctxo.strokeStyle = "blue";
-ctxo.lineWidth = 3;
+ctxo.lineWidth = 4;
 
-// const video_width = input.clientWidth;
-// const  video_height = input.clientHeight;
 
-console.dir(canvas)
-var canvasOffset = canvas.getBoundingClientRect();
+var canvasOffset = canvasRef.getBoundingClientRect();
 
 var offsetX = canvasOffset.left;
 var offsetY = canvasOffset.top;
@@ -84,7 +173,7 @@ function handleMouseMove(e) {
     var height = mouseY - startY;
 
 		// clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
 
     // draw a new rect from the start position 
     // to the current mouse position
@@ -100,25 +189,25 @@ function handleMouseMove(e) {
 
 
 
-canvas.addEventListener('mousedown', (e) => 
+canvasRef.addEventListener('mousedown', (e) => 
 {
     e.preventDefault()
     handleMouseDown(e)
 })
 
-canvas.addEventListener('mousemove', (e) => 
+canvasRef.addEventListener('mousemove', (e) => 
 {
     e.preventDefault()
     handleMouseMove(e)
 })
 
-canvas.addEventListener('mouseout', (e) => 
+canvasRef.addEventListener('mouseout', (e) => 
 {
     e.preventDefault()
     handleMouseOut(e)
 })
 
-canvas.addEventListener('mouseup', (e) => 
+canvasRef.addEventListener('mouseup', (e) => 
 {
     e.preventDefault()
     handleMouseUp(e)
