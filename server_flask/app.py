@@ -187,11 +187,13 @@ def handle_yolo():
 
             detections.append(
                 {
+                    "img_width": img_width,
+                    "img_height": img_height,
                     "label": label,
                     "confidenceLevel": confidenceLevel,
                     "index": i,
-                    "pt1": { "x1": x, "y1": y},
-                    "pt2": { "x2": x+y, "y2": y+h}
+                    "top_left_cords": { "top_x": x, "top_y": y},
+                    "bottom_right_cords": {"bottom_x": x+w, "bottom_y": y+h}
                 })
             cv2.rectangle(img, (x, y), (x + w, y + h), 200, 3)
             cv2.putText(img, label, (x, y + 30), font, 3, 255, 3)
@@ -214,8 +216,6 @@ def handle_yolo():
         "img":f"data:image/jpg;base64,{im_b64_utf8}",
         "meta_data": {
             "detections": detections,
-            "img_width": img_width,
-            "img_height": img_height,
             "rawBase64": im_b64_utf8 
         },
 

@@ -6,7 +6,12 @@ const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
 let sizeSet = false;
 let cam_width = 640;
+let selectedType = 'anything'
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
+
+//State:
+const selectedRegions = []
+
 
 const arrOfScreens = [videoInputRef, overlayRef, canvasRef, inputCanvasRef];
 
@@ -63,22 +68,8 @@ const getCapabilitiesOfDevice = async () => {
   return videoDeviceCapabilities;
 };
 
-const base64toCanvas = async (base64, canvasEl) => {
-  const rawImageData = atob(base64);
-  const arrayBuffer = new ArrayBuffer(rawImageData.length);
-  const imageData = new Uint8Array(arrayBuffer);
-  for (let i = 0; i < rawImageData.length; i++) {
-    imageData[i] = rawImageData.charCodeAt(i);
-  }
-  const blob = new Blob([imageData], { type: "image/png" });
-  const img = document.createElement("img");
-  img.src = URL.createObjectURL(blob);
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0);
 
-  return canvas;
-};
+
 const getVideo = () => {
   navigator.mediaDevices
     .getUserMedia({ video: { width: { min: 1280 } } })
@@ -93,7 +84,7 @@ const getVideo = () => {
       //Interval that captures image from Steam, converts to array buffer and
       //sends it to API as a bufferArray, waiting for response and sets the base64 to
       //the image SRC on output
-      setInterval(async () => {
+      setTimeout(async () => {
         const track = stream.getVideoTracks()[0];
 
         let { width, height } = track.getSettings();
@@ -119,9 +110,18 @@ const getVideo = () => {
         const output = document.getElementById("output");
 
         const resJson = await res.json();
-
+          resJson.meta_data.detections.forEach(detection =>
+    {   
+      
+        console.log(detection.top_left_cords.top_x + " ------- TOP X");
+        console.log(detection.top_left_cords.top_y + " ------- TOP Y");
+        console.log(detection.bottom_right_cords.bottom_x + "------- BOTTOM X");
+        console.log(detection.bottom_right_cords.bottom_y + " -------BOTTOM Y");
+      
+        // ctx.fill();
+    })
         output.src = resJson.img;
-      }, 2000);
+      }, 1);
     })
 
     .catch((err) => {
@@ -170,19 +170,41 @@ function handleMouseDown(e) {
   isDown = true;
 }
 
+function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) 
+{
+const roiObj = 
+{
+    type:  selectedType,
+    cords: {
+        top_x: prevStartX, //GOOD
+        top_y:  prevHeight+prevStartY, //BAD
+        bottom_x: prevWidth+prevStartX,
+        bottom_y: prevStartY
+    }
+}    
+
+selectedRegions.push(roiObj)
+console.log(selectedRegions[0].cords)
+}
+
+
+
 function handleMouseUp(e) {
   e.preventDefault();
   e.stopPropagation();
 
   // the drag is over, clear the dragging flag
   isDown = false;
+
+
   ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
+  addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight)  
 }
 
 function handleMouseOut(e) {
   e.preventDefault();
   e.stopPropagation();
-
+    
   // the drag is over, clear the dragging flag
   isDown = false;
 }
@@ -213,7 +235,7 @@ function handleMouseMove(e) {
   // draw a new rect from the start position
   // to the current mouse position
   ctx.strokeRect(startX, startY, width, height);
-
+  
   prevStartX = startX;
   prevStartY = startY;
 
