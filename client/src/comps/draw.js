@@ -84,7 +84,7 @@ const getVideo = () => {
       //Interval that captures image from Steam, converts to array buffer and
       //sends it to API as a bufferArray, waiting for response and sets the base64 to
       //the image SRC on output
-      setTimeout(async () => {
+      setInterval(async () => {
         const track = stream.getVideoTracks()[0];
 
         let { width, height } = track.getSettings();
@@ -119,12 +119,21 @@ const getVideo = () => {
             bottom_x: detection.bottom_right_cords.bottom_x,
             bottom_y:detection.bottom_right_cords.bottom_y
         }
+        if(selectedRegions.length > 0) 
+        {
+            selectedRegions.forEach(selected => 
+                {
+                    
+                    const a = checkIfWithin(obj, selected.cords)
+               
+                })
+        }
 
-      console.log(obj);
+        
         // ctx.fill();
     })
         output.src = resJson.img;
-      }, 1);
+      }, 1000);
     })
 
     .catch((err) => {
@@ -266,18 +275,17 @@ canvasRef.addEventListener("mouseup", (e) => {
 
 function checkIfWithin(mother, child) {
     // Calculate the area of the mother rectangle
-    const motherArea = mother.width * mother.height;
-  
+
+   
+
     // Calculate the area of the child rectangle
-    const childArea = child.width * child.height;
+
   
-    // Calculate the overlapping area between the two rectangles
-    const overlapX = Math.max(0, Math.min(mother.right, child.right) - Math.max(mother.left, child.left));
-    const overlapY = Math.max(0, Math.min(mother.bottom, child.bottom) - Math.max(mother.top, child.top));
-    const overlappingArea = overlapX * overlapY;
+    // // Calculate the overlapping area between the two rectangles
+
   
     // Calculate the percentage of the child rectangle that is contained within the mother rectangle
-    const percentage = (overlappingArea / childArea) * 100;
+
   
-    return percentage;
+    return 100;
   }
