@@ -36,7 +36,6 @@ const Camera = () => {
 
   const getVideo = () => {
     
-
     navigator.mediaDevices
       .getUserMedia({ video: { width: 720 } })
       .then((stream) => {
@@ -54,6 +53,7 @@ const Camera = () => {
           let imageBuffer = await capturedImage.arrayBuffer();
           imageBuffer = new Uint8Array(imageBuffer);
 
+          console.log(capturedImage);
           var c = document.createElement('canvas')
    
           var ctx = c.getContext("2d")
@@ -81,7 +81,7 @@ const Camera = () => {
 
           //Handle what node gives back
       
-        }, 4000);
+        }, 1);
       })
       .catch((err) => {
         console.error("error:", err);

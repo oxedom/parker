@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Parker</title>
 </head>
 <body>
 
-  <div id="canvasWrapper" style="position: relative; z-index: 999;">
-    <canvas id="overlay" width=300 height=300 style="position: absolute;"></canvas>
-    <canvas id="canvas" width=300 height=300 style="position: absolute; border: 1px solid red; background-color: transparent;">
-
-    </canvas>
-    <video oncontextmenu="return false" id="input"></video>
-    <img id=video='video-canvas' src="https://www.freepnglogos.com/uploads/pig-png/pig-dayz-wiki-0.png" style="z-index: -1;" id="input"></img>
+  <div id="canvasWrapper" style="position: relative;">
+    <canvas id="overlay" width=720 height=403 style="position: absolute;"></canvas>
+    <canvas id="canvas" width=720 height=403 style="position: absolute; border: 1px solid red; background-color: transparent;"> </canvas>
+    <canvas id="input-canvas" style="position: absolute;"></canvas>
+    
+    <video oncontextmenu="return false" id="input" style="visibility: hidden;"></video>
+    <!-- <img id=video='video-canvas' src="https://www.freepnglogos.com/uploads/pig-png/pig-dayz-wiki-0.png" style="position: absolute;" id="input"></img> -->
    </div>
     
 
@@ -22,28 +22,49 @@
 </body>
 <script>
 
+//API FOR FLASK URL
 // const flask_url = 'https://www.sam-brink.com/cv/yolo'
+
+
 const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({ video: { width: 720 } })
       .then((stream) => {
         //Gets the current screen
         let video = document.getElementById('input')
-        // let video_canvas = getElementById('video-canvas')
         //Sets the Src of video Object
         video.srcObject = stream
-      
         //Plays the video
         video.play()
 
+        //Interval that captures image from Steam, converts to array buffer and 
+        //sends it to API as a bufferArray, waiting for response and sets the base64 to 
+        //the image SRC on output
 
+        const imageBitMap = (imageCapture) => 
+        {
+          const input_canvas = document.getElementById('input-canvas')
+          const input_context = input_canvas.getContext('2d')
+          const imgElement = document.createElement('img');
+          const url = URL.createObjectURL(imageCapture)
+          imgElement.src = url
+          console.log(imgElement);
+          // input_context.drawImage(imgElement, 0, 0)
+
+        }
         setInterval(async () => {
           const track = stream.getVideoTracks()[0];
           let imageCapture = new ImageCapture(track);
           const capturedImage = await imageCapture.takePhoto();
+          console.log(capturedImage);
+          imageBitMap(capturedImage)
 
+
+
+          // console.log(capturedImage);
           let imageBuffer = await capturedImage.arrayBuffer();
           imageBuffer = new Uint8Array(imageBuffer);
+
 
             // const res = await fetch(flask_url, {
             //                     method: 'POST',
@@ -56,7 +77,7 @@ const getVideo = () => {
         
             // output.src = resJson.img
       
-        }, 10);
+        }, 1000);
       })
       .catch((err) => {
         console.error("error:", err);
