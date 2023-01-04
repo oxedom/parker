@@ -128,13 +128,15 @@ def handle_yolo():
 
     #Image to Blob
     (img_height, img_width, img_depth) = img.shape
+   
     img_ratio = 300.0 / img_width
     dim = (300,int(img_height * img_ratio))
 
 
     img = cv2.GaussianBlur(img, (3, 3), 0)
     blob = cv2.dnn.blobFromImage(img, 1/255.0 ,(320 ,320), swapRB=True, crop=False)
-  
+    test_height = img.shape;
+    print(test_height)
     r = blob[0, 0, :, :]
     r0 = blob[0, 0, :, :]
 

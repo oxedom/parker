@@ -5,6 +5,7 @@ const overlayRef = document.getElementById('overlay')
 const canvasRef = document.getElementById('canvas')
 const inputCanvasRef = document.getElementById('input-canvas')
 let sizeSet = false;
+const flask_url = 'http://127.0.0.1:5000/api/cv/yolo'
 
 const arrOfScreens = [ videoInputRef , overlayRef , canvasRef , inputCanvasRef]
 
@@ -44,7 +45,12 @@ sizeSet = true;
 
 const getVideo = () => {
     navigator.mediaDevices
-      .getUserMedia({ video: { width: 720 } })
+      .getUserMedia({ video: {width: {min:1280} 
+    , height: {min:720}
+    
+    }
+        
+        })
       .then((stream) => {
         //Gets the current screen
         let video = document.getElementById('input')
@@ -71,18 +77,18 @@ const getVideo = () => {
           //Sets the Canvas to the current Image that has been capatured
           onTakePhotoButtonClick()
 
-          // const res = await fetch(flask_url, {
-          //                     method: 'POST',
-          //                     headers: {'Content-Type': 'application/json'},
-          //                     body: (JSON.stringify({buffer: [...imageBuffer]}))
-          //                     })
+          const res = await fetch(flask_url, {
+                              method: 'POST',
+                              headers: {'Content-Type': 'application/json'},
+                              body: (JSON.stringify({buffer: [...imageBuffer]}))
+                              })
               
-          // const output = document.getElementById('output')
-          // const resJson = await res.json()
+          const output = document.getElementById('output')
+          const resJson = await res.json()
       
-          // output.src = resJson.img
+          output.src = resJson.img
       
-        }, 10);
+        }, 1000);
       })
 
 
