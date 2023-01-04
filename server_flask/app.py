@@ -106,7 +106,11 @@ def handle_haar_cascade():
 def handle_hello():
     return {'hello':'world'}
 
-    # Convert the array buffer to a NumPy array
+    
+@app.route('/api/cv/yolo_classes', methods=['GET'])
+def handle_classes():
+    return {"classes": classes}
+
 @app.route('/api/cv/yolo', methods=['POST'])
 def handle_yolo():
 
