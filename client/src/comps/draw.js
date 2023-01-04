@@ -43,10 +43,20 @@ const setSize = (width, height) => {
 sizeSet = true;
 }
 
-const getVideo = () => {
+const getVideo = async () => {
+
+
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    const video_devices = devices.filter((d) => { return d.kind === 'videoinput'})
+    const videoDevice = video_devices[0]
+    const videoDeviceCapabilities = videoDevice.getCapabilities();
+    const {width, height} = videoDeviceCapabilities
+    const deviceWidth  = width.max
+
+
     navigator.mediaDevices
-      .getUserMedia({ video: {width: {min:1280} 
-    , height: {min:720}
+      .getUserMedia({ video: {width: {min:deviceWidth} 
+   
     
     }
         
