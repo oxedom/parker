@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Parker</title>
-</head>
-<body>
+  </head>
+  <body>
+    <div id="canvasWrapper" style="position: relative">
+      <canvas id="overlay" style="position: absolute"></canvas>
+      <canvas id="canvas" style="position: absolute"> </canvas>
 
-  <div id="canvasWrapper" style="position: relative;">
-    <canvas id="overlay"  style="position: absolute;"></canvas>
-    <canvas id="canvas"  style="position: absolute;"> </canvas>
-    
-    <canvas id="input-canvas" style="position: absolute; z-index: -9;" ></canvas>
+      <canvas
+        id="input-canvas"
+        style="position: absolute; z-index: -9"
+      ></canvas>
+      <!-- <canvas style="position: relative;" id="output"></canvas> -->
+      <video
+        oncontextmenu="return false"
+        id="input"
+        style="visibility: hidden"
+      ></video>
+    </div>
+
     <!-- <canvas style="position: relative;" id="output"></canvas> -->
-    <video oncontextmenu="return false" id="input" style="visibility: hidden;"></video>
-   </div>
-    
-
-<!-- <canvas style="position: relative;" id="output"></canvas> -->
-<img id='output' src/>
-</body>
-<script>
-
-
-</script>
-<script src="draw.js"></script>
+    <img id="output" src />
+  </body>
+  <script></script>
+  <script src="draw.js"></script>
 </html>
-

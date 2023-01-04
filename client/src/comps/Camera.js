@@ -1,15 +1,14 @@
 import React, { useRef } from "react";
-import axios from 'axios';
+import axios from "axios";
 
-const samUrl = 'https://www.sam-brink.com/api/cv/yolo'
-const localUrl = 'http://127.0.0.1:5000/api/cv/yolo'
-const flask_url = localUrl
+const samUrl = "https://www.sam-brink.com/api/cv/yolo";
+const localUrl = "http://127.0.0.1:5000/api/cv/yolo";
+const flask_url = localUrl;
 
 const Camera = () => {
-
-
   function isBase64Image(imageString) {
-    const pattern = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+    const pattern =
+      /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
     return pattern.test(imageString);
   }
 
@@ -35,7 +34,6 @@ const Camera = () => {
   };
 
   const getVideo = () => {
-    
     navigator.mediaDevices
       .getUserMedia({ video: { width: 720 } })
       .then((stream) => {
@@ -54,40 +52,29 @@ const Camera = () => {
           imageBuffer = new Uint8Array(imageBuffer);
 
           console.log(capturedImage);
-          var c = document.createElement('canvas')
-   
-          var ctx = c.getContext("2d")
-        
+          var c = document.createElement("canvas");
+
+          var ctx = c.getContext("2d");
+
           ctx.beginPath();
           ctx.rect(20, 20, 150, 100);
           ctx.stroke();
 
+          const res = await axios.post(flask_url, { buffer: [...imageBuffer] });
+          let output = outputRef.current;
+          output.src = res.data.img;
+          console.log(res.data);
+          // window.requestAnimationFrame();
 
-            const res = await axios.post(flask_url, {buffer: [...imageBuffer]})
-            let output = outputRef.current;
-            output.src = res.data.img
-            console.log(res.data);
-            // window.requestAnimationFrame();
-
-      
-       
-                // updateOutput(base64)
-              
-         
-            
-  
-          
-
+          // updateOutput(base64)
 
           //Handle what node gives back
-      
         }, 1);
       })
       .catch((err) => {
         console.error("error:", err);
       });
   };
-
 
   //   useEffect(() => {
 
