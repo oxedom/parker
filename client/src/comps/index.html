@@ -9,12 +9,11 @@
 <body>
 
   <div id="canvasWrapper" style="position: relative;">
-    <canvas id="overlay" width=720 height=403 style="position: absolute;"></canvas>
-    <canvas id="canvas" width=720 height=403 style="position: absolute; border: 1px solid red; background-color: transparent;"> </canvas>
-    <canvas id="input-canvas" style="position: absolute;"></canvas>
+    <canvas id="overlay"  style="position: absolute;"></canvas>
+    <canvas id="canvas"  style="position: absolute; border: 1px solid red; background-color: transparent;"> </canvas>
+    <canvas id="input-canvas" style="position: absolute; z-index: -1;" ></canvas>
     
     <video oncontextmenu="return false" id="input" style="visibility: hidden;"></video>
-    <!-- <img id=video='video-canvas' src="https://www.freepnglogos.com/uploads/pig-png/pig-dayz-wiki-0.png" style="position: absolute;" id="input"></img> -->
    </div>
     
 
@@ -24,6 +23,42 @@
 
 //API FOR FLASK URL
 // const flask_url = 'https://www.sam-brink.com/cv/yolo'
+
+var input_imageCapture;
+
+
+
+
+function onTakePhotoButtonClick() {
+  input_imageCapture.takePhoto()
+  .then(blob => createImageBitmap(blob))
+  .then(imageBitmap => {
+    const canvas = document.querySelector('#input-canvas');
+    drawCanvas(canvas, imageBitmap);
+  })
+  .catch(error => ChromeSamples.log(error));
+}
+
+/* Utils */
+
+function drawCanvas(canvas, img) {
+  canvas.width = getComputedStyle(canvas).width.split('px')[0];
+  canvas.height = getComputedStyle(canvas).height.split('px')[0];
+  let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
+  let x = (canvas.width - img.width * ratio) / 2;
+  let y = (canvas.height - img.height * ratio) / 2;
+  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+  canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
+      x, y, img.width * ratio, img.height * ratio);
+}
+
+// document.querySelector('video').addEventListener('play', function() {
+//   document.querySelector('#grabFrameButton').disabled = false;
+//   document.querySelector('#takePhotoButton').disabled = false;
+// });
+
+
+
 
 
 const getVideo = () => {
@@ -40,31 +75,15 @@ const getVideo = () => {
         //Interval that captures image from Steam, converts to array buffer and 
         //sends it to API as a bufferArray, waiting for response and sets the base64 to 
         //the image SRC on output
-
-        const imageBitMap = (imageCapture) => 
-        {
-          const input_canvas = document.getElementById('input-canvas')
-          const input_context = input_canvas.getContext('2d')
-          const imgElement = document.createElement('img');
-          const url = URL.createObjectURL(imageCapture)
-          imgElement.src = url
-          console.log(imgElement);
-          // input_context.drawImage(imgElement, 0, 0)
-
-        }
         setInterval(async () => {
           const track = stream.getVideoTracks()[0];
           let imageCapture = new ImageCapture(track);
+          input_imageCapture = imageCapture;
           const capturedImage = await imageCapture.takePhoto();
-          console.log(capturedImage);
-          imageBitMap(capturedImage)
-
-
-
-          // console.log(capturedImage);
+          
           let imageBuffer = await capturedImage.arrayBuffer();
           imageBuffer = new Uint8Array(imageBuffer);
-
+          onTakePhotoButtonClick()
 
             // const res = await fetch(flask_url, {
             //                     method: 'POST',
@@ -79,6 +98,8 @@ const getVideo = () => {
       
         }, 1000);
       })
+
+
       .catch((err) => {
         console.error("error:", err);
       }); }
