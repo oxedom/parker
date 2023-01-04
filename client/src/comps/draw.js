@@ -119,12 +119,15 @@ const getVideo = () => {
             bottom_x: detection.bottom_right_cords.bottom_x,
             bottom_y:detection.bottom_right_cords.bottom_y
         }
+        if(selectedRegions.length > 10) {  return;}
         if(selectedRegions.length > 0) 
         {
+          
             selectedRegions.forEach(selected => 
                 {
                     
-                    const a = checkIfWithin(obj, selected.cords)
+                    console.log(selected.cords);
+                   
                
                 })
         }
@@ -196,7 +199,7 @@ const roiObj =
 }    
 
 selectedRegions.push(roiObj)
-console.log(selectedRegions[0].cords)
+
 }
 
 function handleMouseUp(e) {
