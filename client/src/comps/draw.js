@@ -112,12 +112,15 @@ const getVideo = () => {
         const resJson = await res.json();
           resJson.meta_data.detections.forEach(detection =>
     {   
-      
-        console.log(detection.top_left_cords.top_x + " ------- TOP X");
-        console.log(detection.top_left_cords.top_y + " ------- TOP Y");
-        console.log(detection.bottom_right_cords.bottom_x + "------- BOTTOM X");
-        console.log(detection.bottom_right_cords.bottom_y + " -------BOTTOM Y");
-      
+        const obj = 
+        {
+            top_x: detection.top_left_cords.top_x,
+            top_y: detection.top_left_cords.top_y,
+            bottom_x: detection.bottom_right_cords.bottom_x,
+            bottom_y:detection.bottom_right_cords.bottom_y
+        }
+
+      console.log(obj);
         // ctx.fill();
     })
         output.src = resJson.img;
@@ -140,23 +143,23 @@ ctx.lineWidth = 10;
 ctxo.strokeStyle = "blue";
 ctxo.lineWidth = 4;
 
-var canvasOffset = canvasRef.getBoundingClientRect();
+let canvasOffset = canvasRef.getBoundingClientRect();
 
-var offsetX = canvasOffset.left;
-var offsetY = canvasOffset.top;
+let offsetX = canvasOffset.left;
+let offsetY = canvasOffset.top;
 
 // this flage is true when the user is dragging the mouse
-var isDown = false;
+let isDown = false;
 
 // these vars will hold the starting mouse position
-var startX;
-var startY;
+let startX;
+let startY;
 
-var prevStartX = 0;
-var prevStartY = 0;
+let prevStartX = 0;
+let prevStartY = 0;
 
-var prevWidth = 0;
-var prevHeight = 0;
+let prevWidth = 0;
+let prevHeight = 0;
 
 function handleMouseDown(e) {
   e.preventDefault();
@@ -176,8 +179,8 @@ const roiObj =
 {
     type:  selectedType,
     cords: {
-        top_x: prevStartX, //GOOD
-        top_y:  prevHeight+prevStartY, //BAD
+        top_x: prevStartX, 
+        top_y:  prevHeight+prevStartY, 
         bottom_x: prevWidth+prevStartX,
         bottom_y: prevStartY
     }
@@ -186,8 +189,6 @@ const roiObj =
 selectedRegions.push(roiObj)
 console.log(selectedRegions[0].cords)
 }
-
-
 
 function handleMouseUp(e) {
   e.preventDefault();
@@ -263,5 +264,20 @@ canvasRef.addEventListener("mouseup", (e) => {
   handleMouseUp(e);
 });
 
-// input.setAttribute('width', video_width)
-// input.setAttribute('height', video_height)
+function checkIfWithin(mother, child) {
+    // Calculate the area of the mother rectangle
+    const motherArea = mother.width * mother.height;
+  
+    // Calculate the area of the child rectangle
+    const childArea = child.width * child.height;
+  
+    // Calculate the overlapping area between the two rectangles
+    const overlapX = Math.max(0, Math.min(mother.right, child.right) - Math.max(mother.left, child.left));
+    const overlapY = Math.max(0, Math.min(mother.bottom, child.bottom) - Math.max(mother.top, child.top));
+    const overlappingArea = overlapX * overlapY;
+  
+    // Calculate the percentage of the child rectangle that is contained within the mother rectangle
+    const percentage = (overlappingArea / childArea) * 100;
+  
+    return percentage;
+  }
