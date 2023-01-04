@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import time
 import base64
+import array
 
 
 
@@ -175,7 +176,7 @@ def handle_yolo():
                 class_ids.append(class_id)
 
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
-
+    detections = []
     font = cv2.FONT_HERSHEY_PLAIN
     for i in range(len(boxes)):
         if i in indexes:
@@ -183,14 +184,23 @@ def handle_yolo():
             label = str(classes[class_ids[i]])
             confidenceLevel = str(round(confidences[i] * 100, 2)) + "%"
             color = colors[i]
-            cv2.rectangle(img, (x, y), (x + w, y + h), 255, 2)
+
+            detections.append(
+                {
+                    "label": label,
+                    "confidenceLevel": confidenceLevel,
+                    "index": i,
+                    "pt1": { "x1": x, "y1": y},
+                    "pt2": { "x2": x+y, "y2": y+h}
+                })
+            # cv2.rectangle(img, (x, y), (x + w, y + h), 255, 2)
             cv2.putText(img, label, (x, y + 30), font, 3, 255, 3)
             cv2.putText(img, confidenceLevel, (x, 50), font, 3, 255, 3)
 
  
 
 
-
+   
     img_encode = cv2.imencode('.jpg', img)[1]
     # Converting the image into numpy array
     data_encode = np.array(img_encode)
@@ -202,10 +212,14 @@ def handle_yolo():
     
     resObj = {
         "img":f"data:image/jpg;base64,{im_b64_utf8}",
-        "meta data": {
-            "boxes": boxes,
-            "confidences": confidences,
-        }
+        "meta_data": {
+            "detections": detections,
+            "img_width": img_width,
+            "img_height": img_height,
+            "rawBase64": im_b64_utf8 
+        },
+
+
         }
     # return f"data:image/jpg;base64,{im_b64_utf8}"
     return resObj

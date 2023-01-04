@@ -5,6 +5,7 @@ const overlayRef = document.getElementById('overlay')
 const canvasRef = document.getElementById('canvas')
 const inputCanvasRef = document.getElementById('input-canvas')
 let sizeSet = false;
+let cam_width = 640
 const flask_url = 'http://127.0.0.1:5000/api/cv/yolo'
 
 const arrOfScreens = [ videoInputRef , overlayRef , canvasRef , inputCanvasRef]
@@ -43,25 +44,40 @@ const setSize = (width, height) => {
 sizeSet = true;
 }
 
-const getVideo = async () => {
-
-
+const getCapabilitiesOfDevice = async () => 
+{
     const devices = await navigator.mediaDevices.enumerateDevices()
+    console.log(devices);
     const video_devices = devices.filter((d) => { return d.kind === 'videoinput'})
     const videoDevice = video_devices[0]
-    const videoDeviceCapabilities = videoDevice.getCapabilities();
-    const {width, height} = videoDeviceCapabilities
-    const deviceWidth  = width.max
+    const videoDeviceCapabilities = await videoDevice.getCapabilities();
+    console.log(videoDeviceCapabilities);
+    return videoDeviceCapabilities
+}
 
+const base64toCanvas = async (base64, canvasEl) => 
+{
+    const rawImageData = atob(base64);
+    const arrayBuffer = new ArrayBuffer(rawImageData.length);
+    const imageData = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < rawImageData.length; i++) {
+        imageData[i] = rawImageData.charCodeAt(i);
+      }
+    const blob = new Blob([imageData], { type: 'image/png' });  
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(blob);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+ 
+    return canvas;
+}
+const getVideo = () => {
 
     navigator.mediaDevices
-      .getUserMedia({ video: {width: {min:deviceWidth} 
-   
-    
-    }
-        
-        })
-      .then((stream) => {
+      .getUserMedia({ video: {width: {min:  1280}  } })
+      .then(async (stream) => {
+
         //Gets the current screen
         let video = document.getElementById('input')
         //Sets the Src of video Object
@@ -95,8 +111,19 @@ const getVideo = async () => {
               
           const output = document.getElementById('output')
           const resJson = await res.json()
-      
-          output.src = resJson.img
+          const { pt1, pt2} = resJson.meta_data.detections[0]
+          const { image_width, image_height } = resJson.meta_data  
+          output.width = image_width
+          output.height = image_height
+        //   output.src = resJson.img
+          const canvasImage = await base64toCanvas(resJson.meta_data.rawBase64, output)
+          const outputCtx = canvasImage.getContext('2d')
+ 
+          output.parentElement.append(canvasImage)
+
+        
+     
+        //   outputCtx()
       
         }, 1000);
       })
@@ -105,6 +132,7 @@ const getVideo = async () => {
       .catch((err) => {
         console.error("error:", err);
       }); }
+
 
 
     getVideo()
