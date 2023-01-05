@@ -8,12 +8,11 @@ const output = document.getElementById("output");
 
 let sizeSet = false;
 let cam_width = 640;
-let selectedType = 'anything'
+let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
 
 //State:
-const selectedRegions = []
-
+const selectedRegions = [];
 
 const arrOfScreens = [videoInputRef, overlayRef, canvasRef, inputCanvasRef];
 
@@ -58,9 +57,7 @@ const setSize = (width, height) => {
   sizeSet = true;
 };
 
-
-const bufferToServer = async (capturedImage) => 
-{
+const bufferToServer = async (capturedImage) => {
   const imagePhoto = await capturedImage.takePhoto();
   let imageBuffer = await imagePhoto.arrayBuffer();
   imageBuffer = new Uint8Array(imageBuffer);
@@ -73,33 +70,23 @@ const bufferToServer = async (capturedImage) =>
 
   const data = await res.json();
 
-  return data
-}
-
-
-
+  return data;
+};
 
 const serverRectangleParse = (data) => {
-const detectionsParsed = []
+  const detectionsParsed = [];
 
-
-data.meta_data.detections.forEach((detection) =>{   
-      const parsed = 
-      {
-          top_x: detection.top_left_cords.top_x,
-          top_y: detection.top_left_cords.top_y,
-          bottom_x: detection.bottom_right_cords.bottom_x,
-          bottom_y:detection.bottom_right_cords.bottom_y
-      }
-      detectionsParsed.push(parsed) }
-
-
-)
-return detectionsParsed
-    }
-
-
-
+  data.meta_data.detections.forEach((detection) => {
+    const parsed = {
+      top_x: detection.top_left_cords.top_x,
+      top_y: detection.top_left_cords.top_y,
+      bottom_x: detection.bottom_right_cords.bottom_x,
+      bottom_y: detection.bottom_right_cords.bottom_y,
+    };
+    detectionsParsed.push(parsed);
+  });
+  return detectionsParsed;
+};
 
 const getVideo = () => {
   navigator.mediaDevices
@@ -117,25 +104,16 @@ const getVideo = () => {
       //Interval that captures image from Steam, converts to array buffer and
       //sends it to API as a bufferArray, waiting for response and sets the base64 to
       //the image SRC on output
-      
 
       setInterval(async () => {
         const imageCaptured = new ImageCapture(track);
         //Sets the Canvas to the current Image that has been capatured
-        onTakePhotoButtonClick(imageCaptured)
-        const data = await bufferToServer(imageCaptured)
-    
-        let parsed = serverRectangleParse(data)
+        onTakePhotoButtonClick(imageCaptured);
+        const data = await bufferToServer(imageCaptured);
+
+        let parsed = serverRectangleParse(data);
         console.log(parsed);
-        output.src = data.img
-
-
-    
-   
-
-
-        
-
+        output.src = data.img;
       }, 1000);
     })
 
@@ -146,7 +124,7 @@ const getVideo = () => {
 
 getVideo();
 //Get's all the classes
-// fetch('http://127.0.0.1:5000/api/cv/yolo_classes').then((d) => 
+// fetch('http://127.0.0.1:5000/api/cv/yolo_classes').then((d) =>
 // {
 //     d.json().then(data => { console.log(data);})
 
@@ -191,21 +169,18 @@ function handleMouseDown(e) {
   isDown = true;
 }
 
-function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) 
-{
-const roiObj = 
-{
-    type:  selectedType,
+function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
+  const roiObj = {
+    type: selectedType,
     cords: {
-        top_x: prevStartX, 
-        top_y:  prevHeight+prevStartY, 
-        bottom_x: prevWidth+prevStartX,
-        bottom_y: prevStartY
-    }
-}    
+      top_x: prevStartX,
+      top_y: prevHeight + prevStartY,
+      bottom_x: prevWidth + prevStartX,
+      bottom_y: prevStartY,
+    },
+  };
 
-selectedRegions.push(roiObj)
-
+  selectedRegions.push(roiObj);
 }
 
 function handleMouseUp(e) {
@@ -215,15 +190,14 @@ function handleMouseUp(e) {
   // the drag is over, clear the dragging flag
   isDown = false;
 
-
   ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
-  addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight)  
+  addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
 }
 
 function handleMouseOut(e) {
   e.preventDefault();
   e.stopPropagation();
-    
+
   // the drag is over, clear the dragging flag
   isDown = false;
 }
@@ -254,7 +228,7 @@ function handleMouseMove(e) {
   // draw a new rect from the start position
   // to the current mouse position
   ctx.strokeRect(startX, startY, width, height);
-  
+
   prevStartX = startX;
   prevStartY = startY;
 
@@ -283,18 +257,13 @@ canvasRef.addEventListener("mouseup", (e) => {
 });
 
 function checkIfWithin(mother, child) {
-    // Calculate the area of the mother rectangle
+  // Calculate the area of the mother rectangle
 
-   
+  // Calculate the area of the child rectangle
 
-    // Calculate the area of the child rectangle
+  // // Calculate the overlapping area between the two rectangles
 
-  
-    // // Calculate the overlapping area between the two rectangles
+  // Calculate the percentage of the child rectangle that is contained within the mother rectangle
 
-  
-    // Calculate the percentage of the child rectangle that is contained within the mother rectangle
-
-  
-    return 100;
-  }
+  return 100;
+}
