@@ -27,21 +27,6 @@ async function bufferToServer (capturedImage)  {
   return data;
 };
 
-function serverRectangleParse (data) {
-  const detectionsParsed = [];
-
-  data.meta_data.detections.forEach((detection) => {
-    const parsed = {
-      top_x: detection.top_left_cords.top_x,
-      top_y: detection.top_left_cords.top_y,
-      bottom_x: detection.bottom_right_cords.bottom_x,
-      bottom_y: detection.bottom_right_cords.bottom_y,
-    };
-    detectionsParsed.push(parsed);
-  });
-  return detectionsParsed;
-};
-
 
 
 function renderRectangleFactory () {
@@ -86,8 +71,9 @@ function renderRectangleFactory () {
     isDown = false;
 
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
-    
+
     addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
+    console.log(selectedRegions);
   }
 
   function handleMouseOut(e) {
@@ -162,17 +148,28 @@ canvasRef.addEventListener("mouseup", (e) => {
 
 function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
   const roiObj = {
-    type: selectedType,
+    label: selectedType,
     cords: {
-      top_x: prevStartX,
+      right_x: prevStartX,
       top_y: prevHeight + prevStartY,
-      bottom_x: prevWidth + prevStartX,
+      left_x: prevWidth + prevStartX,
       bottom_y: prevStartY,
     },
   };
 
   selectedRegions.push(roiObj);
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -225,6 +222,29 @@ const setSize = (width, height) => {
 };
 
 
+function handleOverlap(data) 
+{
+
+let rect1 = selectedRegions[0].cords
+const rect2 = data.meta_data.detections[0].cords
+console.log('The Local Square is',rectangleArea(rect1), 'area')
+console.log('The Server Square is',rectangleArea(rect2), 'area')
+
+
+}
+
+
+
+function rectangleArea(rect) {
+  const width = rect.right_x - rect.left_x;
+  const height = rect.bottom_y - rect.top_y;
+  return Math.abs(width * height)
+}
+
+
+
+
+
 
 const getVideo = () => {
   navigator.mediaDevices
@@ -244,7 +264,9 @@ const getVideo = () => {
         const imageCaptured = new ImageCapture(track);
         //Sets the Canvas to the current Image that has been capatured
         onTakePhotoButtonClick(imageCaptured);
+
         const data = await bufferToServer(imageCaptured);
+        if(selectedRegions.length > 0) { handleOverlap(data)}
 
         output.src = data.img;
       }, 1000);

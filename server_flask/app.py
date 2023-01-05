@@ -196,8 +196,8 @@ def handle_yolo():
                     "label": label,
                     "confidenceLevel": confidenceLevel,
                     "index": i,
-                    "top_left_cords": { "top_x": x, "top_y": y},
-                    "bottom_right_cords": {"bottom_x": x+w, "bottom_y": y+h}
+                    "cords": { "right_x": x, "top_y": y, "left_x": x+w, "bottom_y": y+h}
+            
                 })
             cv2.rectangle(img, (x, y), (x + w, y + h), 200, 3)
             cv2.putText(img, label, (x, y + 30), font, 3, 255, 3)
