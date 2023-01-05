@@ -161,18 +161,6 @@ function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
 
@@ -223,7 +211,11 @@ const setSize = (width, height) => {
 
 
 
-
+function updateViews (data, imageCaptured) 
+{
+  onTakePhotoButtonClick(imageCaptured);
+  output.src = data.img;
+}
 
 function rectangleArea(rect) {
   const width = rect.right_x - rect.left_x;
@@ -241,21 +233,24 @@ const getVideo = () => {
 
       //Sets the Src of video Object
       video.srcObject = stream;
-      //Plays the video
+      //Plays the video (Important to note that it's invisible with the CSS class and what the client is viewing is a a canvas 
+      //of the video )
       video.play();
       const track = stream.getVideoTracks()[0];
       let { width, height } = track.getSettings();
       setSize(width, height);
 
+      
       setInterval(async () => {
         const imageCaptured = new ImageCapture(track);
-        //Sets the Canvas to the current Image that has been capatured
-        onTakePhotoButtonClick(imageCaptured);
-
+     
+      
+        //Converts imageCaptured parameter to buffer and sends it to the server for computer vision
+        //processing and returns an object with a new image with meta_data after processing
         const data = await bufferToServer(imageCaptured);
-        if(selectedRegions.length > 0) { handleOverlap(data)}
-
-        output.src = data.img;
+        //Updates the SRCs and Canvas in order to display Client Server Images
+        updateViews(data, imageCaptured)
+       
       }, 1000);
     })
 
