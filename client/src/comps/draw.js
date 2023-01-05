@@ -222,16 +222,6 @@ const setSize = (width, height) => {
 };
 
 
-function handleOverlap(data) 
-{
-
-let rect1 = selectedRegions[0].cords
-const rect2 = data.meta_data.detections[0].cords
-console.log('The Local Square is',rectangleArea(rect1), 'area')
-console.log('The Server Square is',rectangleArea(rect2), 'area')
-
-
-}
 
 
 
@@ -240,9 +230,6 @@ function rectangleArea(rect) {
   const height = rect.bottom_y - rect.top_y;
   return Math.abs(width * height)
 }
-
-
-
 
 
 
