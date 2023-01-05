@@ -10,8 +10,7 @@ let video = document.getElementById("input");
 
 const selectedRegions = [];
 
-
-async function bufferToServer (capturedImage)  {
+async function bufferToServer(capturedImage) {
   const imagePhoto = await capturedImage.takePhoto();
   let imageBuffer = await imagePhoto.arrayBuffer();
   imageBuffer = new Uint8Array(imageBuffer);
@@ -25,11 +24,9 @@ async function bufferToServer (capturedImage)  {
   const data = await res.json();
 
   return data;
-};
+}
 
-
-
-function renderRectangleFactory () {
+function renderRectangleFactory() {
   const ctx = canvasRef.getContext("2d");
   const ctxo = overlayRef.getContext("2d");
   ctx.strokeStyle = "blue";
@@ -119,8 +116,7 @@ function renderRectangleFactory () {
   }
 
   return { handleMouseDown, handleMouseMove, handleMouseUp, handleMouseOut };
-};
-
+}
 
 const renderRectangle = renderRectangleFactory();
 
@@ -140,11 +136,9 @@ canvasRef.addEventListener("mouseout", (e) => {
 });
 
 canvasRef.addEventListener("mouseup", (e) => {
-
   e.preventDefault();
   renderRectangle.handleMouseUp(e);
 });
-
 
 function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
   const roiObj = {
@@ -159,7 +153,6 @@ function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
 
   selectedRegions.push(roiObj);
 }
-
 
 let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
@@ -206,13 +199,9 @@ const setSize = (width, height) => {
     screen.width = width;
     screen.height = height;
   });
-
 };
 
-
-
-function updateViews (data, imageCaptured) 
-{
+function renderVideo(data, imageCaptured) {
   onTakePhotoButtonClick(imageCaptured);
   output.src = data.img;
 }
@@ -220,44 +209,32 @@ function updateViews (data, imageCaptured)
 function rectangleArea(rect) {
   const width = rect.right_x - rect.left_x;
   const height = rect.bottom_y - rect.top_y;
-  return Math.abs(width * height)
+  return Math.abs(width * height);
 }
 
+async function intervalProcessing(track) {
+  //Converts imageCaptured parameter to buffer and sends it to the server for computer vision
+  //processing and returns an object with a new image with meta_data after processing
+  const imageCaptured = new ImageCapture(track);
+  const data = await bufferToServer(imageCaptured);
 
+  //Updates the SRCs and Canvas in order to display Client Server Images
+  renderVideo(data, imageCaptured);
+}
 
-const getVideo = () => {
-  navigator.mediaDevices
-    .getUserMedia({ video: { width: { min: 1280 } } })
-    .then(async (stream) => {
-      //Gets the current screen
+const getVideo = async () => {
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video: { width: { min: 1280 } },
+  });
 
-      //Sets the Src of video Object
-      video.srcObject = stream;
-      //Plays the video (Important to note that it's invisible with the CSS class and what the client is viewing is a a canvas 
-      //of the video )
-      video.play();
-      const track = stream.getVideoTracks()[0];
-      let { width, height } = track.getSettings();
-      setSize(width, height);
+  //Gets the current screen
+  const track = stream.getVideoTracks()[0];
+  let { width, height } = track.getSettings();
+  setSize(width, height);
 
-      
-      setInterval(async () => {
-        const imageCaptured = new ImageCapture(track);
-     
-      
-        //Converts imageCaptured parameter to buffer and sends it to the server for computer vision
-        //processing and returns an object with a new image with meta_data after processing
-        const data = await bufferToServer(imageCaptured);
-        //Updates the SRCs and Canvas in order to display Client Server Images
-        updateViews(data, imageCaptured)
-       
-      }, 1000);
-    })
-
-    .catch((err) => {
-      console.error("error:", err);
-    });
+  setInterval(() => {
+    intervalProcessing(track);
+  }, 1000);
 };
 
 getVideo();
-
