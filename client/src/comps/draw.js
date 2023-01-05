@@ -1,19 +1,15 @@
-
 const videoInputRef = document.getElementById("input");
 const overlayRef = document.getElementById("overlay");
 const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
 const output = document.getElementById("output");
-
+let video = document.getElementById("input");
 
 // get references to the canvas and context
 
 const selectedRegions = [];
 
-
-const renderRectangleFactory = () => 
-{
-
+const renderRectangleFactory = () => {
   const ctx = canvasRef.getContext("2d");
   const ctxo = overlayRef.getContext("2d");
   ctx.strokeStyle = "blue";
@@ -36,105 +32,89 @@ const renderRectangleFactory = () =>
   let prevWidth = 0;
   let prevHeight = 0;
 
-
   function handleMouseDown(e) {
     e.preventDefault();
     e.stopPropagation();
-  
+
     // save the starting x/y of the rectangle
     startX = parseInt(e.clientX - offsetX);
     startY = parseInt(e.clientY - offsetY);
-  
+
     // set a flag indicating the drag has begun
     isDown = true;
   }
-  
+
   function handleMouseUp(e) {
     e.preventDefault();
     e.stopPropagation();
-  
+
     // the drag is over, clear the dragging flag
     isDown = false;
-  
+
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
     addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
   }
-  
+
   function handleMouseOut(e) {
     e.preventDefault();
     e.stopPropagation();
-  
+
     // the drag is over, clear the dragging flag
     isDown = false;
   }
-  
+
   function handleMouseMove(e) {
     e.preventDefault();
     e.stopPropagation();
-  
+
     // if we're not dragging, just return
     if (!isDown) {
       return;
     }
-  
+
     // get the current mouse position
     const mouseX = parseInt(e.clientX - offsetX);
     const mouseY = parseInt(e.clientY - offsetY);
-  
+
     // Put your mousemove stuff here
-  
+
     // calculate the rectangle width/height based
     // on starting vs current mouse position
     var width = mouseX - startX;
     var height = mouseY - startY;
-  
+
     // clear the canvas
     ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
-  
+
     // draw a new rect from the start position
     // to the current mouse position
     ctx.strokeRect(startX, startY, width, height);
-  
+
     prevStartX = startX;
     prevStartY = startY;
-  
+
     prevWidth = width;
     prevHeight = height;
   }
 
+  return { handleMouseDown, handleMouseMove, handleMouseUp, handleMouseOut };
+};
 
-  
+function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
+  const roiObj = {
+    type: selectedType,
+    cords: {
+      top_x: prevStartX,
+      top_y: prevHeight + prevStartY,
+      bottom_x: prevWidth + prevStartX,
+      bottom_y: prevStartY,
+    },
+  };
 
+  selectedRegions.push(roiObj);
+}
 
-  
-
-  
-
-  
-  
-  return {handleMouseDown,handleMouseMove,handleMouseUp,handleMouseOut}
-  }
-
-
-
-
-  function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
-    const roiObj = {
-      type: selectedType,
-      cords: {
-        top_x: prevStartX,
-        top_y: prevHeight + prevStartY,
-        bottom_x: prevWidth + prevStartX,
-        bottom_y: prevStartY,
-      },
-    };
-  
-    selectedRegions.push(roiObj);
-  }
-  
-const renderRectangle = renderRectangleFactory()
-
-
+const renderRectangle = renderRectangleFactory();
 
 // let sizeSet = false;
 // let cam_width = 640;
@@ -143,18 +123,7 @@ const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
 
 //State:
 
-
 const arrOfScreens = [videoInputRef, overlayRef, canvasRef, inputCanvasRef];
-
-const onTakePhotoButtonClick = async (capturedImage) => {
-  try {
-    const blob = await capturedImage.takePhoto();
-    const imageBitmap = await createImageBitmap(blob);
-    drawCanvas(inputCanvasRef, imageBitmap);
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 function drawCanvas(canvas, img) {
   canvas.width = getComputedStyle(canvas).width.split("px")[0];
@@ -176,9 +145,17 @@ function drawCanvas(canvas, img) {
       img.width * ratio,
       img.height * ratio
     );
+}
 
-    }
-
+const onTakePhotoButtonClick = async (capturedImage) => {
+  try {
+    const blob = await capturedImage.takePhoto();
+    const imageBitmap = await createImageBitmap(blob);
+    drawCanvas(inputCanvasRef, imageBitmap);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 //Sets the size of all the canvas to be the same
 const setSize = (width, height) => {
@@ -225,7 +202,7 @@ const getVideo = () => {
     .getUserMedia({ video: { width: { min: 1280 } } })
     .then(async (stream) => {
       //Gets the current screen
-      let video = document.getElementById("input");
+
       //Sets the Src of video Object
       video.srcObject = stream;
       //Plays the video
@@ -233,9 +210,6 @@ const getVideo = () => {
       const track = stream.getVideoTracks()[0];
       let { width, height } = track.getSettings();
       setSize(width, height);
-      //Interval that captures image from Steam, converts to array buffer and
-      //sends it to API as a bufferArray, waiting for response and sets the base64 to
-      //the image SRC on output
 
       setInterval(async () => {
         const imageCaptured = new ImageCapture(track);
@@ -243,8 +217,6 @@ const getVideo = () => {
         onTakePhotoButtonClick(imageCaptured);
         const data = await bufferToServer(imageCaptured);
 
-        let parsed = serverRectangleParse(data);
-        console.log(parsed);
         output.src = data.img;
       }, 1000);
     })
@@ -255,11 +227,6 @@ const getVideo = () => {
 };
 
 getVideo();
-
-
-
-
-
 
 canvasRef.addEventListener("mousedown", (e) => {
   e.preventDefault();
@@ -278,7 +245,6 @@ canvasRef.addEventListener("mouseout", (e) => {
 
 canvasRef.addEventListener("mouseup", (e) => {
   e.preventDefault();
+
   renderRectangle.handleMouseUp(e);
 });
-
-
