@@ -220,7 +220,7 @@ def handle_yolo():
         "img":f"data:image/jpg;base64,{im_b64_utf8}",
         "meta_data": {
             "detections": detections,
-            "rawBase64": im_b64_utf8 
+            # "rawBase64": im_b64_utf8 
         },
 
 

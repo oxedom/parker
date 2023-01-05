@@ -4,6 +4,8 @@ const videoInputRef = document.getElementById("input");
 const overlayRef = document.getElementById("overlay");
 const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
+const output = document.getElementById("output");
+
 let sizeSet = false;
 let cam_width = 640;
 let selectedType = 'anything'
@@ -15,9 +17,9 @@ const selectedRegions = []
 
 const arrOfScreens = [videoInputRef, overlayRef, canvasRef, inputCanvasRef];
 
-const onTakePhotoButtonClick = async () => {
+const onTakePhotoButtonClick = async (capturedImage) => {
   try {
-    const blob = await input_imageCapture.takePhoto();
+    const blob = await capturedImage.takePhoto();
     const imageBitmap = await createImageBitmap(blob);
     drawCanvas(inputCanvasRef, imageBitmap);
   } catch (error) {
@@ -56,17 +58,46 @@ const setSize = (width, height) => {
   sizeSet = true;
 };
 
-const getCapabilitiesOfDevice = async () => {
-  const devices = await navigator.mediaDevices.enumerateDevices();
-  console.log(devices);
-  const video_devices = devices.filter((d) => {
-    return d.kind === "videoinput";
+
+const bufferToServer = async (capturedImage) => 
+{
+  const imagePhoto = await capturedImage.takePhoto();
+  let imageBuffer = await imagePhoto.arrayBuffer();
+  imageBuffer = new Uint8Array(imageBuffer);
+
+  const res = await fetch(flask_url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ buffer: [...imageBuffer] }),
   });
-  const videoDevice = video_devices[0];
-  const videoDeviceCapabilities = await videoDevice.getCapabilities();
-  console.log(videoDeviceCapabilities);
-  return videoDeviceCapabilities;
-};
+
+  const data = await res.json();
+
+  return data
+}
+
+
+
+
+const serverRectangleParse = (data) => {
+const detectionsParsed = []
+
+
+data.meta_data.detections.forEach((detection) =>{   
+      const parsed = 
+      {
+          top_x: detection.top_left_cords.top_x,
+          top_y: detection.top_left_cords.top_y,
+          bottom_x: detection.bottom_right_cords.bottom_x,
+          bottom_y:detection.bottom_right_cords.bottom_y
+      }
+      detectionsParsed.push(parsed) }
+
+
+)
+return detectionsParsed
+    }
+
 
 
 
@@ -80,62 +111,31 @@ const getVideo = () => {
       video.srcObject = stream;
       //Plays the video
       video.play();
-
+      const track = stream.getVideoTracks()[0];
+      let { width, height } = track.getSettings();
+      setSize(width, height);
       //Interval that captures image from Steam, converts to array buffer and
       //sends it to API as a bufferArray, waiting for response and sets the base64 to
       //the image SRC on output
+      
+
       setInterval(async () => {
-        const track = stream.getVideoTracks()[0];
-
-        let { width, height } = track.getSettings();
-
-        if (!sizeSet) {
-          setSize(width, height);
-        }
-        let imageCapture = new ImageCapture(track);
-        input_imageCapture = imageCapture;
-        const capturedImage = await imageCapture.takePhoto();
-
-        let imageBuffer = await capturedImage.arrayBuffer();
-        imageBuffer = new Uint8Array(imageBuffer);
+        const imageCaptured = new ImageCapture(track);
         //Sets the Canvas to the current Image that has been capatured
-        onTakePhotoButtonClick();
+        onTakePhotoButtonClick(imageCaptured)
+        const data = await bufferToServer(imageCaptured)
+    
+        let parsed = serverRectangleParse(data)
+        console.log(parsed);
+        output.src = data.img
 
-        const res = await fetch(flask_url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ buffer: [...imageBuffer] }),
-        });
 
-        const output = document.getElementById("output");
+    
+   
 
-        const resJson = await res.json();
-          resJson.meta_data.detections.forEach(detection =>
-    {   
-        const obj = 
-        {
-            top_x: detection.top_left_cords.top_x,
-            top_y: detection.top_left_cords.top_y,
-            bottom_x: detection.bottom_right_cords.bottom_x,
-            bottom_y:detection.bottom_right_cords.bottom_y
-        }
-        if(selectedRegions.length > 10) {  return;}
-        if(selectedRegions.length > 0) 
-        {
-          
-            selectedRegions.forEach(selected => 
-                {
-                    
-                    console.log(selected.cords);
-                   
-               
-                })
-        }
 
         
-        // ctx.fill();
-    })
-        output.src = resJson.img;
+
       }, 1000);
     })
 
