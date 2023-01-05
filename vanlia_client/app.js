@@ -4,7 +4,7 @@ const overlayRef = document.getElementById("overlay");
 const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
 const output = document.getElementById("output");
-let video = document.getElementById("input");
+
 
 // get references to the canvas and context
 
@@ -158,9 +158,9 @@ let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
 
 //State:
-
 const arrOfScreens = [videoInputRef, overlayRef, canvasRef, inputCanvasRef];
 
+//Image input and returns a canvas version of the image (USED so I can draw on the image)
 function drawCanvas(canvas, img) {
   canvas.width = getComputedStyle(canvas).width.split("px")[0];
   canvas.height = getComputedStyle(canvas).height.split("px")[0];
