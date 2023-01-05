@@ -1,3 +1,4 @@
+// import { serverRectangleParse, bufferToServer} from "./libs"
 const videoInputRef = document.getElementById("input");
 const overlayRef = document.getElementById("overlay");
 const canvasRef = document.getElementById("canvas");
@@ -9,7 +10,41 @@ let video = document.getElementById("input");
 
 const selectedRegions = [];
 
-const renderRectangleFactory = () => {
+
+async function bufferToServer (capturedImage)  {
+  const imagePhoto = await capturedImage.takePhoto();
+  let imageBuffer = await imagePhoto.arrayBuffer();
+  imageBuffer = new Uint8Array(imageBuffer);
+
+  const res = await fetch(flask_url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ buffer: [...imageBuffer] }),
+  });
+
+  const data = await res.json();
+
+  return data;
+};
+
+function serverRectangleParse (data) {
+  const detectionsParsed = [];
+
+  data.meta_data.detections.forEach((detection) => {
+    const parsed = {
+      top_x: detection.top_left_cords.top_x,
+      top_y: detection.top_left_cords.top_y,
+      bottom_x: detection.bottom_right_cords.bottom_x,
+      bottom_y: detection.bottom_right_cords.bottom_y,
+    };
+    detectionsParsed.push(parsed);
+  });
+  return detectionsParsed;
+};
+
+
+
+function renderRectangleFactory () {
   const ctx = canvasRef.getContext("2d");
   const ctxo = overlayRef.getContext("2d");
   ctx.strokeStyle = "blue";
@@ -21,7 +56,6 @@ const renderRectangleFactory = () => {
   let offsetY = canvasOffset.top;
   // this flage is true when the user is dragging the mouse
   let isDown = false;
-
   // these vars will hold the starting mouse position
   let startX;
   let startY;
@@ -52,6 +86,7 @@ const renderRectangleFactory = () => {
     isDown = false;
 
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
+    
     addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
   }
 
@@ -100,6 +135,31 @@ const renderRectangleFactory = () => {
   return { handleMouseDown, handleMouseMove, handleMouseUp, handleMouseOut };
 };
 
+
+const renderRectangle = renderRectangleFactory();
+
+canvasRef.addEventListener("mousedown", (e) => {
+  e.preventDefault();
+  renderRectangle.handleMouseDown(e);
+});
+
+canvasRef.addEventListener("mousemove", (e) => {
+  e.preventDefault();
+  renderRectangle.handleMouseMove(e);
+});
+
+canvasRef.addEventListener("mouseout", (e) => {
+  e.preventDefault();
+  renderRectangle.handleMouseOut(e);
+});
+
+canvasRef.addEventListener("mouseup", (e) => {
+
+  e.preventDefault();
+  renderRectangle.handleMouseUp(e);
+});
+
+
 function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
   const roiObj = {
     type: selectedType,
@@ -114,10 +174,8 @@ function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
   selectedRegions.push(roiObj);
 }
 
-const renderRectangle = renderRectangleFactory();
 
-// let sizeSet = false;
-// let cam_width = 640;
+
 let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
 
@@ -163,39 +221,10 @@ const setSize = (width, height) => {
     screen.width = width;
     screen.height = height;
   });
-  // sizeSet = true;
+
 };
 
-const bufferToServer = async (capturedImage) => {
-  const imagePhoto = await capturedImage.takePhoto();
-  let imageBuffer = await imagePhoto.arrayBuffer();
-  imageBuffer = new Uint8Array(imageBuffer);
 
-  const res = await fetch(flask_url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ buffer: [...imageBuffer] }),
-  });
-
-  const data = await res.json();
-
-  return data;
-};
-
-const serverRectangleParse = (data) => {
-  const detectionsParsed = [];
-
-  data.meta_data.detections.forEach((detection) => {
-    const parsed = {
-      top_x: detection.top_left_cords.top_x,
-      top_y: detection.top_left_cords.top_y,
-      bottom_x: detection.bottom_right_cords.bottom_x,
-      bottom_y: detection.bottom_right_cords.bottom_y,
-    };
-    detectionsParsed.push(parsed);
-  });
-  return detectionsParsed;
-};
 
 const getVideo = () => {
   navigator.mediaDevices
@@ -228,23 +257,3 @@ const getVideo = () => {
 
 getVideo();
 
-canvasRef.addEventListener("mousedown", (e) => {
-  e.preventDefault();
-  renderRectangle.handleMouseDown(e);
-});
-
-canvasRef.addEventListener("mousemove", (e) => {
-  e.preventDefault();
-  renderRectangle.handleMouseMove(e);
-});
-
-canvasRef.addEventListener("mouseout", (e) => {
-  e.preventDefault();
-  renderRectangle.handleMouseOut(e);
-});
-
-canvasRef.addEventListener("mouseup", (e) => {
-  e.preventDefault();
-
-  renderRectangle.handleMouseUp(e);
-});
