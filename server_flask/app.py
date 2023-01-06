@@ -114,6 +114,7 @@ def handle_classes():
 @app.route('/api/cv/yolo', methods=['POST'])
 def handle_yolo():
 
+    t = time.time()
     buffer_object = parseReqtoBuffer(request)    
     # server_object = request.get_json('imageBuffer')
 
@@ -138,7 +139,6 @@ def handle_yolo():
     dim = (300,int(img_height * img_ratio))
 
 
-    img = cv2.GaussianBlur(img, (3, 3), 0)
     blob = cv2.dnn.blobFromImage(img, 1/255.0 ,(320 ,320), swapRB=True, crop=False)
     test_height = img.shape;
     print(test_height)
@@ -150,13 +150,13 @@ def handle_yolo():
 
     net.setInput(blob)
 
-    t0 = time.time()
+    # t0 = time.time()
     outputs = net.forward(output_layers)
-    t = time.time()
+    # t = time.time()
 
 
 
-    print('time=', t-t0)
+
 
     class_ids = []
     confidences = []
@@ -215,7 +215,8 @@ def handle_yolo():
     im_b64_utf8 = im_b64.decode('utf-8')
 
 
-    
+    t0 = time.time()   
+    print('time=', t-t0)
     resObj = {
         "img":f"data:image/jpg;base64,{im_b64_utf8}",
         "meta_data": {
@@ -225,6 +226,7 @@ def handle_yolo():
 
 
         }
+
     # return f"data:image/jpg;base64,{im_b64_utf8}"
     return resObj
 

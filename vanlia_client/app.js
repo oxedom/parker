@@ -1,5 +1,5 @@
 // import { serverRectangleParse, bufferToServer} from "./libs"
-const videoInputRef = document.getElementById("input");
+const videoInputRef = document.getElementById("webcam");
 const overlayRef = document.getElementById("overlay");
 const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
@@ -66,11 +66,11 @@ function renderRectangleFactory() {
 
     // the drag is over, clear the dragging flag
     isDown = false;
-
+    // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
 
     addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
-    console.log(selectedRegions);
+
   }
 
   function handleMouseOut(e) {
@@ -224,7 +224,7 @@ async function intervalProcessing(track) {
 
 const getVideo = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({
-    video: { width: { min: 1280 } },
+    video: { width: { min: 720 } },
   });
 
   //Gets the current screen

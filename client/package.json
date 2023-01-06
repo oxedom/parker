@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@next/font": "13.1.1",
+    "@tensorflow/tfjs": "^4.2.0",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
+    "i": "^0.3.7",
     "next": "13.1.1",
+    "npm": "^9.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
