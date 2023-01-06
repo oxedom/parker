@@ -8,7 +8,7 @@ const output = document.getElementById("output");
 
 // get references to the canvas and context
 
-const selectedRegions = [];
+
 
 async function bufferToServer(capturedImage) {
   const imagePhoto = await capturedImage.takePhoto();
@@ -27,6 +27,8 @@ async function bufferToServer(capturedImage) {
 }
 
 function renderRectangleFactory() {
+
+  const selectedRegions = [];
   const ctx = canvasRef.getContext("2d");
   const ctxo = overlayRef.getContext("2d");
   ctx.strokeStyle = "blue";
@@ -69,7 +71,7 @@ function renderRectangleFactory() {
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
 
-    addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
+    _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
 
   }
 
@@ -113,9 +115,37 @@ function renderRectangleFactory() {
 
     prevWidth = width;
     prevHeight = height;
+
+    
   }
 
-  return { handleMouseDown, handleMouseMove, handleMouseUp, handleMouseOut };
+  function _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
+    const roiObj = {
+      label: selectedType,
+      cords: {
+        right_x: prevStartX,
+        top_y: prevHeight + prevStartY,
+        left_x: prevWidth + prevStartX,
+        bottom_y: prevStartY,
+      },
+    };
+  
+    selectedRegions.push(roiObj);
+    return selectedRegions;
+  }
+
+
+
+  function getSelectedRegions() 
+  {
+    return selectedRegions
+  }
+
+
+
+
+
+  return { handleMouseDown, handleMouseMove, handleMouseUp, handleMouseOut, getSelectedRegions };
 }
 
 const renderRectangle = renderRectangleFactory();
@@ -140,19 +170,7 @@ canvasRef.addEventListener("mouseup", (e) => {
   renderRectangle.handleMouseUp(e);
 });
 
-function addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
-  const roiObj = {
-    label: selectedType,
-    cords: {
-      right_x: prevStartX,
-      top_y: prevHeight + prevStartY,
-      left_x: prevWidth + prevStartX,
-      bottom_y: prevStartY,
-    },
-  };
 
-  selectedRegions.push(roiObj);
-}
 
 let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
