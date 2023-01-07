@@ -3,15 +3,21 @@ const videoInputRef = document.getElementById("webcam");
 const overlayRef = document.getElementById("overlay");
 const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
-const output = document.getElementById("output");
+const outputRef = document.getElementById("output");
 
 // get references to the canvas and context
-
-async function bufferToServer(capturedImage) {
+async function capturedImageToBuffer(capturedImage)
+{
   const imagePhoto = await capturedImage.takePhoto();
   let imageBuffer = await imagePhoto.arrayBuffer();
 
   imageBuffer = new Uint8Array(imageBuffer);
+  return imageBuffer;
+}
+
+async function bufferToServer(capturedImage) {
+  
+  const imageBuffer = await capturedImageToBuffer(capturedImage)
 
   const res = await fetch(flask_url, {
     method: "POST",
@@ -21,6 +27,7 @@ async function bufferToServer(capturedImage) {
 
   const data = await res.json();
 
+ 
   return data;
 }
 
@@ -28,10 +35,11 @@ function renderRectangleFactory() {
   const selectedRegions = [];
   const ctx = canvasRef.getContext("2d");
   const ctxo = overlayRef.getContext("2d");
-  ctx.strokeStyle = "blue";
+
+  ctx.strokeStyle = "green";
   ctx.lineWidth = 10;
   ctxo.strokeStyle = "blue";
-  ctxo.lineWidth = 4;
+  ctxo.lineWidth = 10;
   let canvasOffset = canvasRef.getBoundingClientRect();
   let offsetX = canvasOffset.left;
   let offsetY = canvasOffset.top;
@@ -66,11 +74,15 @@ function renderRectangleFactory() {
     // the drag is over, clear the dragging flag
     isDown = false;
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
-
+    ctx.strokeStyle = "#ABDAFC";
+    ctx.lineWidth = 10;
+    ctxo.strokeStyle = "#66B0E6";
+    ctxo.lineWidth = 10;
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
       
     _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
   }
+
 
   function handleMouseOut(e) {
     e.preventDefault();
@@ -116,25 +128,28 @@ function renderRectangleFactory() {
 
   function _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
 
-    const biggestX = Math.max(prevStartX, prevWidth + prevStartX)
-    const biggestY = Math.max(prevStartY,prevHeight + prevStartY )
-    const smallestY = Math.min(prevStartY,prevHeight + prevStartY)
-    const smallestX = Math.min(prevStartX, prevWidth + prevStartX)
+    const top_y = Math.min(prevStartY, prevHeight+prevStartY)
+    const bottom_y = Math.max(prevStartY, prevHeight+prevStartY)
 
-    const roiObj = {
-      label: selectedType,
-      cords: {
-        right_x: biggestX,
-        top_y: biggestY,
-        left_x: smallestX,
-        bottom_y: smallestY,
-      },
-    };
+    const right_x = Math.min(prevStartX, prevWidth+prevStartX)
+    const left_x = Math.max(prevStartX, prevWidth+prevStartX)
 
+    const roiObj = 
+    {
+      bottom_y: bottom_y,
+      left_x:left_x,
+      right_x: right_x,
+      top_y:top_y,
+     
+    }
+
+
+    
     selectedRegions.push(roiObj);
-    console.table(selectedRegions);
+
     return selectedRegions;
   }
+
 
   function getSelectedRegions() {
     return selectedRegions;
@@ -220,7 +235,7 @@ const setSize = (width, height) => {
 
 function renderVideo(data, imageCaptured) {
   onTakePhotoButtonClick(imageCaptured);
-  output.src = data.img;
+  outputRef.src = data.img;
 }
 
 function rectangleArea(rect) {
@@ -229,20 +244,25 @@ function rectangleArea(rect) {
   return Math.abs(width * height);
 }
 
+
+
 async function intervalProcessing(track) {
   //Converts imageCaptured parameter to buffer and sends it to the server for computer vision
   //processing and returns an object with a new image with meta_data after processing
   const imageCaptured = new ImageCapture(track);
-
   const data = await bufferToServer(imageCaptured);
+  console.log(data);
+    //Updates the SRCs and Canvas in order to display Client Server Images
+  let {confidenceLevel, label} =  data.meta_data.detections[0]
+  let {bottom_y, left_x, right_x, top_y, dect_width, dect_height} = data.meta_data.detections[0].cords;
 
-  //Updates the SRCs and Canvas in order to display Client Server Images
   renderVideo(data, imageCaptured);
+  
 }
 
 const getVideo = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({
-    video: { width: { min: 720 } },
+    video: { width: { min: 640 } },
   });
 
   //Gets the current screen
@@ -252,7 +272,7 @@ const getVideo = async () => {
 
   setInterval(() => {
     intervalProcessing(track);
-  }, 1000);
+  }, 100000);
 };
 
 getVideo();

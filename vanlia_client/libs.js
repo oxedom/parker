@@ -22,32 +22,42 @@ function fillArrayWithFalse(width, height) {
 }
 
 
-const fourByFour = fillArrayWithFalse(4,4)
 
 
-const roi = {label: 'anything',
-    cords: {
-      right_x: 4,
-      top_y: 4 ,
-      left_x: 0 ,
-      bottom_y: 0,}}
+function paint(rect, image) {
+  const biggestY = Math.max(rect.cords.top_y,rect.cords.bottom_y );
+  const smallestY = Math.min(rect.cords.top_y,rect.cords.bottom_y );
 
+  const biggestX = Math.max(rect.cords.right_x, rect.cords.left_x);
+  const smallestX = Math.min(rect.cords.right_x, rect.cords.left_x);
 
-
-function paint(roi, image) {
-  for (let x = roi.cords.left_x; x <= roi.cords.right_x-1; x++) {
-    for (let y = roi.cords.top_y-1; y <= roi.cords.bottom_y-1; y++) {
-      image[x][y] = true;
-    }
+  for (let r = smallestY; r < biggestY; r++) {
+      for (let c = smallestX; c < biggestX; c++) {
+        image[r][c] = true
+      }
   }
   return image;
 }
 
 
+
+
  
+const roi = 
+{
+  cords:
+  {
+    "right_x":1,
+    "top_y": 4,
+    "left_x": 0,
+    "bottom_y": 0
+}
+}
+
+const FALSEARRAY = fillArrayWithFalse(4,4)
+console.table(paint(roi, FALSEARRAY))
 
 
-console.table(paint(roi,fourByFour))
 
 
 
@@ -60,6 +70,4 @@ console.table(paint(roi,fourByFour))
 
 
 
-
-
-module.exports = { getLines, fillArrayWithFalse, fillPictureWithRect };
+module.exports = { getLines, fillArrayWithFalse, fillArrayWithTrue };

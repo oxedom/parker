@@ -7,23 +7,16 @@ import json
 from pathlib import Path
 import time
 import base64
-import array
-
-
 
 # Load names of classes and get random colors
 classes = open('engine/coco.names').read().strip().split('\n')
 np.random.seed(42)
 colors = np.random.randint(0, 255, size=(len(classes), 3), dtype='uint8')
 
-
 # Give the configuration and weight files for the model and load the network.
 net = cv2.dnn.readNetFromDarknet('engine/yolov3.cfg', 'engine/yolov3.weights')
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 # net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
-
-
-
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 # cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -46,66 +39,6 @@ def parseReqtoBuffer(reqObject):
 
     return buffer_object
 
-
-@app.route('/api/cv/haar_cascade', methods=['POST'])
-def handle_haar_cascade():
-    # serverObject with buffer props that contains RAW image buffer from client
-    buffer_object = parseReqtoBuffer(request)
-
-  
-    #Convert the buffer_object from the JS to a bytearray
-    data = bytearray(buffer_object)
-    #Convert to to a npArray
-    arr = np.frombuffer(data, np.uint8)
-    #Decode npArray to Image
-    img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-
-    # Height Width and Depth of the Image
-    (h, w, d) = img.shape
-    #Greyscaling the Image
-    gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    #Mainting aspect Ratio on Grey Image and resizing it
-    r = 300.0 / w
-    dim = (300,int(h * r))
-    resized = cv2.resize(gray_image, dim)
-
-    #Bluring image so it to remove noise that confuses algos
-    blurred = cv2.GaussianBlur(resized, (3, 3), 0)
-
- 
-    #Algo for Detecting faces returns array of all XY cords of face [[106  48  50  50]]
-
-    # 106,48 is pt1 top left, 48,50 is bottom right of Face
-    faces_rect = haar_cascade.detectMultiScale(blurred, scaleFactor=2.1, minNeighbors=9)
-    
-    for (x, y, w, h) in faces_rect:
-        cv2.rectangle(img, (x, y), (x+w, y+h), (255, 255, 0), 2)
-        cv2.putText(img, "Open CV", (10,25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-
-
-    img_encode = cv2.imencode('.jpg', img)[1]
-    # Converting the image into numpy array
-    data_encode = np.array(img_encode)
-    byte_encode = data_encode.tobytes()
-    im_b64 = base64.b64encode(byte_encode)
-    im_b64_utf8 = im_b64.decode('utf-8')
-
-    resObj = {
-        "img":f"data:image/jpg;base64,{im_b64_utf8}",
-        "meta data": {
-            "faces": faces_rect
-            
-        }
-        }
-    # return f"data:image/jpg;base64,{im_b64_utf8}"
-    return resObj
-  
-
-@app.route('/api/hello', methods=['GET'])
-def handle_hello():
-    return {'hello':'world'}
-
     
 @app.route('/api/cv/yolo_classes', methods=['GET'])
 def handle_classes():
@@ -114,14 +47,8 @@ def handle_classes():
 @app.route('/api/cv/yolo', methods=['POST'])
 def handle_yolo():
 
-    t = time.time()
+
     buffer_object = parseReqtoBuffer(request)    
-    # server_object = request.get_json('imageBuffer')
-
-    # # Convert the dictionary object to a string
-    # server_object_str = json.dumps(server_object)
-
-    # buffer_object = json.loads(server_object_str)['buffer']
 
     #Convert the buffer_object from the JS to a bytearray
     data = bytearray(buffer_object)
@@ -136,27 +63,22 @@ def handle_yolo():
     (img_height, img_width, img_depth) = img.shape
    
     img_ratio = 300.0 / img_width
-    dim = (300,int(img_height * img_ratio))
+    # dim = (300,int(img_height * img_ratio))
 
 
     blob = cv2.dnn.blobFromImage(img, 1/255.0 ,(320 ,320), swapRB=True, crop=False)
-    test_height = img.shape;
-    print(test_height)
-    r = blob[0, 0, :, :]
-    r0 = blob[0, 0, :, :]
+    # test_height = img.shape;
+
+ 
 
     layer_names = net.getLayerNames()
     output_layers = [layer_names[i-1] for i in net.getUnconnectedOutLayers()]
-
-    t0 = time.time()
-    net.setInput(blob)
     t = time.time()
+    net.setInput(blob)
 
     outputs = net.forward(output_layers)
-   
-
-
-
+    t0 = time.time()
+    print('time=', t-t0)
 
 
     class_ids = []
@@ -196,18 +118,16 @@ def handle_yolo():
                     "img_height": img_height,
                     "label": label,
                     "confidenceLevel": confidenceLevel,
-                    "index": i,
-                    "cords": { "right_x": x, "top_y": y, "left_x": x+w, "bottom_y": y+h}
+                    "time": time.time(),
+                    "cords": { "right_x": x, "top_y": y, "left_x": x+w, "bottom_y": y+h, "dect_height": h, "dect_width": w}
             
                 })
             cv2.rectangle(img, (x, y), (x + w, y + h), 200, 3)
-            cv2.putText(img, label, (x, y + 30), font, 3, 255, 3)
-            cv2.putText(img, confidenceLevel, (x, 50), font, 3, 255, 3)
+            # cv2.putText(img, confidenceLevel, (x, 50), font, 3, 255, 3)
+            cv2.putText(img, label, (x-20, 50), font, 3, 255, 3)
+
 
  
-
-
-   
     img_encode = cv2.imencode('.jpg', img)[1]
     # Converting the image into numpy array
     data_encode = np.array(img_encode)
@@ -216,8 +136,7 @@ def handle_yolo():
     im_b64_utf8 = im_b64.decode('utf-8')
 
 
-    t0 = time.time()   
-    print('time=', t-t0)
+
     resObj = {
         "img":f"data:image/jpg;base64,{im_b64_utf8}",
         "meta_data": {

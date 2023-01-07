@@ -1,7 +1,7 @@
 const {
   getLines,
   fillArrayWithFalse,
-  fillPictureWithRect,
+  fillArrayWithTrue,
 } = require("../libs");
 
 describe("getLines", () => {
@@ -84,7 +84,7 @@ describe("Fill rectangle in rectangle", () => {
   test("#1", () => {
   
     
-    expect(fillPictureWithRect(falsePictureArray, rect)).toEqual(answer);
+    expect(fillArrayWithTrue(falsePictureArray, rect)).toEqual(answer);
   }); 
 
 })
