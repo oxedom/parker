@@ -12,13 +12,13 @@ import array
 
 
 # Load names of classes and get random colors
-classes = open('coco.names').read().strip().split('\n')
+classes = open('engine/coco.names').read().strip().split('\n')
 np.random.seed(42)
 colors = np.random.randint(0, 255, size=(len(classes), 3), dtype='uint8')
 
 
 # Give the configuration and weight files for the model and load the network.
-net = cv2.dnn.readNetFromDarknet('yolov3.cfg', 'yolov3.weights')
+net = cv2.dnn.readNetFromDarknet('engine/yolov3.cfg', 'engine/yolov3.weights')
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 # net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
 
@@ -148,11 +148,12 @@ def handle_yolo():
     layer_names = net.getLayerNames()
     output_layers = [layer_names[i-1] for i in net.getUnconnectedOutLayers()]
 
+    t0 = time.time()
     net.setInput(blob)
+    t = time.time()
 
-    # t0 = time.time()
     outputs = net.forward(output_layers)
-    # t = time.time()
+   
 
 
 

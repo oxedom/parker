@@ -1,7 +1,12 @@
 
 
-const Webcam = () => {
+const Webcam = ({canvasRef, overlayRef}) => {
 
+
+     
+        
+
+    
     return ( <div>
   
     </div> );

@@ -1,3 +1,4 @@
+
 async function bufferToServer(capturedImage) {
     const imagePhoto = await capturedImage.takePhoto();
     let imageBuffer = await imagePhoto.arrayBuffer();
@@ -14,11 +15,13 @@ async function bufferToServer(capturedImage) {
     return data;
   }
 
-function renderRectangleFactory(canvasRef, overlayRef) {
+function renderRectangleFactory(canvasRef,overlayRef) {
 
     const selectedRegions = [];
+
     const ctx = canvasRef.getContext("2d");
     const ctxo = overlayRef.getContext("2d");
+
     ctx.strokeStyle = "blue";
     ctx.lineWidth = 10;
     ctxo.strokeStyle = "blue";
@@ -130,11 +133,11 @@ function renderRectangleFactory(canvasRef, overlayRef) {
     }
   
   
-    function printHello() 
-    {}
+    // function printHello() 
+    // {}
   
   
-    return { handleMouseDown, handleMouseMove, handleMouseUp, handleMouseOut, getSelectedRegions, printHello };
+    return { handleMouseDown, handleMouseMove, handleMouseUp, handleMouseOut, getSelectedRegions };
   }
   
 

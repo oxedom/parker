@@ -13,7 +13,9 @@ const output = document.getElementById("output");
 async function bufferToServer(capturedImage) {
   const imagePhoto = await capturedImage.takePhoto();
   let imageBuffer = await imagePhoto.arrayBuffer();
+
   imageBuffer = new Uint8Array(imageBuffer);
+
 
   const res = await fetch(flask_url, {
     method: "POST",
@@ -129,8 +131,9 @@ function renderRectangleFactory() {
         bottom_y: prevStartY,
       },
     };
-  
+    
     selectedRegions.push(roiObj);
+    console.log(selectedRegions);
     return selectedRegions;
   }
 
@@ -234,6 +237,7 @@ async function intervalProcessing(track) {
   //Converts imageCaptured parameter to buffer and sends it to the server for computer vision
   //processing and returns an object with a new image with meta_data after processing
   const imageCaptured = new ImageCapture(track);
+
   const data = await bufferToServer(imageCaptured);
 
   //Updates the SRCs and Canvas in order to display Client Server Images
