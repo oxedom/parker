@@ -5,17 +5,13 @@ const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
 const output = document.getElementById("output");
 
-
 // get references to the canvas and context
-
-
 
 async function bufferToServer(capturedImage) {
   const imagePhoto = await capturedImage.takePhoto();
   let imageBuffer = await imagePhoto.arrayBuffer();
 
   imageBuffer = new Uint8Array(imageBuffer);
-
 
   const res = await fetch(flask_url, {
     method: "POST",
@@ -29,7 +25,6 @@ async function bufferToServer(capturedImage) {
 }
 
 function renderRectangleFactory() {
-
   const selectedRegions = [];
   const ctx = canvasRef.getContext("2d");
   const ctxo = overlayRef.getContext("2d");
@@ -71,10 +66,10 @@ function renderRectangleFactory() {
     // the drag is over, clear the dragging flag
     isDown = false;
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
+
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
-
+      
     _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
-
   }
 
   function handleMouseOut(e) {
@@ -117,38 +112,41 @@ function renderRectangleFactory() {
 
     prevWidth = width;
     prevHeight = height;
-
-    
   }
 
   function _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
+
+    const biggestX = Math.max(prevStartX, prevWidth + prevStartX)
+    const biggestY = Math.max(prevStartY,prevHeight + prevStartY )
+    const smallestY = Math.min(prevStartY,prevHeight + prevStartY)
+    const smallestX = Math.min(prevStartX, prevWidth + prevStartX)
+
     const roiObj = {
       label: selectedType,
       cords: {
-        right_x: prevStartX,
-        top_y: prevHeight + prevStartY,
-        left_x: prevWidth + prevStartX,
-        bottom_y: prevStartY,
+        right_x: biggestX,
+        top_y: biggestY,
+        left_x: smallestX,
+        bottom_y: smallestY,
       },
     };
-    
+
     selectedRegions.push(roiObj);
-    console.log(selectedRegions);
+    console.table(selectedRegions);
     return selectedRegions;
   }
 
-
-
-  function getSelectedRegions() 
-  {
-    return selectedRegions
+  function getSelectedRegions() {
+    return selectedRegions;
   }
 
-
-
-
-
-  return { handleMouseDown, handleMouseMove, handleMouseUp, handleMouseOut, getSelectedRegions };
+  return {
+    handleMouseDown,
+    handleMouseMove,
+    handleMouseUp,
+    handleMouseOut,
+    getSelectedRegions,
+  };
 }
 
 const renderRectangle = renderRectangleFactory();
@@ -172,8 +170,6 @@ canvasRef.addEventListener("mouseup", (e) => {
   e.preventDefault();
   renderRectangle.handleMouseUp(e);
 });
-
-
 
 let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
