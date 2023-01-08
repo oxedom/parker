@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import time
 import base64
-
+from shapely import Polygon
 # Load names of classes and get random colors
 classes = open('engine/coco.names').read().strip().split('\n')
 np.random.seed(42)
@@ -39,6 +39,44 @@ def parseReqtoBuffer(reqObject):
 
     return buffer_object
 
+def CalPercent(containerArea,intersectionArea):
+    percent = 0
+    if(intersectionArea > 0):
+        percent = intersectionArea / containerArea
+    return percent
+        
+
+
+
+def checkIntersection(rect1,rect2):
+    rect1_top_y = rect1["cords"]['top_y']
+    rect1_bottom_y = rect1["cords"]['bottom_y']
+    rect1_left_x = rect1["cords"]['left_x']
+    rect1_right_x = rect1["cords"]['right_x']
+    
+    rect2_top_y = rect2["cords"]['top_y']
+    rect2_bottom_y = rect2["cords"]['bottom_y']
+    rect2_left_x = rect2["cords"]['left_x']
+    rect2_right_x = rect2["cords"]['right_x']
+
+    x5 = max(rect1_right_x, rect2_right_x);
+    y5 = max(rect2_top_y, rect1_top_y);
+    x6 = min(rect1_left_x, rect2_left_x);
+    y6 = min(rect1_bottom_y, rect2_bottom_y);
+        
+    xWidth = x6-x5
+    xHeight = y6-y5
+   
+    containerArea= (rect1['dect_width']*rect1['dect_height'])
+    print(containerArea)
+    intersectionArea = xWidth*xHeight
+    per = CalPercent(containerArea,intersectionArea)
+    print(per)
+    
+
+
+
+
     
 @app.route('/api/cv/yolo_classes', methods=['GET'])
 def handle_classes():
@@ -69,7 +107,7 @@ def handle_yolo():
     blob = cv2.dnn.blobFromImage(img, 1/255.0 ,(320 ,320), swapRB=True, crop=False)
     # test_height = img.shape;
 
- 
+
 
     layer_names = net.getLayerNames()
     output_layers = [layer_names[i-1] for i in net.getUnconnectedOutLayers()]
@@ -114,22 +152,21 @@ def handle_yolo():
 
             detections.append(
                 {
-                    "img_width": img_width,
-                    "img_height": img_height,
                     "dect_height": h, 
                     "dect_width": w,
                     "label": label,
                     "confidenceLevel": confidenceLevel,
-                    "time": time.time(),
-                    "cords": { "right_x": x+w, "top_y": img_height - y, "left_x": x, "bottom_y": (img_height-h)-y, }
+                    #XY CORDS
+                    # "cords": { "right_x": x+w, "top_y": img_height - y, "left_x": x, "bottom_y": (img_height-h)-y, }
+                    #CODE WORLD CORDS
+                    "cords": { "right_x": x, "top_y": y, "left_x": x+w, "bottom_y": y+h}
             
                 })
             cv2.rectangle(img, (x, y), (x + w, y + h), 200, 3)
             # cv2.putText(img, confidenceLevel, (x, 50), font, 3, 255, 3)
             cv2.putText(img, label, (x-20, 50), font, 3, 255, 3)
 
-
- 
+  
     img_encode = cv2.imencode('.jpg', img)[1]
     # Converting the image into numpy array
     data_encode = np.array(img_encode)
@@ -137,10 +174,13 @@ def handle_yolo():
     im_b64 = base64.b64encode(byte_encode)
     im_b64_utf8 = im_b64.decode('utf-8')
 
-
+    # checkIntersection(detections[0], detections[1])
 
     resObj = {
         "img":f"data:image/jpg;base64,{im_b64_utf8}",
+        "time": time.time(),
+        "img_width": img_width,
+        "img_height": img_height,
         "meta_data": {
             "detections": detections,
             # "rawBase64": im_b64_utf8 
@@ -148,7 +188,7 @@ def handle_yolo():
 
 
         }
-
+    
     # return f"data:image/jpg;base64,{im_b64_utf8}"
     return resObj
 

@@ -131,18 +131,28 @@ function renderRectangleFactory() {
 
     const top_y = Math.max(prevStartY, prevHeight+prevStartY)
     const bottom_y = Math.min(prevStartY, prevHeight+prevStartY)
-
     const right_x = Math.max(prevStartX, prevWidth+prevStartX)
     const left_x = Math.min(prevStartX, prevWidth+prevStartX)
 
-    const roiObj = 
-    {
-      top_y:image_height- bottom_y,
-      left_x:left_x,
-      right_x: right_x,
-      bottom_y:image_height-top_y,
+    //ROI Object by Code Words
+    const  roiObj = {
+      bottom_y: prevHeight + prevStartY,
+      left_x: prevWidth + prevStartX,
+      right_x: prevStartX,
+      top_y: prevStartY,
      
     }
+
+
+    //Const roiObj by XY
+    // const roiObj = 
+    // {
+    //   top_y:image_height- bottom_y,
+    //   left_x:left_x,
+    //   right_x: right_x,
+    //   bottom_y:image_height-top_y,
+     
+    // }
 
 
     console.table(roiObj);
@@ -186,6 +196,12 @@ canvasRef.addEventListener("mouseup", (e) => {
   e.preventDefault();
   renderRectangle.handleMouseUp(e);
 });
+
+function rectangleArea(rect) {
+  const width = rect.cords.right_x - rect.cords.left_x;
+  const height = rect.cords.bottom_y - rect.cords.top_y;
+  return Math.abs(width * height);
+}
 
 let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
@@ -240,6 +256,7 @@ function renderVideo(data, imageCaptured) {
 }
 
 function rectangleArea(rect) {
+  
   const width = rect.right_x - rect.left_x;
   const height = rect.bottom_y - rect.top_y;
   return Math.abs(width * height);
@@ -252,10 +269,19 @@ async function intervalProcessing(track) {
   //processing and returns an object with a new image with meta_data after processing
   const imageCaptured = new ImageCapture(track);
   const data = await bufferToServer(imageCaptured);
-  console.table(data.meta_data.detections[0].cords);
+  console.table(data.meta_data.detections.forEach(d => 
+    {
+      let ctx1 = canvasRef.getContext('2d')
+          // to the current mouse position
+      const {left_x, top_y, right_x, bottom_y} = d.cords
+      console.log(d.label);
+      console.table(d.cords);
+      ctx1.strokeRect(left_x,Math.max(top_y,bottom_y),right_x-left_x,top_y-bottom_y);
+      // console.table(d.cords);
+    }));
     //Updates the SRCs and Canvas in order to display Client Server Images
-  let {confidenceLevel, label} =  data.meta_data.detections[0]
-  let {bottom_y, left_x, right_x, top_y, dect_width, dect_height} = data.meta_data.detections[0].cords;
+  // let {confidenceLevel, label} =  data.meta_data.detections[0]
+  // let {bottom_y, left_x, right_x, top_y, dect_width, dect_height} = data.meta_data.detections[0].cords;
 
   renderVideo(data, imageCaptured);
   

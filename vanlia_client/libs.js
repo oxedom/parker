@@ -21,11 +21,40 @@ function fillArrayWithFalse(width, height) {
   return picture;
 }
 
+function fillArrayWithTrue(width, height) {
+  const picture = [];
+  for (let y = 0; y < height; y++) {
+    let row = new Array(width).fill(true);
+    picture.push(row);
+  }
+
+  return picture;
+}
+
 
 
 
 function paint(rect, image) {
 
+let {bottom_y, left_x, right_x, top_y} = rect
+let painted = image
+
+for (let y = 0; y < image.length; y++) {
+  for (let x = 0; x < image[0].length; x++) {
+
+
+    if(((left_x-1) <= x <= (right_x-1)))
+    {
+      console.log('I have been printed');
+    }
+    
+  }
+  
+}
+  
+
+
+return painted
 }
 
 
@@ -40,4 +69,4 @@ function paint(rect, image) {
 
 
 
-module.exports = { getLines, fillArrayWithFalse, fillArrayWithTrue };
+module.exports = { getLines, fillArrayWithTrue, fillArrayWithFalse, paint };
