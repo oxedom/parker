@@ -4,7 +4,8 @@ const overlayRef = document.getElementById("overlay");
 const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
 const outputRef = document.getElementById("output");
-
+const image_width = 1280
+const image_height = 720
 // get references to the canvas and context
 async function capturedImageToBuffer(capturedImage)
 {
@@ -128,23 +129,23 @@ function renderRectangleFactory() {
 
   function _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
 
-    const top_y = Math.min(prevStartY, prevHeight+prevStartY)
-    const bottom_y = Math.max(prevStartY, prevHeight+prevStartY)
+    const top_y = Math.max(prevStartY, prevHeight+prevStartY)
+    const bottom_y = Math.min(prevStartY, prevHeight+prevStartY)
 
-    const right_x = Math.min(prevStartX, prevWidth+prevStartX)
-    const left_x = Math.max(prevStartX, prevWidth+prevStartX)
+    const right_x = Math.max(prevStartX, prevWidth+prevStartX)
+    const left_x = Math.min(prevStartX, prevWidth+prevStartX)
 
     const roiObj = 
     {
-      bottom_y: bottom_y,
+      top_y:image_height- bottom_y,
       left_x:left_x,
       right_x: right_x,
-      top_y:top_y,
+      bottom_y:image_height-top_y,
      
     }
 
 
-    
+    console.table(roiObj);
     selectedRegions.push(roiObj);
 
     return selectedRegions;
@@ -251,7 +252,7 @@ async function intervalProcessing(track) {
   //processing and returns an object with a new image with meta_data after processing
   const imageCaptured = new ImageCapture(track);
   const data = await bufferToServer(imageCaptured);
-  console.log(data);
+  console.table(data.meta_data.detections[0].cords);
     //Updates the SRCs and Canvas in order to display Client Server Images
   let {confidenceLevel, label} =  data.meta_data.detections[0]
   let {bottom_y, left_x, right_x, top_y, dect_width, dect_height} = data.meta_data.detections[0].cords;
@@ -262,7 +263,7 @@ async function intervalProcessing(track) {
 
 const getVideo = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({
-    video: { width: { min: 640 } },
+    video: { width: { min: image_width } },
   });
 
   //Gets the current screen
@@ -270,9 +271,9 @@ const getVideo = async () => {
   let { width, height } = track.getSettings();
   setSize(width, height);
 
-  setInterval(() => {
+  setTimeout (() => {
     intervalProcessing(track);
-  }, 100000);
+  }, 1);
 };
 
 getVideo();

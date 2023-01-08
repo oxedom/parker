@@ -21,7 +21,7 @@ net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 # cors = CORS(app, resources={r"/*": {"origins": "*"}})
 CORS(app)
-haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+# haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 app.config['SECRET_KEY'] = 'secret!'
 
@@ -116,10 +116,12 @@ def handle_yolo():
                 {
                     "img_width": img_width,
                     "img_height": img_height,
+                    "dect_height": h, 
+                    "dect_width": w,
                     "label": label,
                     "confidenceLevel": confidenceLevel,
                     "time": time.time(),
-                    "cords": { "right_x": x, "top_y": y, "left_x": x+w, "bottom_y": y+h, "dect_height": h, "dect_width": w}
+                    "cords": { "right_x": x+w, "top_y": img_height - y, "left_x": x, "bottom_y": (img_height-h)-y, }
             
                 })
             cv2.rectangle(img, (x, y), (x + w, y + h), 200, 3)

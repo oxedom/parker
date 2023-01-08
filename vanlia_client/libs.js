@@ -25,38 +25,8 @@ function fillArrayWithFalse(width, height) {
 
 
 function paint(rect, image) {
-  const biggestY = Math.max(rect.cords.top_y,rect.cords.bottom_y );
-  const smallestY = Math.min(rect.cords.top_y,rect.cords.bottom_y );
 
-  const biggestX = Math.max(rect.cords.right_x, rect.cords.left_x);
-  const smallestX = Math.min(rect.cords.right_x, rect.cords.left_x);
-
-  for (let r = smallestY; r < biggestY; r++) {
-      for (let c = smallestX; c < biggestX; c++) {
-        image[r][c] = true
-      }
-  }
-  return image;
 }
-
-
-
-
- 
-const roi = 
-{
-  cords:
-  {
-    "right_x":1,
-    "top_y": 4,
-    "left_x": 0,
-    "bottom_y": 0
-}
-}
-
-const FALSEARRAY = fillArrayWithFalse(4,4)
-console.table(paint(roi, FALSEARRAY))
-
 
 
 
