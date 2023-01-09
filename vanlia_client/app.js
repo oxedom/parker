@@ -60,6 +60,8 @@ function renderRectangleFactory() {
     e.preventDefault();
     e.stopPropagation();
 
+    //(0,0) Would be the top left cornor
+    //(Max Width, Max Height ) woul be the bottom right cornor
     // save the starting x/y of the rectangle
     startX = parseInt(e.clientX - offsetX);
     startY = parseInt(e.clientY - offsetY);
@@ -80,7 +82,8 @@ function renderRectangleFactory() {
     ctxo.strokeStyle = "#66B0E6";
     ctxo.lineWidth = 10;
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
-      
+
+   
     _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
   }
 
@@ -103,10 +106,12 @@ function renderRectangleFactory() {
     }
 
     // get the current mouse position
+    //(0,0) Would be the top left cornor
+    //(Max Width, Max Height ) woul be the bottom right cornor
+    // save the starting x/y of the rectangle
     const mouseX = parseInt(e.clientX - offsetX);
     const mouseY = parseInt(e.clientY - offsetY);
 
-    // Put your mousemove stuff here
 
     // calculate the rectangle width/height based
     // on starting vs current mouse position
@@ -128,6 +133,9 @@ function renderRectangleFactory() {
   }
 
   function _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
+
+
+    //BUG HERE NEED TO UNDERSTAND DIRECTIONS
 
     const top_y = Math.max(prevStartY, prevHeight+prevStartY)
     const bottom_y = Math.min(prevStartY, prevHeight+prevStartY)
