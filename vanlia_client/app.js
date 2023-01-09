@@ -6,19 +6,30 @@ const inputCanvasRef = document.getElementById("input-canvas");
 const outputRef = document.getElementById("output");
 const image_width = 1280
 const image_height = 720
+
 // get references to the canvas and context
+
+
+
 async function capturedImageToBuffer(capturedImage)
 {
   const imagePhoto = await capturedImage.takePhoto();
+
   let imageBuffer = await imagePhoto.arrayBuffer();
 
   imageBuffer = new Uint8Array(imageBuffer);
-  return imageBuffer;
+
+
+ 
+  return imageBuffer
 }
 
-async function bufferToServer(capturedImage) {
+async function capturedImageoServer(capturedImage) {
   
+
   const imageBuffer = await capturedImageToBuffer(capturedImage)
+
+
 
   const res = await fetch(flask_url, {
     method: "POST",
@@ -200,7 +211,7 @@ function rectangleArea(rect) {
 let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
 
-//State:
+
 const arrOfScreens = [videoInputRef, overlayRef, canvasRef, inputCanvasRef];
 
 //Image input and returns a canvas version of the image (USED so I can draw on the image)
@@ -210,6 +221,7 @@ function drawCanvas(canvasEl, img) {
   let ratio = Math.min(canvasEl.width / img.width, canvasEl.height / img.height);
   let x = (canvasEl.width - img.width * ratio) / 2;
   let y = (canvasEl.height - img.height * ratio) / 2;
+
   canvasEl.getContext("2d").clearRect(0, 0, canvasEl.width, canvasEl.height);
   canvasEl
     .getContext("2d")
@@ -245,7 +257,7 @@ const setSize = (width, height) => {
 };
 
 function renderVideo(data, imageCaptured) {
-  onTakePhotoButtonClick(imageCaptured);
+  // onTakePhotoButtonClick(imageCaptured);
   outputRef.src = data.img;
 }
 
@@ -262,25 +274,14 @@ async function intervalProcessing(track) {
   //Converts imageCaptured parameter to buffer and sends it to the server for computer vision
   //processing and returns an object with a new image with meta_data after processing
   const imageCaptured = new ImageCapture(track);
-  const data = await bufferToServer(imageCaptured);
-  console.table(data.meta_data.detections.forEach(d => 
-    {
-      let ctx1 = canvasRef.getContext('2d')
-          // to the current mouse position
-      const {left_x, top_y, right_x, bottom_y} = d.cords
-      console.log(d.label);
-      console.table(d.cords);
-      ctx1.strokeRect(left_x,Math.max(top_y,bottom_y),right_x-left_x,top_y-bottom_y);
-      // console.table(d.cords);
-    }));
+  onTakePhotoButtonClick(imageCaptured)
+  const data = await capturedImageoServer(imageCaptured);
+  renderVideo(data, imageCaptured);
     //Updates the SRCs and Canvas in order to display Client Server Images
 
 
-    renderVideo(data, imageCaptured);
 
-  // canvasRef.getContext('2d').strokeStyle = "#66B0E6";
-  // canvasRef.getContext('2d').lineWidth = 10;
-  // canvasRef.getContext('2d').strokeRect(98,50,171,542)
+
 }
 
 const getVideo = async () => {
@@ -290,7 +291,9 @@ const getVideo = async () => {
 
   //Gets the current screen
   const track = stream.getVideoTracks()[0];
+
   let { width, height } = track.getSettings();
+
   setSize(width, height);
 
   setTimeout (() => {
