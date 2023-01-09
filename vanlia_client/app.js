@@ -32,16 +32,16 @@ async function bufferToServer(capturedImage) {
   return data;
 }
 
-function renderRectangleFactory() {
+function renderRectangleFactory(canvasEl,overlayEl) {
   const selectedRegions = [];
-  const ctx = canvasRef.getContext("2d");
-  const ctxo = overlayRef.getContext("2d");
+  const ctx = canvasEl.getContext("2d");
+  const ctxo = overlayEl.getContext("2d");
 
   ctx.strokeStyle = "green";
   ctx.lineWidth = 10;
   ctxo.strokeStyle = "blue";
   ctxo.lineWidth = 10;
-  let canvasOffset = canvasRef.getBoundingClientRect();
+  let canvasOffset = canvasEl.getBoundingClientRect();
   let offsetX = canvasOffset.left;
   let offsetY = canvasOffset.top;
   // this flage is true when the user is dragging the mouse
@@ -83,7 +83,6 @@ function renderRectangleFactory() {
     ctxo.lineWidth = 10;
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
 
-   
     _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
   }
 
@@ -135,35 +134,22 @@ function renderRectangleFactory() {
   function _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
 
 
-    //BUG HERE NEED TO UNDERSTAND DIRECTIONS
+    let right_x = null
+    let top_y = null;
 
-    const top_y = Math.max(prevStartY, prevHeight+prevStartY)
-    const bottom_y = Math.min(prevStartY, prevHeight+prevStartY)
-    const right_x = Math.max(prevStartX, prevWidth+prevStartX)
-    const left_x = Math.min(prevStartX, prevWidth+prevStartX)
-
-    //ROI Object by Code Words
+    prevWidth < 0 ? right_x = prevStartX-Math.abs(prevWidth) : right_x = prevStartX
+    prevHeight < 0 ? top_y = prevStartY-Math.abs(prevHeight) : top_y = prevStartY
+    
     const  roiObj = {
-      bottom_y: prevHeight + prevStartY,
-      left_x: prevWidth + prevStartX,
-      right_x: prevStartX,
-      top_y: prevStartY,
+      height: Math.abs(prevHeight),
+      right_x: right_x,
+      top_y: top_y,
+      width: Math.abs(prevWidth),
      
     }
 
 
-    //Const roiObj by XY
-    // const roiObj = 
-    // {
-    //   top_y:image_height- bottom_y,
-    //   left_x:left_x,
-    //   right_x: right_x,
-    //   bottom_y:image_height-top_y,
-     
-    // }
 
-
-    console.table(roiObj);
     selectedRegions.push(roiObj);
 
     return selectedRegions;
@@ -183,7 +169,7 @@ function renderRectangleFactory() {
   };
 }
 
-const renderRectangle = renderRectangleFactory();
+const renderRectangle = renderRectangleFactory(canvasRef, overlayRef);
 
 canvasRef.addEventListener("mousedown", (e) => {
   e.preventDefault();
@@ -218,14 +204,14 @@ const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
 const arrOfScreens = [videoInputRef, overlayRef, canvasRef, inputCanvasRef];
 
 //Image input and returns a canvas version of the image (USED so I can draw on the image)
-function drawCanvas(canvas, img) {
-  canvas.width = getComputedStyle(canvas).width.split("px")[0];
-  canvas.height = getComputedStyle(canvas).height.split("px")[0];
-  let ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
-  let x = (canvas.width - img.width * ratio) / 2;
-  let y = (canvas.height - img.height * ratio) / 2;
-  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-  canvas
+function drawCanvas(canvasEl, img) {
+  canvasEl.width = getComputedStyle(canvasEl).width.split("px")[0];
+  canvasEl.height = getComputedStyle(canvasEl).height.split("px")[0];
+  let ratio = Math.min(canvasEl.width / img.width, canvasEl.height / img.height);
+  let x = (canvasEl.width - img.width * ratio) / 2;
+  let y = (canvasEl.height - img.height * ratio) / 2;
+  canvasEl.getContext("2d").clearRect(0, 0, canvasEl.width, canvasEl.height);
+  canvasEl
     .getContext("2d")
     .drawImage(
       img,
@@ -288,11 +274,13 @@ async function intervalProcessing(track) {
       // console.table(d.cords);
     }));
     //Updates the SRCs and Canvas in order to display Client Server Images
-  // let {confidenceLevel, label} =  data.meta_data.detections[0]
-  // let {bottom_y, left_x, right_x, top_y, dect_width, dect_height} = data.meta_data.detections[0].cords;
 
-  renderVideo(data, imageCaptured);
-  
+
+    renderVideo(data, imageCaptured);
+
+  // canvasRef.getContext('2d').strokeStyle = "#66B0E6";
+  // canvasRef.getContext('2d').lineWidth = 10;
+  // canvasRef.getContext('2d').strokeRect(98,50,171,542)
 }
 
 const getVideo = async () => {

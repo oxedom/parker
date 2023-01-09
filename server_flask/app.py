@@ -156,12 +156,10 @@ def handle_yolo():
                     "dect_width": w,
                     "label": label,
                     "confidenceLevel": confidenceLevel,
-                    #XY CORDS
-                    # "cords": { "right_x": x+w, "top_y": img_height - y, "left_x": x, "bottom_y": (img_height-h)-y, }
-                    #CODE WORLD CORDS
-                    "cords": { "right_x": x, "top_y": y, "left_x": x+w, "bottom_y": y+h}
-            
+                    "cords": { "right_x": x, "top_y": y, "width": w, "height": h}
                 })
+  
+
             cv2.rectangle(img, (x, y), (x + w, y + h), 200, 3)
             # cv2.putText(img, confidenceLevel, (x, 50), font, 3, 255, 3)
             cv2.putText(img, label, (x-20, 50), font, 3, 255, 3)
