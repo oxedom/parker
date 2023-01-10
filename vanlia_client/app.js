@@ -160,7 +160,7 @@ function renderRectangleFactory(canvasEl,overlayEl) {
     }
 
 
-
+    console.log(roiObj);
     selectedRegions.push(roiObj);
 
     return selectedRegions;

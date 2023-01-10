@@ -36,19 +36,13 @@ function fillArrayWithTrue(width, height) {
 
 function paint(rect, image) {
 
-let {bottom_y, left_x, right_x, top_y} = rect
-let painted = image
-
-for (let y = 0; y < image.length; y++) {
-  for (let x = 0; x < image[0].length; x++) {
-
-
-    if(((left_x-1) <= x <= (right_x-1)))
-    {
-      console.log('I have been printed');
-    }
-    
-  }
+  const let = 
+  {
+    "height": 314,
+    "right_x": 2,
+    "top_y": 2,
+    "width": 404
+}
   
 }
   
