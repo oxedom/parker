@@ -320,8 +320,6 @@ async function intervalProcessing(track) {
     //Updates the SRCs and Canvas in order to display Client Server Images
 
 
-
-
 }
 
 const getVideo = async () => {
