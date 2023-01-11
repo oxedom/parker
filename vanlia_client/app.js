@@ -9,6 +9,29 @@ const image_height = 720
 
 // get references to the canvas and context
 
+function getOverlap (rectangle1,rectangle2) 
+{
+  const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
+  const intersectionX2 = Math.min(rectangle1.right_x + rectangle1.width, rectangle2.right_x + rectangle2.width);
+  if (intersectionX2 < intersectionX1) {
+    return null;
+  }
+  const intersectionY1 = Math.max(rectangle1.top_y, rectangle2.top_y);
+  const intersectionY2 = Math.min(rectangle1.top_y + rectangle1.height, rectangle2.top_y + rectangle2.height);
+  if (intersectionY2 < intersectionY1) {
+    return null;
+  }
+
+  return {
+    right_x:intersectionX1,
+    top_y:intersectionY1,
+    width: intersectionX2 - intersectionX1,
+    height:  intersectionY2 - intersectionY1,
+    area: ((intersectionX2 - intersectionX1) * (intersectionY2 - intersectionY1))
+  }
+
+
+}
 
 
 async function capturedImageToBuffer(capturedImage)
@@ -276,6 +299,28 @@ async function intervalProcessing(track) {
   const imageCaptured = new ImageCapture(track);
   onTakePhotoButtonClick(imageCaptured)
   const data = await capturedImageoServer(imageCaptured);
+  let selectedRegions = renderRectangle.getSelectedRegions()
+  if(selectedRegions.length > 0) 
+  {
+    let detections = data.meta_data.detections
+    selectedRegions.forEach(s => 
+      {
+        
+        let motherArea = (s.width * s.height)
+        detections.forEach((d) => 
+        {
+         
+          let overlapArea = getOverlap(d.cords,s)
+
+          console.log((overlapArea.area/motherArea) * 100);
+         
+          
+
+        })
+      })
+
+
+  }
   renderVideo(data, imageCaptured);
     //Updates the SRCs and Canvas in order to display Client Server Images
 
@@ -296,9 +341,9 @@ const getVideo = async () => {
 
   setSize(width, height);
 
-  setTimeout (() => {
+  setInterval (() => {
     intervalProcessing(track);
-  }, 1);
+  }, 1000);
 };
 
 getVideo();

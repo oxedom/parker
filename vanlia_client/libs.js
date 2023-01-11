@@ -1,3 +1,7 @@
+const intersection = require("rectangle-overlap");
+
+
+
 function getLines(rect) {
   const xLine = rect.cords.left_x - rect.cords.right_x;
   const yLine = rect.cords.top_y - rect.cords.bottom_y;
@@ -34,30 +38,32 @@ function fillArrayWithTrue(width, height) {
 
 
 
-function paint(rect, image) {
 
-  const let = 
-  {
-    "height": 314,
-    "right_x": 2,
-    "top_y": 2,
-    "width": 404
+
+
+let getOverlap = (rectangle1,rectangle2) => 
+{
+  const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
+  const intersectionX2 = Math.min(rectangle1.right_x + rectangle1.width, rectangle2.right_x + rectangle2.width);
+  if (intersectionX2 < intersectionX1) {
+    return null;
+  }
+  const intersectionY1 = Math.max(rectangle1.top_y, rectangle2.top_y);
+  const intersectionY2 = Math.min(rectangle1.top_y + rectangle1.height, rectangle2.top_y + rectangle2.height);
+  if (intersectionY2 < intersectionY1) {
+    return null;
+  }
+
+  return {
+    right_x:intersectionX1,
+    top_y:intersectionY1,
+    width: intersectionX2 - intersectionX1,
+    height:  intersectionY2 - intersectionY1,
+    area: ((intersectionX2 - intersectionX1) * (intersectionY2 - intersectionY1))
+  }
+
+
 }
-  
-}
-  
-
-
-return painted
-}
-
-
-
-
-
-
-
-
 
 
 
