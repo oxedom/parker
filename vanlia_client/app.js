@@ -305,17 +305,12 @@ async function intervalProcessing(track) {
     let detections = data.meta_data.detections
     selectedRegions.forEach(s => 
       {
-        
         let motherArea = (s.width * s.height)
         detections.forEach((d) => 
         {
-         
           let overlapArea = getOverlap(d.cords,s)
-
           console.log((overlapArea.area/motherArea) * 100);
          
-          
-
         })
       })
 

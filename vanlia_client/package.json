@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jest": "^29.3.1",
-    "rectangle-overlap": "^2.0.0"
+    "jest": "^29.3.1"
   }
 }
