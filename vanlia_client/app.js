@@ -49,10 +49,7 @@ async function capturedImageToBuffer(capturedImage)
 
 async function capturedImageoServer(capturedImage) {
   
-
   const imageBuffer = await capturedImageToBuffer(capturedImage)
-
-
 
   const res = await fetch(flask_url, {
     method: "POST",

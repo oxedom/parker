@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const useGetVideo = (width = 1280, height = 720) => {
   const [stream, setStream] = useState(null);
   const [track, setTrack] = useState(null);
-
 
   useEffect(() => {
     const getVideo = async () => {
@@ -17,10 +16,9 @@ const useGetVideo = (width = 1280, height = 720) => {
       setWidth(width);
       setHeight(height);
     };
-    
+
     getVideo();
   }, []);
 
-
   return { stream, track, width, height };
-}
+};
