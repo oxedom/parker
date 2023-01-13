@@ -35,9 +35,10 @@ const Camera = () => {
     <Layout>
 
 
-        <div className="bg-red-500 ">
-          
+        <div className="flex gap-10">
 
+
+        <div className="bg-red-500 ">
         <DrawingCanvas imageWidth={imageWidth} imageHeight={imageHeight}>
           {" "}
 
@@ -52,25 +53,18 @@ const Camera = () => {
           imageHeight={imageHeight}
         />
 
-
         </div>
 
-        <div className="">
-        <video
-          className="invisible"
-          ref={videoRef}
-          width={imageWidth}
-          height={imageHeight}
-        ></video>
+
+
         <img
-          className="sticky"
+          className=""
           width={imageWidth}
           height={imageHeight}
           ref={outputRef}
         />
 
         </div>
-
 
     </Layout>
   );
