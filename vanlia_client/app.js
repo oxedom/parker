@@ -4,52 +4,50 @@ const overlayRef = document.getElementById("overlay");
 const canvasRef = document.getElementById("canvas");
 const inputCanvasRef = document.getElementById("input-canvas");
 const outputRef = document.getElementById("output");
-const image_width = 1280
-const image_height = 720
+const image_width = 1280;
+const image_height = 720;
 
 // get references to the canvas and context
 
-function getOverlap (rectangle1,rectangle2) 
-{
+function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
-  const intersectionX2 = Math.min(rectangle1.right_x + rectangle1.width, rectangle2.right_x + rectangle2.width);
+  const intersectionX2 = Math.min(
+    rectangle1.right_x + rectangle1.width,
+    rectangle2.right_x + rectangle2.width
+  );
   if (intersectionX2 < intersectionX1) {
     return null;
   }
   const intersectionY1 = Math.max(rectangle1.top_y, rectangle2.top_y);
-  const intersectionY2 = Math.min(rectangle1.top_y + rectangle1.height, rectangle2.top_y + rectangle2.height);
+  const intersectionY2 = Math.min(
+    rectangle1.top_y + rectangle1.height,
+    rectangle2.top_y + rectangle2.height
+  );
   if (intersectionY2 < intersectionY1) {
     return null;
   }
 
   return {
-    right_x:intersectionX1,
-    top_y:intersectionY1,
+    right_x: intersectionX1,
+    top_y: intersectionY1,
     width: intersectionX2 - intersectionX1,
-    height:  intersectionY2 - intersectionY1,
-    area: ((intersectionX2 - intersectionX1) * (intersectionY2 - intersectionY1))
-  }
-
-
+    height: intersectionY2 - intersectionY1,
+    area: (intersectionX2 - intersectionX1) * (intersectionY2 - intersectionY1),
+  };
 }
 
-
-async function capturedImageToBuffer(capturedImage)
-{
+async function capturedImageToBuffer(capturedImage) {
   const imagePhoto = await capturedImage.takePhoto();
 
   let imageBuffer = await imagePhoto.arrayBuffer();
 
   imageBuffer = new Uint8Array(imageBuffer);
 
-
- 
-  return imageBuffer
+  return imageBuffer;
 }
 
 async function capturedImageoServer(capturedImage) {
-  
-  const imageBuffer = await capturedImageToBuffer(capturedImage)
+  const imageBuffer = await capturedImageToBuffer(capturedImage);
 
   const res = await fetch(flask_url, {
     method: "POST",
@@ -59,11 +57,10 @@ async function capturedImageoServer(capturedImage) {
 
   const data = await res.json();
 
- 
   return data;
 }
 
-function renderRectangleFactory(canvasEl,overlayEl) {
+function renderRectangleFactory(canvasEl, overlayEl) {
   const selectedRegions = [];
   const ctx = canvasEl.getContext("2d");
   const ctxo = overlayEl.getContext("2d");
@@ -117,7 +114,6 @@ function renderRectangleFactory(canvasEl,overlayEl) {
     _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
   }
 
-
   function handleMouseOut(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -142,7 +138,6 @@ function renderRectangleFactory(canvasEl,overlayEl) {
     const mouseX = parseInt(e.clientX - offsetX);
     const mouseY = parseInt(e.clientY - offsetY);
 
-
     // calculate the rectangle width/height based
     // on starting vs current mouse position
     var width = mouseX - startX;
@@ -163,29 +158,28 @@ function renderRectangleFactory(canvasEl,overlayEl) {
   }
 
   function _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
-
-
-    let right_x = null
+    let right_x = null;
     let top_y = null;
 
-    prevWidth < 0 ? right_x = prevStartX-Math.abs(prevWidth) : right_x = prevStartX
-    prevHeight < 0 ? top_y = prevStartY-Math.abs(prevHeight) : top_y = prevStartY
-    
-    const  roiObj = {
+    prevWidth < 0
+      ? (right_x = prevStartX - Math.abs(prevWidth))
+      : (right_x = prevStartX);
+    prevHeight < 0
+      ? (top_y = prevStartY - Math.abs(prevHeight))
+      : (top_y = prevStartY);
+
+    const roiObj = {
       height: Math.abs(prevHeight),
       right_x: right_x,
       top_y: top_y,
       width: Math.abs(prevWidth),
-     
-    }
-
+    };
 
     console.log(roiObj);
     selectedRegions.push(roiObj);
 
     return selectedRegions;
   }
-
 
   function getSelectedRegions() {
     return selectedRegions;
@@ -231,14 +225,16 @@ function rectangleArea(rect) {
 let selectedType = "anything";
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
 
-
 const arrOfScreens = [videoInputRef, overlayRef, canvasRef, inputCanvasRef];
 
 //Image input and returns a canvas version of the image (USED so I can draw on the image)
 function drawCanvas(canvasEl, img) {
   canvasEl.width = getComputedStyle(canvasEl).width.split("px")[0];
   canvasEl.height = getComputedStyle(canvasEl).height.split("px")[0];
-  let ratio = Math.min(canvasEl.width / img.width, canvasEl.height / img.height);
+  let ratio = Math.min(
+    canvasEl.width / img.width,
+    canvasEl.height / img.height
+  );
   let x = (canvasEl.width - img.width * ratio) / 2;
   let y = (canvasEl.height - img.height * ratio) / 2;
 
@@ -282,41 +278,30 @@ function renderVideo(data, imageCaptured) {
 }
 
 function rectangleArea(rect) {
-  
   const width = rect.right_x - rect.left_x;
   const height = rect.bottom_y - rect.top_y;
   return Math.abs(width * height);
 }
 
-
-
 async function intervalProcessing(track) {
   //Converts imageCaptured parameter to buffer and sends it to the server for computer vision
   //processing and returns an object with a new image with meta_data after processing
   const imageCaptured = new ImageCapture(track);
-  onTakePhotoButtonClick(imageCaptured)
+  onTakePhotoButtonClick(imageCaptured);
   const data = await capturedImageoServer(imageCaptured);
-  let selectedRegions = renderRectangle.getSelectedRegions()
-  if(selectedRegions.length > 0) 
-  {
-    let detections = data.meta_data.detections
-    selectedRegions.forEach(s => 
-      {
-        let motherArea = (s.width * s.height)
-        detections.forEach((d) => 
-        {
-          let overlapArea = getOverlap(d.cords,s)
-          console.log((overlapArea.area/motherArea) * 100);
-         
-        })
-      })
-
-
+  let selectedRegions = renderRectangle.getSelectedRegions();
+  if (selectedRegions.length > 0) {
+    let detections = data.meta_data.detections;
+    selectedRegions.forEach((s) => {
+      let motherArea = s.width * s.height;
+      detections.forEach((d) => {
+        let overlapArea = getOverlap(d.cords, s);
+        console.log((overlapArea.area / motherArea) * 100);
+      });
+    });
   }
   renderVideo(data, imageCaptured);
-    //Updates the SRCs and Canvas in order to display Client Server Images
-
-
+  //Updates the SRCs and Canvas in order to display Client Server Images
 }
 
 const getVideo = async () => {
@@ -331,7 +316,7 @@ const getVideo = async () => {
 
   setSize(width, height);
 
-  setInterval (() => {
+  setInterval(() => {
     intervalProcessing(track);
   }, 1000);
 };

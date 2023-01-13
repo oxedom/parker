@@ -6,7 +6,6 @@ import React from "react";
 import CanvasInput from "../components/CanvasInput";
 import DrawingCanvas from "../components/DrawingCanvas";
 
-
 const Camera = () => {
   // renderRectangle.printHello();
   const overlayRef = useRef(null);
@@ -18,31 +17,32 @@ const Camera = () => {
   const [imageWidth, setImageWidth] = useState(640);
   const [imageHeight, setImageHeight] = useState(480);
   const [renderRectangle, setDrawRectangle] = useState(null);
-  const [fps, setFps] = useState(3000);
+  const [fps, setFps] = useState(1000);
   const [track, setTrack] = useState(null);
 
-
-
-
-
-
   const getVideo = useCallback(async () => {
-
-      const stream = await navigator.mediaDevices.getUserMedia({video: { width: { min: imageWidth } },});
-      const track = stream.getVideoTracks()[0];
-      setTrack(track); 
-
-  }, [])
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: { min: imageWidth } },
+    });
+    const track = stream.getVideoTracks()[0];
+    setTrack(track);
+  }, []);
   useEffect(() => {
-      getVideo();
-
+    getVideo();
   }, []);
 
   return (
     <Layout>
-      <div className="relative ">
 
-        <DrawingCanvas imageWidth={imageWidth} imageHeight={imageHeight}> </DrawingCanvas>
+
+        <div className="bg-red-500 ">
+          
+
+        <DrawingCanvas imageWidth={imageWidth} imageHeight={imageHeight}>
+          {" "}
+
+
+        </DrawingCanvas>
 
         <CanvasInput
           track={track}
@@ -53,18 +53,24 @@ const Camera = () => {
         />
 
 
-      </div>
-      <div>
-      <video
-        className="invisible"
-        ref={videoRef}
-        width={imageWidth}
-        height={imageHeight}
-      ></video>
-      <img  className="" width={imageWidth} height={imageHeight} ref={outputRef}/>
+        </div>
 
+        <div className="">
+        <video
+          className="invisible"
+          ref={videoRef}
+          width={imageWidth}
+          height={imageHeight}
+        ></video>
+        <img
+          className="sticky"
+          width={imageWidth}
+          height={imageHeight}
+          ref={outputRef}
+        />
 
-      </div>
+        </div>
+
 
     </Layout>
   );

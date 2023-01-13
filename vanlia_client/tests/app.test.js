@@ -80,156 +80,123 @@ describe("Fill all picture with false", () => {
   });
 });
 
-
 describe("Paint", () => {
+  test("1# Give the parent cords a larger bbox than itself and make the parent 100% true", () => {
+    let roi = fillArrayWithFalse(10, 10);
+    let trueROi = fillArrayWithTrue(10, 10);
+    let cords = {
+      top_y: 698,
+      left_x: 54,
+      right_x: 1086,
+      bottom_y: 82,
+    };
+    let paintedRoi = paint(cords, roi);
 
-test("1# Give the parent cords a larger bbox than itself and make the parent 100% true", () => 
-{
+    expect(paintedRoi).toEqual(trueROi);
+  });
 
-let roi = fillArrayWithFalse(10,10)
-let trueROi = fillArrayWithTrue(10,10)
-let cords = {
-  "top_y": 698,
-  "left_x": 54,
-  "right_x": 1086,
-  "bottom_y": 82
-}
-let paintedRoi = paint(cords,roi)
+  test("3# Paint top half with true", () => {
+    let roi = fillArrayWithFalse(4, 4);
+    let answer = [
+      [true, true, true, true],
+      [true, true, true, true],
+      [false, false, false, false],
+      [false, false, false, false],
+    ];
 
+    // let neededChanges = [
+    //   (0,0),(0,1)(0,2), (0,3)
+    //   (1,0), (1,1), (1,2), (1,3)
+    // ]
 
-  expect(paintedRoi).toEqual(trueROi);
-})
-
-
-
-
-test("3# Paint top half with true", () => 
-{
-let roi = fillArrayWithFalse(4,4)
-let answer = 
-[
-[true, true, true, true],
-[true, true, true, true],
-[false,false,false,false],
-[false,false,false,false],
-]
-
-// let neededChanges = [
-//   (0,0),(0,1)(0,2), (0,3)
-//   (1,0), (1,1), (1,2), (1,3)
-// ]
-
-  let rect = 
-  {
-    top_y: 2,
-    bottom_y: 0,
-    left_x: 0,
-    right_x: 4,
-  }
-
-
-let paintedRoi = paint(rect,roi) 
-expect(paintedRoi).toEqual(answer);
-})
-
-test("4# Paint bottom half with true", () => 
-{
-  let roi = fillArrayWithFalse(4,4)
-  let answer = 
-  [
-    [false,false,false,false],
-    [false,false,false,false],
-    [true, true, true, true],
-    [true, true, true, true],
-    ]
-    
-    let rect = 
-    {
+    let rect = {
       top_y: 2,
       bottom_y: 0,
       left_x: 0,
       right_x: 4,
-    }
+    };
 
-  let paintedRoi = paint(rect,roi) 
-  expect(paintedRoi).toEqual(answer);
-})
+    let paintedRoi = paint(rect, roi);
+    expect(paintedRoi).toEqual(answer);
+  });
 
+  test("4# Paint bottom half with true", () => {
+    let roi = fillArrayWithFalse(4, 4);
+    let answer = [
+      [false, false, false, false],
+      [false, false, false, false],
+      [true, true, true, true],
+      [true, true, true, true],
+    ];
 
-test("#5 paint half left with true", () => 
-{
-  let roi = fillArrayWithFalse(4,4)
-  let answer =   [
-    [true,true,false,false],
-    [true,true,false,false],
-    [true, true, false, false],
-    [true, true, false, false],
-    ]
-    let rect = 
-    {
+    let rect = {
+      top_y: 2,
+      bottom_y: 0,
+      left_x: 0,
+      right_x: 4,
+    };
+
+    let paintedRoi = paint(rect, roi);
+    expect(paintedRoi).toEqual(answer);
+  });
+
+  test("#5 paint half left with true", () => {
+    let roi = fillArrayWithFalse(4, 4);
+    let answer = [
+      [true, true, false, false],
+      [true, true, false, false],
+      [true, true, false, false],
+      [true, true, false, false],
+    ];
+    let rect = {
       top_y: 4,
       bottom_y: 2,
       left_x: 0,
       right_x: 2,
-    }
-    let paintedRoi = paint(rect,roi) 
+    };
+    let paintedRoi = paint(rect, roi);
     expect(paintedRoi).toEqual(answer);
+  });
 
-})
+  test("#6 paint half right with true", () => {
+    let roi = fillArrayWithFalse(4, 4);
+    let answer = [
+      [false, false, true, true],
+      [false, false, true, true],
+      [false, false, true, true],
+      [false, false, true, true],
+    ];
 
-test("#6 paint half right with true", () => 
-{
-  let roi = fillArrayWithFalse(4,4)
-  let answer = [
-    [false,false,  true,true],
-    [false,false,  true,true],
-    [false, false, true, true],
-    [false, false, true, true],
-    ]
-
-    let rect = 
-    {
+    let rect = {
       top_y: 4,
       bottom_y: 0,
       left_x: 2,
       right_x: 4,
-    }
+    };
 
-
-    let paintedRoi = paint(rect,roi) 
+    let paintedRoi = paint(rect, roi);
 
     expect(paintedRoi).toEqual(answer);
-})
+  });
 
-test("#7 Painting it all", () => 
-{
-  let roi = fillArrayWithFalse(4,4)
-  let answer = [
-    [true,true,  true,true],
-    [true,true,  true,true],
-    [true, true, true, true],
-    [true, true, true, true],
-    ]
+  test("#7 Painting it all", () => {
+    let roi = fillArrayWithFalse(4, 4);
+    let answer = [
+      [true, true, true, true],
+      [true, true, true, true],
+      [true, true, true, true],
+      [true, true, true, true],
+    ];
 
-    let rect = 
-    {
+    let rect = {
       top_y: 100,
       bottom_y: 0,
       left_x: 0,
       right_x: 100,
-    }
+    };
 
-
-    let paintedRoi = paint(rect,roi) 
+    let paintedRoi = paint(rect, roi);
 
     expect(paintedRoi).toEqual(answer);
-})
-
-
-
-
-
-
-})
-
-
+  });
+});
