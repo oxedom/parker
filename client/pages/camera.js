@@ -13,7 +13,7 @@ const Camera = () => {
   const [fps, setFps] = useState(1000);
   const [track, setTrack] = useState(null);
   const [processing, setProcessing] = useState(false)
-
+  const [selected, setSelected] = useState([])
 
 
   const getVideo = useCallback(async () => {
@@ -37,7 +37,7 @@ const Camera = () => {
 
       
           <div className="cursor-crosshair pt-10">
-        <DrawingCanvas imageWidth={imageWidth} imageHeight={imageHeight}>
+        <DrawingCanvas imageWidth={imageWidth} imageHeight={imageHeight} setSelected={setSelected} selected={selected}>
           {" "}
         </DrawingCanvas>
         <CanvasInput
@@ -49,7 +49,7 @@ const Camera = () => {
         />
         </div>
         </div>
-          <RoisFeed></RoisFeed>
+          <RoisFeed selected={selected}></RoisFeed>
           
           </>
 

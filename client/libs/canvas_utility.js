@@ -1,3 +1,5 @@
+import uniqid from 'uniqid';
+
 export function renderRectangleFactory(canvasEl, overlayEl) {
   const selectedRegions = [];
   const ctx = canvasEl.getContext("2d");
@@ -107,13 +109,17 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
       : (top_y = prevStartY);
 
     const roiObj = {
-      height: Math.abs(prevHeight),
-      right_x: right_x,
-      top_y: top_y,
-      width: Math.abs(prevWidth),
+      cords: 
+      {
+        height: Math.abs(prevHeight),
+        right_x: right_x,
+        top_y: top_y,
+        width: Math.abs(prevWidth),
+      },
+      uid: uniqid()
     };
 
-    console.log(roiObj);
+   
     selectedRegions.push(roiObj);
 
     return selectedRegions;
