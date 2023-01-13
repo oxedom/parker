@@ -2,7 +2,7 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
   const selectedRegions = [];
   const ctx = canvasEl.getContext("2d");
   const ctxo = overlayEl.getContext("2d");
-
+  console.log(canvasEl);
   ctx.strokeStyle = "green";
   ctx.lineWidth = 10;
   ctxo.strokeStyle = "blue";
@@ -82,7 +82,7 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     var height = mouseY - startY;
 
     // clear the canvas
-    ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
+    ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
     // draw a new rect from the start position
     // to the current mouse position

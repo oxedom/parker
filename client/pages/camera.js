@@ -1,13 +1,11 @@
 import Layout from "../layouts/DefaultLayout";
-import Canvas from "../components/Canvas";
-import Video from "../components/Video";
-import { useEffect, useRef, useState } from "react";
-import {
-  onTakePhotoButtonClick,
-  renderRectangleFactory,
-} from "../libs/canvas_utility";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import React from "react";
 import CanvasInput from "../components/CanvasInput";
+import DrawingCanvas from "../components/DrawingCanvas";
+
 
 const Camera = () => {
   // renderRectangle.printHello();
@@ -20,42 +18,32 @@ const Camera = () => {
   const [imageWidth, setImageWidth] = useState(640);
   const [imageHeight, setImageHeight] = useState(480);
   const [renderRectangle, setDrawRectangle] = useState(null);
-  const [fps, setFps] = useState(2000);
+  const [fps, setFps] = useState(3000);
   const [track, setTrack] = useState(null);
 
-  useEffect(() => {
-    const getVideo = async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: { min: imageWidth } },
-      });
 
-      //Gets the current screen
 
+
+
+
+  const getVideo = useCallback(async () => {
+
+      const stream = await navigator.mediaDevices.getUserMedia({video: { width: { min: imageWidth } },});
       const track = stream.getVideoTracks()[0];
+      setTrack(track); 
 
-      setTrack(track);
+  }, [])
+  useEffect(() => {
+      getVideo();
 
-      // let { width, height } = track.getSettings();
-    };
-    getVideo();
-    console.log(canvasRef);
-    // setDrawRectangle(renderRectangleFactory(canvasRef.current, overlayRef.current))
   }, []);
 
   return (
     <Layout>
-      <div className="relative">
-        <h2> I want to draw on you</h2>
-        <Canvas
-          ref={overlayRef}
-          imageWidth={imageWidth}
-          imageHeight={imageHeight}
-        />
-        <Canvas
-          ref={canvasRef}
-          imageWidth={imageWidth}
-          imageHeight={imageHeight}
-        />
+      <div className="relative ">
+
+        <DrawingCanvas imageWidth={imageWidth} imageHeight={imageHeight}> </DrawingCanvas>
+
         <CanvasInput
           track={track}
           fps={fps}
@@ -63,14 +51,21 @@ const Camera = () => {
           imageWidth={imageWidth}
           imageHeight={imageHeight}
         />
+
+
       </div>
+      <div>
       <video
         className="invisible"
         ref={videoRef}
         width={imageWidth}
         height={imageHeight}
       ></video>
-      {/* <img  className="none" width={imageWidth} height={imageHeight} ref={outputRef}/> */}
+      <img  className="" width={imageWidth} height={imageHeight} ref={outputRef}/>
+
+
+      </div>
+
     </Layout>
   );
 };
