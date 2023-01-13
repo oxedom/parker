@@ -1,5 +1,3 @@
-import uniqid from 'uniqid';
-
 export function renderRectangleFactory(canvasEl, overlayEl) {
   const selectedRegions = [];
   const ctx = canvasEl.getContext("2d");
@@ -108,6 +106,7 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
       ? (top_y = prevStartY - Math.abs(prevHeight))
       : (top_y = prevStartY);
 
+    let date = new Date
     const roiObj = {
       cords: 
       {
@@ -116,7 +115,7 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
         top_y: top_y,
         width: Math.abs(prevWidth),
       },
-      uid: uniqid()
+      time: date.getTime()
     };
 
    
@@ -129,12 +128,18 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     return selectedRegions;
   }
 
+  function getRecentRegion() 
+  {
+    return selectedRegions[selectedRegions.length-1]
+  }
+
   return {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
     handleMouseOut,
     getSelectedRegions,
+    getRecentRegion,
   };
 }
 

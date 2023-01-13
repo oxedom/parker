@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { renderRectangleFactory } from "../libs/canvas_utility";
 import uniqid from 'uniqid';
-const DrawingCanvas = ({ imageWidth, imageHeight, children, setSelected, selected}) => {
+const DrawingCanvas = ({ imageWidth, imageHeight, children, setSelected, selected, handleNewRoi}) => {
   const overlayRef = useRef(null);
   const drawCanvasRef = useRef(null);
   const [renderRectangle, setRenderRectangle] = useState(undefined);
@@ -29,19 +29,20 @@ const DrawingCanvas = ({ imageWidth, imageHeight, children, setSelected, selecte
         width={imageWidth}
         height={imageHeight}
         onMouseDown={(e) => {
-          renderRectangle.handleMouseDown(e);
+          renderRectangle && renderRectangle.handleMouseDown(e);
         }}
         onMouseMove={(e) => {
-          renderRectangle.handleMouseMove(e);
+          renderRectangle && renderRectangle.handleMouseMove(e);
         }}
         onMouseOut={(e) => {
       
-          renderRectangle.handleMouseOut(e);
+          renderRectangle && renderRectangle.handleMouseOut(e);
         }}
         onMouseUp={(e) => {
-          renderRectangle.handleMouseUp(e);
-          setSelected(renderRectangle.getSelectedRegions())
-          console.log(selected);
+          renderRectangle && renderRectangle.handleMouseUp(e);
+          let recentRoi = renderRectangle.getRecentRegion()
+          handleNewRoi(recentRoi)
+          
         }}
         className="fixed"
         style={{ zIndex: 2 }}

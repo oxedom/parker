@@ -1,4 +1,5 @@
 import Layout from "../layouts/DefaultLayout";
+import uniqid from 'uniqid';
 import { useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
 import CanvasInput from "../components/CanvasInput";
@@ -14,6 +15,20 @@ const Camera = () => {
   const [track, setTrack] = useState(null);
   const [processing, setProcessing] = useState(false)
   const [selected, setSelected] = useState([])
+
+
+  function handleNewRoi(recentRoi) 
+  {
+    const selectedObj = 
+    {
+
+      ...recentRoi,
+      uid: uniqid()
+    }
+
+
+    setSelected([...selected, selectedObj]);
+  }
 
 
   const getVideo = useCallback(async () => {
@@ -37,7 +52,7 @@ const Camera = () => {
 
       
           <div className="cursor-crosshair pt-10">
-        <DrawingCanvas imageWidth={imageWidth} imageHeight={imageHeight} setSelected={setSelected} selected={selected}>
+        <DrawingCanvas handleNewRoi={handleNewRoi} imageWidth={imageWidth} imageHeight={imageHeight} setSelected={setSelected} selected={selected}>
           {" "}
         </DrawingCanvas>
         <CanvasInput
