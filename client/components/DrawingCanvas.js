@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { renderRectangleFactory } from "../libs/canvas_utility";
 
-const DrawingCanvas = ({imageWidth, imageHeight,children,selectedBoxColor, selectingBoxColor, handleNewRoi,}) => {
+const DrawingCanvas = ({imageWidth, imageHeight,children,selectedBoxColor, selectingBoxColor, handleNewRoi, selected}) => {
 
 
   const overlayRef = useRef(null);
@@ -21,6 +21,11 @@ const DrawingCanvas = ({imageWidth, imageHeight,children,selectedBoxColor, selec
       renderRectangle.setSelectingColor(selectingBoxColor)
     }
   }, [renderRectangle, selectedBoxColor, selectingBoxColor]);
+
+  // function handleUndo() 
+  // {
+  //   renderRectangle.getSelectedRegions()
+  // }
 
   return (
     <>

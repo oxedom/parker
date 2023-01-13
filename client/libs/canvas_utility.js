@@ -1,6 +1,6 @@
 export function renderRectangleFactory(canvasEl, overlayEl) {
-  let selected = "";
-  let selecting = ""
+  let selected = "#EC3945";
+  let selecting = "#8FC93A"
   const selectedRegions = [];
   const ctx = canvasEl.getContext("2d");
   const ctxo = overlayEl.getContext("2d");
