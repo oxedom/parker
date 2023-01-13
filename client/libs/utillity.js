@@ -55,3 +55,9 @@ function rectangleArea(rect) {
   const height = rect.cords.bottom_y - rect.cords.top_y;
   return Math.abs(width * height);
 }
+
+export function finalName(name, arrayLength) {
+  if (name === "") {
+    return `ROI NUMBER: ${arrayLength + 1}`;
+  } else return name;
+}

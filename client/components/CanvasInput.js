@@ -2,11 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { onTakePhotoButtonClick } from "../libs/canvas_utility";
 import { capturedImageServer } from "../libs/utillity";
 
-
 const CanvasInput = (props) => {
   const { track, fps, outputRef } = props;
   const inputRef = useRef(null);
-
 
   useEffect(() => {
     function intervalProcessing(track) {
@@ -16,7 +14,6 @@ const CanvasInput = (props) => {
         const data = await capturedImageServer(imageCaptured);
 
         // outputRef.current.src = data.img
-
       }, fps);
     }
     if (track !== null) {
@@ -33,7 +30,6 @@ const CanvasInput = (props) => {
         height={props.imageHeight}
         className="inline"
       ></canvas>
-
     </>
   );
 };

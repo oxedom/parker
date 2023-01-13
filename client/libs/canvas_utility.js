@@ -1,11 +1,13 @@
 export function renderRectangleFactory(canvasEl, overlayEl) {
+  let selected = "";
+  let selecting = ""
   const selectedRegions = [];
   const ctx = canvasEl.getContext("2d");
   const ctxo = overlayEl.getContext("2d");
   console.log(canvasEl);
-  ctx.strokeStyle = "green";
+  ctx.strokeStyle = selecting;
   ctx.lineWidth = 10;
-  ctxo.strokeStyle = "blue";
+  ctxo.strokeStyle = selected;
   ctxo.lineWidth = 10;
   let canvasOffset = canvasEl.getBoundingClientRect();
   let offsetX = canvasOffset.left;
@@ -43,9 +45,9 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     // the drag is over, clear the dragging flag
     isDown = false;
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
-    ctx.strokeStyle = "#ABDAFC";
+    ctx.strokeStyle = selecting;
     ctx.lineWidth = 10;
-    ctxo.strokeStyle = "#66B0E6";
+    ctxo.strokeStyle = selected;
     ctxo.lineWidth = 10;
     ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
 
@@ -106,31 +108,38 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
       ? (top_y = prevStartY - Math.abs(prevHeight))
       : (top_y = prevStartY);
 
-    let date = new Date
+    let date = new Date();
     const roiObj = {
-      cords: 
-      {
+      cords: {
         height: Math.abs(prevHeight),
         right_x: right_x,
         top_y: top_y,
         width: Math.abs(prevWidth),
       },
-      time: date.getTime()
+      time: date.getTime(),
     };
 
-   
     selectedRegions.push(roiObj);
 
     return selectedRegions;
+  }
+
+  function setSelectedColor(colorHex) {
+    selected = colorHex;
+    return selected;
+  }
+
+  function setSelectingColor(colorHex) {
+    selecting = colorHex;
+    return selecting;
   }
 
   function getSelectedRegions() {
     return selectedRegions;
   }
 
-  function getRecentRegion() 
-  {
-    return selectedRegions[selectedRegions.length-1]
+  function getRecentRegion() {
+    return selectedRegions[selectedRegions.length - 1];
   }
 
   return {
@@ -139,6 +148,8 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     handleMouseUp,
     handleMouseOut,
     getSelectedRegions,
+    setSelectedColor,
+    setSelectingColor,
     getRecentRegion,
   };
 }
