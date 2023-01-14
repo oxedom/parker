@@ -1,7 +1,8 @@
-import { debounce } from "lodash";
+
 
 const Toolbar = ({
   fps,
+  classes,
   selectingBoxColor,
   selectedBoxColor,
   setRoiType,
@@ -59,6 +60,10 @@ const Toolbar = ({
           className="border-2 border-black h-8 rounded-md"
         />
 
+        {/* <select>
+          {classes.map((c) => <option> 1 </option>)}
+        </select> */}
+
         <div className="flex">
           <span> FPMS: </span>
           <input
@@ -82,3 +87,4 @@ const Toolbar = ({
 };
 
 export default Toolbar;
+

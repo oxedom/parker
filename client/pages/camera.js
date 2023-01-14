@@ -58,7 +58,7 @@ const Camera = () => {
               setSelectingBoxColor={setSelectingBoxColor}
               setSelectedBoxColor={setSelectedBoxColor}
             ></Toolbar>
-            <div className="border-t-2 border-indigo-600">
+            <div className="border-t-8  border-gray-200">
               <div className="cursor-crosshair pt-10">
                 <DrawingCanvas
                   selectedBoxColor={selectedBoxColor}
