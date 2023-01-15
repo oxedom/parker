@@ -4,7 +4,7 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
   const selectedRegions = [];
   const ctx = canvasEl.getContext("2d");
   const ctxo = overlayEl.getContext("2d");
-  console.log(canvasEl);
+
   ctx.strokeStyle = selecting;
   ctx.lineWidth = 10;
   ctxo.strokeStyle = selected;
@@ -58,7 +58,7 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     if(rectangleArea(cords) < 500) { return }
     else 
     {
-      console.log(rectangleArea(cords))
+
       ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
       _addRegionOfIntrest(cords);
     }
@@ -142,7 +142,7 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
 
 
     selectedRegions.push(roiObj);
-    console.log(selectedRegions);
+
     return selectedRegions;
   }
 

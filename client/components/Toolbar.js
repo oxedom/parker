@@ -46,10 +46,18 @@ const Toolbar = ({
         </div>
 
 
+   
 
         </div>
 
+        <div>
+            <select>
+              <option> 1 </option>
+              <option> 2 </option>
+              <option> 2 </option>
+            </select>
 
+            </div>
 
         <input
           onChange={(e) => {

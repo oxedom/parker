@@ -7,6 +7,7 @@ import DrawingCanvas from "../components/DrawingCanvas";
 import Toolbar from "../components/Toolbar";
 import RoisFeed from "../components/RoisFeed";
 import { finalName } from "../libs/utillity";
+import Selector from "../components/Selector";
 const Camera = () => {
   const outputRef = useRef(null);
   const [imageWidth, setImageWidth] = useState(1280);
@@ -20,6 +21,7 @@ const Camera = () => {
   const [selectingBoxColor, setSelectingBoxColor] = useState("#8FC93A");
   const [selectedBoxColor, setSelectedBoxColor] = useState("#EC3945");
 
+
   function handleNewRoi(recentRoi) {
     const selectedObj = {
       name: finalName(roiName, selected.length),
@@ -30,6 +32,7 @@ const Camera = () => {
 
     setSelected([...selected, selectedObj]);
   }
+
 
   const getVideo = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -61,37 +64,25 @@ const Camera = () => {
               setSelectedBoxColor={setSelectedBoxColor}
             ></Toolbar>
             <div className="border-t-8  border-gray-200">
-              <div className="cursor-crosshair pt-10">
-                <DrawingCanvas
-                  selectedBoxColor={selectedBoxColor}
-                  selectingBoxColor={selectingBoxColor}
-                  handleNewRoi={handleNewRoi}
-                  imageWidth={imageWidth}
-                  imageHeight={imageHeight}
-                  selected={selected}
-                >
-                  {" "}
-                </DrawingCanvas>
-                <CanvasInput
-                  track={track}
-                  fps={fps}
-                  outputRef={outputRef}
-                  imageWidth={imageWidth}
-                  imageHeight={imageHeight}
-                />
-              </div>
+              <Selector 
+              selectedBoxColor={selectedBoxColor} 
+              selectingBoxColor={selectingBoxColor}
+              imageHeight={imageHeight}
+              selected={selected}
+              outputRef={outputRef}
+              fps={fps}
+              track={track}
+              handleNewRoi={handleNewRoi}
+              imageWidth={imageWidth}
+       
+              ></Selector>
             </div>
             <RoisFeed selected={selected}></RoisFeed>
           </>
         </div>
       ) : (
         <>
-          <img
-            className=""
-            width={imageWidth}
-            height={imageHeight}
-            ref={outputRef}
-          />
+ 
         </>
       )}
     </Layout>
