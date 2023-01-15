@@ -42,6 +42,8 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     e.preventDefault();
     e.stopPropagation();
 
+
+    
     // the drag is over, clear the dragging flag
     isDown = false;
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
@@ -49,9 +51,19 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     ctx.lineWidth = 10;
     ctxo.strokeStyle = selected;
     ctxo.lineWidth = 10;
-    ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
 
-    _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight);
+
+
+    let cords = convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight)
+    if(rectangleArea(cords) < 500) { return }
+    else 
+    {
+      console.log(rectangleArea(cords))
+      ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
+      _addRegionOfIntrest(cords);
+    }
+
+
   }
 
   function handleMouseOut(e) {
@@ -97,7 +109,8 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     prevHeight = height;
   }
 
-  function _addRegionOfIntrest(prevStartX, prevStartY, prevWidth, prevHeight) {
+  function convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight) 
+  {
     let right_x = null;
     let top_y = null;
 
@@ -109,18 +122,27 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
       : (top_y = prevStartY);
 
     let date = new Date();
-    const roiObj = {
-      cords: {
+    const cords = {
         height: Math.abs(prevHeight),
         right_x: right_x,
         top_y: top_y,
         width: Math.abs(prevWidth),
-      },
+    };
+
+    return cords;
+  }
+
+  function _addRegionOfIntrest(cords) {
+
+    let date = new Date();
+    const roiObj = {
+      cords: {...cords},
       time: date.getTime(),
     };
 
-    selectedRegions.push(roiObj);
 
+    selectedRegions.push(roiObj);
+    console.log(selectedRegions);
     return selectedRegions;
   }
 
@@ -201,4 +223,8 @@ export const setSize = (width, height, screen) => {
 export function renderVideo(outputRef, data, imageCaptured) {
   // onTakePhotoButtonClick(imageCaptured);
   outputRef.current.src = data.img;
+}
+
+export function rectangleArea(rect) {
+  return Math.abs(rect.width * rect.height);
 }

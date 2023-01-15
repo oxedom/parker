@@ -37,10 +37,12 @@ const Camera = () => {
     });
     const track = stream.getVideoTracks()[0];
     setTrack(track);
+
+
   }, []);
   useEffect(() => {
     getVideo();
-  }, []);
+  }, [getVideo]);
 
   return (
     <Layout>
@@ -66,7 +68,6 @@ const Camera = () => {
                   handleNewRoi={handleNewRoi}
                   imageWidth={imageWidth}
                   imageHeight={imageHeight}
-                  setSelected={setSelected}
                   selected={selected}
                 >
                   {" "}

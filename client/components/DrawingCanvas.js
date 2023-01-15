@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { renderRectangleFactory } from "../libs/canvas_utility";
-
+import { rectangleArea} from '../libs/canvas_utility'
 const DrawingCanvas = ({imageWidth, imageHeight,children,selectedBoxColor, selectingBoxColor, handleNewRoi, selected}) => {
 
 
@@ -53,9 +53,8 @@ const DrawingCanvas = ({imageWidth, imageHeight,children,selectedBoxColor, selec
         }}
         onMouseUp={(e) => {
           renderRectangle && renderRectangle.handleMouseUp(e);
-          let recentRoi = renderRectangle.getRecentRegion();
-          handleNewRoi(recentRoi);
-        }}
+    
+       }}
         className="fixed"
         style={{ zIndex: 2 }}
         id="draw_canvas"
