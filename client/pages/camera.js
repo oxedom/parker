@@ -2,16 +2,20 @@ import Layout from "../layouts/DefaultLayout";
 import uniqid from "uniqid";
 import { useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
-import CanvasInput from "../components/CanvasInput";
-import DrawingCanvas from "../components/DrawingCanvas";
 import Toolbar from "../components/Toolbar";
 import RoisFeed from "../components/RoisFeed";
 import { finalName } from "../libs/utillity";
 import Selector from "../components/Selector";
+import {imageWidthState, imageHeightState} from '../components/states'
+import { useRecoilState, useRecoilValue } from "recoil";
+
 const Camera = () => {
   const outputRef = useRef(null);
-  const [imageWidth, setImageWidth] = useState(1280);
-  const [imageHeight, setImageHeight] = useState(720);
+
+  const [imageWidth, setImageWidth] = useRecoilState(imageWidthState)
+  const [imageHeight, setImageHeight] = useRecoilState(imageHeightState)
+
+
   const [fps, setFps] = useState(1000);
   const [track, setTrack] = useState(null);
   const [processing, setProcessing] = useState(false);
@@ -22,6 +26,11 @@ const Camera = () => {
   const [selectedBoxColor, setSelectedBoxColor] = useState("#EC3945");
 
 
+
+
+
+
+ 
   function handleNewRoi(recentRoi) {
     const selectedObj = {
       name: finalName(roiName, selected.length),
@@ -32,7 +41,6 @@ const Camera = () => {
 
     setSelected([...selected, selectedObj]);
   }
-
 
   const getVideo = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -50,7 +58,7 @@ const Camera = () => {
   return (
     <Layout>
       {!processing ? (
-        <div className="flex  justify-center m-2  ">
+        <div className="flex justify-center m-2  ">
           <>
             <Toolbar
               setRoiName={setRoiName}
@@ -67,13 +75,13 @@ const Camera = () => {
               <Selector 
               selectedBoxColor={selectedBoxColor} 
               selectingBoxColor={selectingBoxColor}
-              imageHeight={imageHeight}
+           
               selected={selected}
               outputRef={outputRef}
               fps={fps}
               track={track}
               handleNewRoi={handleNewRoi}
-              imageWidth={imageWidth}
+ 
        
               ></Selector>
             </div>

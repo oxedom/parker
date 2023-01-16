@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { renderRectangleFactory } from "../libs/canvas_utility";
+import {imageWidthState, imageHeightState} from '../components/states'
+import { useRecoilState } from "recoil";
 
-const DrawingCanvas = ({imageWidth, imageHeight,children,selectedBoxColor, selectingBoxColor, handleNewRoi, selected}) => {
+const DrawingCanvas = ({children,selectedBoxColor, selectingBoxColor, handleNewRoi, selected}) => {
+
+  const [imageWidth] = useRecoilState(imageWidthState)
+  const [imageHeight] = useRecoilState(imageHeightState)
 
 
   const overlayRef = useRef(null);
