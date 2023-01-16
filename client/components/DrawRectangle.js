@@ -83,7 +83,7 @@ const DrawRectangle = () => {
   function handleMouseDown(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('handlemouse');
+
         //(0,0) Would be the top left cornor
         //(Max Width, Max Height ) woul be the bottom right cornor
         // save the starting x/y of the rectangle
@@ -109,7 +109,7 @@ const DrawRectangle = () => {
     // save the starting x/y of the rectangle
     const mouseX = parseInt(e.clientX - offsetX);
     const mouseY = parseInt(e.clientY - offsetY);
-
+ 
     // calculate the rectangle width/height based
     // on starting vs current mouse position
     var width = mouseX - startX.current;
@@ -117,16 +117,17 @@ const DrawRectangle = () => {
 
     // clear the canvas
     ctxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
+    
     // draw a new rect from the start position
     // to the current mouse position
-    ctxRef.current.strokeRect(startX, startY, width, height);
+    
+    ctxRef.current.strokeRect(startX.current, startY.current, width, height);
 
     setPrevStartX(startX.current) 
     setPrevStartY(startY.current)
     setPrevWidth(width)
     setPrevHeight(height)
- 
+    
   }
 
   function handleMouseUp(e) {
@@ -169,6 +170,14 @@ const DrawRectangle = () => {
     return ( <div>
 
 
+<canvas className="fixed"
+            style={{ zIndex: 2 }}
+                ref={canvasRef}
+                width={1280}
+                height={720}
+          >
+            </canvas>
+
 
        <canvas
         ref={overlayRef}
@@ -178,7 +187,7 @@ const DrawRectangle = () => {
             handleMouseDown(e)
         }}
         onMouseMove={(e) => {
-            console.log(e);
+
             handleMouseMove(e)
         }}
         onMouseOut={(e) => {
@@ -194,16 +203,7 @@ const DrawRectangle = () => {
       ></canvas>
 
 
-            <canvas className="fixed"
-            style={{ zIndex: 3 }}
-                ref={canvasRef}
-                width={1280}
-                height={720}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseOut={handleMouseOut}>
-            </canvas>
+   
 
 
     </div> );
