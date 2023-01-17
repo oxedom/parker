@@ -13,8 +13,8 @@ const Selector = ({
   
   return (
     <div className="cursor-crosshair pt-10">
-          <DrawingCanvas></DrawingCanvas>
-      <CanvasInput track={track} fps={fps} outputRef={outputRef} />
+      <DrawingCanvas></DrawingCanvas>
+      <CanvasInput track={track} fps={fps}  />
     </div>
   );
 };

@@ -1,27 +1,25 @@
 import Layout from "../layouts/DefaultLayout";
 
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
 import Toolbar from "../components/Toolbar";
 import RoisFeed from "../components/RoisFeed";
-import { finalName } from "../libs/utillity";
 import Selector from "../components/Selector";
-import { imageWidthState, selectedRoiState} from "../components/states";
+import { imageWidthState, processingState} from "../components/states";
 import { useRecoilState } from "recoil";
+import ProcessingFeed from "../components/ProcessingFeed";
 
 const Camera = () => {
-  const outputRef = useRef(null);
+
 
 
   const [imageWidth] = useRecoilState(imageWidthState);
+  const [processing, setProcessing] = useRecoilState(processingState);
 
   const [fps, setFps] = useState(1000);
   const [track, setTrack] = useState(null);
-  const [processing, setProcessing] = useState(false);
 
-
-  const [selectingBoxColor, setSelectingBoxColor] = useState("#8FC93A");
-  const [selectedBoxColor, setSelectedBoxColor] = useState("#EC3945");
 
 
 
@@ -38,33 +36,28 @@ const Camera = () => {
 
   return (
     <Layout>
-      {!processing ? (
-        <div className="flex justify-center m-2  ">
-          <>
-            <Toolbar
-  
-              fps={fps}
-        
-            ></Toolbar>
-            <div className="border-t-8  border-gray-200">
-              <Selector
-     
-                outputRef={outputRef}
-                fps={fps}
-                track={track}
-      
-              >
+      <div className="flex justify-center m-2">
+      <Toolbar fps={fps}></Toolbar>
+      {!processing ? (<>
+
+      <Selector 
+      fps={fps} track={track}></Selector>
+      </>) : (<>
+    
+      <ProcessingFeed></ProcessingFeed>
+      </>)}
 
 
-              </Selector>
-            </div>
-           
-            <RoisFeed ></RoisFeed>
-          </>
-        </div>
-      ) : (
-        <></>
-      )}
+
+
+       <RoisFeed></RoisFeed>
+
+
+
+
+
+      </div>
+
     </Layout>
   );
 };

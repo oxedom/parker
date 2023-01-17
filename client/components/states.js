@@ -17,6 +17,11 @@ const roiNameState= atom({
   default:"",
 });
 
+const processingState= atom({
+  key: "processingState",
+  default:false,
+});
+
 
 const selectedRoiState = selector({
   key: 'selectedRoisState',
@@ -90,6 +95,12 @@ const imageWidthState = atom({
   default: 1280,
 });
 
+
+const outputImageState = atom({
+  key: "outputImage",
+  default: "",
+});
+
 export { 
   roiTypeState,
   roiNameState,
@@ -97,4 +108,6 @@ export {
    imageHeightState,
     selectingColorState,
     selectedColorColorState,
+    processingState,
+    outputImageState,
      selectedRoiState};
