@@ -205,7 +205,7 @@ export function drawCanvas(canvasEl, img) {
     );
 }
 
-export async function onTakePhotoButtonClick(capturedImage, inputCanvasRef) {
+export async function imageCapturedToCanvas(capturedImage, inputCanvasRef) {
   try {
     const blob = await capturedImage.takePhoto();
     const imageBitmap = await createImageBitmap(blob);

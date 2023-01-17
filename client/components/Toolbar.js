@@ -7,7 +7,7 @@ import {
   roiNameState,
 } from "./states";
 
-const Toolbar = ({ fps, setFps }) => {
+const Toolbar = () => {
   const [selectedColor, setSelectedColor] = useRecoilState(
     selectedColorColorState
   );
@@ -21,10 +21,7 @@ const Toolbar = ({ fps, setFps }) => {
     stateChanger(e.target.value);
   };
 
-  function handleProcessing() {
-    console.log(1);
-    processing ? setProcessing(false) : setProcessing(true);
-  }
+  function handleProcessing() { processing ? setProcessing(false) : setProcessing(true);}
 
   return (
     <div className="border-8 p-1  w-80 flex  rounded-l-lg">
@@ -63,7 +60,7 @@ const Toolbar = ({ fps, setFps }) => {
             }}
             value={roiName}
             placeholder={"ROI name"}
-            className="border-2 border-black h-5 rounded-md"
+            className="border-2 border-black h-14 rounded-md"
           />
 
           <select
@@ -85,9 +82,9 @@ const Toolbar = ({ fps, setFps }) => {
             <label> FPMS: </label>
             <input
               type="number"
-              value={fps}
+              value={1337}
               onChange={(e) => {
-                setFps(e.target.value);
+          
               }}
               className="border-2 border-black h-8 rounded-md"
               placeholder="FPS"

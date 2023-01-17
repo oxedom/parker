@@ -9,6 +9,7 @@ const DrawingCanvas = () => {
   const selectedColor = useRecoilValue(selectedColorColorState);
   const selectingColor = useRecoilValue(selectingColorState);
 
+  
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
   const canvasRef = useRef(null);
