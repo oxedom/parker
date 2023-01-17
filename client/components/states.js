@@ -1,9 +1,4 @@
-import {
-    atom,
-    selector,
-  } from 'recoil';
-  
-
+import { atom, selector } from "recoil";
 
 // const charState = selector({
 //     key: 'charState',
@@ -14,16 +9,13 @@ import {
 // })
 
 const imageHeightState = atom({
-    key: 'imageHeight',
-    default: 720
-  });
+  key: "imageHeight",
+  default: 720,
+});
 
-  const imageWidthState = atom({
-    key: 'imageWidth',
-    default: 1280
-  });
+const imageWidthState = atom({
+  key: "imageWidth",
+  default: 1280,
+});
 
-
-
-
-export {imageWidthState, imageHeightState}
+export { imageWidthState, imageHeightState };

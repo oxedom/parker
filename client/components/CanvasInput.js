@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { onTakePhotoButtonClick } from "../libs/canvas_utility";
 import { capturedImageServer } from "../libs/utillity";
-import {imageWidthState, imageHeightState} from '../components/states'
+import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilState } from "recoil";
-
 
 const CanvasInput = (props) => {
   const { track, fps, outputRef } = props;
 
 
-  const [imageWidth] = useRecoilState(imageWidthState)
-  const [imageHeight] = useRecoilState(imageHeightState)
+  const [imageWidth] = useRecoilState(imageWidthState);
+  const [imageHeight] = useRecoilState(imageHeightState);
   const inputRef = useRef(null);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 export function renderRectangleFactory(canvasEl, overlayEl) {
   let selected = "#EC3945";
-  let selecting = "#8FC93A"
+  let selecting = "#8FC93A";
   const selectedRegions = [];
   const ctx = canvasEl.getContext("2d");
   const ctxo = overlayEl.getContext("2d");
@@ -42,8 +42,6 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     e.preventDefault();
     e.stopPropagation();
 
-
-    
     // the drag is over, clear the dragging flag
     isDown = false;
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
@@ -52,18 +50,18 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     ctxo.strokeStyle = selected;
     ctxo.lineWidth = 10;
 
-
-
-    let cords = convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight)
-    if(rectangleArea(cords) < 500) { return }
-    else 
-    {
-
+    let cords = convertEventCordsToRoi(
+      prevStartX,
+      prevStartY,
+      prevWidth,
+      prevHeight
+    );
+    if (rectangleArea(cords) < 500) {
+      return;
+    } else {
       ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
       _addRegionOfIntrest(cords);
     }
-
-
   }
 
   function handleMouseOut(e) {
@@ -109,8 +107,12 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
     prevHeight = height;
   }
 
-  function convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight) 
-  {
+  function convertEventCordsToRoi(
+    prevStartX,
+    prevStartY,
+    prevWidth,
+    prevHeight
+  ) {
     let right_x = null;
     let top_y = null;
 
@@ -123,23 +125,21 @@ export function renderRectangleFactory(canvasEl, overlayEl) {
 
     let date = new Date();
     const cords = {
-        height: Math.abs(prevHeight),
-        right_x: right_x,
-        top_y: top_y,
-        width: Math.abs(prevWidth),
+      height: Math.abs(prevHeight),
+      right_x: right_x,
+      top_y: top_y,
+      width: Math.abs(prevWidth),
     };
 
     return cords;
   }
 
   function _addRegionOfIntrest(cords) {
-
     let date = new Date();
     const roiObj = {
-      cords: {...cords},
+      cords: { ...cords },
       time: date.getTime(),
     };
-
 
     selectedRegions.push(roiObj);
 

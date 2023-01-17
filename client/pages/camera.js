@@ -6,15 +6,14 @@ import Toolbar from "../components/Toolbar";
 import RoisFeed from "../components/RoisFeed";
 import { finalName } from "../libs/utillity";
 import Selector from "../components/Selector";
-import {imageWidthState, imageHeightState} from '../components/states'
+import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 const Camera = () => {
   const outputRef = useRef(null);
 
-  const [imageWidth, setImageWidth] = useRecoilState(imageWidthState)
-  const [imageHeight, setImageHeight] = useRecoilState(imageHeightState)
-
+  const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
+  const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
 
   const [fps, setFps] = useState(1000);
   const [track, setTrack] = useState(null);
@@ -25,12 +24,6 @@ const Camera = () => {
   const [selectingBoxColor, setSelectingBoxColor] = useState("#8FC93A");
   const [selectedBoxColor, setSelectedBoxColor] = useState("#EC3945");
 
-
-
-
-
-
- 
   function handleNewRoi(recentRoi) {
     const selectedObj = {
       name: finalName(roiName, selected.length),
@@ -48,8 +41,6 @@ const Camera = () => {
     });
     const track = stream.getVideoTracks()[0];
     setTrack(track);
-
-
   }, []);
   useEffect(() => {
     getVideo();
@@ -72,26 +63,25 @@ const Camera = () => {
               setSelectedBoxColor={setSelectedBoxColor}
             ></Toolbar>
             <div className="border-t-8  border-gray-200">
-              <Selector 
-              selectedBoxColor={selectedBoxColor} 
-              selectingBoxColor={selectingBoxColor}
-           
-              selected={selected}
-              outputRef={outputRef}
-              fps={fps}
-              track={track}
-              handleNewRoi={handleNewRoi}
- 
-       
-              ></Selector>
+              <Selector
+                selectedBoxColor={selectedBoxColor}
+                selectingBoxColor={selectingBoxColor}
+                selected={selected}
+                outputRef={outputRef}
+                fps={fps}
+                track={track}
+                handleNewRoi={handleNewRoi}
+              >
+
+
+              </Selector>
             </div>
+           
             <RoisFeed selected={selected}></RoisFeed>
           </>
         </div>
       ) : (
-        <>
- 
-        </>
+        <></>
       )}
     </Layout>
   );
