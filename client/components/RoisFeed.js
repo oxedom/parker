@@ -21,15 +21,20 @@ const RoisFeed = () => {
 
   
   return (
-    <div className="border-2 border-indigo-600 w-80  rounded-r-lg flex flex-col">
-      <h4 className="text-3xl border-2 border-black"> Selected ROI's</h4>
-
+    
+    <div className="border-2 border-indigo-600 rounded-r-lg w-80  ">
+      <h4 className="text-3xl border-2   border-black "> Selected ROI's</h4>
+      <div className='overflow-y-scroll h-96'>
       {selectedRegions.map((s) => (
-        <div className="flex ">
-          <h1 key={s.uid}> {s.name}</h1>
+        <div key={s.uid} className="flex">
+          <h1>{s.name}</h1>
           <div value={s.uid} onClick={(e)=> {(handleRoiDelete(s.uid))}} className="btn bg-red-500 p-4">DELETE </div>
         </div>
       ))}
+
+      </div>
+
+
     </div>
   );
 };

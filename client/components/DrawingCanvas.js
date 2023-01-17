@@ -28,6 +28,10 @@ const DrawingCanvas = () => {
   const [prevWidth, setPrevWidth] = useState(0);
   const [prevHeight, setPrevHeight] = useState(0);
   const [prevSelectedColor, setPrevSelected] = useState(null)
+  const [currentCords, setCurrentCords] = useState({        right_x: 0,
+    width: 50,
+    top_y: 0,
+    height: 0})
 
   function convertEventCordsToRoi(
     prevStartX,
@@ -46,6 +50,7 @@ const DrawingCanvas = () => {
       : (top_y = prevStartY);
 
     let date = new Date();
+
     const cords = {
       height: Math.abs(prevHeight),
       right_x: right_x,
@@ -65,6 +70,13 @@ const DrawingCanvas = () => {
     }
     setSelectedRois(action)
 
+    setCurrentCords(
+      {
+        right_x: 0,
+        width: 50,
+        top_y: 0,
+        height: 0
+      })
 
   }
 
@@ -97,6 +109,21 @@ const DrawingCanvas = () => {
     setOffsetY(canvasOffset.top);
   }, []);
 
+
+  useEffect(() => 
+  {
+    if(ctxoRef.current != null) 
+    {
+    
+
+
+
+
+    }
+
+
+  }, [selectedRoi])
+
   function handleMouseDown(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -106,6 +133,7 @@ const DrawingCanvas = () => {
     // save the starting x/y of the rectangle
     startX.current = parseInt(e.clientX - offsetX);
     startY.current = parseInt(e.clientY - offsetY);
+    
 
     // set a flag indicating the drag has begun
     setIsDown(true);
@@ -142,13 +170,26 @@ const DrawingCanvas = () => {
 
     // draw a new rect from the start position
     // to the current mouse position
-
+    ctxoRef.current.strokeStyle = prevSelectedColor;
     ctxRef.current.strokeRect(startX.current, startY.current, width, height);
 
     setPrevStartX(startX.current);
     setPrevStartY(startY.current);
     setPrevWidth(width);
     setPrevHeight(height);
+
+
+    setCurrentCords
+    (
+      convertEventCordsToRoi
+    (
+      prevStartX,
+      prevStartY,
+      prevWidth,
+      prevHeight
+    )
+    )
+
   }
 
   function handleMouseUp(e) {
@@ -158,26 +199,28 @@ const DrawingCanvas = () => {
     // the drag is over, clear the dragging flag
     setIsDown(false);
 
-    // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
+
     ctxRef.current.strokeStyle = selectingColor;
     ctxRef.current.lineWidth = 10;
     ctxoRef.current.strokeStyle = prevSelectedColor;
     ctxoRef.current.lineWidth = 10;
 
     
-    let cords = convertEventCordsToRoi(
-      prevStartX,
-      prevStartY,
-      prevWidth,
-      prevHeight
-    );
-    if (rectangleArea(cords) < 500) {
+   
+  
+
+
+    if (rectangleArea(currentCords) < 500) {
+     
       return;
     } else {
       setPrevSelected(selectedColor)
       ctxoRef.current.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
-    
-      _addRegionOfIntrest(cords);
+  
+
+      _addRegionOfIntrest(currentCords);
+
+
     }
   }
 

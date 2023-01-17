@@ -175,7 +175,7 @@ def handle_yolo():
     # checkIntersection(detections[0], detections[1])
 
     resObj = {
-        "img":f"data:image/jpg;base64,{im_b64_utf8}",
+        # "img":f"data:image/jpg;base64,{im_b64_utf8}",
         "time": time.time(),
         "img_width": img_width,
         "img_height": img_height,
