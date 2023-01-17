@@ -1,15 +1,11 @@
-const Toolbar = ({
-  fps,
-  classes,
-  selectingBoxColor,
-  selectedBoxColor,
-  setRoiType,
-  setRoiName,
-  setFps,
-  roiName,
-  setSelectingBoxColor,
-  setSelectedBoxColor,
-}) => {
+import { useRecoilState } from "recoil";
+import {selectingColorState, selectedColorColorState} from './states'
+const Toolbar = ({fps, classes,selectingBoxColor, selectedBoxColor, setRoiType, setRoiName, setFps, roiName,}) => {
+
+
+  const [selectedColor,setSelectedColor] = useRecoilState(selectedColorColorState);
+  const [selectingColor, setSelectingColor] = useRecoilState(selectingColorState);
+
   const handleColorChange = (e, stateChanger) => {
     stateChanger(e.target.value);
   };
@@ -25,20 +21,20 @@ const Toolbar = ({
         <div>
           <div className="border-b-4 border-black ">
             <input
-              value={selectingBoxColor}
+              value={selectingColor}
               type="color"
               className="h-20 w-20"
               onChange={(e) => {
-                handleColorChange(e, setSelectingBoxColor);
+                handleColorChange(e, setSelectingColor);
               }}
             />
 
             <input
               className="h-20 w-20"
-              value={selectedBoxColor}
+              value={selectedColor}
               type="color"
               onChange={(e) => {
-                handleColorChange(e, setSelectedBoxColor);
+                handleColorChange(e, setSelectedColor);
               }}
             />
           </div>

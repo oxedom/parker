@@ -4,12 +4,11 @@ import { useRecoilValue } from "recoil"
 const DrawingCanvas = () => {
 
 
-  let selected = "#EC3945";
-  let selecting = "#8FC93A";
+ 
   const selectedRegions = [];
   const selectedColor = useRecoilValue(selectedColorColorState);
   const selectingColor= useRecoilValue(selectingColorState);
-  console.log(selectingColor);
+  let prevSelectedColor = selectedColor
 
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
@@ -150,9 +149,10 @@ const DrawingCanvas = () => {
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
     ctxRef.current.strokeStyle = selectingColor;
     ctxRef.current.lineWidth = 10;
-    ctxoRef.current.strokeStyle = selectedColor;
+    ctxoRef.current.strokeStyle = prevSelectedColor;
     ctxoRef.current.lineWidth = 10;
-
+    prevSelectedColor = selectedColor
+    
     let cords = convertEventCordsToRoi(
       prevStartX,
       prevStartY,
@@ -163,6 +163,7 @@ const DrawingCanvas = () => {
       return;
     } else {
       ctxoRef.current.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
+    
       _addRegionOfIntrest(cords);
     }
   }
