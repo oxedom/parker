@@ -26,29 +26,44 @@ const selectedRoiState = selector({
     return selectedRois
   },
 
-  set: ({ set, get}, cords) => {
+  set: ({ set, get}, action) => {
 
-    let date = new Date();
-    let roiType = get(roiTypeState)
-    let roiName = get(roiNameState)
-    const oldRois = get(selectedRoi)
 
-    const roiObj = {
-      name: finalName(roiName, oldRois.length),
-      roi_type: roiType,
-      cords: { ...cords },
-      time: date.getTime(),
-      uid: uniqid(),
-    };
-    
+    if(action.event === 'addRoi')
+    {
+      let cords = action.payload
+      let date = new Date();
+      let roiType = get(roiTypeState)
+      let roiName = get(roiNameState)
+      const oldRois = get(selectedRoi)
   
+      const roiObj = {
+        name: finalName(roiName, oldRois.length),
+        roi_type: roiType,
+        cords: { ...cords },
+        time: date.getTime(),
+        uid: uniqid(),
+      };
+  
+      const updatedArr = [...oldRois, roiObj]
+  
+      set(selectedRoi,updatedArr) 
 
-
-    const updatedArr = [...oldRois, roiObj]
-
-    set(selectedRoi,updatedArr) 
+    }
+   if(action.event === 'deleteRoi') 
+   {
+    let uid = action.payload
+    const oldRois = get(selectedRoi)
+    const updatedArr = oldRois.filter(roi => roi.uid !== uid)
+    set(selectedRoi, updatedArr)
+   }
 
   },
+
+
+
+
+
 });
 
 

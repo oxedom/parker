@@ -9,7 +9,7 @@ const DrawingCanvas = () => {
 
 
 
-  const [selectedRegions, setSelectedRegions] = useRecoilState(selectedRoiState)
+  const [selectedRoi, setSelectedRois] = useRecoilState(selectedRoiState)
   const selectedColor = useRecoilValue(selectedColorColorState);
   const selectingColor= useRecoilValue(selectingColorState);
 
@@ -58,16 +58,26 @@ const DrawingCanvas = () => {
 
   function _addRegionOfIntrest(cords) {
 
+    let action = 
+    {
+      event: 'addRoi',
+      payload: cords
+    }
+    setSelectedRois(action)
 
-    setSelectedRegions(cords)
-    // selectedRegions.push(roiObj);
 
-    return selectedRegions;
   }
 
   function rectangleArea(rect) {
     return Math.abs(rect.width * rect.height);
   }
+
+  useEffect(() => 
+  {
+    
+
+  }, [selectedRoi])
+
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
