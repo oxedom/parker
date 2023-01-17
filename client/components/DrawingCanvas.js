@@ -153,7 +153,7 @@ const DrawingCanvas = () => {
     ctxRef.current.lineWidth = 10;
     ctxoRef.current.strokeStyle = prevSelectedColor;
     ctxoRef.current.lineWidth = 10;
-    setPrevSelected(selectedColor)
+
     
     let cords = convertEventCordsToRoi(
       prevStartX,
@@ -164,6 +164,7 @@ const DrawingCanvas = () => {
     if (rectangleArea(cords) < 500) {
       return;
     } else {
+      setPrevSelected(selectedColor)
       ctxoRef.current.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
     
       _addRegionOfIntrest(cords);
