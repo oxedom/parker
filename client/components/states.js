@@ -1,37 +1,48 @@
 import { atom, selector } from "recoil";
+import uniqid from "uniqid";
+import { finalName } from "../libs/utillity";
 
-// const charState = selector({
-//     key: 'charState',
-//     get: ({get}) => {
-//         const name = get(nameState)
-//         return name.length ;
-//     }
-// })
 const selectedRoi= atom({
   key: "selectedRois",
   default:[],
 });
 
+const roiTypeState= atom({
+  key: "roiType",
+  default:"Any",
+});
+
+const roiNameState= atom({
+  key: "roiName",
+  default:"",
+});
 
 
 const selectedRoiState = selector({
   key: 'selectedRoisState',
-  default:0,
+  default:[],
   get: ({ get }) => {
     const selectedRois = get(selectedRoi)
     return selectedRois
   },
+
   set: ({ set, get}, cords) => {
 
     let date = new Date();
+    let roiType = get(roiTypeState)
+    let roiName = get(roiNameState)
+    const oldRois = get(selectedRoi)
 
     const roiObj = {
+      name: finalName(roiName, oldRois.length),
+      roi_type: roiType,
       cords: { ...cords },
       time: date.getTime(),
+      uid: uniqid(),
     };
     
   
-    const oldRois = get(selectedRoi)
+
 
     const updatedArr = [...oldRois, roiObj]
 
@@ -64,4 +75,11 @@ const imageWidthState = atom({
   default: 1280,
 });
 
-export { imageWidthState, imageHeightState, selectingColorState,selectedColorColorState, selectedRoiState};
+export { 
+  roiTypeState,
+  roiNameState,
+  imageWidthState,
+   imageHeightState,
+    selectingColorState,
+    selectedColorColorState,
+     selectedRoiState};

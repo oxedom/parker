@@ -6,6 +6,7 @@ const RoisFeed = () => {
 
 
   const selectedRois = useRecoilValue(selectedRoiState)
+  console.log(selectedRois);
   return (
     <div className="border-2 border-indigo-600 w-80  rounded-r-lg flex flex-col">
       <h4 className="text-3xl border-2 border-black"> Selected ROI's</h4>

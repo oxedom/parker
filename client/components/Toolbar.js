@@ -1,12 +1,14 @@
 import { useRecoilState } from "recoil";
-import {selectingColorState, selectedColorColorState} from './states'
+import {selectingColorState, selectedColorColorState,roiTypeState, roiNameState} from './states'
 
 
-const Toolbar = ({fps, classes,selectingBoxColor, selectedBoxColor, setRoiType, setRoiName, setFps, roiName,}) => {
+const Toolbar = ({fps, classes,setFps }) => {
 
 
   const [selectedColor,setSelectedColor] = useRecoilState(selectedColorColorState);
   const [selectingColor, setSelectingColor] = useRecoilState(selectingColorState);
+  const [roiName, setRoiName] = useRecoilState(roiNameState)
+  const [roiType, setRoiType] = useRecoilState(roiTypeState)
 
   const handleColorChange = (e, stateChanger) => {
     stateChanger(e.target.value);
@@ -52,7 +54,8 @@ const Toolbar = ({fps, classes,selectingBoxColor, selectedBoxColor, setRoiType, 
             className="border-2 border-black h-5 rounded-md"
           />
 
-          <select className="h-10 w-32">
+          <select onChange={(e) => { setRoiType(e.target.value)}} value={roiType} className="h-10 w-32">
+            <option> Any </option>
             <option> Person </option>
             <option> Car </option>
             <option> Cat </option>
