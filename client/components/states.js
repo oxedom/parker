@@ -7,6 +7,26 @@ import { atom, selector } from "recoil";
 //         return name.length ;
 //     }
 // })
+const selectedRoi= atom({
+  key: "selectedRois",
+  default:[],
+});
+
+
+
+const selectedRoiState = selector({
+  key: 'selectedRoisState',
+  default:0,
+  get: ({ get }) => {
+    const selectedRois = get(selectedRoi)
+    return selectedRois
+  },
+  set: ({ set }, cords) => {
+    console.log(cords);
+    // set(countState, newCount * 2);
+  },
+});
+
 
 const selectingColorState = atom({
   key: "selectingColor",
@@ -31,4 +51,4 @@ const imageWidthState = atom({
   default: 1280,
 });
 
-export { imageWidthState, imageHeightState, selectingColorState,selectedColorColorState};
+export { imageWidthState, imageHeightState, selectingColorState,selectedColorColorState, selectedRoiState};
