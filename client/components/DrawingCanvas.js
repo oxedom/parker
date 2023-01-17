@@ -8,7 +8,7 @@ const DrawingCanvas = () => {
   const selectedRegions = [];
   const selectedColor = useRecoilValue(selectedColorColorState);
   const selectingColor= useRecoilValue(selectingColorState);
-  let prevSelectedColor = selectedColor
+
 
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
@@ -24,6 +24,7 @@ const DrawingCanvas = () => {
   const [prevStartY, setPrevStartY] = useState(0);
   const [prevWidth, setPrevWidth] = useState(0);
   const [prevHeight, setPrevHeight] = useState(0);
+  const [prevSelectedColor, setPrevSelected] = useState(null)
 
   function convertEventCordsToRoi(
     prevStartX,
@@ -72,7 +73,7 @@ const DrawingCanvas = () => {
     const canvasEl = canvasRef.current;
     const overlayEl = overlayRef.current;
     let canvasOffset = canvasEl.getBoundingClientRect();
-
+    setPrevSelected(selectedColor)
     ctxRef.current = canvasEl.getContext("2d");
     ctxoRef.current = overlayEl.getContext("2d");
 
@@ -146,12 +147,13 @@ const DrawingCanvas = () => {
 
     // the drag is over, clear the dragging flag
     setIsDown(false);
+
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
     ctxRef.current.strokeStyle = selectingColor;
     ctxRef.current.lineWidth = 10;
     ctxoRef.current.strokeStyle = prevSelectedColor;
     ctxoRef.current.lineWidth = 10;
-    prevSelectedColor = selectedColor
+    setPrevSelected(selectedColor)
     
     let cords = convertEventCordsToRoi(
       prevStartX,
