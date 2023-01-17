@@ -6,16 +6,14 @@ import Toolbar from "../components/Toolbar";
 import RoisFeed from "../components/RoisFeed";
 import { finalName } from "../libs/utillity";
 import Selector from "../components/Selector";
-import { imageWidthState, imageHeightState, multipliedCount} from "../components/states";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { imageWidthState, selectedRoiState} from "../components/states";
+import { useRecoilState } from "recoil";
 
 const Camera = () => {
   const outputRef = useRef(null);
 
+
   const [imageWidth] = useRecoilState(imageWidthState);
-
-
-
 
   const [fps, setFps] = useState(1000);
   const [track, setTrack] = useState(null);

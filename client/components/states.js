@@ -21,9 +21,22 @@ const selectedRoiState = selector({
     const selectedRois = get(selectedRoi)
     return selectedRois
   },
-  set: ({ set }, cords) => {
-    console.log(cords);
-    // set(countState, newCount * 2);
+  set: ({ set, get}, cords) => {
+
+    let date = new Date();
+
+    const roiObj = {
+      cords: { ...cords },
+      time: date.getTime(),
+    };
+    
+  
+    const oldRois = get(selectedRoi)
+
+    const updatedArr = [...oldRois, roiObj]
+
+    set(selectedRoi,updatedArr) 
+
   },
 });
 

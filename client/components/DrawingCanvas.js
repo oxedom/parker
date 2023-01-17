@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { selectedColorColorState, selectingColorState } from "./states";
 import { useRecoilValue } from "recoil"
+import { useRecoilState } from "recoil";
+import { selectedRoiState} from "../components/states";
+
+
 const DrawingCanvas = () => {
 
 
- 
-  const selectedRegions = [];
+
+  const [selectedRegions, setSelectedRegions] = useRecoilState(selectedRoiState)
   const selectedColor = useRecoilValue(selectedColorColorState);
   const selectingColor= useRecoilValue(selectingColorState);
-
 
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
@@ -54,13 +57,10 @@ const DrawingCanvas = () => {
   }
 
   function _addRegionOfIntrest(cords) {
-    let date = new Date();
-    const roiObj = {
-      cords: { ...cords },
-      time: date.getTime(),
-    };
 
-    selectedRegions.push(roiObj);
+
+    setSelectedRegions(cords)
+    // selectedRegions.push(roiObj);
 
     return selectedRegions;
   }
