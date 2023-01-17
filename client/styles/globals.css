@@ -5,6 +5,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-body { 
-    overflow-y: hidden;
+body {
+  overflow-y: hidden;
 }

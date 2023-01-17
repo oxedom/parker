@@ -1,17 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { selectedColorColorState, selectingColorState } from "./states";
-import { useRecoilValue } from "recoil"
+import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
-import { selectedRoiState} from "../components/states";
-
+import { selectedRoiState } from "../components/states";
 
 const DrawingCanvas = () => {
-
-
-
-  const [selectedRoi, setSelectedRois] = useRecoilState(selectedRoiState)
+  const [selectedRoi, setSelectedRois] = useRecoilState(selectedRoiState);
   const selectedColor = useRecoilValue(selectedColorColorState);
-  const selectingColor= useRecoilValue(selectingColorState);
+  const selectingColor = useRecoilValue(selectingColorState);
 
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
@@ -27,11 +23,13 @@ const DrawingCanvas = () => {
   const [prevStartY, setPrevStartY] = useState(0);
   const [prevWidth, setPrevWidth] = useState(0);
   const [prevHeight, setPrevHeight] = useState(0);
-  const [prevSelectedColor, setPrevSelected] = useState(null)
-  const [currentCords, setCurrentCords] = useState({        right_x: 0,
+  const [prevSelectedColor, setPrevSelected] = useState(null);
+  const [currentCords, setCurrentCords] = useState({
+    right_x: 0,
     width: 50,
     top_y: 0,
-    height: 0})
+    height: 0,
+  });
 
   function convertEventCordsToRoi(
     prevStartX,
@@ -62,40 +60,31 @@ const DrawingCanvas = () => {
   }
 
   function _addRegionOfIntrest(cords) {
+    let action = {
+      event: "addRoi",
+      payload: cords,
+    };
+    setSelectedRois(action);
 
-    let action = 
-    {
-      event: 'addRoi',
-      payload: cords
-    }
-    setSelectedRois(action)
-
-    setCurrentCords(
-      {
-        right_x: 0,
-        width: 50,
-        top_y: 0,
-        height: 0
-      })
-
+    setCurrentCords({
+      right_x: 0,
+      width: 50,
+      top_y: 0,
+      height: 0,
+    });
   }
 
   function rectangleArea(rect) {
     return Math.abs(rect.width * rect.height);
   }
 
-  useEffect(() => 
-  {
-    
-
-  }, [selectedRoi])
-
+  useEffect(() => {}, [selectedRoi]);
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
     const overlayEl = overlayRef.current;
     let canvasOffset = canvasEl.getBoundingClientRect();
-    setPrevSelected(selectedColor)
+    setPrevSelected(selectedColor);
     ctxRef.current = canvasEl.getContext("2d");
     ctxoRef.current = overlayEl.getContext("2d");
 
@@ -109,20 +98,10 @@ const DrawingCanvas = () => {
     setOffsetY(canvasOffset.top);
   }, []);
 
-
-  useEffect(() => 
-  {
-    if(ctxoRef.current != null) 
-    {
-    
-
-
-
-
+  useEffect(() => {
+    if (ctxoRef.current != null) {
     }
-
-
-  }, [selectedRoi])
+  }, [selectedRoi]);
 
   function handleMouseDown(e) {
     e.preventDefault();
@@ -133,7 +112,6 @@ const DrawingCanvas = () => {
     // save the starting x/y of the rectangle
     startX.current = parseInt(e.clientX - offsetX);
     startY.current = parseInt(e.clientY - offsetY);
-    
 
     // set a flag indicating the drag has begun
     setIsDown(true);
@@ -178,18 +156,9 @@ const DrawingCanvas = () => {
     setPrevWidth(width);
     setPrevHeight(height);
 
-
-    setCurrentCords
-    (
-      convertEventCordsToRoi
-    (
-      prevStartX,
-      prevStartY,
-      prevWidth,
-      prevHeight
-    )
-    )
-
+    setCurrentCords(
+      convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight)
+    );
   }
 
   function handleMouseUp(e) {
@@ -199,28 +168,18 @@ const DrawingCanvas = () => {
     // the drag is over, clear the dragging flag
     setIsDown(false);
 
-
     ctxRef.current.strokeStyle = selectingColor;
     ctxRef.current.lineWidth = 10;
     ctxoRef.current.strokeStyle = prevSelectedColor;
     ctxoRef.current.lineWidth = 10;
 
-    
-   
-  
-
-
     if (rectangleArea(currentCords) < 500) {
-     
       return;
     } else {
-      setPrevSelected(selectedColor)
+      setPrevSelected(selectedColor);
       ctxoRef.current.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
-  
 
       _addRegionOfIntrest(currentCords);
-
-
     }
   }
 

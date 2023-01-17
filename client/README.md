@@ -23,5 +23,5 @@ Toogle between edit/processing mode
 About page
 Docs page for OBS streaming
 Limit API on backend
-Each server response the photo is rendered with a 
+Each server response the photo is rendered with a
 canvas on the doc, and a rectangle is drawen using the cords
