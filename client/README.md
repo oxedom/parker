@@ -1,7 +1,7 @@
 Things to do:
 
 Not allow users to create and add to state rectnagles smaller than an area of 500
-Clean up comps and make them more modular
+
 Fix bug with selecting color by adding a temp color var
 Sort out with style
 Change button style
@@ -16,3 +16,11 @@ Add alert in the console
 Total frames sent
 Total Detections
 Edit rois button
+
+Things the app needs to have:
+An option to draw and delete ROIS.
+Toogle between edit/processing mode
+About page
+Docs page for OBS streaming
+Each server response the photo is rendered with a 
+canvas on the doc, and a rectangle is drawen using the cords
