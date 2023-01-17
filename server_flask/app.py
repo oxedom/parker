@@ -172,10 +172,10 @@ def handle_yolo():
     im_b64 = base64.b64encode(byte_encode)
     im_b64_utf8 = im_b64.decode('utf-8')
 
-    # checkIntersection(detections[0], detections[1])
+
 
     resObj = {
-        "img":f"data:image/jpg;base64,{im_b64_utf8}",
+        # "img":f"data:image/jpg;base64,{im_b64_utf8}",
         "time": time.time(),
         "img_width": img_width,
         "img_height": img_height,
@@ -187,7 +187,7 @@ def handle_yolo():
 
         }
     
-    # return f"data:image/jpg;base64,{im_b64_utf8}"
+
     return resObj
 
 
