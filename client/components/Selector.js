@@ -4,13 +4,9 @@ import DrawingCanvas from "./DrawingCanvas";
 
 
 const Selector = ({
-  selectedBoxColor,
-  selectingBoxColor,
-  selected,
   outputRef,
   fps,
   track,
-  handleNewRoi,
   children,
 }) => {
 

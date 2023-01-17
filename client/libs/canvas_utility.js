@@ -1,180 +1,180 @@
-export function renderRectangleFactory(canvasEl, overlayEl) {
-  let selected = "#EC3945";
-  let selecting = "#8FC93A";
-  const selectedRegions = [];
-  const ctx = canvasEl.getContext("2d");
-  const ctxo = overlayEl.getContext("2d");
+// export function renderRectangleFactory(canvasEl, overlayEl) {
+//   let selected = "#EC3945";
+//   let selecting = "#8FC93A";
+//   const selectedRegions = [];
+//   const ctx = canvasEl.getContext("2d");
+//   const ctxo = overlayEl.getContext("2d");
 
-  ctx.strokeStyle = selecting;
-  ctx.lineWidth = 10;
-  ctxo.strokeStyle = selected;
-  ctxo.lineWidth = 10;
-  let canvasOffset = canvasEl.getBoundingClientRect();
-  let offsetX = canvasOffset.left;
-  let offsetY = canvasOffset.top;
-  // this flage is true when the user is dragging the mouse
-  let isDown = false;
-  // these vars will hold the starting mouse position
-  let startX;
-  let startY;
+//   ctx.strokeStyle = selecting;
+//   ctx.lineWidth = 10;
+//   ctxo.strokeStyle = selected;
+//   ctxo.lineWidth = 10;
+//   let canvasOffset = canvasEl.getBoundingClientRect();
+//   let offsetX = canvasOffset.left;
+//   let offsetY = canvasOffset.top;
+//   // this flage is true when the user is dragging the mouse
+//   let isDown = false;
+//   // these vars will hold the starting mouse position
+//   let startX;
+//   let startY;
 
-  let prevStartX = 0;
-  let prevStartY = 0;
+//   let prevStartX = 0;
+//   let prevStartY = 0;
 
-  let prevWidth = 0;
-  let prevHeight = 0;
+//   let prevWidth = 0;
+//   let prevHeight = 0;
 
-  function handleMouseDown(e) {
-    e.preventDefault();
-    e.stopPropagation();
+//   function handleMouseDown(e) {
+//     e.preventDefault();
+//     e.stopPropagation();
 
-    //(0,0) Would be the top left cornor
-    //(Max Width, Max Height ) woul be the bottom right cornor
-    // save the starting x/y of the rectangle
-    startX = parseInt(e.clientX - offsetX);
-    startY = parseInt(e.clientY - offsetY);
+//     //(0,0) Would be the top left cornor
+//     //(Max Width, Max Height ) woul be the bottom right cornor
+//     // save the starting x/y of the rectangle
+//     startX = parseInt(e.clientX - offsetX);
+//     startY = parseInt(e.clientY - offsetY);
 
-    // set a flag indicating the drag has begun
-    isDown = true;
-  }
+//     // set a flag indicating the drag has begun
+//     isDown = true;
+//   }
 
-  function handleMouseUp(e) {
-    e.preventDefault();
-    e.stopPropagation();
+//   function handleMouseUp(e) {
+//     e.preventDefault();
+//     e.stopPropagation();
 
-    // the drag is over, clear the dragging flag
-    isDown = false;
-    // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
-    ctx.strokeStyle = selecting;
-    ctx.lineWidth = 10;
-    ctxo.strokeStyle = selected;
-    ctxo.lineWidth = 10;
+//     // the drag is over, clear the dragging flag
+//     isDown = false;
+//     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
+//     ctx.strokeStyle = selecting;
+//     ctx.lineWidth = 10;
+//     ctxo.strokeStyle = selected;
+//     ctxo.lineWidth = 10;
 
-    let cords = convertEventCordsToRoi(
-      prevStartX,
-      prevStartY,
-      prevWidth,
-      prevHeight
-    );
-    if (rectangleArea(cords) < 500) {
-      return;
-    } else {
-      ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
-      _addRegionOfIntrest(cords);
-    }
-  }
+//     let cords = convertEventCordsToRoi(
+//       prevStartX,
+//       prevStartY,
+//       prevWidth,
+//       prevHeight
+//     );
+//     if (rectangleArea(cords) < 500) {
+//       return;
+//     } else {
+//       ctxo.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
+//       _addRegionOfIntrest(cords);
+//     }
+//   }
 
-  function handleMouseOut(e) {
-    e.preventDefault();
-    e.stopPropagation();
+//   function handleMouseOut(e) {
+//     e.preventDefault();
+//     e.stopPropagation();
 
-    // the drag is over, clear the dragging flag
-    isDown = false;
-  }
+//     // the drag is over, clear the dragging flag
+//     isDown = false;
+//   }
 
-  function handleMouseMove(e) {
-    e.preventDefault();
-    e.stopPropagation();
+//   function handleMouseMove(e) {
+//     e.preventDefault();
+//     e.stopPropagation();
 
-    // if we're not dragging, just return
-    if (!isDown) {
-      return;
-    }
+//     // if we're not dragging, just return
+//     if (!isDown) {
+//       return;
+//     }
 
-    // get the current mouse position
-    //(0,0) Would be the top left cornor
-    //(Max Width, Max Height ) woul be the bottom right cornor
-    // save the starting x/y of the rectangle
-    const mouseX = parseInt(e.clientX - offsetX);
-    const mouseY = parseInt(e.clientY - offsetY);
+//     // get the current mouse position
+//     //(0,0) Would be the top left cornor
+//     //(Max Width, Max Height ) woul be the bottom right cornor
+//     // save the starting x/y of the rectangle
+//     const mouseX = parseInt(e.clientX - offsetX);
+//     const mouseY = parseInt(e.clientY - offsetY);
 
-    // calculate the rectangle width/height based
-    // on starting vs current mouse position
-    var width = mouseX - startX;
-    var height = mouseY - startY;
+//     // calculate the rectangle width/height based
+//     // on starting vs current mouse position
+//     var width = mouseX - startX;
+//     var height = mouseY - startY;
 
-    // clear the canvas
-    ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+//     // clear the canvas
+//     ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
-    // draw a new rect from the start position
-    // to the current mouse position
-    ctx.strokeRect(startX, startY, width, height);
+//     // draw a new rect from the start position
+//     // to the current mouse position
+//     ctx.strokeRect(startX, startY, width, height);
 
-    prevStartX = startX;
-    prevStartY = startY;
+//     prevStartX = startX;
+//     prevStartY = startY;
 
-    prevWidth = width;
-    prevHeight = height;
-  }
+//     prevWidth = width;
+//     prevHeight = height;
+//   }
 
-  function convertEventCordsToRoi(
-    prevStartX,
-    prevStartY,
-    prevWidth,
-    prevHeight
-  ) {
-    let right_x = null;
-    let top_y = null;
+//   function convertEventCordsToRoi(
+//     prevStartX,
+//     prevStartY,
+//     prevWidth,
+//     prevHeight
+//   ) {
+//     let right_x = null;
+//     let top_y = null;
 
-    prevWidth < 0
-      ? (right_x = prevStartX - Math.abs(prevWidth))
-      : (right_x = prevStartX);
-    prevHeight < 0
-      ? (top_y = prevStartY - Math.abs(prevHeight))
-      : (top_y = prevStartY);
+//     prevWidth < 0
+//       ? (right_x = prevStartX - Math.abs(prevWidth))
+//       : (right_x = prevStartX);
+//     prevHeight < 0
+//       ? (top_y = prevStartY - Math.abs(prevHeight))
+//       : (top_y = prevStartY);
 
-    let date = new Date();
-    const cords = {
-      height: Math.abs(prevHeight),
-      right_x: right_x,
-      top_y: top_y,
-      width: Math.abs(prevWidth),
-    };
+//     let date = new Date();
+//     const cords = {
+//       height: Math.abs(prevHeight),
+//       right_x: right_x,
+//       top_y: top_y,
+//       width: Math.abs(prevWidth),
+//     };
 
-    return cords;
-  }
+//     return cords;
+//   }
 
-  function _addRegionOfIntrest(cords) {
-    let date = new Date();
-    const roiObj = {
-      cords: { ...cords },
-      time: date.getTime(),
-    };
+//   function _addRegionOfIntrest(cords) {
+//     let date = new Date();
+//     const roiObj = {
+//       cords: { ...cords },
+//       time: date.getTime(),
+//     };
 
-    selectedRegions.push(roiObj);
+//     selectedRegions.push(roiObj);
 
-    return selectedRegions;
-  }
+//     return selectedRegions;
+//   }
 
-  function setSelectedColor(colorHex) {
-    selected = colorHex;
-    return selected;
-  }
+//   function setSelectedColor(colorHex) {
+//     selected = colorHex;
+//     return selected;
+//   }
 
-  function setSelectingColor(colorHex) {
-    selecting = colorHex;
-    return selecting;
-  }
+//   function setSelectingColor(colorHex) {
+//     selecting = colorHex;
+//     return selecting;
+//   }
 
-  function getSelectedRegions() {
-    return selectedRegions;
-  }
+//   function getSelectedRegions() {
+//     return selectedRegions;
+//   }
 
-  function getRecentRegion() {
-    return selectedRegions[selectedRegions.length - 1];
-  }
+//   function getRecentRegion() {
+//     return selectedRegions[selectedRegions.length - 1];
+//   }
 
-  return {
-    handleMouseDown,
-    handleMouseMove,
-    handleMouseUp,
-    handleMouseOut,
-    getSelectedRegions,
-    setSelectedColor,
-    setSelectingColor,
-    getRecentRegion,
-  };
-}
+//   return {
+//     handleMouseDown,
+//     handleMouseMove,
+//     handleMouseUp,
+//     handleMouseOut,
+//     getSelectedRegions,
+//     setSelectedColor,
+//     setSelectingColor,
+//     getRecentRegion,
+//   };
+// }
 
 export function drawCanvas(canvasEl, img) {
   // if(canvasEl === null) { return}

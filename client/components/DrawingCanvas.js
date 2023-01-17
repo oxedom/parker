@@ -1,19 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-
+import { selectedColorColorState, selectingColorState } from "./states";
+import { useRecoilValue } from "recoil"
 const DrawingCanvas = () => {
-  const canvasRef = useRef(null);
-  const overlayRef = useRef(null);
+
+
   let selected = "#EC3945";
   let selecting = "#8FC93A";
   const selectedRegions = [];
-  const [isDown, setIsDown] = useState(false);
-  const startX = useRef(null);
-  const startY = useRef(null);
-  const [offsetX, setOffsetX] = useState(undefined);
-  const [offsetY, setOffsetY] = useState(undefined);
+  const selectedColor = useRecoilValue(selectedColorColorState);
+  const selectingColor= useRecoilValue(selectingColorState);
+  console.log(selectingColor);
+
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const overlayRef = useRef(null);
+  const startX = useRef(null);
+  const startY = useRef(null);
 
+  const [isDown, setIsDown] = useState(false);
+  const [offsetX, setOffsetX] = useState(undefined);
+  const [offsetY, setOffsetY] = useState(undefined);
   const [prevStartX, setPrevStartX] = useState(0);
   const [prevStartY, setPrevStartY] = useState(0);
   const [prevWidth, setPrevWidth] = useState(0);
@@ -72,9 +79,9 @@ const DrawingCanvas = () => {
 
     const ctx = ctxRef.current;
     const ctxo = ctxoRef.current;
-    ctx.strokeStyle = selecting;
+    ctx.strokeStyle = selectingColor;
     ctx.lineWidth = 10;
-    ctxo.strokeStyle = selected;
+    ctxo.strokeStyle = selectedColor;
     ctxo.lineWidth = 10;
     setOffsetX(canvasOffset.left);
     setOffsetY(canvasOffset.top);
@@ -141,9 +148,9 @@ const DrawingCanvas = () => {
     // the drag is over, clear the dragging flag
     setIsDown(false);
     // ctxo.strokeRect(random.left_x, random.top_y, random.width, random.height);
-    ctxRef.current.strokeStyle = selecting;
+    ctxRef.current.strokeStyle = selectingColor;
     ctxRef.current.lineWidth = 10;
-    ctxoRef.current.strokeStyle = selected;
+    ctxoRef.current.strokeStyle = selectedColor;
     ctxoRef.current.lineWidth = 10;
 
     let cords = convertEventCordsToRoi(

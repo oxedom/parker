@@ -8,6 +8,19 @@ import { atom, selector } from "recoil";
 //     }
 // })
 
+const selectingColorState = atom({
+  key: "selectingColor",
+  default:"#EC3945",
+});
+
+const selectedColorColorState = atom({
+  key: "selectedColor",
+  default:"#8FC93A",
+});
+
+
+
+
 const imageHeightState = atom({
   key: "imageHeight",
   default: 720,
@@ -18,4 +31,4 @@ const imageWidthState = atom({
   default: 1280,
 });
 
-export { imageWidthState, imageHeightState };
+export { imageWidthState, imageHeightState, selectingColorState,selectedColorColorState};
