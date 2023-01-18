@@ -3,6 +3,7 @@ import { selectedColorColorState, selectingColorState } from "./states";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
 import { selectedRoiState } from "../components/states";
+import { renderRoi} from '../libs/canvas_utility'
 
 const DrawingCanvas = () => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
@@ -107,8 +108,18 @@ const DrawingCanvas = () => {
         canvasRef.current.width,
         canvasRef.current.height
       );
+        selectedRois.forEach(roi => 
+          {
+            renderRoi(roi, ctxoRef)
+          })
 
-  
+
+        ctxRef.current.clearRect(
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+          );
 
 
     }

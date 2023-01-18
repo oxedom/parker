@@ -40,7 +40,7 @@ const selectedRoiState = selector({
 
       const roiObj = {
         name: finalName(roiName, oldRois.length),
-        roi_type: roiType,
+        label: roiType,
         cords: { ...cords },
         time: date.getTime(),
         uid: uniqid(),
