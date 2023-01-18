@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { selectedRoiState } from "../components/states";
 
 const DrawingCanvas = () => {
-  const [selectedRoi, setSelectedRois] = useRecoilState(selectedRoiState);
+  const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const selectedColor = useRecoilValue(selectedColorColorState);
   const selectingColor = useRecoilValue(selectingColorState);
 
@@ -78,7 +78,7 @@ const DrawingCanvas = () => {
     return Math.abs(rect.width * rect.height);
   }
 
-  useEffect(() => {}, [selectedRoi]);
+  //Rerender all all rois when state changes
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
@@ -99,9 +99,20 @@ const DrawingCanvas = () => {
   }, []);
 
   useEffect(() => {
+
     if (ctxoRef.current != null) {
+      ctxoRef.current.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+
+  
+
+
     }
-  }, [selectedRoi]);
+  }, [selectedRois]);
 
   function handleMouseDown(e) {
     e.preventDefault();

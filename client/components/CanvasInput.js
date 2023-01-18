@@ -7,6 +7,7 @@ import {
   processingState,
 } from "../components/states";
 import { useRecoilValue } from "recoil";
+import { renderRoi} from '../libs/canvas_utility'
 
 const CanvasInput = ({ track }) => {
   //Fetching from recoil store using atoms
@@ -32,7 +33,7 @@ const CanvasInput = ({ track }) => {
     clearDetectionOverlay();
     //For each on the detections
     detections.forEach((d) => {
-      renderDetction(d);
+      renderRoi(d, dectXRef);
     });
   }
 
@@ -46,26 +47,6 @@ const CanvasInput = ({ track }) => {
     );
   }
 
-  function renderDetction(d) {
-    //Cords
-    const { height, right_x, top_y, width } = d.cords;
-    const dtx = dectXRef.current;
-    //Gets centerX
-    const centerX = right_x + width / 2;
-    //Font and Size needs to be state
-    dectXRef.current.font = "72px Courier";
-    dectXRef.current.textAlign = "center";
-    //Draws a rect on the detection
-    dtx.strokeStyle = "#B22222";
-    dtx.lineWidth = 10;
-    dectXRef.current.strokeRect(right_x, top_y, width, height);
-
-    dtx.lineWidth = 11;
-    dtx.strokeStyle = "#000000";
-    dectXRef.current.strokeRect(right_x - 8, top_y, width, height);
-
-    dectXRef.current.fillText(d.label, centerX, top_y * 0.8);
-  }
 
   useEffect(() => {
     //Need to do this for canvas2d to work

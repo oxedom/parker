@@ -1,4 +1,5 @@
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
+
 function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
   const intersectionX2 = Math.min(

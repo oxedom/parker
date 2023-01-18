@@ -11,8 +11,7 @@ const Toolbar = () => {
   const [selectedColor, setSelectedColor] = useRecoilState(
     selectedColorColorState
   );
-  const [selectingColor, setSelectingColor] =
-    useRecoilState(selectingColorState);
+  const [selectingColor, setSelectingColor] = useRecoilState(selectingColorState);
   const [roiName, setRoiName] = useRecoilState(roiNameState);
   const [roiType, setRoiType] = useRecoilState(roiTypeState);
   const [processing, setProcessing] = useRecoilState(processingState);
