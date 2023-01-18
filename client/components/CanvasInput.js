@@ -5,6 +5,7 @@ import {
   imageWidthState,
   imageHeightState,
   processingState,
+  detectionColorState
 } from "../components/states";
 import { useRecoilValue } from "recoil";
 
@@ -14,6 +15,8 @@ const CanvasInput = ({ track }) => {
   const processing = useRecoilValue(processingState);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
+
+  const detectionColor = useRecoilValue(detectionColorState)
 
   //Ref declaring
   const inputRef = useRef(null);
@@ -33,7 +36,8 @@ const CanvasInput = ({ track }) => {
     clearDetectionOverlay();
     //For each on the detections
     detections.forEach((d) => {
-      renderRoi(d, dectXRef);
+      console.log(detectionColor);
+      renderRoi(d, dectXRef, detectionColor);
     });
   }
 
@@ -72,8 +76,8 @@ const CanvasInput = ({ track }) => {
         const imageCaptured = new ImageCapture(track);
         imageCapturedToCanvas(imageCaptured, inputRef);
         const data = await capturedImageServer(imageCaptured);
-        const { detections } = data.meta_data;
-
+        let { detections } = data.meta_data;
+        detections = detections.map(d => ({...d, color: detectionColor }))
         renderAllDetections(detections);
 
         //Speed SHOULD BE min server capacity
@@ -102,7 +106,7 @@ const CanvasInput = ({ track }) => {
     };
 
     //Runs when processing is toogled or track changes
-  }, [track, processing]);
+  }, [track, processing, detectionColor]);
 
   return (
     <>

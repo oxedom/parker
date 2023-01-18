@@ -223,7 +223,7 @@ export function rectangleArea(rect) {
 }
 
 
-export function renderRoi(roi, contextCanvas ) {
+export function renderRoi(roi, contextCanvas) {
     //Cords
     const { height, right_x, top_y, width } = roi.cords;
     const context = contextCanvas.current;
@@ -233,7 +233,7 @@ export function renderRoi(roi, contextCanvas ) {
     contextCanvas.current.font = "72px Courier";
     contextCanvas.current.textAlign = "center";
     //Draws a rect on the detection
-    context.strokeStyle = "#B22222";
+    context.strokeStyle = roi.color;
     context.lineWidth = 10;
     contextCanvas.current.strokeRect(right_x, top_y, width, height);
 

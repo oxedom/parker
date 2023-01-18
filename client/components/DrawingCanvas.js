@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { selectedColorColorState, selectingColorState } from "./states";
+import { selectedColorState, selectingColorState } from "./states";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
 import { selectedRoiState } from "../components/states";
@@ -7,8 +7,9 @@ import { renderRoi} from '../libs/canvas_utility'
 
 const DrawingCanvas = () => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
-  const selectedColor = useRecoilValue(selectedColorColorState);
+  const selectedColor = useRecoilValue(selectedColorState);
   const selectingColor = useRecoilValue(selectingColorState);
+
 
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
@@ -67,7 +68,8 @@ const DrawingCanvas = () => {
 
     let action = {
       event: "addRoi",
-      payload: cords,
+      payload: {cords, color: selectedColor},
+    
     };
    //Sends action request with a payload, the event is handled 
     //inside the state event. 

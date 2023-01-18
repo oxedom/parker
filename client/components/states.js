@@ -32,7 +32,8 @@ const selectedRoiState = selector({
 
   set: ({ set, get }, action) => {
     if (action.event === "addRoi") {
-      let cords = action.payload;
+      console.log(action.payload);
+      let {cords, color}  = action.payload;
       let date = new Date();
       let roiType = get(roiTypeState);
       let roiName = get(roiNameState);
@@ -41,6 +42,7 @@ const selectedRoiState = selector({
       const roiObj = {
         name: finalName(roiName, oldRois.length),
         label: roiType,
+        color: color,
         cords: { ...cords },
         time: date.getTime(),
         uid: uniqid(),
@@ -64,10 +66,16 @@ const selectingColorState = atom({
   default: "#EC3945",
 });
 
-const selectedColorColorState = atom({
+const selectedColorState = atom({
   key: "selectedColor",
   default: "#8FC93A",
 });
+
+const detectionColorState = atom({
+  key: "detectionColor",
+  default: "#FF0000",
+});
+
 
 const imageHeightState = atom({
   key: "imageHeight",
@@ -89,8 +97,9 @@ export {
   roiNameState,
   imageWidthState,
   imageHeightState,
+  detectionColorState,
   selectingColorState,
-  selectedColorColorState,
+  selectedColorState,
   processingState,
   outputImageState,
   selectedRoiState,
