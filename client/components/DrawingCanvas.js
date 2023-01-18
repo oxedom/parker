@@ -60,18 +60,24 @@ const DrawingCanvas = () => {
     return cords;
   }
 
-  function _addRegionOfIntrest(cords) {
+  function addRegionOfInterest(cords) {
+
+    //Parsing the cords to action request so it can get routed to the proper handler 
+    //in the selected setter
+
     let action = {
       event: "addRoi",
       payload: cords,
     };
+   //Sends action request with a payload, the event is handled 
+    //inside the state event. 
     setSelectedRois(action);
 
     setCurrentCords({
       right_x: 0,
       width: 50,
       top_y: 0,
-      height: 0,
+      height: 1,
     });
   }
 
@@ -148,10 +154,6 @@ const DrawingCanvas = () => {
       return;
     }
 
-    // get the current mouse position
-    //(0,0) Would be the top left cornor
-    //(Max Width, Max Height ) woul be the bottom right cornor
-    // save the starting x/y of the rectangle
     const mouseX = parseInt(e.clientX - offsetX);
     const mouseY = parseInt(e.clientY - offsetY);
 
@@ -161,12 +163,7 @@ const DrawingCanvas = () => {
     var height = mouseY - startY.current;
 
     // clear the canvas
-    ctxRef.current.clearRect(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height
-    );
+    ctxRef.current.clearRect( 0, 0, canvasRef.current.width, canvasRef.current.height);
 
     // draw a new rect from the start position
     // to the current mouse position
@@ -177,38 +174,29 @@ const DrawingCanvas = () => {
     setPrevStartY(startY.current);
     setPrevWidth(width);
     setPrevHeight(height);
+    //Sets the mouse movements to useable cords that match the same XY graph context as the server
+    //for bonding boxes
 
-    setCurrentCords(
-      convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight)
-    );
+    setCurrentCords(convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight));
   }
 
   function handleMouseUp(e) {
     e.preventDefault();
     e.stopPropagation();
-
-    // the drag is over, clear the dragging flag
+    // Mouse dragging is over, clear the dragging flag
     setIsDown(false);
+    //If the area of the current cords is very small so don't add else
+    if (rectangleArea(currentCords) > 500) {
+      //function that handles state
+      addRegionOfInterest(currentCords);
 
-    ctxRef.current.strokeStyle = selectingColor;
-    ctxRef.current.lineWidth = 10;
-    ctxoRef.current.strokeStyle = prevSelectedColor;
-    ctxoRef.current.lineWidth = 10;
-
-    if (rectangleArea(currentCords) < 500) {
-      return;
-    } else {
-      setPrevSelected(selectedColor);
-      ctxoRef.current.strokeRect(prevStartX, prevStartY, prevWidth, prevHeight);
-
-      _addRegionOfIntrest(currentCords);
-    }
+    
+    } 
   }
 
   function handleMouseOut(e) {
     e.preventDefault();
     e.stopPropagation();
-
     // the drag is over, clear the dragging flag
     setIsDown(false);
   }
