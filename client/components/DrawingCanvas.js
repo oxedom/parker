@@ -136,11 +136,12 @@ const DrawingCanvas = () => {
     e.stopPropagation();
 
     //(0,0) Would be the top left cornor
-    //(Max Width, Max Height ) woul be the bottom right cornor
-    // save the starting x/y of the rectangle
     startX.current = parseInt(e.clientX - offsetX);
     startY.current = parseInt(e.clientY - offsetY);
 
+    //Changes the stroke style to the selectingColor
+    ctxRef.current.strokeStyle = selectingColor;
+    ctxRef.current.lineWidth = 10;
     // set a flag indicating the drag has begun
     setIsDown(true);
   }
@@ -181,6 +182,8 @@ const DrawingCanvas = () => {
   }
 
   function handleMouseUp(e) {
+
+
     e.preventDefault();
     e.stopPropagation();
     // Mouse dragging is over, clear the dragging flag
@@ -203,6 +206,7 @@ const DrawingCanvas = () => {
 
   return (
     <div>
+      {/* The canvas where a selected is drawn temporary //Cxt  */}
       <canvas
         className="fixed"
         style={{ zIndex: 2 }}
@@ -211,6 +215,7 @@ const DrawingCanvas = () => {
         height={720}
       ></canvas>
 
+      {/* The canvas where all the ROIs are rendered //Cxto */}
       <canvas
         ref={overlayRef}
         width={1280}
