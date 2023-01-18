@@ -10,7 +10,6 @@ import { useRecoilState } from "recoil";
 const Camera = () => {
   const [imageWidth] = useRecoilState(imageWidthState);
 
-
   const [track, setTrack] = useState(null);
 
   const getVideo = useCallback(async () => {

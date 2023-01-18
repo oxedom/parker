@@ -21,7 +21,9 @@ const Toolbar = () => {
     stateChanger(e.target.value);
   };
 
-  function handleProcessing() { processing ? setProcessing(false) : setProcessing(true);}
+  function handleProcessing() {
+    processing ? setProcessing(false) : setProcessing(true);
+  }
 
   return (
     <div className="border-8 p-1  w-80 flex  rounded-l-lg">
@@ -83,9 +85,7 @@ const Toolbar = () => {
             <input
               type="number"
               value={1337}
-              onChange={(e) => {
-          
-              }}
+              onChange={(e) => {}}
               className="border-2 border-black h-8 rounded-md"
               placeholder="FPS"
             />

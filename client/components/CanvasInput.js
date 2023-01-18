@@ -6,15 +6,13 @@ import {
   imageHeightState,
   processingState,
 } from "../components/states";
-import {  useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 
-const CanvasInput = ({track}) => {
-
+const CanvasInput = ({ track }) => {
   //Fetching from recoil store using atoms
   const processing = useRecoilValue(processingState);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-
 
   //Ref declaring
   const inputRef = useRef(null);
@@ -22,24 +20,23 @@ const CanvasInput = ({track}) => {
   let dectXRef = useRef(null);
 
   //FPS declaring need to be a STATE
-  let clientFPS = 10
-  let serverFPS = 1000
+  let clientFPS = 10;
+  let serverFPS = 1000;
 
   //init vars for interval ID's
   let processingId;
   let renderingId;
 
-
-  function renderAllDetections(detections)
-  {
+  function renderAllDetections(detections) {
     //Clears canvas before rendering all overlays (Runs each response)
-    clearDetectionOverlay()
-      //For each on the detections
-      detections.forEach(d => { renderDetction(d)})
+    clearDetectionOverlay();
+    //For each on the detections
+    detections.forEach((d) => {
+      renderDetction(d);
+    });
   }
 
-  function clearDetectionOverlay() 
-  {
+  function clearDetectionOverlay() {
     //Clears canvas
     dectXRef.current.clearRect(
       0,
@@ -49,56 +46,43 @@ const CanvasInput = ({track}) => {
     );
   }
 
-  function renderDetction(d) 
-  {
+  function renderDetction(d) {
     //Cords
-    const {height,right_x,top_y,width} = d.cords
-    const dtx =  dectXRef.current
+    const { height, right_x, top_y, width } = d.cords;
+    const dtx = dectXRef.current;
     //Gets centerX
-    const centerX = right_x + width / 2 
+    const centerX = right_x + width / 2;
     //Font and Size needs to be state
     dectXRef.current.font = "72px Courier";
     dectXRef.current.textAlign = "center";
     //Draws a rect on the detection
     dtx.strokeStyle = "#B22222";
     dtx.lineWidth = 10;
-   dectXRef.current.strokeRect(right_x, top_y, width,height)
-   
-   dtx.lineWidth = 11;
-   dtx.strokeStyle = "#000000"; 
-   dectXRef.current.strokeRect(right_x-8, top_y, width,height)
+    dectXRef.current.strokeRect(right_x, top_y, width, height);
 
-    dectXRef.current.fillText(d.label, centerX, top_y*0.80);
+    dtx.lineWidth = 11;
+    dtx.strokeStyle = "#000000";
+    dectXRef.current.strokeRect(right_x - 8, top_y, width, height);
+
+    dectXRef.current.fillText(d.label, centerX, top_y * 0.8);
   }
 
-
-  useEffect(() => 
-  {
+  useEffect(() => {
     //Need to do this for canvas2d to work
-    const detectionsEl = detectionsRef.current
+    const detectionsEl = detectionsRef.current;
     dectXRef.current = detectionsEl.getContext("2d");
     const dtx = dectXRef.current;
 
-
     dtx.strokeStyle = "#78E3FD";
-
-
-
-
-
-  },[])
-
-
-
+  }, []);
 
   useEffect(() => {
     function renderWebcam(track) {
       renderingId = setInterval(() => {
-   
         const imageCaptured = new ImageCapture(track);
         //Renders the imageCaptured into a canvas
         imageCapturedToCanvas(imageCaptured, inputRef);
-      //Speed can be very high
+        //Speed can be very high
       }, clientFPS);
     }
 
@@ -107,18 +91,16 @@ const CanvasInput = ({track}) => {
         const imageCaptured = new ImageCapture(track);
         imageCapturedToCanvas(imageCaptured, inputRef);
         const data = await capturedImageServer(imageCaptured);
-        const {detections} = (data.meta_data)
-  
-        renderAllDetections(detections)
+        const { detections } = data.meta_data;
 
-        //Speed SHOULD BE min server capacity 
+        renderAllDetections(detections);
+
+        //Speed SHOULD BE min server capacity
       }, serverFPS);
     }
 
-    
     //Clears canvas
-    clearDetectionOverlay()
-
+    clearDetectionOverlay();
 
     //If there is a track and the processing mode is toogled to false
     // so only render the users webcam locally
@@ -138,7 +120,6 @@ const CanvasInput = ({track}) => {
       clearInterval(processingId);
     };
 
-
     //Runs when processing is toogled or track changes
   }, [track, processing]);
 
@@ -152,15 +133,13 @@ const CanvasInput = ({track}) => {
         className="fixed"
       ></canvas>
 
-         <canvas
+      <canvas
         id="input-imagebitmap"
         ref={inputRef}
         width={imageWidth}
         height={imageHeight}
         className="inline"
-      ></canvas> 
-
-
+      ></canvas>
     </>
   );
 };
