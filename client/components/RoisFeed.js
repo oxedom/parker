@@ -13,7 +13,7 @@ const RoisFeed = () => {
   }
 
   return (
-    <div className="border-2 border-indigo-600 rounded-r-lg w-80   ">
+    <div className="rounded-r-lg w-80   ">
       <h4 className="text-3xl border-2   border-black "> Selected ROI's</h4>
       <div className="overflow-y-scroll h-96 ">
         {selectedRegions.map((s) => (

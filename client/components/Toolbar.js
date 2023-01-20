@@ -27,7 +27,7 @@ const Toolbar = () => {
   }
 
   return (
-    <div className="border-8 p-1  w-80 flex  rounded-l-lg">
+    <div className="p-1  w-80 flex  rounded-l-lg">
       <div className="flex flex-col gap-5">
         <h2 className="bg-white text-3xl border-b-4 border-black ">
           {" "}
@@ -35,11 +35,11 @@ const Toolbar = () => {
         </h2>
 
         <div>
-          <div className="border-b-4 border-black ">
+          <div className="border-b-4 border-black  ">
             <input
               value={selectingColor}
               type="color"
-              className="h-20 w-20"
+              className="h-20 w-20 rounded-full border-1"
               onChange={(e) => {
                 handleColorChange(e, setSelectingColor);
               }}
