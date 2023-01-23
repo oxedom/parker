@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { selectedColorState, selectingColorState } from "./states";
+import { selectedColorState, selectingColorState, imageHeightState, imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
 import { selectedRoiState } from "../components/states";
@@ -9,6 +9,8 @@ const DrawingCanvas = () => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const selectedColor = useRecoilValue(selectedColorState);
   const selectingColor = useRecoilValue(selectingColorState);
+  const imageWidth = useRecoilValue(imageWidthState);
+  const imageHeight = useRecoilValue(imageHeightState);
 
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
@@ -208,15 +210,15 @@ const DrawingCanvas = () => {
         className="fixed"
         style={{ zIndex: 2 }}
         ref={canvasRef}
-        width={1280}
-        height={720}
+        width={imageWidth}
+        height={imageHeight}
       ></canvas>
 
       {/* The canvas where all the ROIs are rendered //Cxto */}
       <canvas
         ref={overlayRef}
-        width={1280}
-        height={720}
+        width={imageWidth}
+        height={imageHeight}
         onMouseDown={(e) => {
           handleMouseDown(e);
         }}

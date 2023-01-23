@@ -63,17 +63,17 @@ const selectedRoiState = selector({
 
 const selectingColorState = atom({
   key: "selectingColor",
-  default: "#EC3945",
+  default: "#FF0000",
 });
 
 const selectedColorState = atom({
   key: "selectedColor",
-  default: "#8FC93A",
+  default: "#FF0000",
 });
 
 const detectionColorState = atom({
   key: "detectionColor",
-  default: "#FF0000",
+  default: "#0000FF",
 });
 
 const imageHeightState = atom({

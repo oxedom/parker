@@ -54,8 +54,6 @@ export function renderRoi(roi, contextCanvas) {
   contextCanvas.current.strokeRect(right_x, top_y, width, height);
 
   context.lineWidth = 11;
-  context.strokeStyle = "#000000";
-  contextCanvas.current.strokeRect(right_x - 8, top_y, width, height);
 
-  contextCanvas.current.fillText(roi.label, centerX, top_y * 0.8);
+  // contextCanvas.current.fillText(roi.label, centerX, top_y * 0.8);
 }
