@@ -5,10 +5,9 @@ import {
   imageWidthState,
   imageHeightState,
   processingState,
-  detectionColorState
+  detectionColorState,
 } from "../components/states";
 import { useRecoilValue } from "recoil";
-
 
 const CanvasInput = ({ track }) => {
   //Fetching from recoil store using atoms
@@ -16,7 +15,7 @@ const CanvasInput = ({ track }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
 
-  const detectionColor = useRecoilValue(detectionColorState)
+  const detectionColor = useRecoilValue(detectionColorState);
 
   //Ref declaring
   const inputRef = useRef(null);
@@ -51,7 +50,6 @@ const CanvasInput = ({ track }) => {
     );
   }
 
-
   useEffect(() => {
     //Need to do this for canvas2d to work
     const detectionsEl = detectionsRef.current;
@@ -78,7 +76,7 @@ const CanvasInput = ({ track }) => {
         const data = await capturedImageServer(imageCaptured);
         let { detections } = data.meta_data;
         console.log(detections);
-        detections = detections.map(d => ({...d, color: detectionColor }))
+        detections = detections.map((d) => ({ ...d, color: detectionColor }));
         renderAllDetections(detections);
 
         //Speed SHOULD BE min server capacity

@@ -1,12 +1,9 @@
 @font-face {
   font-family: "Roboto";
-  src: url('../public/fonts/roboto/Roboto-Black.ttf');
-  src: url('../public/fonts/roboto/Roboto-Medium.ttf');
-  src: url('../public/fonts/roboto/Roboto-Regular.ttf');
+  src: url("../public/fonts/roboto/Roboto-Black.ttf");
+  src: url("../public/fonts/roboto/Roboto-Medium.ttf");
+  src: url("../public/fonts/roboto/Roboto-Regular.ttf");
 }
-      
-
-
 
 @tailwind base;
 @tailwind components;

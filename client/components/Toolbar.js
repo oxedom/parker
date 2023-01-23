@@ -9,11 +9,11 @@ import {
 } from "./states";
 
 const Toolbar = () => {
-  const [selectedColor, setSelectedColor] = useRecoilState(
-    selectedColorState
-  );
-  const [detectionColor, setDetectionColor] = useRecoilState(detectionColorState);
-  const [selectingColor, setSelectingColor] = useRecoilState(selectingColorState);
+  const [selectedColor, setSelectedColor] = useRecoilState(selectedColorState);
+  const [detectionColor, setDetectionColor] =
+    useRecoilState(detectionColorState);
+  const [selectingColor, setSelectingColor] =
+    useRecoilState(selectingColorState);
   const [roiName, setRoiName] = useRecoilState(roiNameState);
   const [roiType, setRoiType] = useRecoilState(roiTypeState);
   const [processing, setProcessing] = useRecoilState(processingState);
@@ -54,7 +54,7 @@ const Toolbar = () => {
               }}
             />
 
-<input
+            <input
               className="h-20 w-20"
               value={detectionColor}
               type="color"
@@ -62,8 +62,6 @@ const Toolbar = () => {
                 handleColorChange(e, setDetectionColor);
               }}
             />
-
-
           </div>
         </div>
 

@@ -6,7 +6,7 @@ export default function App({ Component, pageProps }) {
   return (
     <RecoilRoot>
       <DashboardLayout>
-      <Component {...pageProps} />
+        <Component {...pageProps} />
       </DashboardLayout>
     </RecoilRoot>
   );

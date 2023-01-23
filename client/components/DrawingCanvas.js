@@ -3,13 +3,12 @@ import { selectedColorState, selectingColorState } from "./states";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
 import { selectedRoiState } from "../components/states";
-import { renderRoi} from '../libs/canvas_utility'
+import { renderRoi } from "../libs/canvas_utility";
 
 const DrawingCanvas = () => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const selectedColor = useRecoilValue(selectedColorState);
   const selectingColor = useRecoilValue(selectingColorState);
-
 
   let ctxRef = useRef(null);
   let ctxoRef = useRef(null);
@@ -62,17 +61,15 @@ const DrawingCanvas = () => {
   }
 
   function addRegionOfInterest(cords) {
-
-    //Parsing the cords to action request so it can get routed to the proper handler 
+    //Parsing the cords to action request so it can get routed to the proper handler
     //in the selected setter
 
     let action = {
       event: "addRoi",
-      payload: {cords, color: selectedColor},
-    
+      payload: { cords, color: selectedColor },
     };
-   //Sends action request with a payload, the event is handled 
-    //inside the state event. 
+    //Sends action request with a payload, the event is handled
+    //inside the state event.
     setSelectedRois(action);
 
     setCurrentCords({
@@ -108,7 +105,6 @@ const DrawingCanvas = () => {
   }, []);
 
   useEffect(() => {
-
     if (ctxoRef.current != null) {
       ctxoRef.current.clearRect(
         0,
@@ -116,20 +112,16 @@ const DrawingCanvas = () => {
         canvasRef.current.width,
         canvasRef.current.height
       );
-        selectedRois.forEach(roi => 
-          {
-            renderRoi(roi, ctxoRef)
-          })
+      selectedRois.forEach((roi) => {
+        renderRoi(roi, ctxoRef);
+      });
 
-
-        ctxRef.current.clearRect(
-            0,
-            0,
-            canvasRef.current.width,
-            canvasRef.current.height
-          );
-
-
+      ctxRef.current.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
     }
   }, [selectedRois]);
 
@@ -166,7 +158,12 @@ const DrawingCanvas = () => {
     var height = mouseY - startY.current;
 
     // clear the canvas
-    ctxRef.current.clearRect( 0, 0, canvasRef.current.width, canvasRef.current.height);
+    ctxRef.current.clearRect(
+      0,
+      0,
+      canvasRef.current.width,
+      canvasRef.current.height
+    );
 
     // draw a new rect from the start position
     // to the current mouse position
@@ -180,12 +177,12 @@ const DrawingCanvas = () => {
     //Sets the mouse movements to useable cords that match the same XY graph context as the server
     //for bonding boxes
 
-    setCurrentCords(convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight));
+    setCurrentCords(
+      convertEventCordsToRoi(prevStartX, prevStartY, prevWidth, prevHeight)
+    );
   }
 
   function handleMouseUp(e) {
-
-
     e.preventDefault();
     e.stopPropagation();
     // Mouse dragging is over, clear the dragging flag
@@ -194,9 +191,7 @@ const DrawingCanvas = () => {
     if (rectangleArea(currentCords) > 500) {
       //function that handles state
       addRegionOfInterest(currentCords);
-
-    
-    } 
+    }
   }
 
   function handleMouseOut(e) {

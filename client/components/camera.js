@@ -23,13 +23,11 @@ const Camera = () => {
   }, [getVideo]);
 
   return (
-
-      <div className="flex justify-center m-2 border-solid border-4 border-violet-500">
-        <Toolbar></Toolbar>
-        <Selector track={track}></Selector>
-        <RoisFeed></RoisFeed>
-      </div>
-
+    <div className="flex justify-center m-2 border-solid border-4 border-violet-500">
+      <Toolbar></Toolbar>
+      <Selector track={track}></Selector>
+      <RoisFeed></RoisFeed>
+    </div>
   );
 };
 

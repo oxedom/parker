@@ -1,5 +1,4 @@
 export function drawCanvas(canvasEl, img) {
-
   canvasEl.width = getComputedStyle(canvasEl).width.split("px")[0];
   canvasEl.height = getComputedStyle(canvasEl).height.split("px")[0];
 
@@ -28,7 +27,6 @@ export function drawCanvas(canvasEl, img) {
 
 export async function imageCapturedToCanvas(capturedImage, inputCanvasRef) {
   try {
-
     const blob = await capturedImage.takePhoto();
     const imageBitmap = await createImageBitmap(blob);
     drawCanvas(inputCanvasRef.current, imageBitmap);
@@ -41,24 +39,23 @@ export function rectangleArea(rect) {
   return Math.abs(rect.width * rect.height);
 }
 
-
 export function renderRoi(roi, contextCanvas) {
-    //Cords
-    const { height, right_x, top_y, width } = roi.cords;
-    const context = contextCanvas.current;
-    //Gets centerX
-    const centerX = right_x + width / 2;
-    //Font and Size needs to be state
-    contextCanvas.current.font = "72px Courier";
-    contextCanvas.current.textAlign = "center";
-    //Draws a rect on the detection
-    context.strokeStyle = roi.color;
-    context.lineWidth = 10;
-    contextCanvas.current.strokeRect(right_x, top_y, width, height);
+  //Cords
+  const { height, right_x, top_y, width } = roi.cords;
+  const context = contextCanvas.current;
+  //Gets centerX
+  const centerX = right_x + width / 2;
+  //Font and Size needs to be state
+  contextCanvas.current.font = "72px Courier";
+  contextCanvas.current.textAlign = "center";
+  //Draws a rect on the detection
+  context.strokeStyle = roi.color;
+  context.lineWidth = 10;
+  contextCanvas.current.strokeRect(right_x, top_y, width, height);
 
-    context.lineWidth = 11;
-    context.strokeStyle = "#000000";
-    contextCanvas.current.strokeRect(right_x - 8, top_y, width, height);
+  context.lineWidth = 11;
+  context.strokeStyle = "#000000";
+  contextCanvas.current.strokeRect(right_x - 8, top_y, width, height);
 
-    contextCanvas.current.fillText(roi.label, centerX, top_y * 0.8);
-  }
+  contextCanvas.current.fillText(roi.label, centerX, top_y * 0.8);
+}
