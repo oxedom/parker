@@ -32,7 +32,7 @@ const selectedRoiState = selector({
 
   set: ({ set, get }, action) => {
     if (action.event === "addRoi") {
-      console.log(action.payload);
+     
       let { cords, color } = action.payload;
       let date = new Date();
       let roiType = get(roiTypeState);

@@ -1,19 +1,21 @@
 import { useEffect, useRef } from "react";
 import { imageCapturedToCanvas, renderRoi } from "../libs/canvas_utility";
-import { capturedImageServer } from "../libs/utillity";
+import { capturedImageServer, checkOverlapArrays } from "../libs/utillity";
 import {
   imageWidthState,
   imageHeightState,
   processingState,
+  selectedRoiState,
   detectionColorState,
 } from "../components/states";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const CanvasInput = ({ track }) => {
   //Fetching from recoil store using atoms
   const processing = useRecoilValue(processingState);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
+  const [selectedRoi, setSelectedRoi] = useRecoilState(selectedRoiState)
 
   const detectionColor = useRecoilValue(detectionColorState);
 
@@ -35,7 +37,7 @@ const CanvasInput = ({ track }) => {
     clearDetectionOverlay();
     //For each on the detections
     detections.forEach((d) => {
-      console.log(detectionColor);
+
       renderRoi(d, dectXRef, detectionColor);
     });
   }
@@ -75,10 +77,17 @@ const CanvasInput = ({ track }) => {
         imageCapturedToCanvas(imageCaptured, inputRef);
         const data = await capturedImageServer(imageCaptured);
         let { detections } = data.meta_data;
-        console.log(detections);
-        detections = detections.map((d) => ({ ...d, color: detectionColor }));
-        renderAllDetections(detections);
 
+        detections = detections.map((d) => ({ ...d, color: detectionColor }));
+
+        renderAllDetections(detections);
+        let overlaps = checkOverlapArrays(detections, selectedRoi )
+        console.log(overlaps);
+
+    
+        // renderAllDetections(overlaps)
+ 
+  
         //Speed SHOULD BE min server capacity
       }, serverFPS);
     }

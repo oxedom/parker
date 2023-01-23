@@ -62,3 +62,29 @@ export function finalName(name, arrayLength) {
     return `ROI NUMBER: ${arrayLength + 1}`;
   } else return name;
 }
+
+export function checkOverlapArrays(detectionsArr, selectedArr) 
+{
+let overlaps = []
+  detectionsArr.forEach(d => 
+    {
+      selectedArr.forEach(s => 
+        {
+        let overlapCords = getOverlap(d.cords, s.cords)
+
+        if(overlapCords != null) {  
+          let overlap = 
+          {
+            ...s,
+            cords: overlapCords
+          }
+          console.log(overlap);
+          overlaps.push(overlap)
+        }
+       
+          
+
+        })
+    })
+return overlaps
+}

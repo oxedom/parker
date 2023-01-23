@@ -5,7 +5,7 @@ import RoisFeed from "../../components/RoisFeed";
 const ParkingPage = () => {
   return <>
 
-    <div className="flex justify-center m-2 border-solid border-4 border-violet-500">
+    <div className="flex m-2  ">
     <Toolbar></Toolbar>
     <Camera></Camera>
     <RoisFeed></RoisFeed>

@@ -19,7 +19,7 @@ const Camera = () => {
     const track = stream.getVideoTracks()[0];
     let maxHeight = track.getCapabilities().height.max
     let maxWidth = track.getCapabilities().width.max
-    console.log(track.getConstraints());
+
     setImageWidth(maxWidth)
  
     setTrack(track);
@@ -30,10 +30,10 @@ const Camera = () => {
   }, [getVideo]);
 
   return (
-    <div className="flex justify-center m-2 border-solid border-4 border-violet-500">
-      {/* <Toolbar></Toolbar> */}
+    <div className="flex justify-center m-2 ">
+ 
       <Selector track={track}></Selector>
-      {/* <RoisFeed></RoisFeed> */}
+
     </div>
   );
 };

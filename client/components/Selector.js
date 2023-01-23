@@ -3,7 +3,7 @@ import DrawingCanvas from "./DrawingCanvas";
 
 const Selector = ({ track }) => {
   return (
-    <div className="cursor-crosshair pt-10">
+    <div className="cursor-crosshair ">
       <DrawingCanvas></DrawingCanvas>
       <CanvasInput track={track} />
     </div>

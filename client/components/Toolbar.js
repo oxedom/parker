@@ -27,52 +27,34 @@ const Toolbar = () => {
   }
 
   return (
-    <div className="p-1  w-80 flex  rounded-l-lg">
+    <div className="  flex  rounded-l-lg">
       <div className="flex flex-col gap-5">
-        <h2 className="bg-white text-3xl border-b-4 border-black ">
-          {" "}
-          Toolbar{" "}
-        </h2>
 
-        <div>
-          <div className="border-b-4 border-black  ">
-            <input
-              value={selectingColor}
-              type="color"
-              className="h-20 w-20 rounded-full border-1"
-              onChange={(e) => {
-                handleColorChange(e, setSelectingColor);
-              }}
-            />
-
-            <input
-              className="h-20 w-20"
-              value={selectedColor}
-              type="color"
-              onChange={(e) => {
-                handleColorChange(e, setSelectedColor);
-              }}
-            />
-
-            <input
-              className="h-20 w-20"
-              value={detectionColor}
-              type="color"
-              onChange={(e) => {
-                handleColorChange(e, setDetectionColor);
-              }}
-            />
+      <div
+            onClick={(e) => {
+              handleProcessing();
+            }}
+            className="rounded
+             relative inline-flex group items-center
+              justify-center  py-2  cursor-pointer
+                shadow-lg bg-blue-500
+             
+                 text-white"
+          >
+            {" "}
+            <span class="static">Process Video</span>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-5 border-b-4 pb-2 border-black">
+
+
+        <div className="flex flex-col gap-5 border-b-4 pb-2">
           <input
             onChange={(e) => {
               setRoiName(e.target.value);
             }}
             value={roiName}
             placeholder={"ROI name"}
-            className="border-2 border-black h-14 rounded-md"
+            className="h-14 rounded-md"
           />
 
           <select
@@ -90,26 +72,9 @@ const Toolbar = () => {
         </div>
 
         <div>
-          <div className="flex">
-            <label> FPMS: </label>
-            <input
-              type="number"
-              value={1337}
-              onChange={(e) => {}}
-              className="border-2 border-black h-8 rounded-md"
-              placeholder="FPS"
-            />
-          </div>
 
-          <div
-            onClick={(e) => {
-              handleProcessing();
-            }}
-            className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-blue-600 active:shadow-none shadow-lg bg-gradient-to-tr from-blue-500 to-cyan-400 border-sky-700 text-white"
-          >
-            {" "}
-            <span class="static">Process Video</span>
-          </div>
+
+
         </div>
       </div>
     </div>
