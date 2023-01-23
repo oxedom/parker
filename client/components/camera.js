@@ -1,10 +1,9 @@
-import Layout from "../layouts/DefaultLayout";
 import { useCallback, useEffect, useState } from "react";
 import React from "react";
-import Toolbar from "../components/Toolbar";
-import RoisFeed from "../components/RoisFeed";
-import Selector from "../components/Selector";
-import { imageWidthState } from "../components/states";
+import Toolbar from "./Toolbar";
+import RoisFeed from "./RoisFeed";
+import Selector from "./Selector";
+import { imageWidthState } from "./states";
 import { useRecoilState } from "recoil";
 
 const Camera = () => {
