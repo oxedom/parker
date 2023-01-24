@@ -8,21 +8,24 @@ import {
   selectedRoiState,
   detectionColorState,
 } from "../components/states";
-import { useRecoilState, useRecoilValue } from "recoil";
+import {  useRecoilValue , useRecoilState} from "recoil";
 
 const CanvasInput = ({ track }) => {
   //Fetching from recoil store using atoms
   const processing = useRecoilValue(processingState);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-  const [selectedRoi, setSelectedRoi] = useRecoilState(selectedRoiState)
+  const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
 
   const detectionColor = useRecoilValue(detectionColorState);
 
   //Ref declaring
   const inputRef = useRef(null);
   const detectionsRef = useRef(null);
+  const overlapRef = useRef(null);
+
   let dectXRef = useRef(null);
+  let overlayXRef = useRef(null);
 
   //FPS declaring need to be a STATE
   let clientFPS = 10;
@@ -46,6 +49,17 @@ const CanvasInput = ({ track }) => {
     });
   }
 
+  function renderAllOverlaps(overlaps) {
+    //Clears canvas before rendering all overlays (Runs each response)
+    //For each on the detections
+    overlaps.forEach((o) => {
+      renderRoi(o, dectXRef, "#FFFF00");
+    });
+  }
+
+
+
+
   function clearDetectionOverlay() {
     //Clears canvas
     dectXRef.current.clearRect(
@@ -59,9 +73,12 @@ const CanvasInput = ({ track }) => {
   useEffect(() => {
     //Need to do this for canvas2d to work
     const detectionsEl = detectionsRef.current;
+    const overlayEl = overlapRef.current
+    overlayXRef.current = overlayEl.getContext('2d')
     dectXRef.current = detectionsEl.getContext("2d");
+    const otx = overlayXRef.current
     const dtx = dectXRef.current;
-    dtx.strokeStyle = "#78E3FD";
+
 
   }, []);
 
@@ -88,11 +105,11 @@ const CanvasInput = ({ track }) => {
         detections = detections.map((d) => ({ ...d, color: detectionColor }));
 
         renderAllDetections(detections);
-        let overlaps = checkOverlapArrays(detections, selectedRoi )
-        console.log(overlaps);
 
-    
-        // renderAllDetections(overlaps)
+        
+        let overlaps = checkOverlapArrays(detections, selectedRegions)
+        renderAllOverlaps(overlaps)
+       
  
   
         //Speed SHOULD BE min server capacity
@@ -125,6 +142,16 @@ const CanvasInput = ({ track }) => {
 
   return (
     <>
+        <canvas
+        id="overlap-overlay"
+        ref={overlapRef}
+        width={imageWidth}
+        height={imageHeight}
+        className="fixed"
+      ></canvas>
+
+
+
       <canvas
         id="detections-overlay"
         ref={detectionsRef}

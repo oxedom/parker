@@ -73,11 +73,15 @@ let overlaps = []
       selectedArr.forEach(s => 
         {
         let overlapCords = getOverlap(d.cords, s.cords)
-
+        let selectedArea = s.cords.width * s.cords.height
+        console.log("Selected area is ", selectedArea);
+        console.log("OverlapCords area is", overlapCords.area);
+        
         if(overlapCords != null) {  
           let overlap = 
           {
             ...s,
+            color: "#FFEF00",
             cords: overlapCords
           }
           console.log(overlap);

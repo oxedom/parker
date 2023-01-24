@@ -3,7 +3,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 
 const RoisFeed = () => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
-  console.log(selectedRegions);
+
   function handleRoiDelete(uid) {
     let action = {
       event: "deleteRoi",
