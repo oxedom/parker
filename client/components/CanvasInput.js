@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import {  useEffect, useRef, useState} from "react";
 import { imageCapturedToCanvas, renderRoi } from "../libs/canvas_utility";
 import { capturedImageServer, checkOverlapArrays } from "../libs/utillity";
 import {
@@ -31,6 +31,10 @@ const CanvasInput = ({ track }) => {
   //init vars for interval ID's
   let processingId;
   let renderingId;
+ 
+
+
+
 
   function renderAllDetections(detections) {
     //Clears canvas before rendering all overlays (Runs each response)
@@ -57,12 +61,15 @@ const CanvasInput = ({ track }) => {
     const detectionsEl = detectionsRef.current;
     dectXRef.current = detectionsEl.getContext("2d");
     const dtx = dectXRef.current;
-
     dtx.strokeStyle = "#78E3FD";
+
   }, []);
+
+
 
   useEffect(() => {
     function renderWebcam(track) {
+
       renderingId = setInterval(() => {
         const imageCaptured = new ImageCapture(track);
         //Renders the imageCaptured into a canvas
