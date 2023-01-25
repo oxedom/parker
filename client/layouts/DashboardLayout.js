@@ -7,9 +7,9 @@ const DashboardLayout = ({ children }) => {
     <div className="overflow-hidden">
       <Navbar></Navbar>
       <div className=" flex flex-col  mx-auto my-10 px-48">
-      <div class=" flex flex-col sm:flex-row">
-      <main class="flex bg-indigo-100">{children}</main>
-    </div>
+        <div class=" flex flex-col sm:flex-row">
+          <main class="flex bg-indigo-100">{children}</main>
+        </div>
       </div>
     </div>
   );

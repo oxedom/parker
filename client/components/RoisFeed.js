@@ -14,7 +14,10 @@ const RoisFeed = () => {
 
   return (
     <div className="rounded-r-lg w-[250px]">
-      <h4 className="text-3xl text-center text-white bg-blue-500 "> Selected Feed</h4>
+      <h4 className="text-3xl text-center text-white bg-blue-500 ">
+        {" "}
+        Selected Feed
+      </h4>
       <div className="overflow-y-scroll ">
         {selectedRegions.map((s) => (
           <div key={s.uid} className="flex gap-5">

@@ -1,4 +1,4 @@
-import {  useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import { imageCapturedToCanvas, renderRoi } from "../libs/canvas_utility";
 import { capturedImageServer, checkOverlapArrays } from "../libs/utillity";
 import {
@@ -8,7 +8,7 @@ import {
   selectedRoiState,
   detectionColorState,
 } from "../components/states";
-import {  useRecoilValue , useRecoilState} from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 const CanvasInput = ({ track }) => {
   //Fetching from recoil store using atoms
@@ -34,17 +34,12 @@ const CanvasInput = ({ track }) => {
   //init vars for interval ID's
   let processingId;
   let renderingId;
- 
-
-
-
 
   function renderAllDetections(detections) {
     //Clears canvas before rendering all overlays (Runs each response)
     clearDetectionOverlay();
     //For each on the detections
     detections.forEach((d) => {
-
       renderRoi(d, dectXRef, detectionColor);
     });
   }
@@ -56,9 +51,6 @@ const CanvasInput = ({ track }) => {
       renderRoi(o, dectXRef, "#FFFF00");
     });
   }
-
-
-
 
   function clearDetectionOverlay() {
     //Clears canvas
@@ -73,20 +65,15 @@ const CanvasInput = ({ track }) => {
   useEffect(() => {
     //Need to do this for canvas2d to work
     const detectionsEl = detectionsRef.current;
-    const overlayEl = overlapRef.current
-    overlayXRef.current = overlayEl.getContext('2d')
+    const overlayEl = overlapRef.current;
+    overlayXRef.current = overlayEl.getContext("2d");
     dectXRef.current = detectionsEl.getContext("2d");
-    const otx = overlayXRef.current
+    const otx = overlayXRef.current;
     const dtx = dectXRef.current;
-
-
   }, []);
-
-
 
   useEffect(() => {
     function renderWebcam(track) {
-
       renderingId = setInterval(() => {
         const imageCaptured = new ImageCapture(track);
         //Renders the imageCaptured into a canvas
@@ -106,12 +93,9 @@ const CanvasInput = ({ track }) => {
 
         renderAllDetections(detections);
 
-        
-        let overlaps = checkOverlapArrays(detections, selectedRegions)
-        renderAllOverlaps(overlaps)
-       
- 
-  
+        let overlaps = checkOverlapArrays(detections, selectedRegions);
+        renderAllOverlaps(overlaps);
+
         //Speed SHOULD BE min server capacity
       }, serverFPS);
     }
@@ -142,15 +126,13 @@ const CanvasInput = ({ track }) => {
 
   return (
     <>
-        <canvas
+      <canvas
         id="overlap-overlay"
         ref={overlapRef}
         width={imageWidth}
         height={imageHeight}
         className="fixed"
       ></canvas>
-
-
 
       <canvas
         id="detections-overlay"

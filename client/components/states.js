@@ -32,7 +32,6 @@ const selectedRoiState = selector({
 
   set: ({ set, get }, action) => {
     if (action.event === "addRoi") {
-     
       let { cords, color } = action.payload;
       let date = new Date();
       let roiType = get(roiTypeState);
@@ -43,13 +42,14 @@ const selectedRoiState = selector({
         name: finalName(roiName, oldRois.length),
         label: roiType,
         color: color,
+        occupied: false,
         cords: { ...cords },
         time: date.getTime(),
         uid: uniqid(),
       };
 
       const updatedArr = [...oldRois, roiObj];
-
+      console.log(roiObj);
       set(selectedRoi, updatedArr);
     }
     if (action.event === "deleteRoi") {
@@ -57,6 +57,21 @@ const selectedRoiState = selector({
       const oldRois = get(selectedRoi);
       const updatedArr = oldRois.filter((roi) => roi.uid !== uid);
       set(selectedRoi, updatedArr);
+    }
+
+    if (action.event === "toogleRoiByID") {
+      let uid = action.payload;
+      //Array of ROI objects
+      const currentRois = get(selectedRoi);
+      //Roi that needs to be toogled
+      const targetRoi = currentRois.filter((roi) => roi.uid === uid);
+      const targetRoiIndex = currentRois.findIndex((roi) => roi.uid === uid);
+
+      //Toogle occupied
+      targetRoi.occupied = !targetRoi.occupied;
+      currentRois[targetRoiIndex] = targetRoi;
+
+      set(selectedRoi, currentRois);
     }
   },
 });

@@ -1,6 +1,6 @@
 const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
-import * as tf from '@tensorflow/tfjs';
-const cocoSsd = require('@tensorflow-models/coco-ssd');
+import * as tf from "@tensorflow/tfjs";
+const cocoSsd = require("@tensorflow-models/coco-ssd");
 
 function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
@@ -65,39 +65,31 @@ export function finalName(name, arrayLength) {
   } else return name;
 }
 
-export function checkOverlapArrays(detectionsArr, selectedArr) 
-{
-let overlaps = []
-  detectionsArr.forEach(d => 
-    {
-      selectedArr.forEach(s => 
-        {
-        let overlapCords = getOverlap(d.cords, s.cords)
-        let selectedArea = s.cords.width * s.cords.height
-        console.log("Selected area is ", selectedArea);
-        console.log("OverlapCords area is", overlapCords.area);
-        
-        if(overlapCords != null) {  
-          let overlap = 
-          {
-            ...s,
-            color: "#FFEF00",
-            cords: overlapCords
-          }
-          console.log(overlap);
-          overlaps.push(overlap)
-        }
-       
-          
+export function checkOverlapArrays(detectionsArr, selectedArr) {
+  let overlaps = [];
+  detectionsArr.forEach((d) => {
+    selectedArr.forEach((s) => {
+      let overlapCords = getOverlap(d.cords, s.cords);
+      let selectedArea = s.cords.width * s.cords.height;
+      console.log("Selected area is ", selectedArea);
+      console.log("OverlapCords area is", overlapCords.area);
 
-        })
-    })
-return overlaps
+      if (overlapCords != null) {
+        let overlap = {
+          ...s,
+          color: "#FFEF00",
+          cords: overlapCords,
+        };
+        console.log(overlap);
+        overlaps.push(overlap);
+      }
+    });
+  });
+  return overlaps;
 }
 
-
-export  async function loadModel() {
-  const model = await cocoSsd.load()
+export async function loadModel() {
+  const model = await cocoSsd.load();
   console.log("Model loaded");
   return model;
 }

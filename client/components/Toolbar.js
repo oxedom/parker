@@ -29,23 +29,20 @@ const Toolbar = () => {
   return (
     <div className="  flex  rounded-l-lg">
       <div className="flex flex-col gap-5">
-
-      <div
-            onClick={(e) => {
-              handleProcessing();
-            }}
-            className="rounded
+        <div
+          onClick={(e) => {
+            handleProcessing();
+          }}
+          className="rounded
              relative inline-flex group items-center
               justify-center  py-2  cursor-pointer
                 shadow-lg bg-blue-500
              
                  text-white"
-          >
-            {" "}
-            <span class="static">Process Video</span>
-          </div>
-
-
+        >
+          {" "}
+          <span class="static">Process Video</span>
+        </div>
 
         <div className="flex flex-col gap-5 border-b-4 pb-2">
           <input
@@ -71,11 +68,7 @@ const Toolbar = () => {
           </select>
         </div>
 
-        <div>
-
-
-
-        </div>
+        <div></div>
       </div>
     </div>
   );
