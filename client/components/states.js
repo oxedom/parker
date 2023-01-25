@@ -75,6 +75,13 @@ const selectedRoiState = selector({
     }
   },
 });
+// const track = useRecoilValue(track);
+const trackState = atom({
+  key: "track",
+  default: null,
+});
+
+
 
 const selectingColorState = atom({
   key: "selectingColor",
@@ -108,6 +115,7 @@ const outputImageState = atom({
 
 export {
   roiTypeState,
+  trackState,
   roiNameState,
   imageWidthState,
   imageHeightState,

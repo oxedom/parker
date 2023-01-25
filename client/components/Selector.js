@@ -5,7 +5,7 @@ const Selector = ({ track }) => {
   return (
     <div className="cursor-crosshair ">
       <DrawingCanvas></DrawingCanvas>
-      <CanvasInput track={track} />
+      <CanvasInput />
     </div>
   );
 };

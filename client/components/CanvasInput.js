@@ -7,14 +7,16 @@ import {
   processingState,
   selectedRoiState,
   detectionColorState,
+  trackState,
 } from "../components/states";
 import { useRecoilValue, useRecoilState } from "recoil";
 
-const CanvasInput = ({ track }) => {
+const CanvasInput = () => {
   //Fetching from recoil store using atoms
   const processing = useRecoilValue(processingState);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
+  const track = useRecoilValue(trackState);
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
 
   const detectionColor = useRecoilValue(detectionColorState);
@@ -73,21 +75,31 @@ const CanvasInput = ({ track }) => {
   }, []);
 
   useEffect(() => {
-    function renderWebcam(track) {
+    function renderWebcam() {
       renderingId = setInterval(() => {
-        const imageCaptured = new ImageCapture(track);
-        //Renders the imageCaptured into a canvas
-        imageCapturedToCanvas(imageCaptured, inputRef);
-        //Speed can be very high
+
+        if(track != null) 
+        {
+        
+          const imageCaptured = new ImageCapture(track);
+      
+          //Renders the imageCaptured into a canvas
+          imageCapturedToCanvas(imageCaptured, inputRef);
+          //Speed can be very high
+        }
+
       }, clientFPS);
     }
 
-    function renderProcess(track) {
+    function renderProcess() {
+
       processingId = setInterval(async () => {
+        
         const imageCaptured = new ImageCapture(track);
         imageCapturedToCanvas(imageCaptured, inputRef);
         const data = await capturedImageServer(imageCaptured);
         let { detections } = data.meta_data;
+        console.log(detections);
 
         detections = detections.map((d) => ({ ...d, color: detectionColor }));
 
@@ -106,13 +118,14 @@ const CanvasInput = ({ track }) => {
     //If there is a track and the processing mode is toogled to false
     // so only render the users webcam locally
     if (track !== null && !processing) {
-      renderWebcam(track);
+
+      renderWebcam();
     }
 
     ////If there is a track and the processing mode is  toogled true
     //render to client and send the webcam output to the server
     if (track !== null && processing) {
-      renderProcess(track);
+      renderProcess();
     }
 
     return () => {

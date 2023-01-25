@@ -8,10 +8,6 @@ const FaceTest = () => {
 
   const webcamRef = useRef(null);
   const cocoSsd = require("@tensorflow-models/coco-ssd");
-  const [model, setModel] = useState(undefined);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [webcamEnabled, setWebcamEnabled] = useState(false);
-
 
 
   const detect = async (net) => {
@@ -33,11 +29,26 @@ const FaceTest = () => {
   
 
       // Make Detections
-      const obj = await net.detect(video);
-    console.log(obj);
-      // Draw mesh
+      const predictions = await net.detect(video);
+
+      for (let n = 0; n < predictions.length; n++) {
+
+        // If we are over 66% sure we are sure we classified it right, draw it!
+        if (predictions[n].score > 0.66) { 
+          const right_x = predictions[n].bbox[0];
+          const top_y = predictions[n].bbox[1];
+          const width = predictions[n].bbox[2];
+          const height = predictions[n].bbox[3];
+          const label = predictions[n].class
+          const confidenceLevel = predictions[n].score
+          const obj = { right_x, top_y, width, height, label, confidenceLevel };
+           
+        }
+
+
+
  
-    }
+    } }
   };
 
 
@@ -48,43 +59,23 @@ const runCoco = async () =>
   const net = await cocoSsd.load()
 
   setInterval(() => {
+
     detect(net)
   }, 50);
 
 }
 
-
-
-
-
-
-
-
-
-
 useEffect(() => { runCoco()}, [])
-
-
 
   return (
     <div className="">
               <Webcam
           ref={webcamRef}
           muted={true} 
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
+          className=""
         />
-
     </div>
+
   );
 };
 

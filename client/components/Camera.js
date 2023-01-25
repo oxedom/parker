@@ -1,13 +1,18 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import React from "react";
 import Selector from "./Selector";
-import { imageWidthState, imageHeightState } from "./states";
-import { useRecoilState } from "recoil";
-import { predictWebcam, loadModel } from "../libs/utillity";
+import { imageWidthState, imageHeightState, trackState, processingState } from "./states";
+import { useRecoilState, useRecoilValue } from "recoil";
+
+
+
+
 const Camera = () => {
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
+  const [track, setTrack] = useRecoilState(trackState);
+  const processing = useRecoilValue(processingState);
   // const [imageHeight, setImageHeight] = useRecoilState(imageHeightState)
-  const [track, setTrack] = useState(null);
+
 
   const getVideo = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -25,11 +30,11 @@ const Camera = () => {
     if (track === null) {
       getVideo();
     }
-  }, []);
+  }, [processing]);
 
   return (
     <div className="flex justify-center m-2 ">
-      <Selector track={track}></Selector>
+      <Selector></Selector>
     </div>
   );
 };
