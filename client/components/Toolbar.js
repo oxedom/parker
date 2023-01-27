@@ -8,7 +8,9 @@ import {
   roiNameState,
 } from "./states";
 
-const Toolbar = () => {
+const Toolbar = ({setWebCamApprove, webcamApprove}) => {
+
+
   const [selectedColor, setSelectedColor] = useRecoilState(selectedColorState);
   const [detectionColor, setDetectionColor] =
     useRecoilState(detectionColorState);
@@ -23,50 +25,50 @@ const Toolbar = () => {
   };
 
   function handleProcessing() {
-    processing ? setProcessing(false) : setProcessing(true);
-  }
+    console.log(webcamApprove);
+    if(webcamApprove) 
+    {
+      processing ? setProcessing(false) : setProcessing(true);
+    }
+    }
+
+  function handleEnable() 
+  {
+    webcamApprove ? setWebCamApprove(false) : setWebCamApprove(true);
+   } 
+   
 
   return (
     <div className="  flex  rounded-l-lg">
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col-reverse gap-5">
         <div
           onClick={(e) => {
+    
             handleProcessing();
           }}
-          className="rounded
+          className={`rounded
              relative inline-flex group items-center
-              justify-center  py-2  cursor-pointer
-                shadow-lg bg-blue-500
-             
-                 text-white"
+              justify-center  py-2 p-10  cursor-pointer
+                shadow-lg
+                bg-blue-400
+                ${webcamApprove ? "bg-blue-500 " : "grayscale cursor-not-allowed" }
+                 text-white`}
         >
-          {" "}
           <span class="static">Process Video</span>
         </div>
 
-        <div className="flex flex-col gap-5 border-b-4 pb-2">
-          <input
-            onChange={(e) => {
-              setRoiName(e.target.value);
-            }}
-            value={roiName}
-            placeholder={"ROI name"}
-            className="h-14 rounded-md"
-          />
+        <div onClick={(e) => {handleEnable()}} className={`rounded
+             relative inline-flex group items-center
+              justify-center  py-2 p-10  cursor-pointer
+                shadow-lg 
+                
+                ${webcamApprove ? "bg-green-500 " : "animate-pulse bg-blue-500 " }
+         
+                 text-white`}>
 
-          <select
-            onChange={(e) => {
-              setRoiType(e.target.value);
-            }}
-            value={roiType}
-            className="h-10 w-32"
-          >
-            <option> Any </option>
-            <option> Person </option>
-            <option> Car </option>
-            <option> Cat </option>
-          </select>
+          <span children="static"> Enable Video </span>
         </div>
+
 
         <div></div>
       </div>

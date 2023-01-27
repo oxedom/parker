@@ -51,6 +51,7 @@ export function renderRoi(roi, contextCanvas) {
   //Draws a rect on the detection
   context.strokeStyle = roi.color;
   context.lineWidth = 10;
+
   contextCanvas.current.strokeRect(right_x, top_y, width, height);
 
   context.lineWidth = 11;

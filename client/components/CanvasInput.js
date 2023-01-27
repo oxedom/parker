@@ -50,6 +50,7 @@ const CanvasInput = () => {
     //Clears canvas before rendering all overlays (Runs each response)
     //For each on the detections
     overlaps.forEach((o) => {
+
       renderRoi(o, dectXRef, "#FFFF00");
     });
   }

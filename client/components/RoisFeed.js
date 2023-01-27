@@ -1,7 +1,7 @@
 import { selectedRoiState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 
-const RoisFeed = () => {
+const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
 
   function handleRoiDelete(uid) {
@@ -14,7 +14,7 @@ const RoisFeed = () => {
 
   return (
     <div className="rounded-r-lg w-[250px]">
-      <h4 className="text-3xl text-center text-white bg-blue-500 ">
+      <h4 className="text-3xl text-center text-white bg-blue-500 p-5 ">
         {" "}
         Selected Feed
       </h4>
@@ -34,6 +34,7 @@ const RoisFeed = () => {
           </div>
         ))}
       </div>
+
     </div>
   );
 };
