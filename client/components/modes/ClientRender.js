@@ -9,7 +9,7 @@ import {
   imageHeightState,
 } from "../../components/states";
 
-const ClientRender = ({setLoaded, setTotalFrames, webcamApprove}) => {
+const ClientRender = ({setLoaded, setTotalFrames, webcamApproved, loaded}) => {
 
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
@@ -121,8 +121,9 @@ useEffect(() => { runCoco()}, [])
         className="fixed"
       ></canvas>
 
-    {!webcamApprove && (<img width={imageWidth} src="https://i.ytimg.com/vi/YSeBNY51p-s/maxresdefault.jpg" height={imageHeight}></img>)}
-    {webcamApprove && (<div className="">
+    {(!webcamApproved && !loaded) && (<h1> Webcan not apoprved and need to load model</h1>)}
+    {(webcamApproved && !loaded) && <h1> Still loading model Shit </h1>}
+    {webcamApproved && loaded && (<div className="">
               <Webcam
           ref={webcamRef}
           muted={true} 

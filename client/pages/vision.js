@@ -7,7 +7,7 @@ import { load } from "@tensorflow-models/coco-ssd";
 
 const visionPage = () => {
 
-  const [webcamApprove, setWebCamApprove] = useState(false)
+  const [webcamApproved, setWebCamApproved] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [totalFrames, setTotalFrames] = useState(0)
 
@@ -15,10 +15,10 @@ const visionPage = () => {
   {
     return (<div className="flex m-2 gap-2">
 
-    <Toolbar webcamApprove={webcamApprove} setWebCamApprove={setWebCamApprove}></Toolbar>
+    <Toolbar webcamApprove={webcamApproved} setWebCamApprove={setWebCamApproved}></Toolbar>
       <div>
       <DrawingCanvas></DrawingCanvas>
-      <ClientRender webcamApprove={webcamApprove} setTotalFrames={setTotalFrames} setLoaded={setLoaded}></ClientRender>
+      <ClientRender loaded={loaded} webcamApprove={webcamApproved} setTotalFrames={setTotalFrames} setLoaded={setLoaded}></ClientRender>
       </div>
       <RoisFeed totalFrames={totalFrames}></RoisFeed>
 
