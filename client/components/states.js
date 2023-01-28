@@ -81,8 +81,6 @@ const trackState = atom({
   default: null,
 });
 
-
-
 const selectingColorState = atom({
   key: "selectingColor",
   default: "#FF0000",

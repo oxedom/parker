@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import React from "react";
 import Selector from "./Selector";
-import { imageWidthState, imageHeightState, trackState, processingState } from "./states";
+import {
+  imageWidthState,
+  imageHeightState,
+  trackState,
+  processingState,
+} from "./states";
 import { useRecoilState, useRecoilValue } from "recoil";
-
-
-
 
 const Camera = () => {
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [track, setTrack] = useRecoilState(trackState);
   const processing = useRecoilValue(processingState);
   // const [imageHeight, setImageHeight] = useRecoilState(imageHeightState)
-
 
   const getVideo = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({

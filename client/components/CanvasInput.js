@@ -50,7 +50,6 @@ const CanvasInput = () => {
     //Clears canvas before rendering all overlays (Runs each response)
     //For each on the detections
     overlaps.forEach((o) => {
-
       renderRoi(o, dectXRef, "#FFFF00");
     });
   }
@@ -78,24 +77,18 @@ const CanvasInput = () => {
   useEffect(() => {
     function renderWebcam() {
       renderingId = setInterval(() => {
-
-        if(track != null) 
-        {
-        
+        if (track != null) {
           const imageCaptured = new ImageCapture(track);
-      
+
           //Renders the imageCaptured into a canvas
           imageCapturedToCanvas(imageCaptured, inputRef);
           //Speed can be very high
         }
-
       }, clientFPS);
     }
 
     function renderProcess() {
-
       processingId = setInterval(async () => {
-        
         const imageCaptured = new ImageCapture(track);
         imageCapturedToCanvas(imageCaptured, inputRef);
         const data = await capturedImageServer(imageCaptured);
@@ -119,7 +112,6 @@ const CanvasInput = () => {
     //If there is a track and the processing mode is toogled to false
     // so only render the users webcam locally
     if (track !== null && !processing) {
-
       renderWebcam();
     }
 

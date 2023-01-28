@@ -14,27 +14,29 @@ const RoisFeed = ({}) => {
 
   return (
     <div className="w-[250px]">
-      <h4 className="text-3xl text-center font-semibold text-gray-800 border-gray-800 border-b-2 border-l-2   bg-amber-50 p-5 ">
+      <h4 className="text-3xl text-center font-semibold  bg-slate-100 p-2 text-gray-800   border-b-2 border-r-2 border-slate-900">
         {" "}
         ROI FEED
       </h4>
-      <div className="overflow-y-scroll ">
+      <div className=" ">
         {selectedRegions.map((s) => (
-          <div key={s.uid} className="flex gap-5">
-            <h1>{s.name}</h1>
+          <div
+            key={s.uid}
+            className="flex bg-slate-50 text-xl   border-b-2  border-slate-900 items-center justify-between"
+          >
+            <p>{s.name}</p>
             <div
               value={s.uid}
               onClick={(e) => {
                 handleRoiDelete(s.uid);
               }}
-              className="btn hover:bg-red-600 bg-red-500 p-4 text-white text-xl font-medium tracking-wider"
+              className="btn hover:bg-gray-500 bg-slate-300 font-semibold p-3 text-gray-900  text-xl border-l-2  border-r-2 border-slate-900   "
             >
-              Delete{" "}
+              DELETE{" "}
             </div>
           </div>
         ))}
       </div>
-
     </div>
   );
 };
