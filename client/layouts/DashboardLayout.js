@@ -4,10 +4,11 @@ import Navbar from "../components/Navbar";
 
 const DashboardLayout = ({ children }) => {
   return (
-    <div className="overflow-hidden  bg-pink-300 ">
+    <div className="overflow-hidden h-screen bg-pink-200 ">
       <Navbar></Navbar>
 
       <main className="">{children}</main>
+      <footer>  </footer>
     </div>
   );
 };

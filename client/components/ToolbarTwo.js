@@ -29,12 +29,12 @@ const ToolbarTwo = ({ setWebCamApproved, webcamApproved, setProcessing, processi
           <p className="text font-bold text-center  pt-2 pb-2  ">
           {webcamApproved ? (
       <>
-        <h1>Webcam Enabled</h1>
+        <span>Webcam Enabled</span>
 
       </>
     ) : (
       <>
-        <h1>Webcam Disabled</h1>
+        <span>Webcam Disabled</span>
 
       </>
     )}
@@ -66,12 +66,12 @@ const ToolbarTwo = ({ setWebCamApproved, webcamApproved, setProcessing, processi
   <p className="text font-bold text-center  pt-2 pb-2  ">
   {processing ? (
       <>
-        <h1>Mointoring Enabled</h1>
+        <span>Mointoring Enabled</span>
 
       </>
     ) : (
       <>
-        <h1>Mointoring Disabled</h1>
+        <span>Mointoring Disabled</span>
 
       </>
     )}

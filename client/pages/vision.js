@@ -1,28 +1,40 @@
 import ClientRender from "../components/modes/ClientRender";
 import DrawingCanvas from "../components/DrawingCanvas";
-import Toolbar from "../components/Toolbar";
 import RoisFeed from "../components/RoisFeed";
 import { useState } from "react";
 import ToolbarTwo from "../components/ToolbarTwo";
+import { imageWidthState, imageHeightState} from "../components/states";
+import { useRecoilState, useRecoilValue } from "recoil";
+import Dashboard from "../components/Dashboard";
+
 
 const visionPage = () => {
   const [webcamApproved, setWebCamApproved] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
+  const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
   const [totalFrames, setTotalFrames] = useState(0);
   const [processing, setProcessing] = useState(false);
 
   if (true) {
     return (
-      <div className="flex  p-16 outline outline-1  outline-stone-900">
-        {/* <Toolbar webcamApprove={webcamApproved} setWebCamApprove={setWebCamApproved}></Toolbar> */}
+      <div className="flex flex-col  p-16 outline outline-1  outline-stone-900">
 
-        <div className="flex border-2 border-black">
-          <RoisFeed totalFrames={totalFrames}></RoisFeed>
-          
+          {(webcamApproved && processing) ? (<Dashboard></Dashboard>) : <></> }
        
+        <div>
+        <div className="flex justify-between border-2 border-black">
+          <RoisFeed totalFrames={totalFrames}></RoisFeed>
+
+
+
+         
 
           {webcamApproved ? (
             <div className="">
+
+
+ 
               <DrawingCanvas></DrawingCanvas>
               <ClientRender
                 loaded={loaded}
@@ -30,9 +42,10 @@ const visionPage = () => {
                 setTotalFrames={setTotalFrames}
                 setLoaded={setLoaded}
               ></ClientRender>
+       
             </div>
           ) : (
-            <video className=""  style={{ zIndex: 1 }} width={1280} height={720}> </video>
+            <img width={imageWidth}  height={imageHeight}   style={{ zIndex: 1 }}/>  
 )}
 
 
@@ -47,7 +60,7 @@ const visionPage = () => {
             >
               {" "}
             </ToolbarTwo>
-
+            </div>
         </div>
       </div>
     );
