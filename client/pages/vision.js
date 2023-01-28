@@ -13,7 +13,7 @@ const visionPage = () => {
 
   if(true) 
   {
-    return (<div className="flex m-2 gap-2">
+    return (<div className="flex m-2 gap-2 border-gray-900 border-4">
 
     <Toolbar webcamApprove={webcamApproved} setWebCamApprove={setWebCamApproved}></Toolbar>
       <div>

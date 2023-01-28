@@ -37,8 +37,8 @@ const ClientRender = ({setLoaded, setTotalFrames, webcamApproved, loaded}) => {
   useEffect(() => {
     //Need to do this for canvas2d to work
  
-    const overlayEl = overlayXRef.current;
-    overlayXRef.current = overlayEl.getContext("2d")
+    // const overlayEl = overlayXRef.current;
+    // overlayXRef.current = overlayEl.getContext("2d")
 
   }, []);
 
@@ -113,7 +113,7 @@ useEffect(() => { runCoco()}, [])
   return (
 
       <>
-                <canvas
+        <canvas
         id="overlap-overlay"
         ref={overlayXRef}
         width={imageWidth}
@@ -121,8 +121,10 @@ useEffect(() => { runCoco()}, [])
         className="fixed"
       ></canvas>
 
-    {(!webcamApproved && !loaded) && (<h1> Webcan not apoprved and need to load model</h1>)}
-    {(webcamApproved && !loaded) && <h1> Still loading model Shit </h1>}
+    {(!webcamApproved ) && (<video height={imageHeight} width={imageWidth}>
+      <h1> hello</h1>
+    </video>)}
+    {(webcamApproved ) && (<video height={imageHeight} width={imageWidth}></video>)}
     {webcamApproved && loaded && (<div className="">
               <Webcam
           ref={webcamRef}

@@ -48,25 +48,25 @@ const Toolbar = ({setWebCamApprove, webcamApprove}) => {
           }}
           className={`rounded
              relative inline-flex group items-center
-              justify-center  py-2 p-10  cursor-pointer
+              justify-center   m-1 px-5 cursor-pointer
                 shadow-lg
-                bg-blue-400
-                ${webcamApprove ? "bg-blue-500 " : "grayscale cursor-not-allowed" }
+              
+                ${webcamApprove ? "bg-blue-500 " : " text-gray-900  bg-gray-50 grayscale cursor-not-allowed" }
                  text-white`}
         >
-          <span class="static">Process Video</span>
+          <span className="text font-bold text-center  pt-2 pb-2">Process Video</span>
         </div>
 
         <div onClick={(e) => {handleEnable()}} className={`rounded
-             relative inline-flex group items-center
-              justify-center  py-2 p-10  cursor-pointer
+             relative inline-flex group items-center m-1
+              justify-center  px-5    cursor-pointer
                 shadow-lg 
                 
-                ${webcamApprove ? "bg-green-500 " : "animate-pulse bg-blue-500 " }
+                ${webcamApprove ? "bg-green-50 " : " bg-red-500  " }
          
-                 text-white`}>
+                 text-gray-900`}>
 
-          <span children="static"> Enable Video </span>
+          <span className="text font-bold text-center  pt-2 pb-2  "> ENABLE VIDEO </span>
         </div>
 
 
