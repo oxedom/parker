@@ -9,6 +9,7 @@ const visionPage = () => {
   const [webcamApproved, setWebCamApproved] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [totalFrames, setTotalFrames] = useState(0);
+  const [processing, setProcessing] = useState(false);
 
   if (true) {
     return (
@@ -17,25 +18,36 @@ const visionPage = () => {
 
         <div className="flex border-2 border-black">
           <RoisFeed totalFrames={totalFrames}></RoisFeed>
+          
+       
 
-          <div className="">
-            <DrawingCanvas></DrawingCanvas>
-            <ClientRender
-              loaded={loaded}
-              webcamApprove={webcamApproved}
-              setTotalFrames={setTotalFrames}
-              setLoaded={setLoaded}
-            ></ClientRender>
-          </div>
+          {webcamApproved ? (
+            <div className="">
+              <DrawingCanvas></DrawingCanvas>
+              <ClientRender
+                loaded={loaded}
+                webcamApprove={webcamApproved}
+                setTotalFrames={setTotalFrames}
+                setLoaded={setLoaded}
+              ></ClientRender>
+            </div>
+          ) : (
+            <video className=""  style={{ zIndex: 1 }} width={1280} height={720}> </video>
+)}
 
-          <div className="bg-green-500 border-l-2 border-black w-[250px]">
+
+
+
+        
             <ToolbarTwo
               webcamApproved={webcamApproved}
               setWebCamApproved={setWebCamApproved}
+              setProcessing={setProcessing}
+              processing={processing}
             >
               {" "}
             </ToolbarTwo>
-          </div>
+
         </div>
       </div>
     );

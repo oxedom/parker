@@ -86,8 +86,9 @@ const ClientRender = ({
   };
 
   const runCoco = async () => {
+  
     const net = await cocoSsd.load();
-    setLoaded(true);
+
     setInterval(() => {
       console.log(1);
       detect(net);
@@ -110,7 +111,7 @@ const ClientRender = ({
 
       {true && (
         <div className="">
-          <Webcam ref={webcamRef} muted={true} className="" />
+          <Webcam onUserMedia={   setLoaded(true)} ref={webcamRef} muted={true} className="" />
         </div>
       )}
     </>
