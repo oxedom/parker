@@ -13,9 +13,9 @@ const visionPage = () => {
 
   if(true) 
   {
-    return (<div className="flex m-2 gap-2 border-gray-900 border-2">
+    return (<div className="flex outline outline-1 outline-stone-900">
 
-    <Toolbar webcamApprove={webcamApproved} setWebCamApprove={setWebCamApproved}></Toolbar>
+    {/* <Toolbar webcamApprove={webcamApproved} setWebCamApprove={setWebCamApproved}></Toolbar> */}
       <div>
       <DrawingCanvas></DrawingCanvas>
       <ClientRender loaded={loaded} webcamApprove={webcamApproved} setTotalFrames={setTotalFrames} setLoaded={setLoaded}></ClientRender>
@@ -24,10 +24,7 @@ const visionPage = () => {
 
     </div>)
   }
-  else 
-  {
-    return (<h1> Loading...</h1>)
-  }
+
 };
 
 export default visionPage;

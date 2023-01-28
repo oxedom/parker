@@ -102,9 +102,9 @@ const runCoco = async () =>
   const net = await cocoSsd.load()
   setLoaded(true)
   setInterval(() => {
-    
+    console.log(1);
     detect(net)
-  }, 50);
+  }, 500);
 
 }
 
@@ -121,10 +121,8 @@ useEffect(() => { runCoco()}, [])
         className="fixed"
       ></canvas>
 
-    {(!webcamApproved ) && (<video height={imageHeight} width={imageWidth}></video>
-)}
-    {(webcamApproved ) && (<video height={imageHeight} width={imageWidth}></video>)}
-    {webcamApproved && loaded && (<div className="">
+
+    {true && (<div className="">
               <Webcam
           ref={webcamRef}
           muted={true} 

@@ -4,17 +4,17 @@ import githubIcon from "../static/icons/github-mark.png"
 
 const Navbar = () => {
   return (
-    <nav className="z-[100] h-[80px]  pl-10 pr-10 bg-gray-200 flex justify-between items-center outline outline-1 outline-stone-900 border-gray-800 ">
+    <nav className="z-[100] h-[80px]  pl-10 pr-10 bg-gray-200 flex justify-between items-center outline outline-1 outline-stone-900  ">
       <h1 className="text-bold text-6xl font-bold  text-gray-900   hover:cursor-pointer"> #PARKER </h1>
 
 
     <div className="flex gap-40 border-x-2  border-black h-full items-center px-5 ">
     <Link
-        className="text-bold text-4xl font-bold hover:underline"
+        className="text-bold text-4xl group transition duration-300 font-bold "
         href={"/vision"}
       >
-        {" "}
-        Vision{" "}
+       <span className=" transition-all hover:underline duration-500"> Vision </span>
+
       </Link>
 
       <Link className="text-bold text-4xl font-bold hover:underline" href={"/docs"}>
