@@ -41,34 +41,34 @@ const Toolbar = ({setWebCamApprove, webcamApprove}) => {
   return (
     <div className="  flex  rounded-l-lg">
       <div className="flex flex-col-reverse gap-5">
-        <div
-          onClick={(e) => {
-    
-            handleProcessing();
-          }}
-          className={`rounded
-             relative inline-flex group items-center
-              justify-center   m-1 px-5 cursor-pointer
-                shadow-lg
-              
-                ${webcamApprove ? "bg-blue-500 " : " text-gray-900  bg-gray-50 grayscale cursor-not-allowed" }
-                 text-white`}
-        >
-          <span className="text font-bold text-center  pt-2 pb-2">Process Video</span>
-        </div>
 
-        <div onClick={(e) => {handleEnable()}} className={`rounded
+
+        <div onClick={(e) => {handleEnable()}} className={`
              relative inline-flex group items-center m-1
               justify-center  px-5    cursor-pointer
-                shadow-lg 
+                border border-gray-900
                 
-                ${webcamApprove ? "bg-green-50 " : " bg-red-500  " }
+                ${webcamApprove ? "bg-slate-100 " : " bg-red-600  " }
          
                  text-gray-900`}>
 
           <span className="text font-bold text-center  pt-2 pb-2  "> ENABLE VIDEO </span>
         </div>
+        <div
+          onClick={(e) => {
+    
+            handleProcessing();
+          }}
+          className={`
+             relative inline-flex group items-center
+              justify-center   m-1 px-5 cursor-pointer
+              border border-gray-900
 
+                ${webcamApprove  ? "bg-slate-100 text-gray-900 " : "   bg-gray-300 text-gray-200 grayscale cursor-not-allowed" }
+                 text-white`}
+        >
+          <span className="text-gray-900 font-bold text-center  pt-2 pb-2">PROCESS VIDEO </span>
+        </div>
 
         <div></div>
       </div>

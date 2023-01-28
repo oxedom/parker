@@ -4,11 +4,11 @@ import githubIcon from "../static/icons/github-mark.png"
 
 const Navbar = () => {
   return (
-    <nav className="z-[100] h-[80px] pr-10 pl-10 bg-gray-200 flex justify-between items-center border-b-4 border-gray-800 ">
+    <nav className="z-[100] h-[80px]  pl-10 pr-10 bg-gray-200 flex justify-between items-center outline outline-1 outline-stone-900 border-gray-800 ">
       <h1 className="text-bold text-6xl font-bold  text-gray-900   hover:cursor-pointer"> #PARKER </h1>
 
 
-    <div className="flex gap-40">
+    <div className="flex gap-40 border-x-2  border-black h-full items-center px-5 ">
     <Link
         className="text-bold text-4xl font-bold hover:underline"
         href={"/vision"}
@@ -25,12 +25,12 @@ const Navbar = () => {
 
 
 
-      <div className="flex justify-between gap-8 justify-center items-center ">
-      <Image className="hover:cursor-pointer" width={35} src={githubIcon} height={35}/>
-        <div className="bg-gray-900 pt-2 pb-2 pl-5 pr-5 group transition duration-300  "> 
-          <span className="text-white text-2xl font-bold hover:underline transition-all leading-2 text-center w-2 hover:cursor-pointer "> SIGN UP</span>
+      <div className="flex justify-between gap-8   h-full items-center ">
+    
+        <div className="bg-gray-900 flex justify-center flex-col pl-5 pr-5 h-full  group transition duration-300  "> 
+          <p className="text-white text-2xl font-bold hover:underline transition-all leading-2 text-center  hover:cursor-pointer "> SIGN UP</p>
         </div>
-
+        <Image className="hover:cursor-pointer" width={35} src={githubIcon} height={35}/>
   
       </div>
 

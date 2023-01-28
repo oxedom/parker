@@ -14,7 +14,7 @@ const RoisFeed = ({}) => {
 
   return (
     <div className="rounded-r-lg w-[250px]">
-      <h4 className="text-3xl text-center font-semibold text-gray-800 border-gray-800 border-2  bg-amber-50 p-5 ">
+      <h4 className="text-3xl text-center font-semibold text-gray-800 border-gray-800 border-b-2 border-l-2   bg-amber-50 p-5 ">
         {" "}
         ROI FEED
       </h4>

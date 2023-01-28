@@ -121,9 +121,8 @@ useEffect(() => { runCoco()}, [])
         className="fixed"
       ></canvas>
 
-    {(!webcamApproved ) && (<video height={imageHeight} width={imageWidth}>
-      <h1> hello</h1>
-    </video>)}
+    {(!webcamApproved ) && (<video height={imageHeight} width={imageWidth}></video>
+)}
     {(webcamApproved ) && (<video height={imageHeight} width={imageWidth}></video>)}
     {webcamApproved && loaded && (<div className="">
               <Webcam
