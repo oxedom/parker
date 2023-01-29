@@ -34,9 +34,9 @@ const ClientRender = ({
   }
 
   useEffect(() => {
-    //Need to do this for canvas2d to work
-    // const overlayEl = overlayXRef.current;
-    // overlayXRef.current = overlayEl.getContext("2d")
+    // Need to do this for canvas2d to work
+    const overlayEl = overlayXRef.current;
+    overlayXRef.current = overlayEl.getContext("2d")
   }, []);
 
   const detect = async (net) => {
