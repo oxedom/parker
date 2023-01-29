@@ -6,13 +6,12 @@ import Navlink from "./Navlink.js";
 const Navbar = () => {
   return (
     <nav className="z-[100] h-[80px]  pl-10 pr-10 bg-gray-200 flex justify-between items-center outline outline-1 outline-stone-900  ">
-      <Link href={'/'}>
-      <h1 className="text-bold text-6xl font-bold  text-gray-900   hover:cursor-pointer">
-        {" "}
-        #PARKER{" "}
-      </h1>
+      <Link href={"/"}>
+        <h1 className="text-bold text-6xl font-bold  text-gray-900   hover:cursor-pointer">
+          {" "}
+          #PARKER{" "}
+        </h1>
       </Link>
-
 
       <div className="flex gap-40 border-x-2  border-black h-full items-center px-5 ">
         <Navlink url={"/vision"} text={"VISON"} />

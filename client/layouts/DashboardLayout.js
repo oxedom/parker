@@ -8,7 +8,7 @@ const DashboardLayout = ({ children }) => {
       <Navbar></Navbar>
 
       <main className="">{children}</main>
-      <footer>  </footer>
+      <footer> </footer>
     </div>
   );
 };

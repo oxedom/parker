@@ -20,9 +20,6 @@ const ClientRender = ({
   let overlayXRef = useRef(null);
   const cocoSsd = require("@tensorflow-models/coco-ssd");
 
-
-
-
   function renderAllOverlaps(overlaps) {
     //Clears canvas before rendering all overlays (Runs each response)
     //For each on the detections
@@ -36,7 +33,7 @@ const ClientRender = ({
   useEffect(() => {
     // Need to do this for canvas2d to work
     const overlayEl = overlayXRef.current;
-    overlayXRef.current = overlayEl.getContext("2d")
+    overlayXRef.current = overlayEl.getContext("2d");
   }, []);
 
   const detect = async (net) => {
@@ -91,11 +88,9 @@ const ClientRender = ({
   };
 
   const runCoco = async () => {
-  
     const net = await cocoSsd.load();
 
     setInterval(() => {
-   
       detect(net);
     }, 500);
   };
@@ -116,7 +111,14 @@ const ClientRender = ({
 
       {true && (
         <div className="">
-          <Webcam height={imageHeight} width={imageWidth} onUserMedia={   setLoaded(true)} ref={webcamRef} muted={true} className="" />
+          <Webcam
+            height={imageHeight}
+            width={imageWidth}
+            onUserMedia={setLoaded(true)}
+            ref={webcamRef}
+            muted={true}
+            className=""
+          />
         </div>
       )}
     </>
