@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ToolbarTwo from "../components/ToolbarTwo";
 import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilState, useRecoilValue } from "recoil";
+import EnableWebcam from "../components/EnableWebcam";
 
 
 const visionPage = () => {
@@ -15,31 +16,14 @@ const visionPage = () => {
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
   const [totalFrames, setTotalFrames] = useState(0);
   const [processing, setProcessing] = useState(false);
+  const [attempt, setAttempt] = useState(0)
 
-  function detectWebcam(callback) {
-    let md = navigator.mediaDevices;
-    if (!md || !md.enumerateDevices) return callback(false);
-    md.enumerateDevices().then((devices) => {
-      callback(devices.some((device) => "videoinput" === device.kind));
-    });
-  }
 
-  useEffect(() => {
-    detectWebcam(function (webcamExists) {
-      if (webcamExists) {
-        setHasWebcam(true);
-      }
-      if (!webcamExists) {
-        setHasWebcam(false);
-        alert("Please plug in a Webcam");
-      }
-    });
-  }, []);
 
-  if (true) {
+
+  if (false) {
     return (
       <div className="flex flex-col  p-16 outline outline-1  outline-stone-900">
-        {/* {(webcamApproved && processing) ? (<Dashboard></Dashboard>) : <></> } */}
         <div>
           <div className="flex justify-between border-2 border-black">
             <RoisFeed totalFrames={totalFrames}></RoisFeed>
@@ -63,6 +47,7 @@ const visionPage = () => {
             )}
 
             <ToolbarTwo
+            setAttempt={setAttempt}
               webcamApproved={webcamApproved}
               hasWebcam={hasWebcam}
               setWebCamApproved={setWebCamApproved}
@@ -75,6 +60,10 @@ const visionPage = () => {
         </div>
       </div>
     );
+  }
+  else 
+  {
+    return (<EnableWebcam></EnableWebcam>)
   }
 };
 
