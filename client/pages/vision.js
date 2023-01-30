@@ -7,29 +7,29 @@ import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import EnableWebcam from "../components/EnableWebcam";
 
-
 const visionPage = () => {
   const [hasWebcam, setHasWebcam] = useState(false);
+  const [webcamEnabled, setWebcamEnable] = useState(false);
+
   const [webcamApproved, setWebCamApproved] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
-  const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
+  const [reload, setReload] = useState(0)
+  const imageWidth = useRecoilValue(imageWidthState);
+  const imageHeight = useRecoilValue(imageHeightState);
   const [totalFrames, setTotalFrames] = useState(0);
+
   const [processing, setProcessing] = useState(false);
-  const [attempt, setAttempt] = useState(0)
 
 
-
-
-  if (false) {
+  if (hasWebcam) {
     return (
       <div className="flex flex-col  p-16 outline outline-1  outline-stone-900">
         <div>
           <div className="flex justify-between border-2 border-black">
             <RoisFeed totalFrames={totalFrames}></RoisFeed>
 
-            {webcamApproved && hasWebcam ? (
-              <div className="a">
+   
+              <div className="">
                 <DrawingCanvas></DrawingCanvas>
                 <ClientRender
                   loaded={loaded}
@@ -38,18 +38,11 @@ const visionPage = () => {
                   setLoaded={setLoaded}
                 ></ClientRender>
               </div>
-            ) : (
-              <img
-                width={imageWidth}
-                height={imageHeight}
-                style={{ zIndex: 1 }}
-              />
-            )}
+    
+  
 
             <ToolbarTwo
-            setAttempt={setAttempt}
-              webcamApproved={webcamApproved}
-              hasWebcam={hasWebcam}
+              setReload={setReload}
               setWebCamApproved={setWebCamApproved}
               setProcessing={setProcessing}
               processing={processing}
@@ -60,10 +53,14 @@ const visionPage = () => {
         </div>
       </div>
     );
-  }
-  else 
-  {
-    return (<EnableWebcam></EnableWebcam>)
+  } else {
+    return <EnableWebcam
+    setHasWebcam={setHasWebcam}
+    hasWebcam={hasWebcam}
+    webcamEnabled={webcamEnabled}
+    setWebcamEnable={setWebcamEnable}
+    reload={reload}
+    ></EnableWebcam>;
   }
 };
 

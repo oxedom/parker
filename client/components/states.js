@@ -98,12 +98,12 @@ const detectionColorState = atom({
 
 const imageHeightState = atom({
   key: "imageHeight",
-  default: 720,
+  default: 1,
 });
 
 const imageWidthState = atom({
   key: "imageWidth",
-  default: 1280,
+  default: 1,
 });
 
 const outputImageState = atom({
