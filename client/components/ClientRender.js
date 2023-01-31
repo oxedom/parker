@@ -21,6 +21,12 @@ const ClientRender = ({
   function renderAllOverlaps(overlaps) {
     //Clears canvas before rendering all overlays (Runs each response)
     //For each on the detections
+    overlayXRef.current.clearRect(
+      0,
+      0,
+      imageWidth,
+      imageHeight
+    );
     overlaps.forEach((o) => {
       o.color = "#FFFF00";
    

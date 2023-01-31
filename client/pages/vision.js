@@ -36,7 +36,7 @@ const visionPage = () => {
                   ></ClientRender>
                 </div>
               )
-              : <video width={imageWidth} height={imageHeight}/>
+              : <video width={imageWidth} style={{width:imageWidth, height:imageHeight}} height={imageHeight}/>
             }
 
 
