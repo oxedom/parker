@@ -44,7 +44,7 @@ export function renderRoi(roi, contextCanvas) {
   const { height, right_x, top_y, width } = roi.cords;
   const context = contextCanvas.current;
   const borderWidth = 5;
-  const  offset = borderWidth * 2;
+  const offset = borderWidth * 2;
 
   //Gets centerX
   const centerX = right_x + width / 2;
@@ -56,10 +56,14 @@ export function renderRoi(roi, contextCanvas) {
   context.lineWidth = 10;
 
   contextCanvas.current.strokeRect(right_x, top_y, width, height);
-  context.strokeStyle = "#000000"
+  context.strokeStyle = "#000000";
   context.lineWidth = 2;
-  contextCanvas.current.strokeRect(right_x-borderWidth, top_y-borderWidth, width+offset, height+offset);
-  
+  contextCanvas.current.strokeRect(
+    right_x - borderWidth,
+    top_y - borderWidth,
+    width + offset,
+    height + offset
+  );
 
   // contextCanvas.current.fillText(roi.label, centerX, top_y * 0.8);
 }

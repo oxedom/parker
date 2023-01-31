@@ -1,38 +1,31 @@
-import { imageHeightState, processingState} from "../components/states";
-import { useRecoilValue , useRecoilState} from "recoil";
+import { imageHeightState, processingState } from "../components/states";
+import { useRecoilValue, useRecoilState } from "recoil";
 const ToolbarTwo = ({
   processing,
   setProcessing,
   hasWebcam,
   setHasWebcam,
   webcamEnabled,
-  setWebcamEnable
+  setWebcamEnable,
 }) => {
-
-
   const imageHeight = useRecoilValue(imageHeightState);
 
   function handleProcessing() {
-  
     processing ? setProcessing(false) : setProcessing(true);
   }
   function handleEnable() {
     webcamEnabled ? setWebcamEnable(false) : setWebcamEnable(true);
   }
 
-  function handleWebcamRefresh() 
-  {
+  function handleWebcamRefresh() {
     setHasWebcam(false);
   }
-
-
 
   return (
     <div className={`w-[250px] min-h-[${imageHeight}px] `}>
       <div
         onClick={(e) => {
           if (hasWebcam) {
-            
             handleEnable();
           }
         }}
@@ -65,8 +58,7 @@ const ToolbarTwo = ({
 
       <div
         onClick={(e) => {
- 
-          handleProcessing()
+          handleProcessing();
         }}
         className={`
         items-center
@@ -94,12 +86,11 @@ const ToolbarTwo = ({
         </p>
       </div>
 
-     
-        <div
-          onClick={(e) => {
-            handleWebcamRefresh();
-          }}
-          className={`
+      <div
+        onClick={(e) => {
+          handleWebcamRefresh();
+        }}
+        className={`
         items-center
       justify-center   cursor-pointer
         border border-gray-900
@@ -107,12 +98,11 @@ const ToolbarTwo = ({
         ${"bg-slate-100 duration-500 transition-colors   hover:bg-gray-300 hover:transition-none"}
  
          text-gray-900`}
-        >
-          <p className="text font-bold text-center  pt-2 pb-2  ">
-            <span> Reload Webcam </span>
-          </p>
-        </div>
-   
+      >
+        <p className="text font-bold text-center  pt-2 pb-2  ">
+          <span> Reload Webcam </span>
+        </p>
+      </div>
     </div>
   );
 };

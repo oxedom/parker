@@ -13,9 +13,15 @@ const Navbar = () => {
         </h1>
       </Link>
 
-      <div className="flex gap-40 border-x-2  border-black h-full items-center px-5 ">
-        <Navlink url={"/vision"} text={"VISON"} />
-        <Navlink url={"/docs"} text={"DOCS"} />
+      <div className="flex gap-40  h-full items-center px-5 ">
+        <a className="border-2  px-5  flex justify-center items-center h-full border-black">
+        <Navlink  url={"/vision"} text={"VISON"} />
+        </a>
+        <a className="border r-4   flex justify-center items-center h-full border-black">
+        <Navlink className="  
+
+" url={"/docs"} text={"DOCS"} />
+          </a>
       </div>
 
       <div className="flex justify-between gap-8   h-full items-center ">

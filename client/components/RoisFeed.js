@@ -6,8 +6,7 @@ const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
   const imageHeight = useRecoilValue(imageHeightState);
 
-  function handleSelect(uid) 
-  {
+  function handleSelect(uid) {
     let action = {
       event: "selectRoi",
       payload: uid,
@@ -15,17 +14,14 @@ const RoisFeed = ({}) => {
     setSelectedRois(action);
   }
 
-  function handleUnselect(uid) 
-  {
+  function handleUnselect(uid) {
     let action = {
       event: "unSelectRoi",
       payload: uid,
     };
     setSelectedRois(action);
-    
   }
 
-  
   function handleRoiDelete(uid) {
     let action = {
       event: "deleteRoi",
@@ -44,8 +40,12 @@ const RoisFeed = ({}) => {
         {selectedRegions.map((s) => (
           <div
             key={s.uid}
-            onMouseOver={(e) => {handleSelect(s.uid)}}
-            onMouseLeave={(e) => {handleUnselect(s.uid)}}
+            onMouseOver={(e) => {
+              handleSelect(s.uid);
+            }}
+            onMouseLeave={(e) => {
+              handleUnselect(s.uid);
+            }}
             className="flex bg-slate-50 text-xl  cursor-default hover:bg-blue-400  border-b-2  border-slate-900 items-center justify-between"
           >
             <p>{s.name}</p>

@@ -31,7 +31,8 @@ body {
   font-family: Roboto;
 }
 
-video { 
+video {
   object-fit: none;
   /* height:  720px; */
-  max-width: none ;}
+  max-width: none;
+}

@@ -4,14 +4,12 @@ import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as tf from "@tensorflow/tfjs";
 import { renderRoi } from "../libs/canvas_utility";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageWidthState, imageHeightState,  } from "./states";
+import { imageWidthState, imageHeightState } from "./states";
 
-
-const ClientRender = ({processing}) => {
-
+const ClientRender = ({ processing }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-  const [intervalID, setIntervalID] = useState(undefined)
+  const [intervalID, setIntervalID] = useState(undefined);
   const webcamRef = useRef(null);
 
   // const overlayEl = useRef(null);
@@ -21,15 +19,10 @@ const ClientRender = ({processing}) => {
   function renderAllOverlaps(overlaps) {
     //Clears canvas before rendering all overlays (Runs each response)
     //For each on the detections
-    overlayXRef.current.clearRect(
-      0,
-      0,
-      imageWidth,
-      imageHeight
-    );
+    overlayXRef.current.clearRect(0, 0, imageWidth, imageHeight);
     overlaps.forEach((o) => {
       o.color = "#FFFF00";
-   
+
       renderRoi(o, overlayXRef, "#FFFF00");
     });
   }
@@ -41,10 +34,11 @@ const ClientRender = ({processing}) => {
   }, []);
 
   const detect = async (net) => {
-  
     // console.log(processing);
     // Check data is available
-    if(!processing) { return}
+    if (!processing) {
+      return;
+    }
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
@@ -91,36 +85,27 @@ const ClientRender = ({processing}) => {
     }
   };
 
-  const runCoco =  async () => {
+  const runCoco = async () => {
     let id;
     const net = await cocoSsd.load();
 
-     id = setInterval(() => {
-
-     detect(net)
-    
-
+    id = setInterval(() => {
+      detect(net);
     }, 500);
-    return id
+    return id;
   };
 
   useEffect(() => {
-    
     let intervalID;
-    if(processing) 
-    {
+    if (processing) {
+      runCoco().then((id) => {
+        intervalID = id;
+      });
+    }
 
-      runCoco().then((id) => 
-      {
-        intervalID = id
-      })
-
-     }
-
-     return function() {
-      clearInterval(intervalID)
-
-     }
+    return function () {
+      clearInterval(intervalID);
+    };
   }, [processing]);
 
   return (
@@ -130,22 +115,18 @@ const ClientRender = ({processing}) => {
         ref={overlayXRef}
         width={imageWidth}
         height={imageHeight}
-        className="fixed poo"
+        className="fixed"
       ></canvas>
 
-    
-          
-          <Webcam
-            height={imageHeight}
-            width={imageWidth}
-            style={{height: imageHeight}}
-            videoConstraints={ {height: imageHeight, video: imageWidth} }
-            ref={webcamRef}
-            muted={true}
-            className=""
-          />
-      
- 
+      <Webcam
+        height={imageHeight}
+        width={imageWidth}
+        style={{ height: imageHeight }}
+        videoConstraints={{ height: imageHeight, video: imageWidth }}
+        ref={webcamRef}
+        muted={true}
+        className=""
+      />
     </>
   );
 };
