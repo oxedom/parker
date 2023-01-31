@@ -1,8 +1,8 @@
-import { imageHeightState } from "../components/states";
-import { useRecoilValue } from "recoil";
+import { imageHeightState, processingState} from "../components/states";
+import { useRecoilValue , useRecoilState} from "recoil";
 const ToolbarTwo = ({
-  setProcessing,
   processing,
+  setProcessing,
   hasWebcam,
   webcamEnabled,
   setWebcamEnable
@@ -10,7 +10,9 @@ const ToolbarTwo = ({
 
 
   const imageHeight = useRecoilValue(imageHeightState);
+
   function handleProcessing() {
+    console.log(processing);
     processing ? setProcessing(false) : setProcessing(true);
   }
   function handleEnable() {
@@ -24,7 +26,7 @@ const ToolbarTwo = ({
       <div
         onClick={(e) => {
           if (hasWebcam) {
-            console.log(webcamEnabled);
+            
             handleEnable();
           }
         }}
@@ -57,13 +59,8 @@ const ToolbarTwo = ({
 
       <div
         onClick={(e) => {
-          if (webcamApproved) {
-            handleWebcamRefresh();
-            handleProcessing();
-            if (webcamApproved) {
-              handleProcessing(false);
-            }
-          }
+ 
+          handleProcessing()
         }}
         className={`
         items-center

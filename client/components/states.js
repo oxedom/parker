@@ -19,7 +19,7 @@ const roiNameState = atom({
 
 const processingState = atom({
   key: "processing",
-  default: false,
+  default: true,
 });
 
 const selectedRoiState = selector({

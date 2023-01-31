@@ -4,15 +4,16 @@ import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as tf from "@tensorflow/tfjs";
 import { renderRoi } from "../libs/canvas_utility";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageWidthState, imageHeightState } from "./states";
+import { imageWidthState, imageHeightState,  } from "./states";
+import { Log } from "@tensorflow/tfjs";
 
 const ClientRender = ({
-
+  processing
 
 }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-
+  const [intervalID, setIntervalID] = useState(undefined)
   const webcamRef = useRef(null);
   // const overlayEl = useRef(null);
   let overlayXRef = useRef(null);
@@ -41,6 +42,8 @@ const ClientRender = ({
   }, []);
 
   const detect = async (net) => {
+  
+    // console.log(processing);
     // Check data is available
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -91,14 +94,26 @@ const ClientRender = ({
   const runCoco = async () => {
     const net = await cocoSsd.load();
 
-    setInterval(() => {
-      detect(net);
-    }, 5);
+     setIntervalID(setInterval(() => {
+
+     detect(net)
+    
+
+    }, 500));
+
   };
 
   useEffect(() => {
-    runCoco();
-  }, []);
+    if(processing) 
+    {
+      runCoco();
+     }
+
+     return function() {
+      console.log('Cleaning up');
+      clearInterval(intervalID)
+     }
+  }, [processing]);
 
   return (
     <>
