@@ -7,14 +7,13 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { imageWidthState, imageHeightState,  } from "./states";
 
 
-const ClientRender = ({
-  processing
+const ClientRender = ({processing}) => {
 
-}) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [intervalID, setIntervalID] = useState(undefined)
   const webcamRef = useRef(null);
+
   // const overlayEl = useRef(null);
   let overlayXRef = useRef(null);
   const cocoSsd = require("@tensorflow-models/coco-ssd");
@@ -45,6 +44,7 @@ const ClientRender = ({
   
     // console.log(processing);
     // Check data is available
+    if(!processing) { return}
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
@@ -91,28 +91,35 @@ const ClientRender = ({
     }
   };
 
-  const runCoco = async () => {
+  const runCoco =  async () => {
+    let id;
     const net = await cocoSsd.load();
 
-     setIntervalID(setInterval(() => {
+     id = setInterval(() => {
 
      detect(net)
     
 
-    }, 500));
-
+    }, 500);
+    return id
   };
 
   useEffect(() => {
-    console.log(processing);
+    
+    let intervalID;
     if(processing) 
     {
-      runCoco();
+
+      runCoco().then((id) => 
+      {
+        intervalID = id
+      })
+
      }
 
      return function() {
-      console.log('Cleaning up');
       clearInterval(intervalID)
+
      }
   }, [processing]);
 

@@ -40,7 +40,7 @@ const RoisFeed = ({}) => {
         {" "}
         ROI FEED
       </h4>
-      <div className=" ">
+      <div className="">
         {selectedRegions.map((s) => (
           <div
             key={s.uid}
