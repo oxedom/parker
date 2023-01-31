@@ -73,6 +73,47 @@ const selectedRoiState = selector({
 
       set(selectedRoi, currentRois);
     }
+
+    if (action.event === "selectRoi") {
+      let uid = action.payload;
+      //Array of ROI objects
+      const currentRois = get(selectedRoi);
+      //Roi that needs to be toogled
+      const targetRoi = currentRois.filter((roi) => roi.uid === uid)[0]
+      const targetRoiIndex = currentRois.findIndex((roi) => roi.uid === uid);
+
+      //Need to make copies 
+      const roiClone = structuredClone(targetRoi);
+      const currentRoisClone = structuredClone(currentRois);
+    
+      //Toogle color to selected blue
+      roiClone.color = "#0073ff"
+      
+      currentRoisClone[targetRoiIndex] = roiClone;
+      set(selectedRoi, currentRoisClone);
+    }
+
+    if (action.event === "unSelectRoi") {
+      let uid = action.payload;
+      //Array of ROI objects
+      const currentRois = get(selectedRoi);
+      //Roi that needs to be toogled
+      const targetRoi = currentRois.filter((roi) => roi.uid === uid)[0]
+      const targetRoiIndex = currentRois.findIndex((roi) => roi.uid === uid);
+
+      //Need to make copies 
+      const roiClone = structuredClone(targetRoi);
+      const currentRoisClone = structuredClone(currentRois);
+    
+      //Toogle color to selected blue
+      roiClone.color = "#FF0000"
+      
+      currentRoisClone[targetRoiIndex] = roiClone;
+      set(selectedRoi, currentRoisClone);
+    }
+
+
+
   },
 });
 // const track = useRecoilValue(track);
@@ -88,7 +129,7 @@ const selectingColorState = atom({
 
 const selectedColorState = atom({
   key: "selectedColor",
-  default: "#FF0000",
+  default: "#f52222",
 });
 
 const detectionColorState = atom({

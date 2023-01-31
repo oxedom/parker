@@ -4,6 +4,7 @@ const ToolbarTwo = ({
   processing,
   setProcessing,
   hasWebcam,
+  setHasWebcam,
   webcamEnabled,
   setWebcamEnable
 }) => {
@@ -12,11 +13,16 @@ const ToolbarTwo = ({
   const imageHeight = useRecoilValue(imageHeightState);
 
   function handleProcessing() {
-    console.log(processing);
+  
     processing ? setProcessing(false) : setProcessing(true);
   }
   function handleEnable() {
     webcamEnabled ? setWebcamEnable(false) : setWebcamEnable(true);
+  }
+
+  function handleWebcamRefresh() 
+  {
+    setHasWebcam(false);
   }
 
 
@@ -32,7 +38,7 @@ const ToolbarTwo = ({
         }}
         className={`
                 items-center
-              justify-center   cursor-pointer
+              justify-center   pointer
                 border border-gray-900
             
             p-2  focus:outline-none active:bg-blue-700"
@@ -88,7 +94,7 @@ const ToolbarTwo = ({
         </p>
       </div>
 
-      {!hasWebcam && (
+     
         <div
           onClick={(e) => {
             handleWebcamRefresh();
@@ -106,7 +112,7 @@ const ToolbarTwo = ({
             <span> Reload Webcam </span>
           </p>
         </div>
-      )}
+   
     </div>
   );
 };

@@ -5,7 +5,7 @@ import * as tf from "@tensorflow/tfjs";
 import { renderRoi } from "../libs/canvas_utility";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { imageWidthState, imageHeightState,  } from "./states";
-import { Log } from "@tensorflow/tfjs";
+
 
 const ClientRender = ({
   processing
@@ -104,6 +104,7 @@ const ClientRender = ({
   };
 
   useEffect(() => {
+    console.log(processing);
     if(processing) 
     {
       runCoco();

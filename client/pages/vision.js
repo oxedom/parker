@@ -13,14 +13,14 @@ const visionPage = () => {
   const [reload, setReload] = useState(0)
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-  const [processing, setProcessing] = useState(false)
+  const [processing, setProcessing] = useState(true)
 
 
 
 
   if (hasWebcam) {
     return (
-      <div className="flex flex-col  p-16 outline outline-1  outline-stone-900">
+      <div className="flex flex-col  p-16 ">
         <div>
           <div className="flex justify-between border-2 border-black">
             <RoisFeed ></RoisFeed>
@@ -46,6 +46,7 @@ const visionPage = () => {
               setWebcamEnable={setWebcamEnable}
               setProcessing={setProcessing}
               processing={processing}
+              setHasWebcam={setHasWebcam}
               hasWebcam={hasWebcam}
               webcamEnabled={webcamEnabled}
             >
@@ -62,6 +63,7 @@ const visionPage = () => {
     webcamEnabled={webcamEnabled}
     setWebcamEnable={setWebcamEnable}
     reload={reload}
+    setReload={setReload}
     ></EnableWebcam>;
   }
 };
