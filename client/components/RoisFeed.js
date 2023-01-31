@@ -1,9 +1,11 @@
 import { selectedRoiState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
+import { imageHeightState } from "./states";
 
 const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
-
+  const imageHeight = useRecoilValue(imageHeightState);
+  
   function handleRoiDelete(uid) {
     let action = {
       event: "deleteRoi",
@@ -13,7 +15,7 @@ const RoisFeed = ({}) => {
   }
 
   return (
-    <div className="w-[250px]">
+    <div className={`w-[250px]  min-h-[${imageHeight}px]`}>
       <h4 className="text-3xl text-center font-semibold  bg-slate-100 p-2 text-gray-800   border-b-2 border-r-2 border-slate-900">
         {" "}
         ROI FEED

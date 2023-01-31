@@ -4,8 +4,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 const EnableWebcam = ({
     hasWebcam, setHasWebcam, 
-    webcamEnabled, 
     setWebcamEnable,
+    
     reload
  }) => {
 
@@ -13,11 +13,6 @@ const EnableWebcam = ({
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
 
-  const handleEnable = () => {
-    if (hasWebcam) {
-        webcamEnabled ? setWebcamEnable(false) : setWebcamEnable(true);
-    }
-  };
   const getSetting = async () => {
     let stream = await navigator.mediaDevices.getUserMedia({ video: true });
     let { width, height } = stream.getTracks()[0].getSettings();
@@ -51,6 +46,7 @@ const EnableWebcam = ({
       detectWebcam(async (hasWebcamBoolean) => {
         await setUserSettings()
         setHasWebcam(hasWebcamBoolean);
+        setWebcamEnable(hasWebcamBoolean)
         setWarrning(!hasWebcamBoolean);
       });
     }, 1000);
@@ -71,15 +67,14 @@ const EnableWebcam = ({
         </div>
       )}
       <button
-        onClick={handleEnable}
-        className={` w-max-[500px] p-10 text-6xl
+        className={` w-max-[500px] p-10 text-6xl  spin-slow
          text-black border-2 font-bold mb-[300px] border-slate-800 uppercase ${
            hasWebcam
              ? "bg-slate-100"
              : "bg-gray-300  text-gray-100 cursor-not-allowed"
          } `}
       >
-        Enable Webcam{" "}
+      {" "}
       </button>
     </div>
   );

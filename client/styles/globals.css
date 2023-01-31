@@ -30,3 +30,8 @@ body {
   overflow-y: hidden;
   font-family: Roboto;
 }
+
+video { 
+  object-fit: none;
+  /* height:  720px; */
+  max-width: none ;}

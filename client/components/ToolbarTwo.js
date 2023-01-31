@@ -1,25 +1,30 @@
+import { imageHeightState } from "../components/states";
+import { useRecoilValue } from "recoil";
 const ToolbarTwo = ({
-  setWebCamApproved,
-  webcamApproved,
   setProcessing,
   processing,
   hasWebcam,
+  webcamEnabled,
+  setWebcamEnable
 }) => {
+
+
+  const imageHeight = useRecoilValue(imageHeightState);
   function handleProcessing() {
     processing ? setProcessing(false) : setProcessing(true);
   }
   function handleEnable() {
-    webcamApproved ? setWebCamApproved(false) : setWebCamApproved(true);
+    webcamEnabled ? setWebcamEnable(false) : setWebcamEnable(true);
   }
 
 
 
   return (
-    <div className="  w-[250px]">
+    <div className={`w-[250px] min-h-[${imageHeight}px] `}>
       <div
         onClick={(e) => {
           if (hasWebcam) {
-            handleWebcamRefresh();
+            console.log(webcamEnabled);
             handleEnable();
           }
         }}
@@ -30,7 +35,7 @@ const ToolbarTwo = ({
             
             p-2  focus:outline-none active:bg-blue-700"
                 ${
-                  webcamApproved
+                  webcamEnabled
                     ? " bg-slate-100 text-gray-800 duration-500 transition-colors     hover:bg-gray-300 hover:transition-none "
                     : " text-white  bg-red-500 duration-1000  transition-colors "
                 }
@@ -38,7 +43,7 @@ const ToolbarTwo = ({
                  text-gray-900`}
       >
         <p className="text font-bold text-center  pt-2 pb-2  ">
-          {webcamApproved ? (
+          {webcamEnabled ? (
             <>
               <span>Webcam Enabled</span>
             </>

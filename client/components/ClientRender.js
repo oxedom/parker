@@ -2,15 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as tf from "@tensorflow/tfjs";
-import { renderRoi } from "../../libs/canvas_utility";
+import { renderRoi } from "../libs/canvas_utility";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageWidthState, imageHeightState } from "../../components/states";
+import { imageWidthState, imageHeightState } from "./states";
 
 const ClientRender = ({
-  setLoaded,
-  setTotalFrames,
-  webcamApproved,
-  loaded,
+
+
 }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
@@ -25,7 +23,7 @@ const ClientRender = ({
     //For each on the detections
     overlaps.forEach((o) => {
       o.color = "#FFFF00";
-      console.table(o.cords);
+   
       renderRoi(o, overlayXRef, "#FFFF00");
     });
   }
@@ -80,9 +78,6 @@ const ClientRender = ({
         }
 
         renderAllOverlaps(arr);
-        setTotalFrames((prev) => {
-          return prev + 1;
-        });
       }
     }
   };
@@ -92,7 +87,7 @@ const ClientRender = ({
 
     setInterval(() => {
       detect(net);
-    }, 500);
+    }, 5);
   };
 
   useEffect(() => {
@@ -106,21 +101,22 @@ const ClientRender = ({
         ref={overlayXRef}
         width={imageWidth}
         height={imageHeight}
-        className="fixed"
+        className="fixed poo"
       ></canvas>
 
-      {true && (
-        <div className="">
+    
+          
           <Webcam
             height={imageHeight}
             width={imageWidth}
-            onUserMedia={setLoaded(true)}
+            style={{height: imageHeight}}
+            videoConstraints={ {height: imageHeight, video: imageWidth} }
             ref={webcamRef}
             muted={true}
             className=""
           />
-        </div>
-      )}
+      
+ 
     </>
   );
 };
