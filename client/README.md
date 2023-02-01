@@ -14,3 +14,4 @@ UI Settings, set to color blind
 remove border
 Make UI State different for ui only things booleans list
 Slow delay with tailwind
+Add a hanler for area and maybe put it in state with toogled if occupied or not

@@ -65,12 +65,16 @@ const selectedRoiState = selector({
       //Array of ROI objects
       const currentRois = get(selectedRoi);
       //Roi that needs to be toogled
-      const targetRoi = currentRois.filter((roi) => roi.uid === uid);
+      const targetRoi = currentRois.filter((roi) => roi.uid === uid)[0];
       const targetRoiIndex = currentRois.findIndex((roi) => roi.uid === uid);
 
+      //Need to make copies
+      const roiClone = structuredClone(targetRoi);
+      const currentRoisClone = structuredClone(currentRois);
+
       //Toogle occupied
-      targetRoi.occupied = !targetRoi.occupied;
-      currentRois[targetRoiIndex] = targetRoi;
+      roiClone.occupied = !roiClone.occupied;
+      currentRois[targetRoiIndex] = roiClone;
 
       set(selectedRoi, currentRois);
     }
