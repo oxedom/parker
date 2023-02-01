@@ -46,6 +46,7 @@ const selectedRoiState = selector({
         cords: { ...cords },
         time: date.getTime(),
         uid: uniqid(),
+        area: cords.width*cords.height
       };
 
       const updatedArr = [...oldRois, roiObj];

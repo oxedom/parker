@@ -75,6 +75,7 @@ const ClientRender = ({ processing }) => {
 
             label,
             confidenceLevel,
+            area: Math.ceil(width*height)
           };
           arr.push(obj);
           console.log(obj);
