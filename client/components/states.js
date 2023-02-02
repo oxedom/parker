@@ -66,9 +66,6 @@ const selectedRoiState = selector({
 
     if (action.event === "occupation") {
 
-
-    
-
       let {predictionsArr} = action.payload;
 
     //   //Array of ROI objects
@@ -80,35 +77,52 @@ const selectedRoiState = selector({
       for (let index = 0; index < selectedRois.length; index++) {
 
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr)
-      
         //If check that runs if a Selected ROI object is currently occupied
         //Checks that object hasn't changed occupied status by checking when it was last seen
         //and sees how long ago it was last seen, if it's under some sort of thresohold, so it will define it status
         //to unoccupied,
-        if(selectedRois[index]['occupied']) {
-          //Check if 10 secounds have passed since last seen
 
-          if(selectedRois[index]['lastSeen']-Date.now() < 10) 
+          //Check if 10 secounds have passed since last seen
+      
+
+           if (isOverlap && (selectedRois[index]['firstSeen'] === null)) 
+          {
+
+            selectedRoisClone[index]['firstSeen'] = Date.now();
+            selectedRoisClone[index]['lastSeen'] = Date.now();
+            console.log(1);
+          }
+          else if(isOverlap && (selectedRois[index]['firstSeen'] != null)) {
+            console.log(2);
+            let timeDiff = selectedRois[index]['lastSeen'] - selectedRois[index]['firstSeen']
+            if(timeDiff > 5000) 
+            {
+              selectedRoisClone[index].occupied = true;
+              selectedRoisClone[index].color = '#FFC0CB';
+            }
+            selectedRoisClone[index].lastSeen = Date.now();
+          }
+          else if(Date.now() - selectedRois[index]['lastSeen']  > 5000 ) 
           {
             //reset the selected ROI
-            selectedRoisClone[index]['firstSeen'] == null
-            selectedRoisClone[index]['lastSeen']== null
-            selectedRoisClone[index]['occupied'] == false
-          } }
+            console.log('Pig fat');
+            selectedRoisClone[index]['firstSeen'] = null
+            selectedRoisClone[index]['lastSeen'] = null
+            selectedRoisClone[index]['occupied'] = false
+            selectedRoisClone[index]['color'] = '#0000FF'
+          } 
+        
+          }
+         
 
+          
+
+
+
+          console.table(selectedRoisClone[0]);
+          set(selectedRoi, selectedRoisClone);
         }
-
-    //     else if (checkRectOverlap(isOverlap, predictionsArr) && selectedRoi[index].firstSeen == null) 
-    //       {
-    //         selectedRoisClone[index].firstSeen == Date.now();
-    //       }
-
-    //     else if(isOverlap && (selectedRoi[index].firstSeen != null)) {
-    //         selectedRoisClone[index].lastSeen = Date.now();
-    //       }
-
-    //     }
-      
+      // }
 
     // }
 
@@ -152,7 +166,7 @@ const selectedRoiState = selector({
 
 
     }
-  }
+  
 });
 // const track = useRecoilValue(track);
 const trackState = atom({

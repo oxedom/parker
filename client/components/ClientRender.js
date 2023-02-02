@@ -91,7 +91,7 @@ const ClientRender = ({ processing }) => {
 
 
 
-        renderAllOverlaps(predictionsArr);
+        // renderAllOverlaps(predictionsArr);
       }
     }
   };
