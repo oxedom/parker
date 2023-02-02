@@ -64,43 +64,53 @@ const selectedRoiState = selector({
 
 
 
-    if (action.event === "updateUnion") {
+    if (action.event === "occupation") {
 
 
+    
 
+      let {predictionsArr} = action.payload;
 
-      let predictionsArr = action.payload;
-      //Array of ROI objects
+    //   //Array of ROI objects
       const selectedRois = get(selectedRoi);
+
       const selectedRoisClone = structuredClone(selectedRois);
-      //Log N function
+    //   //Log N function
+
       for (let index = 0; index < selectedRois.length; index++) {
-        let isOverlap = checkRectOverlap(selectedRoi[index])
-        if(!(selectedRoi[index].lastSeen == null) && selectedRoi[index].occupied) {
+
+        let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr)
+      
+        //If check that runs if a Selected ROI object is currently occupied
+        //Checks that object hasn't changed occupied status by checking when it was last seen
+        //and sees how long ago it was last seen, if it's under some sort of thresohold, so it will define it status
+        //to unoccupied,
+        if(selectedRois[index]['occupied']) {
           //Check if 10 secounds have passed since last seen
 
-          if(selectedRoi[index].lastSeen-Date.now() < 10) 
+          if(selectedRois[index]['lastSeen']-Date.now() < 10) 
           {
-            //Check about mutating state
-            selectedRoisClone[index].firstSeen == null
-            selectedRoisClone[index].lastSeen == null
-            selectedRoisClone[index].occupied == false
+            //reset the selected ROI
+            selectedRoisClone[index]['firstSeen'] == null
+            selectedRoisClone[index]['lastSeen']== null
+            selectedRoisClone[index]['occupied'] == false
           } }
 
-
-        else if (checkRectOverlap(isOverlap, predictionsArr) && selectedRoi[index].firstSeen == null) 
-          {
-            selectedRoisClone[index].firstSeen == Date.now();
-          }
-
-        else if(isOverlap && (selectedRoi[index].firstSeen != null)) {
-            selectedRoisClone[index].lastSeen = Date.now();
-          }
-
         }
+
+    //     else if (checkRectOverlap(isOverlap, predictionsArr) && selectedRoi[index].firstSeen == null) 
+    //       {
+    //         selectedRoisClone[index].firstSeen == Date.now();
+    //       }
+
+    //     else if(isOverlap && (selectedRoi[index].firstSeen != null)) {
+    //         selectedRoisClone[index].lastSeen = Date.now();
+    //       }
+
+    //     }
       
 
-    }
+    // }
 
     if (action.event === "selectRoi") {
       let uid = action.payload;
@@ -117,29 +127,32 @@ const selectedRoiState = selector({
       //Toogle color to selected blue
       roiClone.color = "#0073ff";
 
-      currentRoisClone[targetRoiIndex] = roiClone;
+      selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
     }
 
     if (action.event === "unSelectRoi") {
       let uid = action.payload;
       //Array of ROI objects
-      const currentRois = get(selectedRoi);
+      const selectedRois = get(selectedRoi);
       //Roi that needs to be toogled
-      const targetRoi = currentRois.filter((roi) => roi.uid === uid)[0];
-      const targetRoiIndex = currentRois.findIndex((roi) => roi.uid === uid);
+      const targetRoi = selectedRois.filter((roi) => roi.uid === uid)[0];
+      const targetRoiIndex = selectedRois.findIndex((roi) => roi.uid === uid);
 
       //Need to make copies
       const roiClone = structuredClone(targetRoi);
-      const currentRoisClone = structuredClone(currentRois);
+      const selectedRoisClone = structuredClone(selectedRois);
 
       //Toogle color to selected blue
       roiClone.color = "#FF0000";
 
-      currentRoisClone[targetRoiIndex] = roiClone;
-      set(selectedRoi, currentRoisClone);
+      selectedRoisClone[targetRoiIndex] = roiClone;
+      set(selectedRoi, selectedRoisClone);
     }
-  },
+
+
+    }
+  }
 });
 // const track = useRecoilValue(track);
 const trackState = atom({

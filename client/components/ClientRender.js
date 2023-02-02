@@ -4,13 +4,14 @@ import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as tf from "@tensorflow/tfjs";
 import { renderRoi } from "../libs/canvas_utility";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageWidthState, imageHeightState } from "./states";
+import { imageWidthState, imageHeightState, selectedRoiState } from "./states";
 
 const ClientRender = ({ processing }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [intervalID, setIntervalID] = useState(undefined);
   const webcamRef = useRef(null);
+  const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
   // const overlayEl = useRef(null);
   let overlayXRef = useRef(null);
@@ -75,13 +76,22 @@ const ClientRender = ({ processing }) => {
 
             label,
             confidenceLevel,
-            area: Math.ceil(width*height)
+            area: Math.ceil(width * height),
           };
           predictionsArr.push(obj);
-          
         }
 
-        renderAllOverlaps(arr);
+        let action = {
+          event: "occupation",
+          payload: { predictionsArr: predictionsArr },
+        };
+        //Sends action request with a payload, the event is handled
+        //inside the state event.
+        setSelectedRois(action);
+
+
+
+        renderAllOverlaps(predictionsArr);
       }
     }
   };
@@ -92,7 +102,7 @@ const ClientRender = ({ processing }) => {
 
     id = setInterval(() => {
       detect(net);
-    }, 500);
+    }, 1000);
     return id;
   };
 

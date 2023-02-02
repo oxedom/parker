@@ -29,8 +29,6 @@ function getOverlap(rectangle1, rectangle2) {
   };
 }
 
-
-
 async function capturedImageToBuffer(capturedImage) {
   const imagePhoto = await capturedImage.takePhoto();
 
@@ -91,25 +89,37 @@ export function checkOverlapArrays(detectionsArr, selectedArr) {
 }
 
 export function checkRectOverlap(rect, detectionsArr) {
+  let answer = false;
+  detectionsArr.forEach((d) => {
 
-  detectionsArr.forEach((d) => { 
+    ///Overlap calculation
     let overlapCords = getOverlap(d.cords, rect.cords);
+    //If overlapcords is null the squares don't intersect
+    if (overlapCords == null) {
+      return ;
+    } else {
 
-    console.log("Selected area is ", selectedArea.area);
-    console.log("OverlapCords area is", overlapCords.area);
+      let overlapArea_rounded = Math.round(overlapCords.area)
+      let rectArea_rounded = Math.round(rect.area)
 
-    if (overlapCords == null) { return false}
-      else {
-        let percentDiff = selectedArea.area/overlapCords.area
-        if(percentDiff > 0.5 ) {
-          return true
-         }
-        else { return false}
+      //If the overlap is the same size (The decection is bigger than the selection)
+      if(overlapArea_rounded == rectArea_rounded) {
+      answer = true}
+
+      //Overlap rounded should be smaller than rectArea, so we calcualte 
+      //how much % of the sqaure it's overlapping
+      let percentDiff =  overlapArea_rounded/ rectArea_rounded;
+
+      //If it overlaps more than 50% of the square return true, else false
+      if (percentDiff > 0.5) {
+        answer = true;
+      } else {
+        return ;
       }
-
-  
-  })
- }
+    }
+  });
+  return answer;
+}
 
 export async function loadModel() {
   const model = await cocoSsd.load();
