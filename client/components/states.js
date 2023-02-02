@@ -91,10 +91,10 @@ const selectedRoiState = selector({
 
             selectedRoisClone[index]['firstSeen'] = Date.now();
             selectedRoisClone[index]['lastSeen'] = Date.now();
-            console.log(1);
+     
           }
           else if(isOverlap && (selectedRois[index]['firstSeen'] != null)) {
-            console.log(2);
+   
             let timeDiff = selectedRois[index]['lastSeen'] - selectedRois[index]['firstSeen']
             if(timeDiff > 5000) 
             {
@@ -106,7 +106,6 @@ const selectedRoiState = selector({
           else if(Date.now() - selectedRois[index]['lastSeen']  > 5000 ) 
           {
             //reset the selected ROI
-            console.log('Pig fat');
             selectedRoisClone[index]['firstSeen'] = null
             selectedRoisClone[index]['lastSeen'] = null
             selectedRoisClone[index]['occupied'] = false
@@ -120,7 +119,7 @@ const selectedRoiState = selector({
 
 
 
-          console.table(selectedRoisClone[0]);
+          // console.table(selectedRoisClone[0]);
           set(selectedRoi, selectedRoisClone);
         }
       // }

@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as tf from "@tensorflow/tfjs";
-import { renderRoi } from "../libs/canvas_utility";
+import { renderRoi, renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { imageWidthState, imageHeightState, selectedRoiState } from "./states";
 
-const ClientRender = ({ processing }) => {
+const ClientRender = ({ processing , showDetections}) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [intervalID, setIntervalID] = useState(undefined);
@@ -17,15 +17,7 @@ const ClientRender = ({ processing }) => {
   let overlayXRef = useRef(null);
   const cocoSsd = require("@tensorflow-models/coco-ssd");
 
-  function renderAllOverlaps(overlaps) {
-    //Clears canvas before rendering all overlays (Runs each response)
-    //For each on the detections
-    overlayXRef.current.clearRect(0, 0, imageWidth, imageHeight);
-    overlaps.forEach((o) => {
-      o.hover = true
-      renderRoi(o, overlayXRef);
-    });
-  }
+
 
   useEffect(() => {
     // Need to do this for canvas2d to work
@@ -91,10 +83,13 @@ const ClientRender = ({ processing }) => {
         //Sends action request with a payload, the event is handled
         //inside the state event.
         setSelectedRois(action);
+        if(showDetections) 
+        {
+          renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight );
+        }
 
 
-
-        // renderAllOverlaps(predictionsArr);
+        
       }
     }
   };
@@ -118,9 +113,10 @@ const ClientRender = ({ processing }) => {
     }
 
     return function () {
+      clearCanvas(overlayXRef, imageWidth, imageHeight)
       clearInterval(intervalID);
     };
-  }, [processing]);
+  }, [processing,showDetections]);
 
   return (
     <>

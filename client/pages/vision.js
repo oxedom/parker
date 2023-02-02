@@ -14,18 +14,35 @@ const visionPage = () => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [processing, setProcessing] = useState(true);
+  const [showDetections, setShowDetections] = useState(false)
 
   if (hasWebcam) {
     return (
       <div className="flex flex-col  p-16 ">
         <div>
           <div className="flex justify-between border-2 border-black">
-            <RoisFeed></RoisFeed>
+         
+            <ToolbarTwo
+              setReload={setReload}
+              setWebcamEnable={setWebcamEnable}
+              setProcessing={setProcessing}
+              setShowDetections={setShowDetections}
+              showDetections={showDetections}
+              processing={processing}
+              setHasWebcam={setHasWebcam}
+              hasWebcam={hasWebcam}
+              webcamEnabled={webcamEnabled}
+            >
+              {" "}
+            </ToolbarTwo>
+
 
             {webcamEnabled ? (
               <div className="">
                 <DrawingCanvas></DrawingCanvas>
-                <ClientRender processing={processing}></ClientRender>
+                <ClientRender 
+                showDetections={showDetections}
+                processing={processing}></ClientRender>
               </div>
             ) : (
               <video
@@ -35,17 +52,7 @@ const visionPage = () => {
               />
             )}
 
-            <ToolbarTwo
-              setReload={setReload}
-              setWebcamEnable={setWebcamEnable}
-              setProcessing={setProcessing}
-              processing={processing}
-              setHasWebcam={setHasWebcam}
-              hasWebcam={hasWebcam}
-              webcamEnabled={webcamEnabled}
-            >
-              {" "}
-            </ToolbarTwo>
+  <RoisFeed></RoisFeed>
           </div>
         </div>
       </div>

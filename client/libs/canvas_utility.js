@@ -82,3 +82,22 @@ export function renderRoi(roi, contextCanvas) {
 
   // contextCanvas.current.fillText(roi.label, centerX, top_y * 0.8);
 }
+
+export function renderAllOverlaps(overlaps, canvasRef, width, height) {
+  //Clears canvas before rendering all overlays (Runs each response)
+  //For each on the detections
+  canvasRef.current.clearRect(0, 0, width, height);
+  overlaps.forEach((o) => {
+    o.hover = true
+    renderRoi(o, canvasRef);
+  });
+}
+
+export function clearCanvas(canvasRef, width, height) 
+{
+  if(canvasRef.current != null) 
+  {
+    canvasRef.current.clearRect(0, 0, width, height);
+  }
+   
+}
