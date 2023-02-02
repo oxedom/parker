@@ -45,14 +45,29 @@ export function renderRoi(roi, contextCanvas) {
   const context = contextCanvas.current;
   const borderWidth = 5;
   const offset = borderWidth * 2;
+  let color = '#00FF00'
 
+  if(roi.occupied && (roi.hover == false))
+  {
+    color = "#FF3131"
+  }
+  if(Date.now() - roi.time < 6000) 
+  {
+    color = '#808080'
+  }
+
+
+  if(roi.hover) 
+  {
+    color = '#ADD8E6'
+  }
   //Gets centerX
   const centerX = right_x + width / 2;
   //Font and Size needs to be state
   contextCanvas.current.font = "72px Courier";
   contextCanvas.current.textAlign = "center";
   //Draws a rect on the detection
-  context.strokeStyle = roi.color;
+  context.strokeStyle = color;
   context.lineWidth = 10;
 
   contextCanvas.current.strokeRect(right_x, top_y, width, height);

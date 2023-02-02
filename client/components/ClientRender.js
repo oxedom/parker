@@ -22,16 +22,19 @@ const ClientRender = ({ processing }) => {
     //For each on the detections
     overlayXRef.current.clearRect(0, 0, imageWidth, imageHeight);
     overlaps.forEach((o) => {
-      o.color = "#FFFF00";
-
-      renderRoi(o, overlayXRef, "#FFFF00");
+      o.hover = true
+      renderRoi(o, overlayXRef);
     });
   }
 
   useEffect(() => {
     // Need to do this for canvas2d to work
     const overlayEl = overlayXRef.current;
-    overlayXRef.current = overlayEl.getContext("2d");
+    if(overlayEl != null) 
+    {
+      overlayXRef.current = overlayEl.getContext("2d");
+    }
+   
   }, []);
 
   const detect = async (net) => {

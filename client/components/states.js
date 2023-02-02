@@ -49,6 +49,7 @@ const selectedRoiState = selector({
         firstSeen: null,
         lastSeen: null,
         occupied: false,
+        hover:false,
       };
 
       const updatedArr = [...oldRois, roiObj];
@@ -98,7 +99,7 @@ const selectedRoiState = selector({
             if(timeDiff > 5000) 
             {
               selectedRoisClone[index].occupied = true;
-              selectedRoisClone[index].color = '#FFC0CB';
+     
             }
             selectedRoisClone[index].lastSeen = Date.now();
           }
@@ -109,7 +110,7 @@ const selectedRoiState = selector({
             selectedRoisClone[index]['firstSeen'] = null
             selectedRoisClone[index]['lastSeen'] = null
             selectedRoisClone[index]['occupied'] = false
-            selectedRoisClone[index]['color'] = '#0000FF'
+     
           } 
         
           }
@@ -140,7 +141,7 @@ const selectedRoiState = selector({
 
       //Toogle color to selected blue
       roiClone.color = "#0073ff";
-
+      roiClone.hover = true;
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
     }
@@ -159,6 +160,7 @@ const selectedRoiState = selector({
 
       //Toogle color to selected blue
       roiClone.color = "#FF0000";
+      roiClone.hover = false;
 
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
