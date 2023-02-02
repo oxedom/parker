@@ -85,7 +85,7 @@ const selectedRoiState = selector({
 
           //Check if 10 secounds have passed since last seen
       
-
+       
            if (isOverlap && (selectedRois[index]['firstSeen'] === null)) 
           {
 

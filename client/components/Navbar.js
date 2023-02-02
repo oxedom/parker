@@ -14,10 +14,10 @@ const Navbar = () => {
       </Link>
 
       <div className="flex gap-40  h-full items-center px-5 ">
-        <div className="border-2  px-5  flex justify-center items-center h-full border-black">
+        <div className=" px-5  flex justify-center items-center h-full border-black">
           <Navlink url={"/vision"} text={"VISON"} />
         </div>
-        <div className="border r-4   flex justify-center items-center h-full border-black">
+        <div className="  flex justify-center items-center h-full ">
           <Navlink
             className="  
 
@@ -29,17 +29,7 @@ const Navbar = () => {
       </div>
 
       <div className="flex justify-between gap-8   h-full items-center ">
-        <div className="bg-gray-900 flex justify-center flex-col pl-5 pr-5 h-full  group transition duration-300  ">
-          <p
-            className="text-white text-2xl font-bold relative cursor-pointer before:content-[''] before:absolute before:block before:w-full before:h-[2px] 
-              before:bottom-0 before:left-0 before:bg-white
-              before:hover:scale-x-100 before:scale-x-0 before:origin-top-left
-              before:transition before:ease-in-out before:duration-300"
-          >
-            {" "}
-            SIGN UP
-          </p>
-        </div>
+
         <Image
           alt="githubIcon"
           className="hover:cursor-pointer"
