@@ -29,6 +29,8 @@ function getOverlap(rectangle1, rectangle2) {
   };
 }
 
+
+
 async function capturedImageToBuffer(capturedImage) {
   const imagePhoto = await capturedImage.takePhoto();
 
@@ -87,6 +89,27 @@ export function checkOverlapArrays(detectionsArr, selectedArr) {
   });
   return overlaps;
 }
+
+export function checkRectOverlap(rect, detectionsArr) {
+
+  detectionsArr.forEach((d) => { 
+    let overlapCords = getOverlap(d.cords, rect.cords);
+
+    console.log("Selected area is ", selectedArea.area);
+    console.log("OverlapCords area is", overlapCords.area);
+
+    if (overlapCords == null) { return false}
+      else {
+        let percentDiff = selectedArea.area/overlapCords.area
+        if(percentDiff > 0.5 ) {
+          return true
+         }
+        else { return false}
+      }
+
+  
+  })
+ }
 
 export async function loadModel() {
   const model = await cocoSsd.load();

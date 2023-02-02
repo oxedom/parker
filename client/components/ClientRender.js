@@ -55,7 +55,7 @@ const ClientRender = ({ processing }) => {
 
       // Make Detections
       const predictions = await net.detect(video);
-      let arr = [];
+      let predictionsArr = [];
       for (let n = 0; n < predictions.length; n++) {
         // If we are over 66% sure we are sure we classified it right, draw it!
         if (predictions[n].score > 0.66) {
@@ -77,8 +77,8 @@ const ClientRender = ({ processing }) => {
             confidenceLevel,
             area: Math.ceil(width*height)
           };
-          arr.push(obj);
-          console.log(obj);
+          predictionsArr.push(obj);
+          
         }
 
         renderAllOverlaps(arr);

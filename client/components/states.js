@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 import uniqid from "uniqid";
-import { finalName } from "../libs/utillity";
+import { finalName, checkRectOverlap } from "../libs/utillity";
 
 const selectedRoi = atom({
   key: "selectedRois",
@@ -42,11 +42,13 @@ const selectedRoiState = selector({
         name: finalName(roiName, oldRois.length),
         label: roiType,
         color: color,
-        occupied: false,
         cords: { ...cords },
         time: date.getTime(),
         uid: uniqid(),
-        area: cords.width*cords.height
+        area: cords.width*cords.height,
+        firstSeen: null,
+        lastSeen: null,
+        occupied: false,
       };
 
       const updatedArr = [...oldRois, roiObj];
@@ -60,42 +62,63 @@ const selectedRoiState = selector({
       set(selectedRoi, updatedArr);
     }
 
-    if (action.event === "toogleRoiByID") {
-      let uid = action.payload;
+
+
+    if (action.event === "updateUnion") {
+
+
+
+
+      let predictionsArr = action.payload;
       //Array of ROI objects
-      const currentRois = get(selectedRoi);
-      //Roi that needs to be toogled
-      const targetRoi = currentRois.filter((roi) => roi.uid === uid)[0];
-      const targetRoiIndex = currentRois.findIndex((roi) => roi.uid === uid);
+      const selectedRois = get(selectedRoi);
+      const selectedRoisClone = structuredClone(selectedRois);
+      //Log N function
+      for (let index = 0; index < selectedRois.length; index++) {
+        let isOverlap = checkRectOverlap(selectedRoi[index])
+        if(!(selectedRoi[index].lastSeen == null) && selectedRoi[index].occupied) {
+          //Check if 10 secounds have passed since last seen
 
-      //Need to make copies
-      const roiClone = structuredClone(targetRoi);
-      const currentRoisClone = structuredClone(currentRois);
+          if(selectedRoi[index].lastSeen-Date.now() < 10) 
+          {
+            //Check about mutating state
+            selectedRoisClone[index].firstSeen == null
+            selectedRoisClone[index].lastSeen == null
+            selectedRoisClone[index].occupied == false
+          } }
 
-      //Toogle occupied
-      roiClone.occupied = !roiClone.occupied;
-      currentRois[targetRoiIndex] = roiClone;
 
-      set(selectedRoi, currentRois);
+        else if (checkRectOverlap(isOverlap, predictionsArr) && selectedRoi[index].firstSeen == null) 
+          {
+            selectedRoisClone[index].firstSeen == Date.now();
+          }
+
+        else if(isOverlap && (selectedRoi[index].firstSeen != null)) {
+            selectedRoisClone[index].lastSeen = Date.now();
+          }
+
+        }
+      
+
     }
 
     if (action.event === "selectRoi") {
       let uid = action.payload;
       //Array of ROI objects
-      const currentRois = get(selectedRoi);
+      const selectedRois = get(selectedRoi);
       //Roi that needs to be toogled
-      const targetRoi = currentRois.filter((roi) => roi.uid === uid)[0];
-      const targetRoiIndex = currentRois.findIndex((roi) => roi.uid === uid);
+      const targetRoi = selectedRois.filter((roi) => roi.uid === uid)[0];
+      const targetRoiIndex = selectedRois.findIndex((roi) => roi.uid === uid);
 
       //Need to make copies
       const roiClone = structuredClone(targetRoi);
-      const currentRoisClone = structuredClone(currentRois);
+      const selectedRoisClone = structuredClone(selectedRois);
 
       //Toogle color to selected blue
       roiClone.color = "#0073ff";
 
       currentRoisClone[targetRoiIndex] = roiClone;
-      set(selectedRoi, currentRoisClone);
+      set(selectedRoi, selectedRoisClone);
     }
 
     if (action.event === "unSelectRoi") {
