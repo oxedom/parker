@@ -61,7 +61,7 @@ function rectangleArea(rect) {
 
 export function finalName(name, arrayLength) {
   if (name === "") {
-    return `ROI NUMBER: ${arrayLength + 1}`;
+    return `P : ${arrayLength + 1}`;
   } else return name;
 }
 

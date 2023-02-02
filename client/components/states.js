@@ -7,6 +7,11 @@ const selectedRoi = atom({
   default: [],
 });
 
+const evaluateTimeState = atom({
+  key: "evaluateTimeState",
+  default: 5000,
+})
+
 const roiTypeState = atom({
   key: "roiType",
   default: "Any",
@@ -71,7 +76,7 @@ const selectedRoiState = selector({
 
     //   //Array of ROI objects
       const selectedRois = get(selectedRoi);
-
+      const evaluateTime = get(evaluateTimeState)
       const selectedRoisClone = structuredClone(selectedRois);
     //   //Log N function
 
@@ -96,14 +101,14 @@ const selectedRoiState = selector({
           else if(isOverlap && (selectedRois[index]['firstSeen'] != null)) {
    
             let timeDiff = selectedRois[index]['lastSeen'] - selectedRois[index]['firstSeen']
-            if(timeDiff > 5000) 
+            if(timeDiff > evaluateTime) 
             {
               selectedRoisClone[index].occupied = true;
      
             }
             selectedRoisClone[index].lastSeen = Date.now();
           }
-          else if(Date.now() - selectedRois[index]['lastSeen']  > 5000 ) 
+          else if(Date.now() - selectedRois[index]['lastSeen']  > evaluateTime ) 
           {
             //reset the selected ROI
             selectedRoisClone[index]['firstSeen'] = null
@@ -215,6 +220,7 @@ export {
   selectingColorState,
   selectedColorState,
   processingState,
+  evaluateTimeState,
   outputImageState,
   selectedRoiState,
 };
