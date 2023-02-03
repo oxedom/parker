@@ -93,14 +93,15 @@ const selectedRoiState = selector({
        
            if (isOverlap && (selectedRois[index]['firstSeen'] === null)) 
           {
-
+            console.log('1');
             selectedRoisClone[index]['firstSeen'] = Date.now();
             selectedRoisClone[index]['lastSeen'] = Date.now();
      
           }
           else if(isOverlap && (selectedRois[index]['firstSeen'] != null)) {
-   
+            console.log('2');
             let timeDiff = selectedRois[index]['lastSeen'] - selectedRois[index]['firstSeen']
+            console.log(timeDiff);
             if(timeDiff > evaluateTime) 
             {
               selectedRoisClone[index].occupied = true;
@@ -111,6 +112,7 @@ const selectedRoiState = selector({
           else if(Date.now() - selectedRois[index]['lastSeen']  > evaluateTime ) 
           {
             //reset the selected ROI
+            console.log('resetting');
             selectedRoisClone[index]['firstSeen'] = null
             selectedRoisClone[index]['lastSeen'] = null
             selectedRoisClone[index]['occupied'] = false
