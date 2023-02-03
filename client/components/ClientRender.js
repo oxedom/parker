@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-// import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import * as cocoSsd from "@tensorflow-models/coco-ssd";
 // import * as tf from "@tensorflow/tfjs";
 import {
   renderRoi,
@@ -18,7 +18,10 @@ const ClientRender = ({ processing, showDetections }) => {
 
   // const overlayEl = useRef(null);
   let overlayXRef = useRef(null);
-  const cocoSsd = require("@tensorflow-models/coco-ssd");
+  
+  //Uncomment this if you don't want to the user to load tensorflow from Google API
+  //And comment out import 
+  // const cocoSsd = require("@tensorflow-models/coco-ssd");
 
   useEffect(() => {
     // Need to do this for canvas2d to work
