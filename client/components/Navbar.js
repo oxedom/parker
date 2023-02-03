@@ -29,7 +29,6 @@ const Navbar = () => {
       </div>
 
       <div className="flex justify-between gap-8   h-full items-center ">
-
         <Image
           alt="githubIcon"
           className="hover:cursor-pointer"

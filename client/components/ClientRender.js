@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import * as cocoSsd from "@tensorflow-models/coco-ssd";
-import * as tf from "@tensorflow/tfjs";
-import { renderRoi, renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
+// import * as cocoSsd from "@tensorflow-models/coco-ssd";
+// import * as tf from "@tensorflow/tfjs";
+import {
+  renderRoi,
+  renderAllOverlaps,
+  clearCanvas,
+} from "../libs/canvas_utility";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { imageWidthState, imageHeightState, selectedRoiState } from "./states";
 
-const ClientRender = ({ processing , showDetections}) => {
+const ClientRender = ({ processing, showDetections }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-  const [intervalID, setIntervalID] = useState(undefined);
   const webcamRef = useRef(null);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
@@ -17,16 +20,12 @@ const ClientRender = ({ processing , showDetections}) => {
   let overlayXRef = useRef(null);
   const cocoSsd = require("@tensorflow-models/coco-ssd");
 
-
-
   useEffect(() => {
     // Need to do this for canvas2d to work
     const overlayEl = overlayXRef.current;
-    if(overlayEl != null) 
-    {
+    if (overlayEl != null) {
       overlayXRef.current = overlayEl.getContext("2d");
     }
-   
   }, []);
 
   const detect = async (net) => {
@@ -51,6 +50,7 @@ const ClientRender = ({ processing , showDetections}) => {
 
       // Make Detections
       const predictions = await net.detect(video);
+      console.log(predictions);
       let predictionsArr = [];
       for (let n = 0; n < predictions.length; n++) {
         // If we are over 66% sure we are sure we classified it right, draw it!
@@ -60,6 +60,7 @@ const ClientRender = ({ processing , showDetections}) => {
           const width = predictions[n].bbox[2];
           const height = predictions[n].bbox[3];
           const label = predictions[n].class;
+ 
           const confidenceLevel = predictions[n].score;
           const obj = {
             cords: {
@@ -83,13 +84,14 @@ const ClientRender = ({ processing , showDetections}) => {
         //Sends action request with a payload, the event is handled
         //inside the state event.
         setSelectedRois(action);
-        if(showDetections) 
-        {
-          renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight );
+        if (showDetections) {
+          renderAllOverlaps(
+            predictionsArr,
+            overlayXRef,
+            imageWidth,
+            imageHeight
+          );
         }
-
-
-        
       }
     }
   };
@@ -113,10 +115,10 @@ const ClientRender = ({ processing , showDetections}) => {
     }
 
     return function () {
-      clearCanvas(overlayXRef, imageWidth, imageHeight)
+      clearCanvas(overlayXRef, imageWidth, imageHeight);
       clearInterval(intervalID);
     };
-  }, [processing,showDetections]);
+  }, [processing, showDetections]);
 
   return (
     <>

@@ -15,9 +15,8 @@ remove border
 
 Slow delay with tailwind
 
-
 Feb 2003:
-Counter doesn't reset, 
+Counter doesn't reset,
 
 Save data about object, how long he as been there and not there
 

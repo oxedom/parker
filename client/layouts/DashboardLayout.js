@@ -1,5 +1,3 @@
-
-
 import Navbar from "../components/Navbar";
 
 const DashboardLayout = ({ children }) => {
@@ -10,7 +8,6 @@ const DashboardLayout = ({ children }) => {
       <main className="grow mb-auto flex flex-col justify-center items-center">
         {children}
       </main>
-
     </div>
   );
 };

@@ -19,12 +19,14 @@ const ToolbarTwo = ({
     p-2
     duration-100 transition-colors   hover:bg-gray-300 hover:transition-none
 
-     text-gray-900`
+     text-gray-900`;
 
-  const paraClass = 'text font-bold text-center  pt-2 pb-2'
+  const paraClass = "text font-bold text-center  pt-2 pb-2";
 
   function handleProcessing() {
-    if(showDetections) { setShowDetections(false)}
+    if (showDetections) {
+      setShowDetections(false);
+    }
     processing ? setProcessing(false) : setProcessing(true);
   }
   function handleWebcamEnable() {
@@ -32,15 +34,10 @@ const ToolbarTwo = ({
   }
 
   function handleDetectionsEnable() {
-    if(processing) 
-    {
+    if (processing) {
       showDetections ? setShowDetections(false) : setShowDetections(true);
     }
-
   }
-
-
-
 
   function handleWebcamRefresh() {
     setHasWebcam(false);
@@ -48,38 +45,25 @@ const ToolbarTwo = ({
 
   return (
     <div className={`w-[200px] min-h-[${imageHeight}px]  `}>
+      <ToogleButton
+        title={"Webcam enabled"}
+        callback={handleWebcamEnable}
+        state={webcamEnabled}
+      />
 
+      <ToogleButton
+        title={"Mointor enabled"}
+        callback={handleProcessing}
+        state={processing}
+      />
 
+      <ToogleButton
+        title={"Show detections"}
+        callback={handleDetectionsEnable}
+        state={showDetections}
+      />
 
-
-      <ToogleButton 
-      title={'Webcam enabled'}
-      callback={handleWebcamEnable}
-      state={webcamEnabled}
-        />
-
-
-
-
-
-            <ToogleButton 
-      title={'Mointor enabled'}
-      callback={handleProcessing}
-      state={processing}
-        />
-
-
-
-      <ToogleButton 
-      title={'Show detections'}
-      callback={handleDetectionsEnable}
-      state={showDetections}
-        />
-
-      <div
-        onClick={(e) => {}}
-        className={ `${btnClass} bg-gray-100 `}
-        >
+      <div onClick={(e) => {}} className={`${btnClass} bg-gray-100 `}>
         <p className={paraClass}>
           <span> Auto parking</span>
         </p>
@@ -89,13 +73,12 @@ const ToolbarTwo = ({
         onClick={(e) => {
           handleWebcamRefresh();
         }}
-        className={ `${btnClass} bg-gray-100 `}
+        className={`${btnClass} bg-gray-100 `}
       >
         <p className={paraClass}>
           <span> Reload Webcam </span>
         </p>
       </div>
- 
     </div>
   );
 };

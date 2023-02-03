@@ -10,7 +10,7 @@ const selectedRoi = atom({
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
   default: 5000,
-})
+});
 
 const roiTypeState = atom({
   key: "roiType",
@@ -50,11 +50,11 @@ const selectedRoiState = selector({
         cords: { ...cords },
         time: date.getTime(),
         uid: uniqid(),
-        area: cords.width*cords.height,
+        area: cords.width * cords.height,
         firstSeen: null,
         lastSeen: null,
         occupied: false,
-        hover:false,
+        hover: false,
       };
 
       const updatedArr = [...oldRois, roiObj];
@@ -68,68 +68,53 @@ const selectedRoiState = selector({
       set(selectedRoi, updatedArr);
     }
 
-
-
     if (action.event === "occupation") {
+      let { predictionsArr } = action.payload;
 
-      let {predictionsArr} = action.payload;
-
-    //   //Array of ROI objects
+      //   //Array of ROI objects
       const selectedRois = get(selectedRoi);
-      const evaluateTime = get(evaluateTimeState)
+      const evaluateTime = get(evaluateTimeState);
       const selectedRoisClone = structuredClone(selectedRois);
-    //   //Log N function
+      //   //Log N function
 
       for (let index = 0; index < selectedRois.length; index++) {
-
-        let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr)
+        let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
         //If check that runs if a Selected ROI object is currently occupied
         //Checks that object hasn't changed occupied status by checking when it was last seen
         //and sees how long ago it was last seen, if it's under some sort of thresohold, so it will define it status
         //to unoccupied,
 
-          //Check if 10 secounds have passed since last seen
-      
-       
-           if (isOverlap && (selectedRois[index]['firstSeen'] === null)) 
-          {
-            console.log('1');
-            selectedRoisClone[index]['firstSeen'] = Date.now();
-            selectedRoisClone[index]['lastSeen'] = Date.now();
-     
+        //Check if 10 secounds have passed since last seen
+
+        if (isOverlap && selectedRois[index]["firstSeen"] === null) {
+          console.log("1");
+          selectedRoisClone[index]["firstSeen"] = Date.now();
+          selectedRoisClone[index]["lastSeen"] = Date.now();
+        } else if (isOverlap && selectedRois[index]["firstSeen"] != null) {
+          console.log("2");
+          let timeDiff =
+            selectedRois[index]["lastSeen"] - selectedRois[index]["firstSeen"];
+          console.log(timeDiff);
+          if (timeDiff > evaluateTime) {
+            selectedRoisClone[index].occupied = true;
           }
-          else if(isOverlap && (selectedRois[index]['firstSeen'] != null)) {
-            console.log('2');
-            let timeDiff = selectedRois[index]['lastSeen'] - selectedRois[index]['firstSeen']
-            console.log(timeDiff);
-            if(timeDiff > evaluateTime) 
-            {
-              selectedRoisClone[index].occupied = true;
-     
-            }
-            selectedRoisClone[index].lastSeen = Date.now();
-          }
-          else if(Date.now() - selectedRois[index]['lastSeen']  > evaluateTime ) 
-          {
-            //reset the selected ROI
-            console.log('resetting');
-            selectedRoisClone[index]['firstSeen'] = null
-            selectedRoisClone[index]['lastSeen'] = null
-            selectedRoisClone[index]['occupied'] = false
-     
-          } 
-        
-          }
-         
-
-          
-
-
-
-          // console.table(selectedRoisClone[0]);
-          set(selectedRoi, selectedRoisClone);
+          selectedRoisClone[index].lastSeen = Date.now();
+        } else if (
+          Date.now() - selectedRois[index]["lastSeen"] >
+          evaluateTime
+        ) {
+          //reset the selected ROI
+          console.log("resetting");
+          selectedRoisClone[index]["firstSeen"] = null;
+          selectedRoisClone[index]["lastSeen"] = null;
+          selectedRoisClone[index]["occupied"] = false;
         }
-      // }
+      }
+
+      // console.table(selectedRoisClone[0]);
+      set(selectedRoi, selectedRoisClone);
+    }
+    // }
 
     // }
 
@@ -171,10 +156,7 @@ const selectedRoiState = selector({
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
     }
-
-
-    }
-  
+  },
 });
 // const track = useRecoilValue(track);
 const trackState = atom({
