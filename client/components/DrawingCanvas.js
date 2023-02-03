@@ -24,6 +24,32 @@ const DrawingCanvas = () => {
   const startX = useRef(null);
   const startY = useRef(null);
 
+  let options = {
+    rootMargin: '0px',
+    threshold: 1.0
+  }
+
+let callback = (entries, observer) => {
+  entries.forEach((entry) => {
+    console.log('callback');
+    const canvasEl = canvasRef.current;
+    let canvasOffset = canvasEl.getBoundingClientRect();
+    setOffsetX(canvasOffset.left);
+    setOffsetY(canvasOffset.top);
+    // Each entry describes an intersection change for one observed
+    // target element:
+    //   entry.boundingClientRect
+    //   entry.intersectionRatio
+    //   entry.intersectionRect
+    //   entry.isIntersecting
+    //   entry.rootBounds
+    //   entry.target
+    //   entry.time
+  });
+};
+
+  let observer = new IntersectionObserver(callback, options);
+  
   const [isDown, setIsDown] = useState(false);
   const [offsetX, setOffsetX] = useState(undefined);
   const [offsetY, setOffsetY] = useState(undefined);
@@ -94,9 +120,12 @@ const DrawingCanvas = () => {
   //Rerender all all rois when state changes
 
   useEffect(() => {
+
     const canvasEl = canvasRef.current;
     const overlayEl = overlayRef.current;
+    observer.observe(canvasEl);
     let canvasOffset = canvasEl.getBoundingClientRect();
+    console.log(canvasOffset);
     setPrevSelected(selectedColor);
     ctxRef.current = canvasEl.getContext("2d");
     ctxoRef.current = overlayEl.getContext("2d");
@@ -217,7 +246,9 @@ const DrawingCanvas = () => {
         ref={canvasRef}
         width={imageWidth}
         height={imageHeight}
-      ></canvas>
+      >
+        <div className="absolute"></div>
+      </canvas>
 
       {/* The canvas where all the ROIs are rendered //Cxto */}
       <canvas

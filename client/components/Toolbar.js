@@ -79,6 +79,19 @@ const ToolbarTwo = ({
           <span> Reload Webcam </span>
         </p>
       </div>
+
+      <div
+        onClick={(e) => {
+          
+        }}
+        className={`${btnClass} bg-gray-100 `}
+      >
+        <p className={paraClass}>
+          <span> Resize </span>
+        </p>
+      </div>
+
+
     </div>
   );
 };
