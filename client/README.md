@@ -1,24 +1,21 @@
 Things to do
+1. Set up a nicer home page
 
-Set up a nicer home page
 Look into Auth
 Database schemaCenter things
-Write out things missing
-Make Vision with more purpose and style
+Save data about each selectedRoi,
+total time occupied
+how many cars have been occupied it in a session. 
+
+
 Understand layout better
-Declaring parked algo,
-Automatic parking with ussage of parked algo and setting anything it sees
 Look into sounds and a logo
-Add a history blog
-UI Settings, set to color blind
-remove border
+Autoparking marker 
+UI settingsset to color blind
+Fix counter with how long a car has been parked/available 
 
-Slow delay with tailwind
 
-Feb 2003:
-Counter doesn't reset,
 
-Save data about object, how long he as been there and not there
 
 Add auto parking, add opticaty for show detections
 Work on the Docs man and home page a bit.
