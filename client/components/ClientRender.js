@@ -54,7 +54,23 @@ const ClientRender = ({ processing, showDetections }) => {
       // Make Detections
       const predictions = await net.detect(video);
       console.log(predictions);
-      let predictionsArr = [];
+      let predictionsArr = [      
+          {
+        cords: {
+          right_x: 1,
+          top_y: 1,
+          width: 1,
+          height: 1,
+        },
+
+        label: "Nothing",
+        confidenceLevel: 99,
+        area: 1,
+      }];
+
+ 
+
+
       for (let n = 0; n < predictions.length; n++) {
         // If we are over 66% sure we are sure we classified it right, draw it!
         if (predictions[n].score > 0.66) {
@@ -79,7 +95,9 @@ const ClientRender = ({ processing, showDetections }) => {
           };
           predictionsArr.push(obj);
         }
+        }
 
+        
         let action = {
           event: "occupation",
           payload: { predictionsArr: predictionsArr },
@@ -96,7 +114,7 @@ const ClientRender = ({ processing, showDetections }) => {
           );
         }
       }
-    }
+    
   };
 
   const runCoco = async () => {

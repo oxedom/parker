@@ -3,7 +3,7 @@ import DrawingCanvas from "../components/DrawingCanvas";
 import RoisFeed from "../components/RoisFeed";
 import { useEffect, useState } from "react";
 import ToolbarTwo from "../components/Toolbar";
-import favicon from "../static/favicon.png";
+
 import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilValue } from "recoil";
 import EnableWebcam from "../components/EnableWebcam";
@@ -23,7 +23,7 @@ const visionPage = () => {
       <div>
         <Head>
           <title> Vison</title>
-          <link rel="shortcut icon" href={favicon} />
+
         </Head>
 
         <div className="flex flex-col  p-16 ">

@@ -31,20 +31,14 @@ const DrawingCanvas = () => {
 
 let callback = (entries, observer) => {
   entries.forEach((entry) => {
-    console.log('callback');
-    const canvasEl = canvasRef.current;
-    let canvasOffset = canvasEl.getBoundingClientRect();
+
+   if(canvasRef.current !== null) 
+   {
+    let canvasOffset = canvasRef.current.getBoundingClientRect();
     setOffsetX(canvasOffset.left);
     setOffsetY(canvasOffset.top);
-    // Each entry describes an intersection change for one observed
-    // target element:
-    //   entry.boundingClientRect
-    //   entry.intersectionRatio
-    //   entry.intersectionRect
-    //   entry.isIntersecting
-    //   entry.rootBounds
-    //   entry.target
-    //   entry.time
+   }
+
   });
 };
 
@@ -60,7 +54,7 @@ let callback = (entries, observer) => {
   const [prevSelectedColor, setPrevSelected] = useState(null);
   const [currentCords, setCurrentCords] = useState({
     right_x: 0,
-    width: 50,
+    width: 0,
     top_y: 0,
     height: 0,
   });
@@ -81,7 +75,7 @@ let callback = (entries, observer) => {
       ? (top_y = prevStartY - Math.abs(prevHeight))
       : (top_y = prevStartY);
 
-    let date = new Date();
+  
 
     const cords = {
       height: Math.abs(prevHeight),
