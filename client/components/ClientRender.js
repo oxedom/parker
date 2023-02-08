@@ -15,9 +15,10 @@ const ClientRender = ({ processing, showDetections }) => {
   const imageHeight = useRecoilValue(imageHeightState);
   const webcamRef = useRef(null);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
-
+  const [loadedCoco, setLoadedCoco] = useState(false);
   // const overlayEl = useRef(null);
   let overlayXRef = useRef(null);
+  let loadingRef = useRef(null)
 
   //Uncomment this if you don't want to the user to load tensorflow from Google API
   //And comment out import
@@ -25,11 +26,30 @@ const ClientRender = ({ processing, showDetections }) => {
 
   useEffect(() => {
     // Need to do this for canvas2d to work
-    const overlayEl = overlayXRef.current;
-    if (overlayEl != null) {
-      overlayXRef.current = overlayEl.getContext("2d");
+    if (loadedCoco) {
+      const overlayEl = overlayXRef.current;
+      if (overlayEl != null) {
+        overlayXRef.current = overlayEl.getContext("2d");
+
+      }
     }
-  }, []);
+    else {
+      const loadingEL = loadingRef.current
+      if (loadingEL != null) {
+        loadingRef.current = loadingEL.getContext("2d")
+        var loadingText = "Loading...";
+        loadingRef.current.fillStyle = "green";
+        loadingRef.current.fillRect(0, 0, imageWidth, imageHeight)
+        loadingRef.current.font = "48px sans-serif";
+
+        loadingRef.current.fillText(loadingText, imageWidth / 2, imageHeight / 2);
+
+
+
+      }
+
+    }
+  }, [loadedCoco]);
 
   const detect = async (net) => {
     // console.log(processing);
@@ -57,7 +77,7 @@ const ClientRender = ({ processing, showDetections }) => {
       let predictionsArr = [
         {
           cords: {
-            right_x:-999,
+            right_x: -999,
             top_y: -999,
             width: -999,
             height: -999,
@@ -103,7 +123,7 @@ const ClientRender = ({ processing, showDetections }) => {
       //inside the state event.
       setSelectedRois(action);
       if (showDetections) {
-        
+
         renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
       }
     }
@@ -112,8 +132,10 @@ const ClientRender = ({ processing, showDetections }) => {
   const runCoco = async () => {
     let id;
     const net = await cocoSsd.load();
+    setLoadedCoco(true)
 
     id = setInterval(() => {
+
       detect(net);
     }, 10);
     return id;
@@ -135,23 +157,29 @@ const ClientRender = ({ processing, showDetections }) => {
 
   return (
     <>
-      <canvas
-        id="overlap-overlay"
-        ref={overlayXRef}
-        width={imageWidth}
-        height={imageHeight}
-        className="fixed"
-      ></canvas>
-
-      <Webcam
-        height={imageHeight}
-        width={imageWidth}
-        style={{ height: imageHeight }}
-        videoConstraints={{ height: imageHeight, video: imageWidth }}
-        ref={webcamRef}
-        muted={true}
-        className=""
-      />
+      {loadedCoco ?
+        <canvas
+          id="overlap-overlay"
+          ref={overlayXRef}
+          width={imageWidth}
+          height={imageHeight}
+          className="fixed"
+        ></canvas> : null}
+      {loadedCoco ?
+        <Webcam
+          height={imageHeight}
+          width={imageWidth}
+          style={{ height: imageHeight }}
+          videoConstraints={{ height: imageHeight, video: imageWidth }}
+          ref={webcamRef}
+          muted={true}
+          className=""
+        /> :
+        <canvas
+          ref={loadingRef}
+          height={imageHeight}
+          width={imageWidth}
+        ></canvas>}
     </>
   );
 };

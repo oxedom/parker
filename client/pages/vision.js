@@ -51,6 +51,7 @@ const visionPage = () => {
                   <ClientRender
                     showDetections={showDetections}
                     processing={processing}
+
                   ></ClientRender>
                 </div>
               ) : (
