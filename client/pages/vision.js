@@ -26,9 +26,10 @@ const visionPage = () => {
 
         </Head>
 
-        <div className="flex flex-col  p-16 ">
-          <div>
-            <div className="flex justify-between border-2 border-black">
+        <div className="flex flex-col  p-16  ">
+          <div className="">
+            <div className="flex justify-between border-2 border-black rounded-xl
+            shadow-2xl">
               <ToolbarTwo
                 setReload={setReload}
                 setWebcamEnable={setWebcamEnable}
@@ -44,7 +45,7 @@ const visionPage = () => {
               </ToolbarTwo>
 
               {webcamEnabled ? (
-                <div className="">
+                <div className=" outline outline-1 outline-stone-900">
                   <DrawingCanvas></DrawingCanvas>
                   <ClientRender
                     showDetections={showDetections}

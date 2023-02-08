@@ -58,7 +58,7 @@ const RoisFeed = ({}) => {
         {" "}
         MARKED SPOTS
       </h4>
-      <div className="">
+      <div className="flex flex-wrap">
         {selectedRegions.map((s) => (
           <div
             key={s.uid}
@@ -68,7 +68,7 @@ const RoisFeed = ({}) => {
             onMouseLeave={(e) => {
               handleUnselect(s.uid);
             }}
-            className={`flex  text-xl  w-full 
+            className={`flex  text-xl  w-10 
               ${Date.now() - s.time > evaluateTime ? "" : "bg-gray-300"} 
               
               ${
@@ -77,11 +77,7 @@ const RoisFeed = ({}) => {
                   : "bg-green-500"
               }   cursor-default hover:bg-blue-400  border-b-2  border-slate-900 items-center justify-between`}
           >
-            <p>
-              {Date.now() - s.time > evaluateTime
-                ? ""
-                : "Evaluating"}
-            </p>
+
             <div
               value={s.uid}
               onClick={(e) => {
