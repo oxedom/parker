@@ -27,7 +27,7 @@
 @import "tailwindcss/utilities";
 
 body {
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   font-family: Roboto;
 }
 

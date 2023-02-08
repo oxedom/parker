@@ -104,7 +104,7 @@ const selectedRoiState = selector({
           evaluateTime
         ) {
           //reset the selected ROI
-          console.log("resetting");
+       
           selectedRoisClone[index]["firstSeen"] = null;
           selectedRoisClone[index]["lastSeen"] = null;
           selectedRoisClone[index]["occupied"] = false;
@@ -114,9 +114,7 @@ const selectedRoiState = selector({
       // console.table(selectedRoisClone[0]);
       set(selectedRoi, selectedRoisClone);
     }
-    // }
 
-    // }
 
     if (action.event === "selectRoi") {
       let uid = action.payload;

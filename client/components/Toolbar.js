@@ -28,11 +28,11 @@ const ToolbarTwo = ({
 
   const btnClass = `items-center
   justify-center   cursor-pointer
-    border border-gray-900
-    p-2
-    duration-100 transition-colors   hover:bg-gray-300 hover:transition-none
+    rounded-lg m-2
+    transition-colors duration-200 ease-linear
+         hover:bg-gray-300 hover:transition-none
 
-     text-gray-900`;
+     text-gray-800`;
 
   const paraClass = "text font-bold text-center  pt-2 pb-2";
 
@@ -65,7 +65,7 @@ const ToolbarTwo = ({
 
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
       <div
-       className="flex flex-col justify-between m-auto w-1/3 h-2/3 bg-white p-8 z-30"
+       className="flex flex-col justify-between m-auto w-1/3 h-2/3 bg-white p-8 z-30 "
        onClick={e => {e.stopPropagation()}}
        >
   

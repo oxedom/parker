@@ -9,8 +9,8 @@ const Navbar = () => {
 
 
   return (
-    <div className="w-full text-center box-border w-max-[1028px]">
-<nav className="z-[100] h-[60px] relative   pl-10 pr-10 bg-gray-200  items-center  flex justify-between  outline outline-1 outline-stone-900  ">
+    <div className="w-full text-center box-border w-max-[1028px] border-b-[1px] border-gray-900/10">
+<nav className="z-[100] h-[50px] relative   pl-10 pr-10 bg-gray-200  items-center  flex justify-between  ">
       <Link href={"/"}>
         <h1 className="text-bold text-5xl font-bold  text-gray-900  italic font-mono  hover:cursor-pointer">
           {" "}

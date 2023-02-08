@@ -13,7 +13,8 @@ import { renderRoi } from "../libs/canvas_utility";
 const DrawingCanvas = () => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const selectedColor = useRecoilValue(selectedColorState);
-  const selectingColor = useRecoilValue(selectingColorState);
+  // const selectingColor = useRecoilValue(selectingColorState);
+  const selectingColor = "#979A9A"
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
 
@@ -111,10 +112,10 @@ let callback = (entries, observer) => {
     //Sends action request with a payload, the event is handled
     //inside the state event.
     setSelectedRois(action);
-
+    //Resetting width to 1 to prevent a nondrag click to become a square in the selectedRoi State
     setCurrentCords({
       right_x: 0,
-      width: 0,
+      width: 1,
       top_y: 0,
       height: 0,
     });

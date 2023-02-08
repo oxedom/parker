@@ -45,17 +45,20 @@ export function renderRoi(roi, contextCanvas) {
   const context = contextCanvas.current;
   const borderWidth = 5;
   const offset = borderWidth * 2;
-  let color = "#00FF00";
+  //bg-green-500 hex
+  let color = "#22c55e";
+
 
   if (roi.occupied && roi.hover == false) {
-    color = "#FF3131";
+    //bg-red-500 hex
+    color = "#CC3333";
   }
   if (Date.now() - roi.time < 6000) {
     color = "#808080";
   }
-
+  
   if (roi.hover) {
-    color = "#ADD8E6";
+    color = "#FF0000";
   }
   //Gets centerX
   const centerX = right_x + width / 2;
@@ -67,8 +70,8 @@ export function renderRoi(roi, contextCanvas) {
   context.lineWidth = 10;
 
   contextCanvas.current.strokeRect(right_x, top_y, width, height);
-  context.strokeStyle = "#000000";
-  context.lineWidth = 2;
+  context.strokeStyle = "#333333";
+  context.lineWidth = 1.5;
   contextCanvas.current.strokeRect(
     right_x - borderWidth,
     top_y - borderWidth,

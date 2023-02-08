@@ -1,7 +1,7 @@
 import { selectedRoiState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { imageHeightState, evaluateTimeState } from "./states";
-
+import deleteIcon from '../static/icons/delete_bin_black.png'
 
 const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
@@ -54,11 +54,12 @@ const RoisFeed = ({}) => {
 
   return (
     <div className={`w-[200px]   min-h-[${imageHeight}px]`}>
-      <h4 className="text-3xl text-center font-semibold   bg-slate-100 p-2 text-gray-800 cursor-default border-b-2 border-r-2 border-slate-900">
+      <h4 className="text-xl text-center font-semibold  
+       bg-slate-100 p-2 m-2 text-gray-800 cursor-default rounded-lg border-slate-900">
         {" "}
-        MARKED SPOTS
+        Marked parking spaces
       </h4>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-2 m-2">
         {selectedRegions.map((s) => (
           <div
             key={s.uid}
@@ -68,25 +69,26 @@ const RoisFeed = ({}) => {
             onMouseLeave={(e) => {
               handleUnselect(s.uid);
             }}
-            className={`flex  text-xl  w-10 
-  
+            value={s.uid}
+              onClick={(e) => {
+                handleRoiDelete(s.uid);
+              }}
+
+            className={`  h-10 w-10
+            btn  font-semibold  hover:bg-red-600 transition-colors rounded duration-300 ease-in-out border  
+                drop-shadow
+                border-gray-500
               
               ${
                 s.occupied 
                   ? "bg-red-500"
                   : "bg-green-500"
-              }   cursor-default hover:bg-blue-400  border-b-2  border-slate-900 items-center justify-between`}
+              }   cursor-default  duration-100  border-slate-900 items-center justify-between`}
           >
 
-            <div
-              value={s.uid}
-              onClick={(e) => {
-                handleRoiDelete(s.uid);
-              }}
-              className="btn hover:bg-gray-500 font-semibold  h-7 w-10 text-gray-900  text-xl border-l-2  border-r-2 border-slate-900   "
-            >
-              {" "}
-            </div>
+              {(s.hover) ? <img className="invert ease-in duration-200  opacity-0 hover:opacity-90 " src={deleteIcon.src}/> : "" }
+        
+         
           </div>
         ))}
       </div>
