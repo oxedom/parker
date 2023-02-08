@@ -64,7 +64,10 @@ const ToolbarTwo = ({
       src={settingsIcon.src}/>
 
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
-      
+      <div
+       className="flex flex-col justify-between m-auto w-1/3 h-2/3 bg-white p-8 z-30"
+       onClick={e => {e.stopPropagation()}}
+       >
   
 
       <ToogleButton
@@ -106,6 +109,14 @@ const ToolbarTwo = ({
       <p>
         FPS
       </p>
+      <button className="mt-4 bg-red-500 " onClick={(e) =>closeModal()}>
+          Close settings
+        </button>
+
+      
+      </div>
+
+
       </Modal>
 
 
