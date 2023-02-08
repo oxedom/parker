@@ -59,6 +59,19 @@ let callback = (entries, observer) => {
     height: 0,
   });
 
+  //CSS style
+  function grabbingCursorToogle ()
+  {
+    if(isDown) 
+    {
+      return "cursor-grabbing"
+    }
+    else 
+    {
+      return "cursor-grab"
+    }
+  }
+
   function convertEventCordsToRoi(
     prevStartX,
     prevStartY,
@@ -101,9 +114,9 @@ let callback = (entries, observer) => {
 
     setCurrentCords({
       right_x: 0,
-      width: 50,
+      width: 0,
       top_y: 0,
-      height: 1,
+      height: 0,
     });
   }
 
@@ -232,7 +245,7 @@ let callback = (entries, observer) => {
   }
 
   return (
-    <div>
+    <div className={`${grabbingCursorToogle()}`}>
       {/* The canvas where a selected is drawn temporary //Cxt  */}
       <canvas
         className="fixed"

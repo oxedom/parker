@@ -4,10 +4,15 @@ import githubIcon from "../static/icons/github-mark.png";
 import Navlink from "./Navlink.js";
 
 const Navbar = () => {
+
+
+
+
   return (
-    <nav className="z-[100] h-[80px]  pl-10 pr-10 bg-gray-200 flex justify-between items-center outline outline-1 outline-stone-900  ">
+    <div className="w-full text-center box-border w-max-[1028px]">
+<nav className="z-[100] h-[60px] relative   pl-10 pr-10 bg-gray-200  items-center  flex justify-between  outline outline-1 outline-stone-900  ">
       <Link href={"/"}>
-        <h1 className="text-bold text-6xl font-bold  text-gray-900   hover:cursor-pointer">
+        <h1 className="text-bold text-5xl font-bold  text-gray-900  italic font-mono  hover:cursor-pointer">
           {" "}
           #PARKER{" "}
         </h1>
@@ -15,7 +20,7 @@ const Navbar = () => {
 
       <div className="flex gap-40  h-full items-center px-5 ">
         <div className=" px-5  flex justify-center items-center h-full border-black">
-          <Navlink url={"/vision"} text={"VISON"} />
+          <Navlink url={"/vision"} text={"VISON"}  />
         </div>
         <div className="  flex justify-center items-center h-full ">
           <Navlink
@@ -23,7 +28,7 @@ const Navbar = () => {
 
 "
             url={"/docs"}
-            text={"DOCS"}
+            text={"Showcase"}
           />
         </div>
       </div>
@@ -38,6 +43,8 @@ const Navbar = () => {
         />
       </div>
     </nav>
+    </div>
+    
   );
 };
 

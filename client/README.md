@@ -6,7 +6,7 @@ Database schemaCenter things
 Save data about each selectedRoi,
 total time occupied
 how many cars have been occupied it in a session. 
-
+cleanup callback function observer
 
 Understand layout better
 Look into sounds and a logo
