@@ -18,9 +18,9 @@ const ClientRender = ({ processing, showDetections }) => {
 
   // const overlayEl = useRef(null);
   let overlayXRef = useRef(null);
-  
+
   //Uncomment this if you don't want to the user to load tensorflow from Google API
-  //And comment out import 
+  //And comment out import
   // const cocoSsd = require("@tensorflow-models/coco-ssd");
 
   useEffect(() => {
@@ -53,23 +53,21 @@ const ClientRender = ({ processing, showDetections }) => {
 
       // Make Detections
       const predictions = await net.detect(video);
-      console.log(predictions);
-      let predictionsArr = [      
-          {
-        cords: {
-          right_x: 1,
-          top_y: 1,
-          width: 1,
-          height: 1,
+
+      let predictionsArr = [
+        {
+          cords: {
+            right_x:-999,
+            top_y: -999,
+            width: -999,
+            height: -999,
+          },
+
+          label: "Nothing",
+          confidenceLevel: 99,
+          area: -999,
         },
-
-        label: "Nothing",
-        confidenceLevel: 99,
-        area: 1,
-      }];
-
- 
-
+      ];
 
       for (let n = 0; n < predictions.length; n++) {
         // If we are over 66% sure we are sure we classified it right, draw it!
@@ -79,7 +77,7 @@ const ClientRender = ({ processing, showDetections }) => {
           const width = predictions[n].bbox[2];
           const height = predictions[n].bbox[3];
           const label = predictions[n].class;
- 
+
           const confidenceLevel = predictions[n].score;
           const obj = {
             cords: {
@@ -95,26 +93,20 @@ const ClientRender = ({ processing, showDetections }) => {
           };
           predictionsArr.push(obj);
         }
-        }
-
-        
-        let action = {
-          event: "occupation",
-          payload: { predictionsArr: predictionsArr },
-        };
-        //Sends action request with a payload, the event is handled
-        //inside the state event.
-        setSelectedRois(action);
-        if (showDetections) {
-          renderAllOverlaps(
-            predictionsArr,
-            overlayXRef,
-            imageWidth,
-            imageHeight
-          );
-        }
       }
-    
+
+      let action = {
+        event: "occupation",
+        payload: { predictionsArr: predictionsArr },
+      };
+      //Sends action request with a payload, the event is handled
+      //inside the state event.
+      setSelectedRois(action);
+      if (showDetections) {
+        
+        renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
+      }
+    }
   };
 
   const runCoco = async () => {
@@ -123,7 +115,7 @@ const ClientRender = ({ processing, showDetections }) => {
 
     id = setInterval(() => {
       detect(net);
-    }, 1000);
+    }, 10);
     return id;
   };
 

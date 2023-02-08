@@ -45,21 +45,29 @@ export function renderRoi(roi, contextCanvas) {
   const context = contextCanvas.current;
   const borderWidth = 5;
   const offset = borderWidth * 2;
+  
   //bg-green-500 hex
   let color = "#22c55e";
-
 
   if (roi.occupied && roi.hover == false) {
     //bg-red-500 hex
     color = "#CC3333";
   }
-  if (Date.now() - roi.time < 6000) {
-    color = "#808080";
+
+  if(roi.evaluating) 
+  {
+    color = "#808080"
   }
-  
+
+  if(roi.hover === null) 
+  {
+    color = "#0062CC";
+  }
+
   if (roi.hover) {
     color = "#FF0000";
   }
+  
   //Gets centerX
   const centerX = right_x + width / 2;
   //Font and Size needs to be state
@@ -87,7 +95,8 @@ export function renderAllOverlaps(overlaps, canvasRef, width, height) {
   //For each on the detections
   canvasRef.current.clearRect(0, 0, width, height);
   overlaps.forEach((o) => {
-    o.hover = true;
+    o.hover = null;
+
     renderRoi(o, canvasRef);
   });
 }

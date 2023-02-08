@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Modal = ({ isOpen, closeModal, children }) => {
   if (!isOpen) {
@@ -6,15 +6,11 @@ const Modal = ({ isOpen, closeModal, children }) => {
   }
 
   return (
-    <div className="fixed p-10 top-10 left-0 right-0 bottom-0 bg-gray-500 bg-opacity-75 z-10"
-        onClick={closeModal} 
+    <div
+      className="fixed p-10 top-10 left-0 right-0 bottom-0 bg-gray-500 bg-opacity-75 z-10"
+      onClick={closeModal}
     >
-
-        
-        {children}
-
-
-   
+      {children}
     </div>
   );
 };

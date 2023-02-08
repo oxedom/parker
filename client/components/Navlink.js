@@ -1,22 +1,16 @@
 import Link from "next/link";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
-const Navlink = ({ url, text}) => {
-
+const Navlink = ({ url, text }) => {
   const router = useRouter();
-  let selectedPathname = () => 
-  {
+  let selectedPathname = () => {
     console.log(router);
-    if(router.route == url) 
-    {
-      return 'text-blue-500'
+    if (router.route == url) {
+      return "text-blue-500";
+    } else {
+      ("text-gray-700");
     }
-    else 
-    {
-      'text-gray-700'
-    }
-
-  }
+  };
 
   return (
     <div>
@@ -30,7 +24,6 @@ const Navlink = ({ url, text}) => {
               drop-shadow 
               before:hover:scale-x-100 before:scale-x-0 before:origin-top-left
               before:transition before:ease-in-out before:duration-300 "
-              
         >
           {" "}
           {text}{" "}

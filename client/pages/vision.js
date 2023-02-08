@@ -23,13 +23,14 @@ const visionPage = () => {
       <div>
         <Head>
           <title> Vison</title>
-
         </Head>
 
         <div className="flex flex-col  p-16  ">
           <div className="">
-            <div className="flex justify-between rounded-xl border border-gray-500/100  
-            shadow-xl">
+            <div
+              className="flex justify-between rounded-xl border border-gray-500/100  
+            shadow-xl"
+            >
               <ToolbarTwo
                 setReload={setReload}
                 setWebcamEnable={setWebcamEnable}
@@ -40,7 +41,6 @@ const visionPage = () => {
                 setHasWebcam={setHasWebcam}
                 hasWebcam={hasWebcam}
                 webcamEnabled={webcamEnabled}
-        
               >
                 {" "}
               </ToolbarTwo>

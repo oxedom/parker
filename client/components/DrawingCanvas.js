@@ -14,7 +14,7 @@ const DrawingCanvas = () => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const selectedColor = useRecoilValue(selectedColorState);
   // const selectingColor = useRecoilValue(selectingColorState);
-  const selectingColor = "#979A9A"
+  const selectingColor = "#979A9A";
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
 
@@ -26,25 +26,22 @@ const DrawingCanvas = () => {
   const startY = useRef(null);
 
   let options = {
-    rootMargin: '0px',
-    threshold: 1.0
-  }
+    rootMargin: "0px",
+    threshold: 1.0,
+  };
 
-let callback = (entries, observer) => {
-  entries.forEach((entry) => {
-
-   if(canvasRef.current !== null) 
-   {
-    let canvasOffset = canvasRef.current.getBoundingClientRect();
-    setOffsetX(canvasOffset.left);
-    setOffsetY(canvasOffset.top);
-   }
-
-  });
-};
+  let callback = (entries, observer) => {
+    entries.forEach((entry) => {
+      if (canvasRef.current !== null) {
+        let canvasOffset = canvasRef.current.getBoundingClientRect();
+        setOffsetX(canvasOffset.left);
+        setOffsetY(canvasOffset.top);
+      }
+    });
+  };
 
   let observer = new IntersectionObserver(callback, options);
-  
+
   const [isDown, setIsDown] = useState(false);
   const [offsetX, setOffsetX] = useState(undefined);
   const [offsetY, setOffsetY] = useState(undefined);
@@ -61,15 +58,11 @@ let callback = (entries, observer) => {
   });
 
   //CSS style
-  function grabbingCursorToogle ()
-  {
-    if(isDown) 
-    {
-      return "cursor-grabbing"
-    }
-    else 
-    {
-      return "cursor-grab"
+  function grabbingCursorToogle() {
+    if (isDown) {
+      return "cursor-grabbing";
+    } else {
+      return "cursor-grab";
     }
   }
 
@@ -88,8 +81,6 @@ let callback = (entries, observer) => {
     prevHeight < 0
       ? (top_y = prevStartY - Math.abs(prevHeight))
       : (top_y = prevStartY);
-
-  
 
     const cords = {
       height: Math.abs(prevHeight),
@@ -128,7 +119,6 @@ let callback = (entries, observer) => {
   //Rerender all all rois when state changes
 
   useEffect(() => {
-
     const canvasEl = canvasRef.current;
     const overlayEl = overlayRef.current;
     observer.observe(canvasEl);
@@ -160,12 +150,18 @@ let callback = (entries, observer) => {
         renderRoi(roi, ctxoRef);
       });
 
-      ctxRef.current.clearRect(
-        0,
-        0,
-        canvasRef.current.width,
-        canvasRef.current.height
-      );
+ 
+        if(!isDown) 
+        {
+          ctxRef.current.clearRect(
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+          );
+        }
+
+      
     }
   }, [selectedRois]);
 

@@ -1,6 +1,7 @@
 import { atom, selector } from "recoil";
 import uniqid from "uniqid";
 import { finalName, checkRectOverlap } from "../libs/utillity";
+import { roiEvaluating } from "../libs/states_utility";
 
 const selectedRoi = atom({
   key: "selectedRois",
@@ -55,10 +56,11 @@ const selectedRoiState = selector({
         lastSeen: null,
         occupied: false,
         hover: false,
+        evaluating: true
       };
 
       const updatedArr = [...oldRois, roiObj];
-      console.log(roiObj);
+
       set(selectedRoi, updatedArr);
     }
     if (action.event === "deleteRoi") {
@@ -85,36 +87,48 @@ const selectedRoiState = selector({
         //to unoccupied,
 
         //Check if 10 secounds have passed since last seen
-
+        const currentUnixTime = Date.now()
+      
+        //If the ROI is overlapping and hasn't been "seen" set it's timestames to now
+        if(!roiEvaluating(currentUnixTime, selectedRois[index]['time'], evaluateTime)) 
+        {
+          selectedRoisClone[index]['evaluating'] = false
+        }
         if (isOverlap && selectedRois[index]["firstSeen"] === null) {
-          console.log("1");
-          selectedRoisClone[index]["firstSeen"] = Date.now();
-          selectedRoisClone[index]["lastSeen"] = Date.now();
+
+          selectedRoisClone[index]["firstSeen"] = currentUnixTime
+          selectedRoisClone[index]["lastSeen"] = currentUnixTime
+      //If the ROI is overlapping and has "seen", see if it's lastsee - minus it's first seen is bigger than
+      //the allowed time differnce if so set the occupation to true, and afterwards update the lastSeen 
         } else if (isOverlap && selectedRois[index]["firstSeen"] != null) {
-          console.log("2");
+
           let timeDiff =
             selectedRois[index]["lastSeen"] - selectedRois[index]["firstSeen"];
-          console.log(timeDiff);
+
           if (timeDiff > evaluateTime) {
             selectedRoisClone[index].occupied = true;
           }
-          selectedRoisClone[index].lastSeen = Date.now();
-        } else if (
-          Date.now() - selectedRois[index]["lastSeen"] >
+          selectedRoisClone[index].lastSeen = currentUnixTime
+        } 
+
+        
+
+        else if (
+          
+          currentUnixTime - selectedRois[index]["lastSeen"] >
           evaluateTime
         ) {
           //reset the selected ROI
-       
+
           selectedRoisClone[index]["firstSeen"] = null;
           selectedRoisClone[index]["lastSeen"] = null;
           selectedRoisClone[index]["occupied"] = false;
         }
       }
 
-      // console.table(selectedRoisClone[0]);
+   
       set(selectedRoi, selectedRoisClone);
     }
-
 
     if (action.event === "selectRoi") {
       let uid = action.payload;
