@@ -69,10 +69,10 @@ const RoisFeed = ({}) => {
               handleUnselect(s.uid);
             }}
             className={`flex  text-xl  w-10 
-              ${Date.now() - s.time > evaluateTime ? "" : "bg-gray-300"} 
+  
               
               ${
-                s.occupied && Date.now() - s.time > evaluateTime
+                s.occupied 
                   ? "bg-red-500"
                   : "bg-green-500"
               }   cursor-default hover:bg-blue-400  border-b-2  border-slate-900 items-center justify-between`}
@@ -83,7 +83,7 @@ const RoisFeed = ({}) => {
               onClick={(e) => {
                 handleRoiDelete(s.uid);
               }}
-              className="btn hover:bg-gray-500 bg-slate-300 font-semibold  h-7 w-10 text-gray-900  text-xl border-l-2  border-r-2 border-slate-900   "
+              className="btn hover:bg-gray-500 font-semibold  h-7 w-10 text-gray-900  text-xl border-l-2  border-r-2 border-slate-900   "
             >
               {" "}
             </div>
