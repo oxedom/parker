@@ -1,6 +1,9 @@
 import { imageHeightState, processingState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
+import settingsIcon from "../static/icons/settings.png"
 import ToogleButton from "./ToogleButton";
+import Modal from "./Modal";
+import { useState } from "react";
 const ToolbarTwo = ({
   processing,
   setProcessing,
@@ -12,6 +15,16 @@ const ToolbarTwo = ({
   setWebcamEnable,
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
 
   const btnClass = `items-center
   justify-center   cursor-pointer
@@ -45,6 +58,15 @@ const ToolbarTwo = ({
 
   return (
     <div className={`w-[200px] min-h-[${imageHeight}px]  `}>
+      <img
+      onClick={openModal}
+      className="cursor-pointer"
+      src={settingsIcon.src}/>
+
+      <Modal isOpen={isModalOpen} closeModal={closeModal}>
+      
+  
+
       <ToogleButton
         title={"Webcam enabled"}
         callback={handleWebcamEnable}
@@ -63,11 +85,7 @@ const ToolbarTwo = ({
         state={showDetections}
       />
 
-      <div onClick={(e) => {}} className={`${btnClass} bg-gray-100 `}>
-        <p className={paraClass}>
-          <span> Auto parking</span>
-        </p>
-      </div>
+
 
       <div
         onClick={(e) => {
@@ -80,18 +98,22 @@ const ToolbarTwo = ({
         </p>
       </div>
 
-      <div
-        onClick={(e) => {
-          
-        }}
-        className={`${btnClass} bg-gray-100 `}
-      >
+
+
+      <p>
+        Display settings
+      </p>
+      <p>
+        FPS
+      </p>
+      </Modal>
+
+
+      <div onClick={(e) => {}} className={`${btnClass} bg-gray-100 `}>
         <p className={paraClass}>
-          <span> Resize </span>
+          <span> Auto detect</span>
         </p>
       </div>
-
-
     </div>
   );
 };

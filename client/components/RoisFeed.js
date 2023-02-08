@@ -79,7 +79,7 @@ const RoisFeed = ({}) => {
           >
             <p>
               {Date.now() - s.time > evaluateTime
-                ? printDate(s.time, evaluateTime)
+                ? ""
                 : "Evaluating"}
             </p>
             <div
