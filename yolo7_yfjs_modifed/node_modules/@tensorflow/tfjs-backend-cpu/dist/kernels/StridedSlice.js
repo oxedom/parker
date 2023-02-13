@@ -1,0 +1,57 @@
+/**
+ * @license
+ * Copyright 2020 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+import { slice_util, StridedSlice, util } from '@tensorflow/tfjs-core';
+import { assertNotComplex } from '../cpu_util';
+import { reshape } from './Reshape';
+import { slice } from './Slice';
+import { stridedSliceImpl } from './StridedSlice_impl';
+export function stridedSlice(args) {
+    const { inputs, backend, attrs } = args;
+    const { x } = inputs;
+    const { begin, end, strides, beginMask, endMask, ellipsisMask, newAxisMask, shrinkAxisMask } = attrs;
+    assertNotComplex(x, 'stridedSlice');
+    const { finalShapeSparse, finalShape, isIdentity, sliceDim0, isSimpleSlice, begin: $begin, end: $end, strides: $strides } = slice_util.sliceInfo(x.shape, begin, end, strides, beginMask, endMask, ellipsisMask, newAxisMask, shrinkAxisMask);
+    let result;
+    // ref:
+    // https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/kernels/strided_slice_op.cc
+    if (isIdentity) {
+        // Optimization #1, slice is a no-op plus reshape
+        result = reshape({ inputs: { x }, backend, attrs: { shape: finalShape } });
+    }
+    else if (sliceDim0 || isSimpleSlice) {
+        // Optimization #2, slice is memory contiguous (only occurs in dim 0)
+        util.assert(x.shape.length >= 1, () => `Input must have rank at least 1, got: ${x.shape.length}`);
+        const size = slice_util.computeOutShape($begin, $end, $strides);
+        // To tolerate begin[0] > end[0] (a 0-output slice), we min(begin, end).
+        const sliced = slice({ inputs: { x }, backend, attrs: { begin: $begin, size } });
+        result =
+            reshape({ inputs: { x: sliced }, backend, attrs: { shape: finalShape } });
+        backend.disposeIntermediateTensorInfo(sliced);
+    }
+    else {
+        const xBuf = backend.bufferSync(x);
+        const outBuf = stridedSliceImpl(finalShapeSparse, xBuf, $strides, $begin);
+        result = backend.makeTensorInfo(finalShape, outBuf.dtype, outBuf.values);
+    }
+    return result;
+}
+export const stridedSliceConfig = {
+    kernelName: StridedSlice,
+    backendName: 'cpu',
+    kernelFunc: stridedSlice
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU3RyaWRlZFNsaWNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vdGZqcy1iYWNrZW5kLWNwdS9zcmMva2VybmVscy9TdHJpZGVkU2xpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7OztHQWVHO0FBRUgsT0FBTyxFQUEyQixVQUFVLEVBQUUsWUFBWSxFQUFxRCxJQUFJLEVBQUMsTUFBTSx1QkFBdUIsQ0FBQztBQUdsSixPQUFPLEVBQUMsZ0JBQWdCLEVBQUMsTUFBTSxhQUFhLENBQUM7QUFDN0MsT0FBTyxFQUFDLE9BQU8sRUFBQyxNQUFNLFdBQVcsQ0FBQztBQUNsQyxPQUFPLEVBQUMsS0FBSyxFQUFDLE1BQU0sU0FBUyxDQUFDO0FBQzlCLE9BQU8sRUFBQyxnQkFBZ0IsRUFBQyxNQUFNLHFCQUFxQixDQUFDO0FBRXJELE1BQU0sVUFBVSxZQUFZLENBQUMsSUFJNUI7SUFDQyxNQUFNLEVBQUMsTUFBTSxFQUFFLE9BQU8sRUFBRSxLQUFLLEVBQUMsR0FBRyxJQUFJLENBQUM7SUFDdEMsTUFBTSxFQUFDLENBQUMsRUFBQyxHQUFHLE1BQU0sQ0FBQztJQUNuQixNQUFNLEVBQ0osS0FBSyxFQUNMLEdBQUcsRUFDSCxPQUFPLEVBQ1AsU0FBUyxFQUNULE9BQU8sRUFDUCxZQUFZLEVBQ1osV0FBVyxFQUNYLGNBQWMsRUFDZixHQUFHLEtBQUssQ0FBQztJQUVWLGdCQUFnQixDQUFDLENBQUMsRUFBRSxjQUFjLENBQUMsQ0FBQztJQUVwQyxNQUFNLEVBQ0osZ0JBQWdCLEVBQ2hCLFVBQVUsRUFDVixVQUFVLEVBQ1YsU0FBUyxFQUNULGFBQWEsRUFDYixLQUFLLEVBQUUsTUFBTSxFQUNiLEdBQUcsRUFBRSxJQUFJLEVBQ1QsT0FBTyxFQUFFLFFBQVEsRUFDbEIsR0FDRyxVQUFVLENBQUMsU0FBUyxDQUNoQixDQUFDLENBQUMsS0FBSyxFQUFFLEtBQUssRUFBRSxHQUFHLEVBQUUsT0FBTyxFQUFFLFNBQVMsRUFBRSxPQUFPLEVBQUUsWUFBWSxFQUM5RCxXQUFXLEVBQUUsY0FBYyxDQUFDLENBQUM7SUFFckMsSUFBSSxNQUFNLENBQUM7SUFFWCxPQUFPO0lBQ1AsbUdBQW1HO0lBQ25HLElBQUksVUFBVSxFQUFFO1FBQ2QsaURBQWlEO1FBQ2pELE1BQU0sR0FBRyxPQUFPLENBQUMsRUFBQyxNQUFNLEVBQUUsRUFBQyxDQUFDLEVBQUMsRUFBRSxPQUFPLEVBQUUsS0FBSyxFQUFFLEVBQUMsS0FBSyxFQUFFLFVBQVUsRUFBQyxFQUFDLENBQUMsQ0FBQztLQUN0RTtTQUFNLElBQUksU0FBUyxJQUFJLGFBQWEsRUFBRTtRQUNyQyxxRUFBcUU7UUFDckUsSUFBSSxDQUFDLE1BQU0sQ0FDUCxDQUFDLENBQUMsS0FBSyxDQUFDLE1BQU0sSUFBSSxDQUFDLEVBQ25CLEdBQUcsRUFBRSxDQUFDLHlDQUF5QyxDQUFDLENBQUMsS0FBSyxDQUFDLE1BQU0sRUFBRSxDQUFDLENBQUM7UUFFckUsTUFBTSxJQUFJLEdBQUcsVUFBVSxDQUFDLGVBQWUsQ0FBQyxNQUFNLEVBQUUsSUFBSSxFQUFFLFFBQVEsQ0FBQyxDQUFDO1FBQ2hFLHdFQUF3RTtRQUN4RSxNQUFNLE1BQU0sR0FBRyxLQUFLLENBQUMsRUFBQyxNQUFNLEVBQUUsRUFBQyxDQUFDLEVBQUMsRUFBRSxPQUFPLEVBQUUsS0FBSyxFQUFFLEVBQUMsS0FBSyxFQUFFLE1BQU0sRUFBRSxJQUFJLEVBQUMsRUFBQyxDQUFDLENBQUM7UUFDM0UsTUFBTTtZQUNGLE9BQU8sQ0FBQyxFQUFDLE1BQU0sRUFBRSxFQUFDLENBQUMsRUFBRSxNQUFNLEVBQUMsRUFBRSxPQUFPLEVBQUUsS0FBSyxFQUFFLEVBQUMsS0FBSyxFQUFFLFVBQVUsRUFBQyxFQUFDLENBQUMsQ0FBQztRQUN4RSxPQUFPLENBQUMsNkJBQTZCLENBQUMsTUFBTSxDQUFDLENBQUM7S0FDL0M7U0FBTTtRQUNMLE1BQU0sSUFBSSxHQUFHLE9BQU8sQ0FBQyxVQUFVLENBQUMsQ0FBQyxDQUFDLENBQUM7UUFDbkMsTUFBTSxNQUFNLEdBQUcsZ0JBQWdCLENBQUMsZ0JBQWdCLEVBQUUsSUFBSSxFQUFFLFFBQVEsRUFBRSxNQUFNLENBQUMsQ0FBQztRQUUxRSxNQUFNLEdBQUcsT0FBTyxDQUFDLGNBQWMsQ0FBQyxVQUFVLEVBQUUsTUFBTSxDQUFDLEtBQUssRUFBRSxNQUFNLENBQUMsTUFBTSxDQUFDLENBQUM7S0FDMUU7SUFFRCxPQUFPLE1BQU0sQ0FBQztBQUNoQixDQUFDO0FBRUQsTUFBTSxDQUFDLE1BQU0sa0JBQWtCLEdBQWlCO0lBQzlDLFVBQVUsRUFBRSxZQUFZO0lBQ3hCLFdBQVcsRUFBRSxLQUFLO0lBQ2xCLFVBQVUsRUFBRSxZQUFnQztDQUM3QyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBAbGljZW5zZVxuICogQ29weXJpZ2h0IDIwMjAgR29vZ2xlIExMQy4gQWxsIFJpZ2h0cyBSZXNlcnZlZC5cbiAqIExpY2Vuc2VkIHVuZGVyIHRoZSBBcGFjaGUgTGljZW5zZSwgVmVyc2lvbiAyLjAgKHRoZSBcIkxpY2Vuc2VcIik7XG4gKiB5b3UgbWF5IG5vdCB1c2UgdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNlIHdpdGggdGhlIExpY2Vuc2UuXG4gKiBZb3UgbWF5IG9idGFpbiBhIGNvcHkgb2YgdGhlIExpY2Vuc2UgYXRcbiAqXG4gKiBodHRwOi8vd3d3LmFwYWNoZS5vcmcvbGljZW5zZXMvTElDRU5TRS0yLjBcbiAqXG4gKiBVbmxlc3MgcmVxdWlyZWQgYnkgYXBwbGljYWJsZSBsYXcgb3IgYWdyZWVkIHRvIGluIHdyaXRpbmcsIHNvZnR3YXJlXG4gKiBkaXN0cmlidXRlZCB1bmRlciB0aGUgTGljZW5zZSBpcyBkaXN0cmlidXRlZCBvbiBhbiBcIkFTIElTXCIgQkFTSVMsXG4gKiBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkgS0lORCwgZWl0aGVyIGV4cHJlc3Mgb3IgaW1wbGllZC5cbiAqIFNlZSB0aGUgTGljZW5zZSBmb3IgdGhlIHNwZWNpZmljIGxhbmd1YWdlIGdvdmVybmluZyBwZXJtaXNzaW9ucyBhbmRcbiAqIGxpbWl0YXRpb25zIHVuZGVyIHRoZSBMaWNlbnNlLlxuICogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbiAqL1xuXG5pbXBvcnQge0tlcm5lbENvbmZpZywgS2VybmVsRnVuYywgc2xpY2VfdXRpbCwgU3RyaWRlZFNsaWNlLCBTdHJpZGVkU2xpY2VBdHRycywgU3RyaWRlZFNsaWNlSW5wdXRzLCBUZW5zb3JJbmZvLCB1dGlsfSBmcm9tICdAdGVuc29yZmxvdy90ZmpzLWNvcmUnO1xuXG5pbXBvcnQge01hdGhCYWNrZW5kQ1BVfSBmcm9tICcuLi9iYWNrZW5kX2NwdSc7XG5pbXBvcnQge2Fzc2VydE5vdENvbXBsZXh9IGZyb20gJy4uL2NwdV91dGlsJztcbmltcG9ydCB7cmVzaGFwZX0gZnJvbSAnLi9SZXNoYXBlJztcbmltcG9ydCB7c2xpY2V9IGZyb20gJy4vU2xpY2UnO1xuaW1wb3J0IHtzdHJpZGVkU2xpY2VJbXBsfSBmcm9tICcuL1N0cmlkZWRTbGljZV9pbXBsJztcblxuZXhwb3J0IGZ1bmN0aW9uIHN0cmlkZWRTbGljZShhcmdzOiB7XG4gIGlucHV0czogU3RyaWRlZFNsaWNlSW5wdXRzLFxuICBiYWNrZW5kOiBNYXRoQmFja2VuZENQVSxcbiAgYXR0cnM6IFN0cmlkZWRTbGljZUF0dHJzXG59KTogVGVuc29ySW5mbyB7XG4gIGNvbnN0IHtpbnB1dHMsIGJhY2tlbmQsIGF0dHJzfSA9IGFyZ3M7XG4gIGNvbnN0IHt4fSA9IGlucHV0cztcbiAgY29uc3Qge1xuICAgIGJlZ2luLFxuICAgIGVuZCxcbiAgICBzdHJpZGVzLFxuICAgIGJlZ2luTWFzayxcbiAgICBlbmRNYXNrLFxuICAgIGVsbGlwc2lzTWFzayxcbiAgICBuZXdBeGlzTWFzayxcbiAgICBzaHJpbmtBeGlzTWFza1xuICB9ID0gYXR0cnM7XG5cbiAgYXNzZXJ0Tm90Q29tcGxleCh4LCAnc3RyaWRlZFNsaWNlJyk7XG5cbiAgY29uc3Qge1xuICAgIGZpbmFsU2hhcGVTcGFyc2UsXG4gICAgZmluYWxTaGFwZSxcbiAgICBpc0lkZW50aXR5LFxuICAgIHNsaWNlRGltMCxcbiAgICBpc1NpbXBsZVNsaWNlLFxuICAgIGJlZ2luOiAkYmVnaW4sXG4gICAgZW5kOiAkZW5kLFxuICAgIHN0cmlkZXM6ICRzdHJpZGVzXG4gIH0gPVxuICAgICAgc2xpY2VfdXRpbC5zbGljZUluZm8oXG4gICAgICAgICAgeC5zaGFwZSwgYmVnaW4sIGVuZCwgc3RyaWRlcywgYmVnaW5NYXNrLCBlbmRNYXNrLCBlbGxpcHNpc01hc2ssXG4gICAgICAgICAgbmV3QXhpc01hc2ssIHNocmlua0F4aXNNYXNrKTtcblxuICBsZXQgcmVzdWx0O1xuXG4gIC8vIHJlZjpcbiAgLy8gaHR0cHM6Ly9naXRodWIuY29tL3RlbnNvcmZsb3cvdGVuc29yZmxvdy9ibG9iL21hc3Rlci90ZW5zb3JmbG93L2NvcmUva2VybmVscy9zdHJpZGVkX3NsaWNlX29wLmNjXG4gIGlmIChpc0lkZW50aXR5KSB7XG4gICAgLy8gT3B0aW1pemF0aW9uICMxLCBzbGljZSBpcyBhIG5vLW9wIHBsdXMgcmVzaGFwZVxuICAgIHJlc3VsdCA9IHJlc2hhcGUoe2lucHV0czoge3h9LCBiYWNrZW5kLCBhdHRyczoge3NoYXBlOiBmaW5hbFNoYXBlfX0pO1xuICB9IGVsc2UgaWYgKHNsaWNlRGltMCB8fCBpc1NpbXBsZVNsaWNlKSB7XG4gICAgLy8gT3B0aW1pemF0aW9uICMyLCBzbGljZSBpcyBtZW1vcnkgY29udGlndW91cyAob25seSBvY2N1cnMgaW4gZGltIDApXG4gICAgdXRpbC5hc3NlcnQoXG4gICAgICAgIHguc2hhcGUubGVuZ3RoID49IDEsXG4gICAgICAgICgpID0+IGBJbnB1dCBtdXN0IGhhdmUgcmFuayBhdCBsZWFzdCAxLCBnb3Q6ICR7eC5zaGFwZS5sZW5ndGh9YCk7XG5cbiAgICBjb25zdCBzaXplID0gc2xpY2VfdXRpbC5jb21wdXRlT3V0U2hhcGUoJGJlZ2luLCAkZW5kLCAkc3RyaWRlcyk7XG4gICAgLy8gVG8gdG9sZXJhdGUgYmVnaW5bMF0gPiBlbmRbMF0gKGEgMC1vdXRwdXQgc2xpY2UpLCB3ZSBtaW4oYmVnaW4sIGVuZCkuXG4gICAgY29uc3Qgc2xpY2VkID0gc2xpY2Uoe2lucHV0czoge3h9LCBiYWNrZW5kLCBhdHRyczoge2JlZ2luOiAkYmVnaW4sIHNpemV9fSk7XG4gICAgcmVzdWx0ID1cbiAgICAgICAgcmVzaGFwZSh7aW5wdXRzOiB7eDogc2xpY2VkfSwgYmFja2VuZCwgYXR0cnM6IHtzaGFwZTogZmluYWxTaGFwZX19KTtcbiAgICBiYWNrZW5kLmRpc3Bvc2VJbnRlcm1lZGlhdGVUZW5zb3JJbmZvKHNsaWNlZCk7XG4gIH0gZWxzZSB7XG4gICAgY29uc3QgeEJ1ZiA9IGJhY2tlbmQuYnVmZmVyU3luYyh4KTtcbiAgICBjb25zdCBvdXRCdWYgPSBzdHJpZGVkU2xpY2VJbXBsKGZpbmFsU2hhcGVTcGFyc2UsIHhCdWYsICRzdHJpZGVzLCAkYmVnaW4pO1xuXG4gICAgcmVzdWx0ID0gYmFja2VuZC5tYWtlVGVuc29ySW5mbyhmaW5hbFNoYXBlLCBvdXRCdWYuZHR5cGUsIG91dEJ1Zi52YWx1ZXMpO1xuICB9XG5cbiAgcmV0dXJuIHJlc3VsdDtcbn1cblxuZXhwb3J0IGNvbnN0IHN0cmlkZWRTbGljZUNvbmZpZzogS2VybmVsQ29uZmlnID0ge1xuICBrZXJuZWxOYW1lOiBTdHJpZGVkU2xpY2UsXG4gIGJhY2tlbmROYW1lOiAnY3B1JyxcbiAga2VybmVsRnVuYzogc3RyaWRlZFNsaWNlIGFzIHt9IGFzIEtlcm5lbEZ1bmNcbn07XG4iXX0=
