@@ -58,7 +58,7 @@ const selectedRoiState = selector({
         hover: false,
         evaluating: true
       };
-
+      console.log(roiObj);
       const updatedArr = [...oldRois, roiObj];
 
       set(selectedRoi, updatedArr);
