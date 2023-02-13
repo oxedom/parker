@@ -118,12 +118,13 @@ const ClientRender = ({ processing, showDetections }) => {
       let action = {
         event: "occupation",
         payload: { predictionsArr: predictionsArr },
-      };
+      };  
+ 
       //Sends action request with a payload, the event is handled
       //inside the state event.
       setSelectedRois(action);
       if (showDetections) {
-
+        console.table(predictionsArr[1].cords);
         renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
       }
     }
@@ -137,7 +138,7 @@ const ClientRender = ({ processing, showDetections }) => {
     id = setInterval(() => {
 
       detect(net);
-    }, 10);
+    }, 100);
     return id;
   };
 

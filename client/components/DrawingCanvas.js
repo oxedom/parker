@@ -123,7 +123,7 @@ const DrawingCanvas = () => {
     const overlayEl = overlayRef.current;
     observer.observe(canvasEl);
     let canvasOffset = canvasEl.getBoundingClientRect();
-    console.log(canvasOffset);
+    // console.log(canvasOffset);
     setPrevSelected(selectedColor);
     ctxRef.current = canvasEl.getContext("2d");
     ctxoRef.current = overlayEl.getContext("2d");
