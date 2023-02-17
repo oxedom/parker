@@ -225,7 +225,11 @@ const ClientRender = ({ processing, showDetections }) => {
 
         }
         console.log(roiObjs.length);
-        renderAllOverlaps(roiObjs,overlayXRef,imageWidth,imageHeight)
+        if(showDetections) 
+        {
+          renderAllOverlaps(roiObjs,overlayXRef,imageWidth,imageHeight)
+        }
+      
         // renderBoxes(
         //   overlayXRef.current,
         //   threshold,
@@ -235,7 +239,7 @@ const ClientRender = ({ processing, showDetections }) => {
         // );
         tf.dispose(res);
       });
-    
+      requestAnimationFrame(() => detectFrame(yolov7)); // get another frame
     // requestAnimationFrame(() => detectFrame(model)); // get another frame
     // tf.engine().endScope()
 
@@ -258,12 +262,12 @@ const ClientRender = ({ processing, showDetections }) => {
       await yolov7.executeAsync(dummyInput).then((warmupResult) => {
         tf.dispose(warmupResult);
         tf.dispose(dummyInput);
-
-        id = setInterval(() => {
-
-          detectFrame(yolov7);
-        }, 10);
-        return id;
+        detectFrame(yolov7)
+        // id = setInterval(() => {
+         
+        //   // detectFrame(yolov7);
+        // }, 100);
+        // return id;
       });
     });
   }
