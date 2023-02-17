@@ -17,8 +17,8 @@ export const renderBoxes = (
   scores_data,
   classes_data
 ) => {
-  console.log(canvasRef);
-  // const ctx = canvasRef.getContext("2d");
+
+
 
   canvasRef.clearRect(0, 0, canvasRef.canvas.width, canvasRef.canvas.height); // clean canvas
 

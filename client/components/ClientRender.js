@@ -183,6 +183,7 @@ const ClientRender = ({ processing, showDetections }) => {
           );
           const search_index = class_detect.indexOf(max_score_index);
           roiObj.score = max_score_index;
+      
           roiObj.label = labels[max_score_index];
 
           boxes.push(box);
@@ -223,26 +224,28 @@ const ClientRender = ({ processing, showDetections }) => {
           }
 
         }
-
-   
-        renderBoxes(
-          overlayXRef.current,
-          threshold,
-          boxes,
-          scores,
-          class_detect
-        );
+        console.log(roiObjs.length);
+        renderAllOverlaps(roiObjs,overlayXRef,imageWidth,imageHeight)
+        // renderBoxes(
+        //   overlayXRef.current,
+        //   threshold,
+        //   boxes,
+        //   scores,
+        //   class_detect
+        // );
         tf.dispose(res);
       });
-    }
-    requestAnimationFrame(() => detectFrame(model)); // get another frame
+    
+    // requestAnimationFrame(() => detectFrame(model)); // get another frame
     // tf.engine().endScope()
-    // tf.engine().endScope();
+
+    tf.engine().endScope();
+    }
   };
 
-
-
-  useEffect(() => {
+  const runYolo = async () => 
+  {
+    let id;
     tf.loadGraphModel(
       `${window.location.origin}/${modelName}_web_model/model.json`,
       {
@@ -256,24 +259,29 @@ const ClientRender = ({ processing, showDetections }) => {
         tf.dispose(warmupResult);
         tf.dispose(dummyInput);
 
-        detectFrame(yolov7);
+        id = setInterval(() => {
+
+          detectFrame(yolov7);
+        }, 10);
+        return id;
       });
     });
-  }, []);
+  }
 
-  // useEffect(() => {
-  //   let intervalID;
-  //   if (processing) {
-  //     runCoco().then((id) => {
-  //       intervalID = id;
-  //     });
-  //   }
 
-  //   return function () {
-  //     clearCanvas(overlayXRef, imageWidth, imageHeight);
-  //     clearInterval(intervalID);
-  //   };
-  // }, [processing, showDetections]);
+  useEffect(() => {
+    let intervalID;
+    if (processing) {
+      runYolo().then((id) => {
+        intervalID = id;
+      });
+    }
+
+    return function () {
+      clearCanvas(overlayXRef, imageWidth, imageHeight);
+      clearInterval(intervalID);
+    };
+  }, [processing, showDetections]);
 
   return (
     <>
