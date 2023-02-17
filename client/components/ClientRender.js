@@ -122,7 +122,6 @@ const ClientRender = ({ processing, showDetections }) => {
       //inside the state event.
       setSelectedRois(action);
       if (showDetections) {
-        console.table(predictionsArr[1].cords);
         renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
       }
     }
@@ -223,10 +222,9 @@ const ClientRender = ({ processing, showDetections }) => {
             roiObjs.push(roiObj);
           }
 
-          console.table(roiObjs[0].cords);
         }
 
-        console.log(overlayXRef, threshold, boxes, scores, class_detect);
+   
         renderBoxes(
           overlayXRef.current,
           threshold,
@@ -242,17 +240,7 @@ const ClientRender = ({ processing, showDetections }) => {
     // tf.engine().endScope();
   };
 
-  const runCoco = async () => {
-    let id;
 
-    const net = await cocoSsd.load();
-    setLoadedCoco(true);
-
-    id = setInterval(() => {
-      detect(net);
-    }, 100);
-    return id;
-  };
 
   useEffect(() => {
     tf.loadGraphModel(
