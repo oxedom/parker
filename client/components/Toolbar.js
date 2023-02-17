@@ -60,7 +60,6 @@ const ToolbarTwo = ({
       <img
         onClick={openModal}
         className="cursor-pointer invert transition duration-500 transform hover:rotate-90"
-   
         src={settingsIcon.src}
       />
 
@@ -95,7 +94,7 @@ const ToolbarTwo = ({
             }}
             className={`${btnClass} bg-gray-100 `}
           >
-            <p className={`${paraClass} select-none`}  >
+            <p className={`${paraClass} select-none`}>
               <span className=""> Reload Webcam </span>
             </p>
           </div>

@@ -150,18 +150,14 @@ const DrawingCanvas = () => {
         renderRoi(roi, ctxoRef);
       });
 
- 
-        if(!isDown) 
-        {
-          ctxRef.current.clearRect(
-            0,
-            0,
-            canvasRef.current.width,
-            canvasRef.current.height
-          );
-        }
-
-      
+      if (!isDown) {
+        ctxRef.current.clearRect(
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
+      }
     }
   }, [selectedRois]);
 

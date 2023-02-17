@@ -55,7 +55,7 @@ export function renderRoi(roi, contextCanvas) {
   }
 
   if (roi.evaluating) {
-    color = "#808080"
+    color = "#808080";
   }
 
   if (roi.hover === null) {

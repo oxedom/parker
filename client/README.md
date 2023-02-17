@@ -2,7 +2,6 @@ Things to do
 
 1. Set up a nicer home page
 
-
 Save data about each selectedRoi,
 total time occupied
 how many cars have been occupied it in a session.
@@ -16,5 +15,3 @@ Fix counter with how long a car has been parked/available
 
 Add auto parking, add opticaty for show detections
 Work on the Docs man and home page a bit.
-
-

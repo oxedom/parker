@@ -56,7 +56,7 @@ const selectedRoiState = selector({
         lastSeen: null,
         occupied: false,
         hover: false,
-        evaluating: true
+        evaluating: true,
       };
       console.log(roiObj);
       const updatedArr = [...oldRois, roiObj];
@@ -87,34 +87,32 @@ const selectedRoiState = selector({
         //to unoccupied,
 
         //Check if 10 secounds have passed since last seen
-        const currentUnixTime = Date.now()
-      
+        const currentUnixTime = Date.now();
+
         //If the ROI is overlapping and hasn't been "seen" set it's timestames to now
-        if(!roiEvaluating(currentUnixTime, selectedRois[index]['time'], evaluateTime)) 
-        {
-          selectedRoisClone[index]['evaluating'] = false
+        if (
+          !roiEvaluating(
+            currentUnixTime,
+            selectedRois[index]["time"],
+            evaluateTime
+          )
+        ) {
+          selectedRoisClone[index]["evaluating"] = false;
         }
         if (isOverlap && selectedRois[index]["firstSeen"] === null) {
-
-          selectedRoisClone[index]["firstSeen"] = currentUnixTime
-          selectedRoisClone[index]["lastSeen"] = currentUnixTime
-      //If the ROI is overlapping and has "seen", see if it's lastsee - minus it's first seen is bigger than
-      //the allowed time differnce if so set the occupation to true, and afterwards update the lastSeen 
+          selectedRoisClone[index]["firstSeen"] = currentUnixTime;
+          selectedRoisClone[index]["lastSeen"] = currentUnixTime;
+          //If the ROI is overlapping and has "seen", see if it's lastsee - minus it's first seen is bigger than
+          //the allowed time differnce if so set the occupation to true, and afterwards update the lastSeen
         } else if (isOverlap && selectedRois[index]["firstSeen"] != null) {
-
           let timeDiff =
             selectedRois[index]["lastSeen"] - selectedRois[index]["firstSeen"];
 
           if (timeDiff > evaluateTime) {
             selectedRoisClone[index].occupied = true;
           }
-          selectedRoisClone[index].lastSeen = currentUnixTime
-        } 
-
-        
-
-        else if (
-          
+          selectedRoisClone[index].lastSeen = currentUnixTime;
+        } else if (
           currentUnixTime - selectedRois[index]["lastSeen"] >
           evaluateTime
         ) {
@@ -126,7 +124,6 @@ const selectedRoiState = selector({
         }
       }
 
-   
       set(selectedRoi, selectedRoisClone);
     }
 
