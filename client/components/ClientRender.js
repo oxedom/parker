@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import * as cocoSsd from "@tensorflow-models/coco-ssd";
+// import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
 import labels from "../utils/labels.json";
@@ -81,7 +81,7 @@ const ClientRender = ({ processing, showDetections }) => {
             height: -999,
           },
 
-          label: "Nothing",
+          label: "EMPTY_ROI",
           confidenceLevel: 99,
           area: -999,
         },
@@ -89,6 +89,7 @@ const ClientRender = ({ processing, showDetections }) => {
 
       for (let n = 0; n < predictions.length; n++) {
         // If we are over 66% sure we are sure we classified it right, draw it!
+        
         if (predictions[n].score > 0.66) {
           const right_x = predictions[n].bbox[0];
           const top_y = predictions[n].bbox[1];
@@ -134,6 +135,7 @@ const ClientRender = ({ processing, showDetections }) => {
       webcamRef.current.video.readyState === 4
     ) {
       // Get Video Properties
+      let start = Date.now()
       const video = webcamRef.current.video;
       const videoWidth = webcamRef.current.video.videoWidth;
       const videoHeight = webcamRef.current.video.videoHeight;
@@ -155,7 +157,9 @@ const ClientRender = ({ processing, showDetections }) => {
         return img;
       });
 
-      await model.executeAsync(input).then((res) => {
+      let res = model.execute(input) 
+
+      // await model.execute(input).then((res) => {
         res = res.arraySync()[0];
         //Filtering only detections > conf_thres
         const conf_thres = 0.25;
@@ -189,89 +193,89 @@ const ClientRender = ({ processing, showDetections }) => {
           boxes.push(box);
           scores.push(res[max_score_index + 5]);
 
-          const iouThreshold = 0.2;
-          const scoreThreshold = 0;
-          const maxOutputSize = 20;
-          let indices = tf.image.nonMaxSuppression(
-            boxes,
-            scores,
-            maxOutputSize,
-            iouThreshold,
-            scoreThreshold
-          );
-
-          // Keep only the indices with a high enough score
-          indices = indices.dataSync();
-          let filteredBoxes = [];
-          let filteredScores = [];
-          let filteredClasses = [];
-          for (let i = 0; i < indices.length; i++) {
-            filteredBoxes.push(boxes[indices[i]]);
-            filteredScores.push(scores[indices[i]]);
-            filteredClasses.push(class_detect[indices[i]]);
-          }
-
-          let [x1, y1, x2, y2] = xywh2xyxy(filteredBoxes[0]);
-          const width = x2 - x1;
-          const height = y2 - y1;
-
-          if (roiObjs.length === 0) {
-            roiObj.cords.right_x = x1;
-            roiObj.cords.top_y = y1;
-            roiObj.cords.width = width;
-            roiObj.cords.height = height;
-            roiObjs.push(roiObj);
-          }
-
+          
+          tf.dispose(res);
         }
-        console.log(roiObjs.length);
+
+        // const iouThreshold = 0.2;
+        //   const scoreThreshold = 0;
+        //   const maxOutputSize = 20;
+        //   let indices =  tf.image.nonMaxSuppression(
+        //     boxes,
+        //     scores,
+        //     maxOutputSize,
+        //     iouThreshold,
+        //     scoreThreshold
+        //   );
+
+        //   // Keep only the indices with a high enough score
+        //   indices = indices.dataSync();
+        //   let filteredBoxes = [];
+        //   let filteredScores = [];
+        //   let filteredClasses = [];
+        //   for (let i = 0; i < indices.length; i++) {
+        //     filteredBoxes.push(boxes[indices[i]]);
+        //     filteredScores.push(scores[indices[i]]);
+        //     filteredClasses.push(class_detect[indices[i]]);
+        //   }
+
+        //   let [x1, y1, x2, y2] = xywh2xyxy(filteredBoxes[0]);
+        //   const width = x2 - x1;
+        //   const height = y2 - y1;
+
+        //   if (roiObjs.length === 0) {
+        //     roiObj.cords.right_x = x1;
+        //     roiObj.cords.top_y = y1;
+        //     roiObj.cords.width = width;
+        //     roiObj.cords.height = height;
+        //     roiObjs.push(roiObj);
+        //   }
+        
         if(showDetections) 
         {
-          renderAllOverlaps(roiObjs,overlayXRef,imageWidth,imageHeight)
+          renderBoxes(
+            overlayXRef.current,
+            threshold,
+            boxes,
+            scores,
+            class_detect
+          );
+    
         }
       
-        // renderBoxes(
-        //   overlayXRef.current,
-        //   threshold,
-        //   boxes,
-        //   scores,
-        //   class_detect
-        // );
-        tf.dispose(res);
-      });
-      requestAnimationFrame(() => detectFrame(yolov7)); // get another frame
-    // requestAnimationFrame(() => detectFrame(model)); // get another frame
-    // tf.engine().endScope()
 
-    tf.engine().endScope();
+      
+      // }
+      
+      
+  
+    
+      tf.engine().endScope();
+      let end = Date.now()
+      console.log(end-start);
     }
+
   };
 
   const runYolo = async () => 
   {
     let id;
-    tf.loadGraphModel(
+    let yolov7 = await tf.loadGraphModel(
       `${window.location.origin}/${modelName}_web_model/model.json`,
       {
         onProgress: (fractions) => {},
       }
-    ).then(async (yolov7) => {
-      // Warmup the model before using real data.
-      const dummyInput = tf.ones(yolov7.inputs[0].shape);
-      setLoadedCoco(true);
-      await yolov7.executeAsync(dummyInput).then((warmupResult) => {
-        tf.dispose(warmupResult);
-        tf.dispose(dummyInput);
-        detectFrame(yolov7)
-        // id = setInterval(() => {
-         
-        //   // detectFrame(yolov7);
-        // }, 100);
-        // return id;
-      });
-    });
+    )
+    setLoadedCoco(true);
+    const dummyInput = tf.ones(yolov7.inputs[0].shape);
+    const warmupResult = await yolov7.executeAsync(dummyInput)
+    tf.dispose(warmupResult);
+    tf.dispose(dummyInput);
+    id = setInterval(() => {
+      requestAnimationFrame(() => detectFrame(yolov7)); // get another frame
+    }, 200);
+    return id; 
   }
-
 
   useEffect(() => {
     let intervalID;
@@ -282,6 +286,7 @@ const ClientRender = ({ processing, showDetections }) => {
     }
 
     return function () {
+      alert(intervalID)
       clearCanvas(overlayXRef, imageWidth, imageHeight);
       clearInterval(intervalID);
     };
