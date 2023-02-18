@@ -200,7 +200,7 @@ const ClientRender = ({ processing, showDetections }) => {
 
 
 
-        if(boxes.length === 0) { return}
+   
         const iouThreshold = 0.1;
           const scoreThreshold = 0;
           const maxOutputSize = 20;
@@ -214,6 +214,7 @@ const ClientRender = ({ processing, showDetections }) => {
 
           // Keep only the indices with a high enough score
           indices = indices.dataSync();
+          console.log(indices)
           let filteredBoxes = [];
           let filteredScores = [];
           let filteredClasses = [];
@@ -229,8 +230,7 @@ const ClientRender = ({ processing, showDetections }) => {
 
             
           }
-        
-        
+
           // let [x1, y1, x2, y2] = xywh2xyxy(filteredBoxes[0]);
           // const width = x2 - x1;
           // const height = y2 - y1;
@@ -242,16 +242,19 @@ const ClientRender = ({ processing, showDetections }) => {
           //   roiObj.cords.height = height;
           //   roiObjs.push(roiObj);
           // }
-        
+
         if(showDetections && filteredBoxes.length > 0) 
         {
-          renderBoxes(
-            overlayXRef.current,
-            threshold,
-            filteredBoxes,
-            filteredScores,
-            filteredClasses
-          );
+     
+            renderBoxes(
+              overlayXRef.current,
+              threshold,
+              boxes,
+              scores,
+              class_detect
+            );
+     
+
     
         }
       
@@ -285,7 +288,7 @@ const ClientRender = ({ processing, showDetections }) => {
     tf.dispose(dummyInput);
     id = setInterval(() => {
       detectFrame(yolov7) // get another frame
-    }, 200);
+    }, 500);
     return id; 
   }
 
