@@ -144,6 +144,7 @@ const ClientRender = ({ processing, showDetections }) => {
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
+      
       const model_dim = [640, 640];
       tf.engine().startScope();
 
@@ -192,53 +193,64 @@ const ClientRender = ({ processing, showDetections }) => {
 
           boxes.push(box);
           scores.push(res[max_score_index + 5]);
-
+          class_detect.push(max_score_index);
           
           tf.dispose(res);
         }
 
-        // const iouThreshold = 0.2;
-        //   const scoreThreshold = 0;
-        //   const maxOutputSize = 20;
-        //   let indices =  tf.image.nonMaxSuppression(
-        //     boxes,
-        //     scores,
-        //     maxOutputSize,
-        //     iouThreshold,
-        //     scoreThreshold
-        //   );
 
-        //   // Keep only the indices with a high enough score
-        //   indices = indices.dataSync();
-        //   let filteredBoxes = [];
-        //   let filteredScores = [];
-        //   let filteredClasses = [];
-        //   for (let i = 0; i < indices.length; i++) {
-        //     filteredBoxes.push(boxes[indices[i]]);
-        //     filteredScores.push(scores[indices[i]]);
-        //     filteredClasses.push(class_detect[indices[i]]);
-        //   }
 
-        //   let [x1, y1, x2, y2] = xywh2xyxy(filteredBoxes[0]);
-        //   const width = x2 - x1;
-        //   const height = y2 - y1;
+        if(boxes.length === 0) { return}
+        const iouThreshold = 0.1;
+          const scoreThreshold = 0;
+          const maxOutputSize = 20;
+          let indices =  await tf.image.nonMaxSuppressionAsync(
+            boxes,
+            scores,
+            maxOutputSize,
+            iouThreshold,
+            scoreThreshold
+          );
 
-        //   if (roiObjs.length === 0) {
-        //     roiObj.cords.right_x = x1;
-        //     roiObj.cords.top_y = y1;
-        //     roiObj.cords.width = width;
-        //     roiObj.cords.height = height;
-        //     roiObjs.push(roiObj);
-        //   }
+          // Keep only the indices with a high enough score
+          indices = indices.dataSync();
+          let filteredBoxes = [];
+          let filteredScores = [];
+          let filteredClasses = [];
+          
+          for (let i = 0; i < indices.length; i++) {
+            // boxes[indices[i]][0] = boxes[indices[i]][0]*[imageWidth/640]
+            // boxes[indices[i]][1]= boxes[indices[i]][1]*[imageHeight/640]
+            // boxes[indices[i]][2]= boxes[indices[i]][2]*[imageWidth/640]
+            // boxes[indices[i]][3]= boxes[indices[i]][1]*[imageHeight/640]
+            filteredBoxes.push(boxes[indices[i]]);
+            filteredScores.push(scores[indices[i]]);
+            filteredClasses.push(class_detect[indices[i]]);
+
+            
+          }
         
-        if(showDetections) 
+        
+          // let [x1, y1, x2, y2] = xywh2xyxy(filteredBoxes[0]);
+          // const width = x2 - x1;
+          // const height = y2 - y1;
+
+          // if (roiObjs.length === 0) {
+          //   roiObj.cords.right_x = x1;
+          //   roiObj.cords.top_y = y1;
+          //   roiObj.cords.width = width;
+          //   roiObj.cords.height = height;
+          //   roiObjs.push(roiObj);
+          // }
+        
+        if(showDetections && filteredBoxes.length > 0) 
         {
           renderBoxes(
             overlayXRef.current,
             threshold,
-            boxes,
-            scores,
-            class_detect
+            filteredBoxes,
+            filteredScores,
+            filteredClasses
           );
     
         }
@@ -272,7 +284,7 @@ const ClientRender = ({ processing, showDetections }) => {
     tf.dispose(warmupResult);
     tf.dispose(dummyInput);
     id = setInterval(() => {
-      requestAnimationFrame(() => detectFrame(yolov7)); // get another frame
+      detectFrame(yolov7) // get another frame
     }, 200);
     return id; 
   }
@@ -286,7 +298,7 @@ const ClientRender = ({ processing, showDetections }) => {
     }
 
     return function () {
-      alert(intervalID)
+
       clearCanvas(overlayXRef, imageWidth, imageHeight);
       clearInterval(intervalID);
     };
