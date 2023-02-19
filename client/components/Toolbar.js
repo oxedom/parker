@@ -104,9 +104,9 @@ const Toolbar = ({
               <div>
               <input onChange={(e) => {
               
-              setFps(e.target.value)}} alt="fps" step={100} min={0} max={10000} type="number" value={fps}/>  
+              setFps(e.target.value)}} alt="fps" step={1000} min={0} max={10000} type="number"/>  
 
-              <span> {1/(fps / 1000)}</span>
+              <span> {1/(fps / 1000)} FPS </span>
 
               </div>
 
