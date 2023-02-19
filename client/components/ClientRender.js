@@ -21,10 +21,11 @@ const ClientRender = ({ processing, showDetections }) => {
 
   useEffect(() => {
     // Need to do this for canvas2d to work
-    if (overlayXRef.current != null) {
-      overlayXRef.current = overlayEl.getContext("2d");
+
+    if (overlayXRef.current != null && loadedCoco) {
+      overlayXRef.current = overlayXRef.current.getContext("2d");
     }
-  }, []);
+  }, [loadedCoco]);
 
   const detectFrame = async (model) => {
     if (
@@ -46,6 +47,7 @@ const ClientRender = ({ processing, showDetections }) => {
       tf.engine().startScope();
 
       const input = tf.tidy(() => {
+        
         const img = tf.image
           .resizeBilinear(tf.browser.fromPixels(video), model_dim)
           .div(255.0)
@@ -59,7 +61,7 @@ const ClientRender = ({ processing, showDetections }) => {
 
       res = res.arraySync()[0];
       //Filtering only detections > conf_thres
-      const conf_thres = 0.25;
+      const conf_thres = 0.5;
       res = res.filter((dataRow) => dataRow[4] >= conf_thres);
 
       let boxes = [];
@@ -89,19 +91,30 @@ const ClientRender = ({ processing, showDetections }) => {
       let detectionScores;
       let predictionsArr = [];
       if (boxes.length > 0) {
-        nmsDetections = await tf.image.nonMaxSuppressionWithScoreAsync(
+        // nmsDetections = await tf.image.nonMaxSuppressionWithScoreAsync(
+        //   boxes,
+        //   scores,
+        //   20,
+        //   0.6,
+        //   0,
+        //   0
+        // );
+        nmsDetections = await tf.image.nonMaxSuppressionAsync(
           boxes,
           scores,
-          20,
-          0.7,
-          0,
-          1
+          100,
+          0.8,
+          0.5
         );
-        detectionIndices = nmsDetections.selectedIndices.dataSync();
-        detectionScores = nmsDetections.selectedScores.dataSync();
+      
+        // detectionIndices = nmsDetections.selectedIndices.dataSync();
+        // detectionScores = nmsDetections.selectedScores.dataSync();
+        detectionIndices = nmsDetections.dataSync()
+          console.log(nmsDetections);
         for (let i = 0; i < detectionIndices.length; i++) {
           const detectionIndex = detectionIndices[i];
-          const detectionScore = detectionScores[i];
+          // const detectionScore = detectionScores[i];
+          const detectionScore = scores[detectionIndex];
           const detectionClass = class_detect[detectionIndex];
           const roiObj = { cords: {} };
           let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
