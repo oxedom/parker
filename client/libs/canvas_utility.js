@@ -69,23 +69,20 @@ export function renderRoi(roi, contextCanvas) {
   //Gets centerX
   const centerX = right_x + width / 2;
   //Font and Size needs to be state
-  contextCanvas.current.font = "72px Courier";
-  contextCanvas.current.textAlign = "center";
+
   //Draws a rect on the detection
   context.strokeStyle = color;
-  context.lineWidth = 10;
+  context.lineWidth = 4;
 
   contextCanvas.current.strokeRect(right_x, top_y, width, height);
-  context.strokeStyle = "#333333";
-  context.lineWidth = 1.5;
-  contextCanvas.current.strokeRect(
-    right_x - borderWidth,
-    top_y - borderWidth,
-    width + offset,
-    height + offset
-  );
 
-  // contextCanvas.current.fillText(roi.label, centerX, top_y * 0.8);
+  const font = "26px Courier";
+  contextCanvas.current.textAlign = "center";
+  contextCanvas.current.font = font;
+  contextCanvas.textBaseline = "top";
+  contextCanvas.fillStyle = "#ffffff";
+
+  contextCanvas.current.fillText(roi.label, centerX, top_y * 0.9);
 }
 
 export function renderAllOverlaps(overlaps, canvasRef, width, height) {

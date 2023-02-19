@@ -67,6 +67,7 @@ export function finalName(name, arrayLength) {
 
 export function checkOverlapArrays(detectionsArr, selectedArr) {
   let overlaps = [];
+
   detectionsArr.forEach((d) => {
     selectedArr.forEach((s) => {
       let overlapCords = getOverlap(d.cords, s.cords);
@@ -80,7 +81,7 @@ export function checkOverlapArrays(detectionsArr, selectedArr) {
           color: "#FFEF00",
           cords: overlapCords,
         };
-        console.log(overlap);
+
         overlaps.push(overlap);
       }
     });
@@ -109,8 +110,8 @@ export function checkRectOverlap(rect, detectionsArr) {
       //how much % of the sqaure it's overlapping
       let percentDiff = overlapArea_rounded / rectArea_rounded;
 
-      //If it overlaps more than 50% of the square return true, else false
-      if (percentDiff > 0.5) {
+      //If it overlaps more than 40% of the square return true, else false
+      if (percentDiff > 0.4) {
         answer = true;
       } else {
         return;

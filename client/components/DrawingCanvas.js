@@ -10,8 +10,9 @@ import { useRecoilState } from "recoil";
 import { selectedRoiState } from "../components/states";
 import { renderRoi } from "../libs/canvas_utility";
 
-const DrawingCanvas = () => {
+const DrawingCanvas = ({ setProcessing }) => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
+
   const selectedColor = useRecoilValue(selectedColorState);
   // const selectingColor = useRecoilValue(selectingColorState);
   const selectingColor = "#979A9A";
@@ -131,9 +132,9 @@ const DrawingCanvas = () => {
     const ctx = ctxRef.current;
     const ctxo = ctxoRef.current;
     ctx.strokeStyle = selectingColor;
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 7;
     ctxo.strokeStyle = selectedColor;
-    ctxo.lineWidth = 10;
+    ctxo.lineWidth = 7;
     setOffsetX(canvasOffset.left);
     setOffsetY(canvasOffset.top);
   }, []);
@@ -171,9 +172,10 @@ const DrawingCanvas = () => {
 
     //Changes the stroke style to the selectingColor
     ctxRef.current.strokeStyle = selectingColor;
-    ctxRef.current.lineWidth = 10;
+    ctxRef.current.lineWidth = 7;
     // set a flag indicating the drag has begun
     setIsDown(true);
+    setProcessing(false);
   }
 
   function handleMouseMove(e) {
@@ -223,6 +225,7 @@ const DrawingCanvas = () => {
     e.stopPropagation();
     // Mouse dragging is over, clear the dragging flag
     setIsDown(false);
+    setProcessing(true);
     //If the area of the current cords is very small so don't add else
     if (rectangleArea(currentCords) > 500) {
       //function that handles state

@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 const Navlink = ({ url, text }) => {
   const router = useRouter();
   let selectedPathname = () => {
-    console.log(router);
     if (router.route == url) {
       return "text-blue-500";
     } else {

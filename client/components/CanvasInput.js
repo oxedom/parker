@@ -93,7 +93,6 @@ const CanvasInput = () => {
         imageCapturedToCanvas(imageCaptured, inputRef);
         const data = await capturedImageServer(imageCaptured);
         let { detections } = data.meta_data;
-        // console.log(detections);
 
         detections = detections.map((d) => ({ ...d, color: detectionColor }));
 

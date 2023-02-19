@@ -17,9 +17,6 @@ export const renderBoxes = (
   scores_data,
   classes_data
 ) => {
-
-
-
   canvasRef.clearRect(0, 0, canvasRef.canvas.width, canvasRef.canvas.height); // clean canvas
 
   // font configs

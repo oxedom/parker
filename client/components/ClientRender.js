@@ -1,15 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-// import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
 import labels from "../utils/labels.json";
-import {
-  renderRoi,
-  renderAllOverlaps,
-  clearCanvas,
-} from "../libs/canvas_utility";
-import { renderBoxes, xywh2xyxy } from "../utils/renderBox.js";
+import { renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
+import { xywh2xyxy } from "../utils/renderBox.js";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { imageWidthState, imageHeightState, selectedRoiState } from "./states";
 
@@ -19,114 +14,17 @@ const ClientRender = ({ processing, showDetections }) => {
   const webcamRef = useRef(null);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const [loadedCoco, setLoadedCoco] = useState(false);
-  // const overlayEl = useRef(null);
+
   let overlayXRef = useRef(null);
   let loadingRef = useRef(null);
   const modelName = "yolov7";
-  const threshold = 0.8;
-
-  //Uncomment this if you don't want to the user to load tensorflow from Google API
-  //And comment out import
-  // const cocoSsd = require("@tensorflow-models/coco-ssd");
 
   useEffect(() => {
     // Need to do this for canvas2d to work
-    if (loadedCoco) {
-      const overlayEl = overlayXRef.current;
-      if (overlayEl != null) {
-        overlayXRef.current = overlayEl.getContext("2d");
-      }
-    } else {
-      // const loadingEL = loadingRef.current
-      // if (loadingEL != null) {
-      //   loadingRef.current = loadingEL.getContext("2d")
-      //   var loadingText = "Loading...";
-      //   loadingRef.current.fillStyle = "green";
-      //   loadingRef.current.fillRect(0, 0, imageWidth, imageHeight)
-      //   loadingRef.current.font = "48px sans-serif";
-      //   loadingRef.current.fillText(loadingText, imageWidth / 2, imageHeight / 2);
-      // }
+    if (overlayXRef.current != null) {
+      overlayXRef.current = overlayEl.getContext("2d");
     }
-  }, [loadedCoco]);
-
-  const detect = async (net) => {
-    // console.log(processing);
-    // Check data is available
-    if (!processing) {
-      return;
-    }
-    if (
-      typeof webcamRef.current !== "undefined" &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
-      // Get Video Properties
-      const video = webcamRef.current.video;
-      const videoWidth = webcamRef.current.video.videoWidth;
-      const videoHeight = webcamRef.current.video.videoHeight;
-
-      // Set video width
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
-
-      // Make Detections
-      const predictions = await net.detect(video);
-
-      let predictionsArr = [
-        {
-          cords: {
-            right_x: -999,
-            top_y: -999,
-            width: -999,
-            height: -999,
-          },
-
-          label: "EMPTY_ROI",
-          confidenceLevel: 99,
-          area: -999,
-        },
-      ];
-
-      for (let n = 0; n < predictions.length; n++) {
-        // If we are over 66% sure we are sure we classified it right, draw it!
-        
-        if (predictions[n].score > 0.66) {
-          const right_x = predictions[n].bbox[0];
-          const top_y = predictions[n].bbox[1];
-          const width = predictions[n].bbox[2];
-          const height = predictions[n].bbox[3];
-          const label = predictions[n].class;
-
-          const confidenceLevel = predictions[n].score;
-          const obj = {
-            cords: {
-              right_x,
-              top_y,
-              width,
-              height,
-            },
-
-            label,
-            confidenceLevel,
-            area: Math.ceil(width * height),
-          };
-          predictionsArr.push(obj);
-        }
-      }
-
-      let action = {
-        event: "occupation",
-        payload: { predictionsArr: predictionsArr },
-      };
-
-      //Sends action request with a payload, the event is handled
-      //inside the state event.
-      setSelectedRois(action);
-      if (showDetections) {
-        renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
-      }
-    }
-  };
+  }, []);
 
   const detectFrame = async (model) => {
     if (
@@ -135,7 +33,7 @@ const ClientRender = ({ processing, showDetections }) => {
       webcamRef.current.video.readyState === 4
     ) {
       // Get Video Properties
-      let start = Date.now()
+      let start = Date.now();
       const video = webcamRef.current.video;
       const videoWidth = webcamRef.current.video.videoWidth;
       const videoHeight = webcamRef.current.video.videoHeight;
@@ -144,7 +42,6 @@ const ClientRender = ({ processing, showDetections }) => {
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
-      
       const model_dim = [640, 640];
       tf.engine().startScope();
 
@@ -158,139 +55,119 @@ const ClientRender = ({ processing, showDetections }) => {
         return img;
       });
 
-      let res = model.execute(input) 
+      let res = model.execute(input);
 
-      // await model.execute(input).then((res) => {
-        res = res.arraySync()[0];
-        //Filtering only detections > conf_thres
-        const conf_thres = 0.25;
-        res = res.filter((dataRow) => dataRow[4] >= conf_thres);
+      res = res.arraySync()[0];
+      //Filtering only detections > conf_thres
+      const conf_thres = 0.25;
+      res = res.filter((dataRow) => dataRow[4] >= conf_thres);
 
-        var boxes = [];
-        var class_detect = [];
-        var scores = [];
-        var roiObjs = [];
+      let boxes = [];
+      let class_detect = [];
+      let scores = [];
 
-        res.forEach(process_pred);
+      res.forEach(process_pred);
 
-        function process_pred(res) {
-          var box = res.slice(0, 4);
+      function process_pred(res) {
+        var box = res.slice(0, 4);
 
-          // //non_max_suppression
+        const cls_detections = res.slice(5, 85);
+        var max_score_index = cls_detections.reduce(
+          (imax, x, i, arr) => (x > arr[imax] ? i : imax),
+          0
+        );
 
-          const roiObj = {
-            cords: {},
-          };
-          const cls_detections = res.slice(5, 85);
-          var max_score_index = cls_detections.reduce(
-            (imax, x, i, arr) => (x > arr[imax] ? i : imax),
-            0
-          );
-          const search_index = class_detect.indexOf(max_score_index);
-          roiObj.score = max_score_index;
-      
-          roiObj.label = labels[max_score_index];
+        boxes.push(box);
+        scores.push(res[max_score_index + 5]);
+        class_detect.push(max_score_index);
 
-          boxes.push(box);
-          scores.push(res[max_score_index + 5]);
-          class_detect.push(max_score_index);
-          
-          tf.dispose(res);
+        tf.dispose(res);
+      }
+
+      let nmsDetections;
+      let detectionIndices;
+      let detectionScores;
+      let predictionsArr = [];
+      if (boxes.length > 0) {
+        nmsDetections = await tf.image.nonMaxSuppressionWithScoreAsync(
+          boxes,
+          scores,
+          20,
+          0.7,
+          0,
+          1
+        );
+        detectionIndices = nmsDetections.selectedIndices.dataSync();
+        detectionScores = nmsDetections.selectedScores.dataSync();
+        for (let i = 0; i < detectionIndices.length; i++) {
+          const detectionIndex = detectionIndices[i];
+          const detectionScore = detectionScores[i];
+          const detectionClass = class_detect[detectionIndex];
+          const roiObj = { cords: {} };
+          let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
+
+          // Extract the bounding box coordinates from the 'boxes' tensor
+          y1 = y1 * (imageHeight / 640);
+          y2 = y2 * (imageHeight / 640);
+          x1 = x1 * (imageWidth / 640);
+          x2 = x2 * (imageWidth / 640);
+          let width = x2 - x1;
+          let height = y2 - y1;
+          roiObj.cords.bottom_y = y2;
+          roiObj.cords.left_x = x2;
+          roiObj.cords.top_y = y1;
+          roiObj.cords.right_x = x1;
+          roiObj.cords.width = width;
+          roiObj.cords.height = height;
+          // Add the detection score to the bbox object
+          roiObj.confidenceLevel = detectionScore;
+          roiObj.label = labels[detectionClass];
+          roiObj.area = width * height;
+          // Add the bbox object to the bboxes array
+
+          predictionsArr.push(roiObj);
         }
+      }
 
+      let action = {
+        event: "occupation",
+        payload: { predictionsArr: predictionsArr },
+      };
 
+      //Sends action request with a payload, the event is handled
+      //inside the state event.
+      setSelectedRois(action);
 
-   
-        const iouThreshold = 0.1;
-          const scoreThreshold = 0;
-          const maxOutputSize = 20;
-          let indices =  await tf.image.nonMaxSuppressionAsync(
-            boxes,
-            scores,
-            maxOutputSize,
-            iouThreshold,
-            scoreThreshold
-          );
+      if (showDetections && predictionsArr.length > 0) {
+        renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
+      } else {
+        clearCanvas(overlayXRef, imageWidth, imageHeight);
+      }
 
-          // Keep only the indices with a high enough score
-          indices = indices.dataSync();
-          console.log(indices)
-          let filteredBoxes = [];
-          let filteredScores = [];
-          let filteredClasses = [];
-          
-          for (let i = 0; i < indices.length; i++) {
-            // boxes[indices[i]][0] = boxes[indices[i]][0]*[imageWidth/640]
-            // boxes[indices[i]][1]= boxes[indices[i]][1]*[imageHeight/640]
-            // boxes[indices[i]][2]= boxes[indices[i]][2]*[imageWidth/640]
-            // boxes[indices[i]][3]= boxes[indices[i]][1]*[imageHeight/640]
-            filteredBoxes.push(boxes[indices[i]]);
-            filteredScores.push(scores[indices[i]]);
-            filteredClasses.push(class_detect[indices[i]]);
-
-            
-          }
-
-          // let [x1, y1, x2, y2] = xywh2xyxy(filteredBoxes[0]);
-          // const width = x2 - x1;
-          // const height = y2 - y1;
-
-          // if (roiObjs.length === 0) {
-          //   roiObj.cords.right_x = x1;
-          //   roiObj.cords.top_y = y1;
-          //   roiObj.cords.width = width;
-          //   roiObj.cords.height = height;
-          //   roiObjs.push(roiObj);
-          // }
-
-        if(showDetections && filteredBoxes.length > 0) 
-        {
-     
-            renderBoxes(
-              overlayXRef.current,
-              threshold,
-              boxes,
-              scores,
-              class_detect
-            );
-     
-
-    
-        }
-      
-
-      
-      // }
-      
-      
-  
-    
       tf.engine().endScope();
-      let end = Date.now()
-      console.log(end-start);
+      let end = Date.now();
+      // console.log(end-start);
     }
-
   };
 
-  const runYolo = async () => 
-  {
+  const runYolo = async () => {
     let id;
     let yolov7 = await tf.loadGraphModel(
       `${window.location.origin}/${modelName}_web_model/model.json`,
       {
         onProgress: (fractions) => {},
       }
-    )
+    );
     setLoadedCoco(true);
     const dummyInput = tf.ones(yolov7.inputs[0].shape);
-    const warmupResult = await yolov7.executeAsync(dummyInput)
+    const warmupResult = await yolov7.executeAsync(dummyInput);
     tf.dispose(warmupResult);
     tf.dispose(dummyInput);
     id = setInterval(() => {
-      detectFrame(yolov7) // get another frame
-    }, 500);
-    return id; 
-  }
+      detectFrame(yolov7); // get another frame
+    }, 200);
+    return id;
+  };
 
   useEffect(() => {
     let intervalID;
@@ -300,8 +177,8 @@ const ClientRender = ({ processing, showDetections }) => {
       });
     }
 
+    //Clean up
     return function () {
-
       clearCanvas(overlayXRef, imageWidth, imageHeight);
       clearInterval(intervalID);
     };

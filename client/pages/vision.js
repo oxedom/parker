@@ -47,7 +47,7 @@ const visionPage = () => {
 
               {webcamEnabled ? (
                 <div className="">
-                  <DrawingCanvas></DrawingCanvas>
+                  <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                   <ClientRender
                     showDetections={showDetections}
                     processing={processing}
