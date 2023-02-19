@@ -6,17 +6,19 @@ import labels from "../utils/labels.json";
 import { renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
 import { xywh2xyxy } from "../utils/renderBox.js";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageWidthState, imageHeightState, selectedRoiState } from "./states";
+import { imageWidthState, imageHeightState, selectedRoiState, thresholdIouState, thresholdScoreState} from "./states";
 
 const ClientRender = ({ processing, showDetections }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-  const webcamRef = useRef(null);
+
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const [loadedCoco, setLoadedCoco] = useState(false);
-
+  const thresholdScore = useRecoilValue(thresholdScoreState);
+  const thresholdIou = useRecoilValue(thresholdIouState);
   let overlayXRef = useRef(null);
   let loadingRef = useRef(null);
+  const webcamRef = useRef(null);
   const modelName = "yolov7";
 
   useEffect(() => {
@@ -61,8 +63,7 @@ const ClientRender = ({ processing, showDetections }) => {
 
       res = res.arraySync()[0];
       //Filtering only detections > conf_thres
-      const conf_thres = 0.5;
-      res = res.filter((dataRow) => dataRow[4] >= conf_thres);
+      res = res.filter((dataRow) => dataRow[4] >= thresholdScore);
 
       let boxes = [];
       let class_detect = [];
@@ -103,8 +104,7 @@ const ClientRender = ({ processing, showDetections }) => {
           boxes,
           scores,
           100,
-          0.8,
-          0.5
+          thresholdIou
         );
       
         // detectionIndices = nmsDetections.selectedIndices.dataSync();
@@ -195,7 +195,7 @@ const ClientRender = ({ processing, showDetections }) => {
       clearCanvas(overlayXRef, imageWidth, imageHeight);
       clearInterval(intervalID);
     };
-  }, [processing, showDetections]);
+  }, [processing, showDetections, thresholdIou, thresholdScore]);
 
   return (
     <>

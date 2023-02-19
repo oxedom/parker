@@ -1,10 +1,10 @@
-import { imageHeightState, processingState } from "./states";
+import { imageHeightState, thresholdScoreState, thresholdIouState, fpsState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 import settingsIcon from "../static/icons/settings.png";
 import ToogleButton from "./ToogleButton";
 import Modal from "./Modal";
 import { useState } from "react";
-const ToolbarTwo = ({
+const Toolbar = ({
   processing,
   setProcessing,
   hasWebcam,
@@ -13,9 +13,13 @@ const ToolbarTwo = ({
   showDetections,
   setShowDetections,
   setWebcamEnable,
+  
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
+  const [threshold, setThreshold] = useRecoilState(thresholdScoreState)
+  const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fps, setFps] = useRecoilState(fpsState)
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -87,8 +91,30 @@ const ToolbarTwo = ({
             callback={handleDetectionsEnable}
             state={showDetections}
           />
+          <label> threshold for detections score</label>
+          <input onChange={(e) => {
+     
+            setThreshold(e.target.value)}} alt="detection score threshold" step={0.05} min={0} max={0.99} type="number" value={threshold}/>  
+
+            <label> threshold for iou</label>
+            <input onChange={(e) => {
+              
+              setIouThreshold(e.target.value)}} alt="iou  threshold" step={0.05} min={0} max={0.99} type="number" value={iouThreshold}/>  
+
+              <div>
+              <input onChange={(e) => {
+              
+              setFps(e.target.value)}} alt="fps" step={100} min={0} max={10000} type="number" value={fps}/>  
+
+              <span> {1/(fps / 1000)}</span>
+
+              </div>
+
 
           <div
+
+
+
             onClick={(e) => {
               handleWebcamRefresh();
             }}
@@ -99,12 +125,22 @@ const ToolbarTwo = ({
             </p>
           </div>
 
+
+
+
           <p>Display settings</p>
           <p>FPS</p>
           <button className="mt-4 bg-red-500 " onClick={(e) => closeModal()}>
             Close settings
           </button>
+
+
+
+
         </div>
+
+
+
       </Modal>
 
       <div onClick={(e) => {}} className={`${btnClass} bg-gray-100 `}>
@@ -116,4 +152,4 @@ const ToolbarTwo = ({
   );
 };
 
-export default ToolbarTwo;
+export default Toolbar;

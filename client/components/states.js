@@ -13,6 +13,21 @@ const evaluateTimeState = atom({
   default: 5000,
 });
 
+const thresholdScoreState = atom({
+  key: "thresholdScoreState",
+  default: 0.50,
+});
+
+const thresholdIouState = atom({
+  key: "thresholdIouState",
+  default: 0.50,
+});
+
+const fpsState = atom({
+  key: "framesPerSecounds",
+  default: 200,
+});
+
 const roiTypeState = atom({
   key: "roiType",
   default: "",
@@ -227,6 +242,7 @@ export {
   roiNameState,
   imageWidthState,
   imageHeightState,
+  fpsState,
   detectionColorState,
   selectingColorState,
   selectedColorState,
@@ -234,4 +250,6 @@ export {
   evaluateTimeState,
   outputImageState,
   selectedRoiState,
+  thresholdScoreState,
+  thresholdIouState
 };

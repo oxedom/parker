@@ -4,8 +4,8 @@ import RoisFeed from "../components/RoisFeed";
 import { useEffect, useState } from "react";
 import ToolbarTwo from "../components/Toolbar";
 
-import { imageWidthState, imageHeightState } from "../components/states";
-import { useRecoilValue } from "recoil";
+import { imageWidthState, imageHeightState, fpsState } from "../components/states";
+import { useRecoilState, useRecoilValue } from "recoil";
 import EnableWebcam from "../components/EnableWebcam";
 import Head from "next/head";
 
@@ -15,6 +15,7 @@ const visionPage = () => {
   const [reload, setReload] = useState(0);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
+
   const [processing, setProcessing] = useState(true);
   const [showDetections, setShowDetections] = useState(false);
 
