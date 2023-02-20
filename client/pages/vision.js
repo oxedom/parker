@@ -56,7 +56,9 @@ const visionPage = () => {
                 </div>
               ) : (
                 <video
+
                   width={imageWidth}
+                  className="bg-yellow-400"
                   style={{ width: imageWidth, height: imageHeight }}
                   height={imageHeight}
                 />
