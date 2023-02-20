@@ -53,10 +53,13 @@ const RoisFeed = ({}) => {
   }
 
   return (
-    <div className={`w-[200px]   min-h-[${imageHeight}px]`}>
+    <div className={`w-[200px] bg-blue-300   min-h-[${imageHeight}px]`}>
       <h4
         className="text-xl text-center font-semibold  
-       bg-slate-100 p-2 m-2 text-gray-800 cursor-default rounded-lg border-slate-900 select-none"
+        bg-blue-100
+      p-2 m-2 text-gray-800 cursor-default rounded-lg border-slate-900 select-none shadow-neo 
+       outline-1 outline outline-black
+       "
       >
         {" "}
         Marked parking spaces
@@ -76,7 +79,7 @@ const RoisFeed = ({}) => {
               handleRoiDelete(s.uid);
             }}
             className={`  h-10 w-10
-            btn  font-semibold  hover:bg-red-600 transition-colors rounded duration-300 ease-in-out border  
+            btn  font-semibold  hover:bg-red-600 transition-colors rounded shadow-neo-sm duration-300 ease-in-out border  
                 drop-shadow
                 border-gray-500
               ${s.evaluating ? "bg-gray-400 animate-pulse duration-1000" : ""}

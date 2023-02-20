@@ -42,6 +42,7 @@
 
 body {
   /* overflow-y: hidden; */
+  /* cursor: url('../public/cursor-png-1127.png'), auto; */
   font-family: Montserrat;
 }
 

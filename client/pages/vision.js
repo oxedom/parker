@@ -26,11 +26,11 @@ const visionPage = () => {
           <title> Vison</title>
         </Head>
 
-        <div className="flex flex-col  p-16  ">
+        <div className="flex flex-col  p-16   ">
           <div className="">
             <div
-              className="flex justify-between rounded-xl border border-gray-500/100  
-            shadow-xl"
+              className="flex justify-between rounded-lg outline-3 outline outline-black shadow-lg
+            "
             >
               <ToolbarTwo
                 setReload={setReload}

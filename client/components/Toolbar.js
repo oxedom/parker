@@ -4,6 +4,7 @@ import settingsIcon from "../static/icons/settings.png";
 import ToogleButton from "./ToogleButton";
 import Modal from "./Modal";
 import { useState } from "react";
+import Button from "./Button";
 const Toolbar = ({
   processing,
   setProcessing,
@@ -29,16 +30,6 @@ const Toolbar = ({
     setIsModalOpen(false);
   };
 
-  const btnClass = `items-center
-  justify-center   cursor-pointer
-    rounded-lg m-2
-    transition-colors duration-200 ease-linear
-         hover:bg-gray-300 hover:transition-none
-
-     text-gray-800`;
-
-  const paraClass = "text font-bold text-center  pt-2 pb-2";
-
   function handleProcessing() {
     if (showDetections) {
       setShowDetections(false);
@@ -60,16 +51,13 @@ const Toolbar = ({
   }
 
   return (
-    <div className={`w-[200px] min-h-[${imageHeight}px]  `}>
-      <img
-        onClick={openModal}
-        className="cursor-pointer invert transition duration-500 transform hover:rotate-90"
-        src={settingsIcon.src}
-      />
+    <div className={`w-[200px] min-h-[${imageHeight}px]  bg-blue-300  `}>
 
+
+      <Button text="Settings" callback={openModal} color={"bg-slate-200"} />
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div
-          className="flex flex-col justify-between m-auto w-1/3 h-2/3 bg-white p-8 z-30 "
+          className="flex flex-col justify-between m-auto w-1/3 h-2/3 bg-white p-8 z-30 rounded-lg shadow-neo "
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -110,28 +98,19 @@ const Toolbar = ({
 
               </div>
 
-
-          <div
-
+                <Button  text={"Reload Webcam"} color={"bg-red-400"} callback={handleWebcamRefresh}/> 
 
 
-            onClick={(e) => {
-              handleWebcamRefresh();
-            }}
-            className={`${btnClass} bg-gray-100 `}
-          >
-            <p className={`${paraClass} select-none`}>
-              <span className=""> Reload Webcam </span>
-            </p>
-          </div>
+
 
 
 
 
           <p>Display settings</p>
           <p>FPS</p>
-          <button className="mt-4 bg-red-500 " onClick={(e) => closeModal()}>
-            Close settings
+          <button className="mt-4  " onClick={(e) => closeModal()}>
+            <Button color={"bg-red-500"} hoverColor={"bg-red-200"}  callback={closeModal} text={'Exit settings'}> </Button>
+    
           </button>
 
 
@@ -143,11 +122,11 @@ const Toolbar = ({
 
       </Modal>
 
-      <div onClick={(e) => {}} className={`${btnClass} bg-gray-100 `}>
-        <p className={paraClass}>
-          <span> Auto detect</span>
-        </p>
-      </div>
+
+            <Button color={"bg-slate-200"}  text="Auto detect">
+
+            </Button>
+
     </div>
   );
 };
