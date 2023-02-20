@@ -84,7 +84,7 @@ const ClientRender = ({ processing, showDetections }) => {
         scores.push(res[max_score_index + 5]);
         class_detect.push(max_score_index);
 
-        tf.dispose(res);
+        // tf.dispose(res);
       }
 
       let nmsDetections;
@@ -110,7 +110,7 @@ const ClientRender = ({ processing, showDetections }) => {
         // detectionIndices = nmsDetections.selectedIndices.dataSync();
         // detectionScores = nmsDetections.selectedScores.dataSync();
         detectionIndices = nmsDetections.dataSync()
-          console.log(nmsDetections);
+       
         for (let i = 0; i < detectionIndices.length; i++) {
           const detectionIndex = detectionIndices[i];
           // const detectionScore = detectionScores[i];
@@ -156,14 +156,22 @@ const ClientRender = ({ processing, showDetections }) => {
       } else {
         clearCanvas(overlayXRef, imageWidth, imageHeight);
       }
-
-      tf.engine().endScope();
+     
+     
+      // get another frame
+      requestAnimationFrame(() =>  {  setTimeout(() => {
+        detectFrame(model)
+      }, 200) })
+      
+        tf.dispose(res)
+        tf.engine().endScope();
+ 
       let end = Date.now();
-      // console.log(end-start);
+   
     }
   };
 
-  const runYolo = async () => {
+  const loadYolo = async () => {
     let id;
     let yolov7 = await tf.loadGraphModel(
       `${window.location.origin}/${modelName}_web_model/model.json`,
@@ -176,24 +184,26 @@ const ClientRender = ({ processing, showDetections }) => {
     const warmupResult = await yolov7.executeAsync(dummyInput);
     tf.dispose(warmupResult);
     tf.dispose(dummyInput);
-    id = setInterval(() => {
-      detectFrame(yolov7); // get another frame
-    }, 200);
-    return id;
+    detectFrame(yolov7)
+      
+
+    
+  
+    return {yolov7};
   };
 
   useEffect(() => {
-    let intervalID;
+    let model
     if (processing) {
-      runYolo().then((id) => {
-        intervalID = id;
+      loadYolo().then((model) => {
+        model = model
       });
     }
 
     //Clean up
     return function () {
       clearCanvas(overlayXRef, imageWidth, imageHeight);
-      clearInterval(intervalID);
+      tf.dispose(model)
     };
   }, [processing, showDetections, thresholdIou, thresholdScore]);
 

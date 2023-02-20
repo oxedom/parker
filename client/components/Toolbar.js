@@ -54,7 +54,7 @@ const Toolbar = ({
     <div className={`w-[200px] min-h-[${imageHeight}px]  bg-blue-300  `}>
 
 
-      <Button text="Settings" callback={openModal} color={"bg-slate-200"} />
+      <Button text="Settings" callback={openModal} colors={{color: "bg-slate-200", hover: "bg-slate-100"} } />
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div
           className="flex flex-col justify-between m-auto w-1/3 h-2/3 bg-white p-8 z-30 rounded-lg shadow-neo "
@@ -98,7 +98,7 @@ const Toolbar = ({
 
               </div>
 
-                <Button  text={"Reload Webcam"} color={"bg-red-400"} callback={handleWebcamRefresh}/> 
+                <Button  text={"Reload Webcam"} colors={{color: "bg-red-500", hover: "bg-red-200"} } callback={handleWebcamRefresh}/> 
 
 
 
@@ -108,10 +108,14 @@ const Toolbar = ({
 
           <p>Display settings</p>
           <p>FPS</p>
-          <button className="mt-4  " onClick={(e) => closeModal()}>
-            <Button color={"bg-red-500"} hoverColor={"bg-red-200"}  callback={closeModal} text={'Exit settings'}> </Button>
+          <div className="flex gap-2 justify-center">
+          <Button colors={{color: "bg-blue-500", hover: "bg-blue-200"} }  callback={closeModal} text={'Save settings'}> </Button>
+          <Button colors={{color: "bg-red-500", hover: "bg-red-200"} }   callback={closeModal} text={'Exit settings'}> </Button>
+
+          </div>
+
     
-          </button>
+       
 
 
 
@@ -123,9 +127,9 @@ const Toolbar = ({
       </Modal>
 
 
-            <Button color={"bg-slate-200"}  text="Auto detect">
+            <Button  colors={{color: "bg-slate-200", hover: "bg-slate-100"}} text="Auto detect"/>
 
-            </Button>
+
 
     </div>
   );

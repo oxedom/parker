@@ -175,7 +175,7 @@ const DrawingCanvas = ({ setProcessing }) => {
     ctxRef.current.lineWidth = 7;
     // set a flag indicating the drag has begun
     setIsDown(true);
-    setProcessing(false);
+    // setProcessing(false);
   }
 
   function handleMouseMove(e) {
@@ -225,7 +225,7 @@ const DrawingCanvas = ({ setProcessing }) => {
     e.stopPropagation();
     // Mouse dragging is over, clear the dragging flag
     setIsDown(false);
-    setProcessing(true);
+    // setProcessing(true);
     //If the area of the current cords is very small so don't add else
     if (rectangleArea(currentCords) > 500) {
       //function that handles state

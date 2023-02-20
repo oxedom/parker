@@ -72,8 +72,7 @@ export function checkOverlapArrays(detectionsArr, selectedArr) {
     selectedArr.forEach((s) => {
       let overlapCords = getOverlap(d.cords, s.cords);
       let selectedArea = s.cords.width * s.cords.height;
-      console.log("Selected area is ", selectedArea);
-      console.log("OverlapCords area is", overlapCords.area);
+;
 
       if (overlapCords != null) {
         let overlap = {
@@ -140,7 +139,7 @@ export function predictWebcam(model, video) {
     // Now lets loop through predictions and draw them to the live view if
     // they have a high confidence score.
     for (let n = 0; n < predictions.length; n++) {
-      console.log(predictions);
+;
       // If we are over 66% sure we are sure we classified it right, draw it!
       if (predictions[n].score > 0.66) {
         // const p = document.createElement("p");
@@ -168,9 +167,9 @@ export function predictWebcam(model, video) {
         const top_y = predictions[n].bbox[1];
         const width = predictions[n].bbox[2];
         const height = predictions[n].bbox[3];
-        console.log(predictions);
+
         const obj = { left_x, top_y, width, height };
-        console.log(obj);
+   
         const svg = document.createElement("svg");
         const rect = document.createElement("rect");
         // rect.setAttribute('x')
@@ -203,4 +202,8 @@ export function predictWebcam(model, video) {
     // Call this function again to keep predicting when the browser is ready.
     window.requestAnimationFrame(predictWebcam);
   });
+}
+
+export async function wait(time) {
+  await new Promise(resolve => setTimeout(resolve, time));
 }

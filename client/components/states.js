@@ -87,7 +87,7 @@ const selectedRoiState = selector({
 
     if (action.event === "occupation") {
       let { predictionsArr } = action.payload;
-      console.log(predictionsArr);
+
       if (predictionsArr.length === 0) {
         predictionsArr = [
           {
@@ -104,7 +104,7 @@ const selectedRoiState = selector({
           },
         ];
       }
-      console.log(predictionsArr);
+
       //   //Array of ROI objects
       const selectedRois = get(selectedRoi);
       const evaluateTime = get(evaluateTimeState);
@@ -113,7 +113,7 @@ const selectedRoiState = selector({
 
       for (let index = 0; index < selectedRois.length; index++) {
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
-        console.log(1);
+       
         //If check that runs if a Selected ROI object is currently occupied
         //Checks that object hasn't changed occupied status by checking when it was last seen
         //and sees how long ago it was last seen, if it's under some sort of thresohold, so it will define it status
