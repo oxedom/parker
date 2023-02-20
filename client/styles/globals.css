@@ -6,6 +6,20 @@
 }
 
 @font-face {
+  font-family: "Montserrat" ;
+  src: url("../public/fonts/Montserrat/Montserrat-Bold.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat" ;
+  src: url("../public/fonts/Montserrat/Montserrat-Medium.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: "Lato", sans-serif;
   src: url("../public/fonts/lato/Lato-Regular.ttf") format("truetype");
   font-weight: normal;
@@ -28,7 +42,7 @@
 
 body {
   /* overflow-y: hidden; */
-  font-family: Roboto;
+  font-family: Montserrat;
 }
 
 video {
