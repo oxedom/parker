@@ -3,11 +3,13 @@ const Button = ({text, callback, colors}) => {
     
     const btnClass = `items-center
     justify-center   cursor-pointer
+    duration-300
       rounded-lg 
       
         ${colors.color}
-      transition-colors duration-200 ease-linear
+      transition-colors ease-linear
         hover:brightness-125
+        duration-200
         shadow-neo
         outline-[1.5px]
         m-4

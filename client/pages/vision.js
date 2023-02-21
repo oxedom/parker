@@ -15,8 +15,8 @@ const visionPage = () => {
   const [reload, setReload] = useState(0);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-
-  const [processing, setProcessing] = useState(true);
+  const [loadedCoco, setLoadedCoco] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const [showDetections, setShowDetections] = useState(false);
 
   if (hasWebcam) {
@@ -37,11 +37,12 @@ const visionPage = () => {
                 setWebcamEnable={setWebcamEnable}
                 setProcessing={setProcessing}
                 setShowDetections={setShowDetections}
+                setHasWebcam={setHasWebcam}
                 showDetections={showDetections}
                 processing={processing}
-                setHasWebcam={setHasWebcam}
                 hasWebcam={hasWebcam}
                 webcamEnabled={webcamEnabled}
+                loadedCoco={loadedCoco}
               >
                 {" "}
               </ToolbarTwo>
@@ -50,6 +51,9 @@ const visionPage = () => {
                 <div className="">
                   <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                   <ClientRender
+                  loadedCoco={loadedCoco}
+                  setLoadedCoco={setLoadedCoco}
+                   setProcessing={setProcessing}
                     showDetections={showDetections}
                     processing={processing}
                   ></ClientRender>

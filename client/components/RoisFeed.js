@@ -57,7 +57,7 @@ const RoisFeed = ({}) => {
       <h4
         className="text-xl text-center font-semibold  
         bg-blue-100
-      p-2 m-2 text-gray-800 cursor-default rounded-lg border-slate-900 select-none shadow-neo 
+      p-4 m-4 text-gray-800 cursor-default rounded-lg border-slate-900 select-none shadow-neo 
        outline-1 outline outline-black
        "
       >

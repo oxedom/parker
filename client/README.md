@@ -15,3 +15,6 @@ Fix counter with how long a car has been parked/available
 
 Add auto parking, add opticaty for show detections
 Work on the Docs man and home page a bit.
+
+Delete all selections 
+Be able to tweak settings

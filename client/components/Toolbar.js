@@ -1,9 +1,7 @@
-import { imageHeightState, thresholdScoreState, thresholdIouState, fpsState } from "./states";
+import { imageHeightState, detectionThresholdState, thresholdIouState, fpsState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
-import settingsIcon from "../static/icons/settings.png";
-import ToogleButton from "./ToogleButton";
 import Modal from "./Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 const Toolbar = ({
   processing,
@@ -13,18 +11,37 @@ const Toolbar = ({
   webcamEnabled,
   showDetections,
   setShowDetections,
+  loadedCoco,
   setWebcamEnable,
   
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
-  const [threshold, setThreshold] = useRecoilState(thresholdScoreState)
+  const [detectionThreshold, setDetectonThreshold] = useRecoilState(detectionThresholdState)
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState)
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [fps, setFps] = useRecoilState(fpsState)
+
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const  [localDetectonThreshold, setLocalDetectonThreshold] = useState(undefined)
+  const  [localIouThreshold, setLocalIouThreshold] = useState(undefined)
+  const  [localFps, setLocalFps] = useState(undefined)
+
+  useEffect(() => {
+    setLocalFps(fps)
+    setLocalIouThreshold(iouThreshold)
+    setLocalDetectonThreshold(detectionThreshold)
+  }, [])
 
   const openModal = () => {
     setIsModalOpen(true);
   };
+
+  const handleSaveSettings = () => 
+  {
+    setDetectonThreshold(localDetectonThreshold)
+    setIouThreshold((localIouThreshold))
+    setFps(localFps)
+  }
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -41,13 +58,17 @@ const Toolbar = ({
   }
 
   function handleDetectionsEnable() {
-    if (processing) {
+    if (processing && loadedCoco) {
       showDetections ? setShowDetections(false) : setShowDetections(true);
-    }
+    } 
   }
 
   function handleWebcamRefresh() {
-    setHasWebcam(false);
+    if(loadedCoco) 
+    {
+      setHasWebcam(false);
+    }
+
   }
 
   return (
@@ -56,13 +77,20 @@ const Toolbar = ({
 
       <Button text="Settings" callback={openModal} colors={{color: "bg-slate-200", hover: "bg-slate-100"} } />
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
+        
         <div
-          className="flex flex-col justify-between m-auto w-1/3 h-2/3 bg-white p-8 z-30 rounded-lg shadow-neo "
+          className="flex flex-col justify-between m-auto w-1/4 h-3/3 bg-white p-8 z-30 rounded-lg shadow-neo "
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
-          <ToogleButton
+
+      <Button text={`${webcamEnabled ? "Disable Camera": "Enable Camera "}`} callback={handleWebcamEnable} colors={{color: `${webcamEnabled ? "bg-purple-500": "bg-orange-500"}`} }/>
+
+      <Button text={`${processing ? "Stop processing": "Process "}`} callback={handleProcessing} colors={{color: `${processing ? "bg-purple-500": "bg-orange-500"}`} }/>
+
+      <Button text={`${showDetections ? "Hide detections": "Show detections "}`} callback={handleDetectionsEnable} colors={{color: `${showDetections ? "bg-purple-500": "bg-orange-500"}`} }/>    
+          {/* <ToogleButton
             title={"Webcam enabled"}
             callback={handleWebcamEnable}
             state={webcamEnabled}
@@ -78,23 +106,23 @@ const Toolbar = ({
             title={"Show detections"}
             callback={handleDetectionsEnable}
             state={showDetections}
-          />
-          <label> threshold for detections score</label>
+          /> */}
+
           <input onChange={(e) => {
      
-            setThreshold(e.target.value)}} alt="detection score threshold" step={0.05} min={0} max={0.99} type="number" value={threshold}/>  
+           }} alt="detection score threshold" step={0.05} min={0} max={0.99} type="number" value={localDetectonThreshold}/>  
 
             <label> threshold for iou</label>
             <input onChange={(e) => {
               
-              setIouThreshold(e.target.value)}} alt="iou  threshold" step={0.05} min={0} max={0.99} type="number" value={iouThreshold}/>  
+            }} alt="iou  threshold" step={0.05} min={0} max={0.99} type="number" value={localIouThreshold}/>  
 
               <div>
               <input onChange={(e) => {
               
               setFps(e.target.value)}} alt="fps" step={1000} min={0} max={10000} type="number"/>  
 
-              <span> {1/(fps / 1000)} FPS </span>
+              <span> {1/(localFps / 1000)} FPS </span>
 
               </div>
 

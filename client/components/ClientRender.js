@@ -6,18 +6,21 @@ import labels from "../utils/labels.json";
 import { renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
 import { xywh2xyxy } from "../utils/renderBox.js";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageWidthState, imageHeightState, selectedRoiState, thresholdIouState, thresholdScoreState} from "./states";
+import { imageWidthState, imageHeightState, selectedRoiState, thresholdIouState, detectionThresholdState} from "./states";
+;
 
-const ClientRender = ({ processing, showDetections }) => {
+const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco, loadedCoco}) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
 
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
-  const [loadedCoco, setLoadedCoco] = useState(false);
-  const thresholdScore = useRecoilValue(thresholdScoreState);
+
+  const [model, setModel] = useState(undefined)
+  const [detectionThreshold, setDetectonThreshold] = useRecoilState(detectionThresholdState)
+
   const thresholdIou = useRecoilValue(thresholdIouState);
   let overlayXRef = useRef(null);
-  let loadingRef = useRef(null);
+
   const webcamRef = useRef(null);
   const modelName = "yolov7";
 
@@ -63,7 +66,7 @@ const ClientRender = ({ processing, showDetections }) => {
 
       res = res.arraySync()[0];
       //Filtering only detections > conf_thres
-      res = res.filter((dataRow) => dataRow[4] >= thresholdScore);
+      res = res.filter((dataRow) => dataRow[4] >= detectionThreshold);
 
       let boxes = [];
       let class_detect = [];
@@ -158,14 +161,13 @@ const ClientRender = ({ processing, showDetections }) => {
       }
      
      
-      // get another frame
-      requestAnimationFrame(() =>  {  setTimeout(() => {
-        detectFrame(model)
-      }, 200) })
-      
+      // // get another frame
+      // requestAnimationFrame(() =>  {  setTimeout(() => {
+      //   // detectFrame(model)
+      // }, 200) })
+      console.log('I am a busy bee')
         tf.dispose(res)
         tf.engine().endScope();
- 
       let end = Date.now();
    
     }
@@ -179,33 +181,46 @@ const ClientRender = ({ processing, showDetections }) => {
         onProgress: (fractions) => {},
       }
     );
-    setLoadedCoco(true);
+  
     const dummyInput = tf.ones(yolov7.inputs[0].shape);
     const warmupResult = await yolov7.executeAsync(dummyInput);
     tf.dispose(warmupResult);
     tf.dispose(dummyInput);
-    detectFrame(yolov7)
-      
+    setLoadedCoco(true);
+    setModel(yolov7)
+    id = setInterval(() => 
+    {
+    if(model != undefined) 
+    {
+      detectFrame(yolov7)
+    }
+    }, 1000)
 
     
-  
-    return {yolov7};
+    return id;
   };
 
   useEffect(() => {
-    let model
+   let id;
+
     if (processing) {
-      loadYolo().then((model) => {
-        model = model
+      loadYolo().then((res) => {
+        id = res
       });
     }
 
     //Clean up
     return function () {
+      clearInterval(id)
       clearCanvas(overlayXRef, imageWidth, imageHeight);
-      tf.dispose(model)
+      if(model != undefined) 
+      {
+       tf.dispose(model)
+       setLoadedCoco(false)
+       setModel(undefined)
+      }
     };
-  }, [processing, showDetections, thresholdIou, thresholdScore]);
+  }, [processing, showDetections]);
 
   return (
     <>
@@ -218,8 +233,9 @@ const ClientRender = ({ processing, showDetections }) => {
           className="fixed"
         ></canvas>
       ) : null}
-      {loadedCoco ? (
+        {
         <Webcam
+          onUserMedia={() =>{ setProcessing(true)}}
           height={imageHeight}
           width={imageWidth}
           style={{ height: imageHeight }}
@@ -227,14 +243,7 @@ const ClientRender = ({ processing, showDetections }) => {
           ref={webcamRef}
           muted={true}
           className=""
-        />
-      ) : (
-        <canvas
-          ref={loadingRef}
-          height={imageHeight}
-          width={imageWidth}
-        ></canvas>
-      )}
+        />}
     </>
   );
 };

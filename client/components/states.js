@@ -13,8 +13,8 @@ const evaluateTimeState = atom({
   default: 5000,
 });
 
-const thresholdScoreState = atom({
-  key: "thresholdScoreState",
+const detectionThresholdState = atom({
+  key: "detectionThresholdState",
   default: 0.50,
 });
 
@@ -250,6 +250,6 @@ export {
   evaluateTimeState,
   outputImageState,
   selectedRoiState,
-  thresholdScoreState,
+  detectionThresholdState,
   thresholdIouState
 };
