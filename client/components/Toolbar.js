@@ -94,7 +94,7 @@ const Toolbar = ({
         <h1 className="text-center text-4xl text-white font-bold p-5 bg-indigo-500 border-b-1 rounded-full"> Settings</h1>
         <div className="grid grid-cols-2">
 
-      <div className="flex flex-col  justify-center">
+      <div className="grid grid-rows-3 grid-cols-2  justify-center">
       <Button text={`${webcamEnabled ? "Webcam Enabled": "Webcam Disabled"}`} callback={handleWebcamEnable} colors={{color: `${webcamEnabled ? "bg-green-500": "bg-red-500"}`} }/>
         <Button text={`${processing ? "Processing Enabled": "Processing Disabled "}`} callback={handleProcessing} colors={{color: `${processing ? "bg-green-500": "bg-red-500"}`} }/>
         <Button text={` ${showDetections ? "View Detections": " Hide detections "}`} callback={handleDetectionsEnable} colors={{color: `
@@ -103,7 +103,8 @@ const Toolbar = ({
 
         `
         } }/>   
-
+        <div></div>
+<Button  text={"Reload Webcam"} colors={{color: "bg-red-500", hover: "bg-red-200"} } callback={handleWebcamRefresh}/> 
         </div>    
  
 
@@ -122,7 +123,8 @@ const Toolbar = ({
         setter={setLocalFps}/> 
 
 
-<Button  text={"Reload Webcam"} colors={{color: "bg-red-500", hover: "bg-red-200"} } callback={handleWebcamRefresh}/> 
+<Button colors={{color: "bg-blue-500", textColor: "text-white"} }  callback={handleSaveSettings} text={'Save settings'}> </Button>
+
 
         </div>   
 
@@ -131,7 +133,6 @@ const Toolbar = ({
 
 
           <div className="grid grid-cols-2 justify-items-center border-t-2 border-black ">
-          <Button colors={{color: "bg-blue-500", textColor: "text-white"} }  callback={handleSaveSettings} text={'Save settings'}> </Button>
           <Button colors={{color: "bg-slate-50"} }   callback={closeModal} text={'Exit '}> </Button>
 
           </div>
