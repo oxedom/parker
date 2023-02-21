@@ -6,13 +6,13 @@ import labels from "../utils/labels.json";
 import { renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
 import { xywh2xyxy } from "../utils/renderBox.js";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageWidthState, imageHeightState, selectedRoiState, thresholdIouState, detectionThresholdState} from "./states";
+import { imageWidthState, imageHeightState, selectedRoiState, thresholdIouState, detectionThresholdState, fpsState} from "./states";
 ;
 
 const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco, loadedCoco}) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-
+  const fps = useRecoilValue(fpsState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
   const [model, setModel] = useState(undefined)
@@ -194,13 +194,14 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
     {
       detectFrame(yolov7)
     }
-    }, 1000)
+    }, fps)
 
     
     return id;
   };
 
   useEffect(() => {
+    console.log(" I HAVE FUN");
    let id;
 
     if (processing) {

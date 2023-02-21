@@ -5,7 +5,7 @@ const Button = ({text, callback, colors}) => {
     justify-center   cursor-pointer
     duration-300
       rounded-lg 
-      
+     
         ${colors.color}
       transition-colors ease-linear
         hover:brightness-125
@@ -13,12 +13,13 @@ const Button = ({text, callback, colors}) => {
         shadow-neo
         outline-[1.5px]
         m-4
+        w-[150px]
         outline
         outline-black
         p-4
        text-gray-800`;
 
-    const paraClass = "text font-bold text-center  pt-2 pb-2";
+    const paraClass = `text font-bold text-center    ${colors.textColor}  pt-2 pb-2`;
 
 
     return ( <div onClick={(e) => {  callback() }} className={btnClass}>

@@ -25,7 +25,7 @@ const thresholdIouState = atom({
 
 const fpsState = atom({
   key: "framesPerSecounds",
-  default: 200,
+  default: 1000,
 });
 
 const roiTypeState = atom({
