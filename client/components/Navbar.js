@@ -19,15 +19,15 @@ const Navbar = () => {
 
         <div className="flex gap-4 justify-self-center  h-full items-center px-5 ">
           <div className="  flex justify-center items-center h-full">
-            <Navlink url={"/vision"} text={"Try now"} />
+            <Navlink url={"/vision"} text={"Try now!"} />
           </div>
           <div className="  flex justify-center items-center h-full ">
             <Navlink
               className="  
 
 "
-              url={"/docs"}
-              text={"Showcase"}
+              url={"/about"}
+              text={"About"}
             />
           </div>
 
@@ -36,7 +36,7 @@ const Navbar = () => {
               className="  
 
 "
-              url={"/docs/getting-started"}
+              url={"/docs"}
               text={"Getting Started"}
             />
           </div>

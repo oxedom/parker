@@ -3,7 +3,7 @@ import DrawingCanvas from "../components/DrawingCanvas";
 import RoisFeed from "../components/RoisFeed";
 import { useEffect, useState } from "react";
 import ToolbarTwo from "../components/Toolbar";
-
+import DashboardLayout from "../layouts/DashboardLayout";
 import { imageWidthState, imageHeightState, fpsState } from "../components/states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import EnableWebcam from "../components/EnableWebcam";
@@ -21,7 +21,7 @@ const visionPage = () => {
 
   if (hasWebcam) {
     return (
-      <div>
+      <DashboardLayout>
         <Head>
           <title> Vison</title>
         </Head>
@@ -72,7 +72,7 @@ const visionPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </DashboardLayout>
     );
   } else {
     return (

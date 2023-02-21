@@ -103,6 +103,7 @@ const Toolbar = ({
 
         `
         } }/>   
+        
         <div></div>
 <Button  text={"Reload Webcam"} colors={{color: "bg-red-500", hover: "bg-red-200"} } callback={handleWebcamRefresh}/> 
         </div>    
