@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
+// import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
 import labels from "../utils/labels.json";
 import { renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
