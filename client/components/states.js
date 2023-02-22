@@ -106,10 +106,11 @@ const selectedRoiState = selector({
 
       //   //Array of ROI objects
       const selectedRois = get(selectedRoi);
+      if(selectedRois.length === 0) { return;}
       const evaluateTime = get(evaluateTimeState);
       const selectedRoisClone = structuredClone(selectedRois);
       //   //Log N function
-
+  
       for (let index = 0; index < selectedRois.length; index++) {
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
        
