@@ -198,6 +198,12 @@ const selectedRoiState = selector({
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
     }
+
+    if (action.event === "deleteAllRois") {
+      set(selectedRoi, []);
+    }
+
+
   },
 });
 // const track = useRecoilValue(track);

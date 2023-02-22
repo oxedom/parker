@@ -9,6 +9,18 @@ const RoisFeed = ({}) => {
   const imageHeight = useRecoilValue(imageHeightState);
   const evaluateTime = useRecoilValue(evaluateTimeState);
 
+  function handleDeleteAll() {
+    let action = {
+      event: "deleteAllRois",
+    };
+    setSelectedRois(action);
+  }
+
+  function handleSave() 
+  {
+    
+  }
+
   function handleSelect(uid) {
     let action = {
       event: "selectRoi",
@@ -99,8 +111,10 @@ const RoisFeed = ({}) => {
           </div>
         ))}
       </div>
-              <button> Delete Sections </button>
-              <button> Save Selections </button>
+
+
+              <button onClick={handleDeleteAll}> Delete Sections </button>
+              <button onClick={handleSave}> Save Selections </button>
     </div>
   );
 };
