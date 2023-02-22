@@ -39,15 +39,19 @@ const EnableWebcam = ({
     });
   }
   useEffect(() => {
-
+    let loadingIntervalID;
     if(enableWebcamRef.current !== null) 
     {
 
       let context =  enableWebcamRef.current.getContext("2d")
       context.clearRect(0, 0, imageWidth, imageHeight);
       context.font = "40px Arial";
-      context.fillText("WEBCAM ERROR", imageHeight/4, imageWidth/2)
-      
+      context.fillText("WEBCAM ERROR", imageWidth/4, imageHeight/2)
+      loadingIntervalID = setInterval(() => 
+      {
+        context.fillText("......", imageWidth/5, imageHeight/2)
+      })
+
      }
 
     const intervalId = setInterval(() => {
@@ -65,6 +69,7 @@ const EnableWebcam = ({
     }, 1000);
 
     return () => {
+      clearInterval(intervalId);
       clearInterval(intervalId);
     };
   }, [hasWebcam]);
