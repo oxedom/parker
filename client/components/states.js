@@ -53,7 +53,7 @@ const selectedRoiState = selector({
 
   set: ({ set, get }, action) => {
     if (action.event === "addRoi") {
-      let { cords, color } = action.payload;
+      let { cords } = action.payload;
       let date = new Date();
       let roiType = get(roiTypeState);
       let roiName = get(roiNameState);
@@ -62,7 +62,6 @@ const selectedRoiState = selector({
       const roiObj = {
         name: finalName(roiName, oldRois.length),
         label: roiType,
-        color: color,
         cords: { ...cords },
         time: date.getTime(),
         uid: uniqid(),
@@ -173,7 +172,7 @@ const selectedRoiState = selector({
       const selectedRoisClone = structuredClone(selectedRois);
 
       //Toogle color to selected blue
-      roiClone.color = "#0073ff";
+      // roiClone.color = "#0073ff";
       roiClone.hover = true;
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
@@ -192,7 +191,7 @@ const selectedRoiState = selector({
       const selectedRoisClone = structuredClone(selectedRois);
 
       //Toogle color to selected blue
-      roiClone.color = "#FF0000";
+      // roiClone.color = "#FF0000";
       roiClone.hover = false;
 
       selectedRoisClone[targetRoiIndex] = roiClone;

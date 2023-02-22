@@ -165,7 +165,7 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
       // requestAnimationFrame(() =>  {  setTimeout(() => {
       //   // detectFrame(model)
       // }, 200) })
-      console.log('I am a busy bee')
+      // console.log('I am a busy bee')
         tf.dispose(res)
         tf.engine().endScope();
       let end = Date.now();
@@ -198,7 +198,8 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
   };
 
   useEffect(() => {
-    console.log(" I HAVE FUN");
+    // console.log(" I HAVE FUN");
+    console.log("Load Yolo Use Effect Rerun", `Processing is currently: ${processing}`);
    let id;
 
     if (processing) {

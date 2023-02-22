@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   selectedColorState,
-  selectingColorState,
   imageHeightState,
   imageWidthState,
 } from "./states";
@@ -99,7 +98,7 @@ const DrawingCanvas = ({ setProcessing }) => {
 
     let action = {
       event: "addRoi",
-      payload: { cords, color: selectedColor },
+      payload: { cords },
     };
     //Sends action request with a payload, the event is handled
     //inside the state event.
@@ -124,8 +123,6 @@ const DrawingCanvas = ({ setProcessing }) => {
     const overlayEl = overlayRef.current;
     observer.observe(canvasEl);
     let canvasOffset = canvasEl.getBoundingClientRect();
-    // console.log(canvasOffset);
-    setPrevSelected(selectedColor);
     ctxRef.current = canvasEl.getContext("2d");
     ctxoRef.current = overlayEl.getContext("2d");
 

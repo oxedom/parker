@@ -112,9 +112,9 @@ const RoisFeed = ({}) => {
         ))}
       </div>
 
-
-              <button onClick={handleDeleteAll}> Delete Sections </button>
-              <button onClick={handleSave}> Save Selections </button>
+              {selectedRegions.length > 0 ? <button onClick={handleDeleteAll}> Delete Sections </button> : <></> }
+             
+              {/* <button onClick={handleSave}> Save Selections </button> */}
     </div>
   );
 };
