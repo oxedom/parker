@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState , useRef} from "react";
 import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -12,7 +12,7 @@ const EnableWebcam = ({
   const [warrning, setWarrning] = useState(false);
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
-
+  const enableWebcamRef = useRef(null)
   const getSetting = async () => {
     let stream = await navigator.mediaDevices.getUserMedia({ video: true });
     let { width, height } = stream.getTracks()[0].getSettings();
@@ -39,6 +39,17 @@ const EnableWebcam = ({
     });
   }
   useEffect(() => {
+
+    if(enableWebcamRef.current !== null) 
+    {
+
+      let context =  enableWebcamRef.current.getContext("2d")
+      context.clearRect(0, 0, imageWidth, imageHeight);
+      context.font = "40px Arial";
+      context.fillText("WEBCAM ERROR", imageHeight/4, imageWidth/2)
+      
+     }
+
     const intervalId = setInterval(() => {
       detectWebcam(async (hasWebcamBoolean) => {
         if (hasWebcamBoolean) {
@@ -59,9 +70,9 @@ const EnableWebcam = ({
   }, [hasWebcam]);
 
   return (
-    <div className="flex justify-center items-center flex-1  bg-pink-200  ">
+    <canvas width={imageWidth} ref={enableWebcamRef} height={imageHeight} className="flex justify-center items-center flex-1   bg-pink-200  ">
       {warrning && !hasWebcam && (
-        <div className="absolute bottom-2/4 uppercase font-bold transition-all duration-200 ease-in cursor-default  gap-2 flex-col items-center opacity-85 bg-red-400 w-full flex  text-white border-2 border-black p-5 ">
+        <div className=" bottom-2/4 uppercase font-bold transition-all duration-200 ease-in cursor-default  gap-2 flex-col items-center opacity-85 bg-red-400 w-full flex  text-white border-2 border-black p-5 ">
           <span className="text-4xl"> Unable to detect webcam </span>
           <span className="text-2xl"> please check your settings </span>{" "}
           <button
@@ -81,7 +92,7 @@ const EnableWebcam = ({
              : "bg-gray-300  text-gray-100 cursor-not-allowed"
          } `}
       /> */}{" "}
-    </div>
+    </canvas>
   );
 };
 

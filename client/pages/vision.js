@@ -31,7 +31,7 @@ const visionPage = () => {
 
 
 
-  if (hasWebcam) {
+ 
     return (
       <DashboardLayout>
         <Head>
@@ -64,8 +64,18 @@ const visionPage = () => {
               >
                 {" "}
               </ToolbarTwo>
-
-              {webcamEnabled ? (
+              {!hasWebcam ? 
+                    <EnableWebcam
+                    setHasWebcam={setHasWebcam}
+                    hasWebcam={hasWebcam}
+                    webcamEnabled={webcamEnabled}
+                    setWebcamEnable={setWebcamEnable}
+                    reload={reload}
+                    setReload={setReload}
+                  ></EnableWebcam>
+          
+              : <></>}
+              {webcamEnabled && hasWebcam ? (
                 <div className="">
                   <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                   <ClientRender
@@ -77,13 +87,18 @@ const visionPage = () => {
                   ></ClientRender>
                 </div>
               ) : (
-                <video
 
+
+                <video
+            
                   width={imageWidth}
-                  className="bg-yellow-400"
+                  className={`bg-yellow-400 ${!hasWebcam ? "hidden" : "block" }`}
                   style={{ width: imageWidth, height: imageHeight }}
                   height={imageHeight}
-                />
+                >
+
+                  
+                </video>
               )}
 
               <RoisFeed></RoisFeed>
@@ -92,18 +107,20 @@ const visionPage = () => {
         </div>
       </DashboardLayout>
     );
-  } else {
-    return (
-      <EnableWebcam
-        setHasWebcam={setHasWebcam}
-        hasWebcam={hasWebcam}
-        webcamEnabled={webcamEnabled}
-        setWebcamEnable={setWebcamEnable}
-        reload={reload}
-        setReload={setReload}
-      ></EnableWebcam>
-    );
-  }
+  // } else {
+  //   return (
+  //     <DashboardLayout>
+  //     {/* <EnableWebcam
+  //       setHasWebcam={setHasWebcam}
+  //       hasWebcam={hasWebcam}
+  //       webcamEnabled={webcamEnabled}
+  //       setWebcamEnable={setWebcamEnable}
+  //       reload={reload}
+  //       setReload={setReload}
+  //     ></EnableWebcam> */}
+  //           </DashboardLayout>
+  //   );
+  // }
 };
 
 export default visionPage;
