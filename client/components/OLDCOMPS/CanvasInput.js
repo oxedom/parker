@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { imageCapturedToCanvas, renderRoi } from "../libs/canvas_utility";
-import { capturedImageServer, checkOverlapArrays } from "../libs/utillity";
+import { imageCapturedToCanvas, renderRoi } from "../../libs/canvas_utility";
+import { capturedImageServer, checkOverlapArrays } from "../../libs/utillity";
 import {
   imageWidthState,
   imageHeightState,
@@ -8,7 +8,7 @@ import {
   selectedRoiState,
   detectionColorState,
   trackState,
-} from "../components/states";
+} from "../states";
 import { useRecoilValue, useRecoilState } from "recoil";
 
 const CanvasInput = () => {

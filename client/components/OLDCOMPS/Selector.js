@@ -1,5 +1,5 @@
 import CanvasInput from "./CanvasInput";
-import DrawingCanvas from "./DrawingCanvas";
+import DrawingCanvas from "../DrawingCanvas";
 
 const Selector = ({ track }) => {
   return (

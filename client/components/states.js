@@ -171,8 +171,6 @@ const selectedRoiState = selector({
       const roiClone = structuredClone(targetRoi);
       const selectedRoisClone = structuredClone(selectedRois);
 
-      //Toogle color to selected blue
-      // roiClone.color = "#0073ff";
       roiClone.hover = true;
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
@@ -190,8 +188,7 @@ const selectedRoiState = selector({
       const roiClone = structuredClone(targetRoi);
       const selectedRoisClone = structuredClone(selectedRois);
 
-      //Toogle color to selected blue
-      // roiClone.color = "#FF0000";
+
       roiClone.hover = false;
 
       selectedRoisClone[targetRoiIndex] = roiClone;
@@ -211,10 +208,10 @@ const trackState = atom({
   default: null,
 });
 
-const selectingColorState = atom({
-  key: "selectingColor",
-  default: "#FF0000",
-});
+// const selectingColorState = atom({
+//   key: "selectingColor",
+//   default: "#FF0000",
+// });
 
 const selectedColorState = atom({
   key: "selectedColor",
@@ -249,7 +246,6 @@ export {
   imageHeightState,
   fpsState,
   detectionColorState,
-  selectingColorState,
   selectedColorState,
   processingState,
   evaluateTimeState,

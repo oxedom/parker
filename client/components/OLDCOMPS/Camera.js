@@ -6,7 +6,7 @@ import {
   imageHeightState,
   trackState,
   processingState,
-} from "./states";
+} from "../states";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 const Camera = () => {

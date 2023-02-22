@@ -13,7 +13,6 @@ const DrawingCanvas = ({ setProcessing }) => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
   const selectedColor = useRecoilValue(selectedColorState);
-  // const selectingColor = useRecoilValue(selectingColorState);
   const selectingColor = "#979A9A";
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
