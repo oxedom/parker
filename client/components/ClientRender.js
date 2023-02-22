@@ -190,10 +190,7 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
     setModel(yolov7)
     id = setInterval(() => 
     {
-    if(model != undefined) 
-    {
-      detectFrame(yolov7)
-    }
+    detectFrame(yolov7)
     }, fps)
 
     
@@ -236,7 +233,7 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
       ) : null}
         {
         <Webcam
-          onUserMedia={() =>{ setProcessing(true)}}
+        
           height={imageHeight}
           width={imageWidth}
           style={{ height: imageHeight }}

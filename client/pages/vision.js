@@ -16,7 +16,7 @@ const visionPage = () => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [loadedCoco, setLoadedCoco] = useState(false);
-  const [processing, setProcessing] = useState(false);
+  const [processing, setProcessing] = useState(true);
   const [showDetections, setShowDetections] = useState(false);
 
   if (hasWebcam) {

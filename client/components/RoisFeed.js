@@ -3,6 +3,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { imageHeightState, evaluateTimeState } from "./states";
 import deleteIcon from "../static/icons/delete_bin_black.png";
 import loadingIcon from "../static/icons/loading.png";
+import Button from "./Button";
 const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
   const imageHeight = useRecoilValue(imageHeightState);
@@ -98,6 +99,8 @@ const RoisFeed = ({}) => {
           </div>
         ))}
       </div>
+              <button> Delete Sections </button>
+              <button> Save Selections </button>
     </div>
   );
 };
