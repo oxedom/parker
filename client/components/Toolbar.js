@@ -7,7 +7,9 @@ import Decrementor from "./Decrementor";
 const Toolbar = ({
   processing,
   setProcessing,
-  hasWebcam,
+  openModal,
+  closeModal,
+  isModalOpen,
   setHasWebcam,
   webcamEnabled,
   showDetections,
@@ -22,7 +24,7 @@ const Toolbar = ({
   const [fps, setFps] = useRecoilState(fpsState)
 
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const  [localDetectonThreshold, setLocalDetectonThreshold] = useState(undefined)
   const  [localIouThreshold, setLocalIouThreshold] = useState(undefined)
   const  [localFps, setLocalFps] = useState(undefined)
@@ -33,9 +35,7 @@ const Toolbar = ({
     setLocalDetectonThreshold(detectionThreshold*100)
   }, [isModalOpen])
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+
 
   const handleSaveSettings = () => 
   {
@@ -52,9 +52,7 @@ const Toolbar = ({
     closeModal()
   }
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+
 
   function handleProcessing() {
     if (showDetections) {
@@ -81,7 +79,7 @@ const Toolbar = ({
 
   return (
     <div className={`w-[200px]   min-h-[${imageHeight}px]  bg-blue-300  `}>
-      <Button text="Settings" callback={openModal} colors={{color: "bg-slate-200", hover: "bg-slate-100"} } />
+      {/* <Button text="Settings" callback={openModal} colors={{color: "bg-slate-200", hover: "bg-slate-100"} } /> */}
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
      
         <div

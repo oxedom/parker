@@ -8,6 +8,7 @@ import { imageWidthState, imageHeightState, fpsState } from "../components/state
 import { useRecoilState, useRecoilValue } from "recoil";
 import EnableWebcam from "../components/EnableWebcam";
 import Head from "next/head";
+import AppNavbar from "../components/AppNavbar";
 
 const visionPage = () => {
   const [hasWebcam, setHasWebcam] = useState(false);
@@ -18,6 +19,17 @@ const visionPage = () => {
   const [loadedCoco, setLoadedCoco] = useState(false);
   const [processing, setProcessing] = useState(true);
   const [showDetections, setShowDetections] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
 
   if (hasWebcam) {
     return (
@@ -28,6 +40,9 @@ const visionPage = () => {
 
         <div className="flex flex-col  p-16   ">
           <div className="">
+            <AppNavbar
+            openModal={openModal}
+            ></AppNavbar>
             <div
               className="flex justify-between rounded-lg outline-3 outline outline-black shadow-lg
             "
@@ -38,6 +53,9 @@ const visionPage = () => {
                 setProcessing={setProcessing}
                 setShowDetections={setShowDetections}
                 setHasWebcam={setHasWebcam}
+                isModalOpen={isModalOpen}
+                closeModal={closeModal}
+                openModal={openModal}
                 showDetections={showDetections}
                 processing={processing}
                 hasWebcam={hasWebcam}

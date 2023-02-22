@@ -6,7 +6,7 @@ import Navlink from "./Navlink.js";
 const Navbar = () => {
   return (
     <div className="w-full text-center box-border w-max-[1028px] ">
-      <nav className="z-[100] h-[100px] relative  bg-yellow-100  items-center  grid grid-cols-2   ">
+      <nav className="z-[100] h-[100px] relative  bg-yellow-200  items-center  grid grid-cols-2   ">
         <Link href={"/"} >
           <h1 className="text-bold text-5xl h-[50px] flex  justify-center items-center text-center  font-bold  text-black    hover:cursor-pointer">
 
