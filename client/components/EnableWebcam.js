@@ -42,15 +42,37 @@ const EnableWebcam = ({
     let loadingIntervalID;
     if(enableWebcamRef.current !== null) 
     {
-
+      let dotSring = "   "
       let context =  enableWebcamRef.current.getContext("2d")
       context.clearRect(0, 0, imageWidth, imageHeight);
-      context.font = "40px Arial";
-      context.fillText("WEBCAM ERROR", imageWidth/4, imageHeight/2)
+      context.font = "bold 40px Arial";
+  
+      context.textAlign = "center";
       loadingIntervalID = setInterval(() => 
       {
-        context.fillText("......", imageWidth/5, imageHeight/2)
-      })
+        if(dotSring === "   ") 
+        {
+          dotSring = ".  "
+        }
+        else if(dotSring === ".  ") 
+        {
+          dotSring = ".. "
+        }
+        else if(dotSring === ".. ") 
+        {
+          dotSring = "..."
+        }
+        else if(dotSring === "...") 
+        {
+          dotSring = "   "
+        }
+        context.clearRect(0, 0, imageWidth, imageHeight);
+        context.fillText("Trying to find your webcam"+dotSring, imageWidth*0.5, imageHeight*0.3)
+        context.font = "bold 28px Arial";
+        context.fillText("Make sure it's plugged in!   ", imageWidth*0.5, imageHeight*0.3+50)
+        context.fillText("Troubleshooting in the docs   ", imageWidth*0.5, imageHeight*0.3+100)
+        context.font = "bold 40px Arial";
+      }, 1000)
 
      }
 
@@ -69,13 +91,13 @@ const EnableWebcam = ({
     }, 1000);
 
     return () => {
-      clearInterval(intervalId);
+      clearInterval(loadingIntervalID);
       clearInterval(intervalId);
     };
   }, [hasWebcam]);
 
   return (
-    <canvas width={imageWidth} ref={enableWebcamRef} height={imageHeight} className="flex justify-center items-center flex-1   bg-pink-200  ">
+    <canvas width={imageWidth} ref={enableWebcamRef} height={imageHeight} className="flex justify-center items-center flex-1   bg-slate-100  ">
       {warrning && !hasWebcam && (
         <div className=" bottom-2/4 uppercase font-bold transition-all duration-200 ease-in cursor-default  gap-2 flex-col items-center opacity-85 bg-red-400 w-full flex  text-white border-2 border-black p-5 ">
           <span className="text-4xl"> Unable to detect webcam </span>
