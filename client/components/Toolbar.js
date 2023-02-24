@@ -26,6 +26,7 @@ const Toolbar = ({
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
     detectionThresholdState
   );
+  const [settingChange, setSettingsChange] = useState(false)
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
   const [fps, setFps] = useRecoilState(fpsState);
 
@@ -42,6 +43,7 @@ const Toolbar = ({
 
   const handleSaveSettings = () => {
     // closeModal
+    if(!settingChange) { return;}
     let wasProcessing = processing;
 
     setDetectonThreshold(localDetectonThreshold / 100);
@@ -81,7 +83,7 @@ const Toolbar = ({
 
   return (
     <div className={`w-[200px]   min-h-[${imageHeight}px]  bg-blue-300  `}>
-      {/* <Button text="Settings" callback={openModal} colors={{color: "bg-slate-200", hover: "bg-slate-100"} } /> */}
+
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div
           className="flex flex-col justify-between m-auto w-5/12 xl:w-6/12 bg-emerald-50 p-8 z-30 rounded-lg shadow-neo "
@@ -144,7 +146,7 @@ const Toolbar = ({
                 min={0}
                 max={99}
                 value={localDetectonThreshold}
-                setter={setLocalDetectonThreshold}
+                setter={(value) => {  setLocalDetectonThreshold(value); setSettingsChange(true) } }
                 label="Detection Threshold"
               />
 
@@ -155,7 +157,7 @@ const Toolbar = ({
                 max={99}
                 value={localIouThreshold}
                 label="iou  Threshold"
-                setter={setLocalIouThreshold}
+                setter={(value) => { setLocalIouThreshold(value); setSettingsChange(true) } }
               />
 
               <Decrementor
@@ -165,11 +167,11 @@ const Toolbar = ({
                 max={10000}
                 value={localFps}
                 label="FPS"
-                setter={setLocalFps}
+                setter={(value) => { setLocalFps(value); setSettingsChange(true) } }
               />
 
               <Button
-                colors={{ color: "bg-blue-500", textColor: "text-white" }}
+                colors={{ color: `${settingChange ? "bg-blue-500" : "bg-blue-300 cursor-not-allowed"}`, textColor: "text-white" }}
                 callback={handleSaveSettings}
                 text={"Save settings"}
               >
@@ -178,7 +180,7 @@ const Toolbar = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 justify-items-center border-t-2 border-black ">
+          <div className="grid grid-cols-2 justify-items-center border-t-2  border-black ">
             <Button
               colors={{ color: "bg-slate-50" }}
               callback={closeModal}
