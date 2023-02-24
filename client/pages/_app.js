@@ -5,9 +5,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 export default function App({ Component, pageProps }) {
   return (
     <RecoilRoot>
- 
-        <Component {...pageProps} />
-     
+      <Component {...pageProps} />
     </RecoilRoot>
   );
 }

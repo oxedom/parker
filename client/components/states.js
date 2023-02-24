@@ -15,12 +15,12 @@ const evaluateTimeState = atom({
 
 const detectionThresholdState = atom({
   key: "detectionThresholdState",
-  default: 0.50,
+  default: 0.5,
 });
 
 const thresholdIouState = atom({
   key: "thresholdIouState",
-  default: 0.50,
+  default: 0.5,
 });
 
 const fpsState = atom({
@@ -106,14 +106,16 @@ const selectedRoiState = selector({
 
       //   //Array of ROI objects
       const selectedRois = get(selectedRoi);
-      if(selectedRois.length === 0) { return;}
+      if (selectedRois.length === 0) {
+        return;
+      }
       const evaluateTime = get(evaluateTimeState);
       const selectedRoisClone = structuredClone(selectedRois);
       //   //Log N function
-  
+
       for (let index = 0; index < selectedRois.length; index++) {
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
-       
+
         //If check that runs if a Selected ROI object is currently occupied
         //Checks that object hasn't changed occupied status by checking when it was last seen
         //and sees how long ago it was last seen, if it's under some sort of thresohold, so it will define it status
@@ -189,7 +191,6 @@ const selectedRoiState = selector({
       const roiClone = structuredClone(targetRoi);
       const selectedRoisClone = structuredClone(selectedRois);
 
-
       roiClone.hover = false;
 
       selectedRoisClone[targetRoiIndex] = roiClone;
@@ -199,8 +200,6 @@ const selectedRoiState = selector({
     if (action.event === "deleteAllRois") {
       set(selectedRoi, []);
     }
-
-
   },
 });
 // const track = useRecoilValue(track);
@@ -253,5 +252,5 @@ export {
   outputImageState,
   selectedRoiState,
   detectionThresholdState,
-  thresholdIouState
+  thresholdIouState,
 };

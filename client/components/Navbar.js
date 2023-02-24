@@ -7,13 +7,16 @@ const Navbar = () => {
   return (
     <div className="w-full text-center box-border w-max-[1028px] ">
       <nav className="z-[100] h-[100px] relative  bg-yellow-200  items-center  grid grid-cols-2   ">
-        <Link href={"/"} >
+        <Link href={"/"}>
           <h1 className="text-bold text-5xl h-[50px] flex  justify-center items-center text-center  font-bold  text-black    hover:cursor-pointer">
-
-        <p className=" p-2 uppercase flex justify-items-center items-center gap-5 "> #Parker 
-          <span className="border rounded-full shadow-neo-sm bg-purple-200 p-1 text-xl text-center"> Beta</span> 
-          </p>
-    
+            <p className=" p-2 uppercase flex justify-items-center items-center gap-5 ">
+              {" "}
+              #Parker
+              <span className="border rounded-full shadow-neo-sm bg-purple-200 p-1 text-xl text-center">
+                {" "}
+                Beta
+              </span>
+            </p>
           </h1>
         </Link>
 
@@ -51,8 +54,6 @@ const Navbar = () => {
             height={35}
           />
         </div> */}
-
-
       </nav>
     </div>
   );

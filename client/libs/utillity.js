@@ -72,8 +72,6 @@ export function checkOverlapArrays(detectionsArr, selectedArr) {
     selectedArr.forEach((s) => {
       let overlapCords = getOverlap(d.cords, s.cords);
       let selectedArea = s.cords.width * s.cords.height;
-;
-
       if (overlapCords != null) {
         let overlap = {
           ...s,
@@ -139,7 +137,6 @@ export function predictWebcam(model, video) {
     // Now lets loop through predictions and draw them to the live view if
     // they have a high confidence score.
     for (let n = 0; n < predictions.length; n++) {
-;
       // If we are over 66% sure we are sure we classified it right, draw it!
       if (predictions[n].score > 0.66) {
         // const p = document.createElement("p");
@@ -169,7 +166,7 @@ export function predictWebcam(model, video) {
         const height = predictions[n].bbox[3];
 
         const obj = { left_x, top_y, width, height };
-   
+
         const svg = document.createElement("svg");
         const rect = document.createElement("rect");
         // rect.setAttribute('x')
@@ -205,5 +202,5 @@ export function predictWebcam(model, video) {
 }
 
 export async function wait(time) {
-  await new Promise(resolve => setTimeout(resolve, time));
+  await new Promise((resolve) => setTimeout(resolve, time));
 }

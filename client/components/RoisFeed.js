@@ -16,10 +16,7 @@ const RoisFeed = ({}) => {
     setSelectedRois(action);
   }
 
-  function handleSave() 
-  {
-    
-  }
+  function handleSave() {}
 
   function handleSelect(uid) {
     let action = {
@@ -66,7 +63,8 @@ const RoisFeed = ({}) => {
   }
 
   return (
-    <div className={`w-[200px] bg-blue-300   min-h-[${imageHeight}px]`}>
+    <div className={`w-[200px] bg-blue-300 flex flex-col justify-between  min-h-[${imageHeight}px]`}>
+      <div>
       <h4
         className="text-xl text-center font-semibold  
         bg-blue-100
@@ -77,6 +75,7 @@ const RoisFeed = ({}) => {
         {" "}
         Marked parking spaces
       </h4>
+
       <div className="flex flex-wrap gap-2 m-2">
         {selectedRegions.map((s) => (
           <div
@@ -111,10 +110,13 @@ const RoisFeed = ({}) => {
           </div>
         ))}
       </div>
+      </div>
 
-              {selectedRegions.length > 0 ? <button onClick={handleDeleteAll}> Delete Sections </button> : <></> }
-             
-              {/* <button onClick={handleSave}> Save Selections </button> */}
+      <button className={`${selectedRegions.length > 0 ?  "bg-gray-200" : "bg-gray-400 cursor-not-allowed"} border-t border-l p-1  border-black `} onClick={handleDeleteAll}> Clear </button>
+
+
+
+      {/* <button onClick={handleSave}> Save Selections </button> */}
     </div>
   );
 };

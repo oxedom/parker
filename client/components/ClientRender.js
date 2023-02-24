@@ -6,17 +6,30 @@ import labels from "../utils/labels.json";
 import { renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
 import { xywh2xyxy } from "../utils/renderBox.js";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageWidthState, imageHeightState, selectedRoiState, thresholdIouState, detectionThresholdState, fpsState} from "./states";
-;
-
-const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco, loadedCoco}) => {
+import {
+  imageWidthState,
+  imageHeightState,
+  selectedRoiState,
+  thresholdIouState,
+  detectionThresholdState,
+  fpsState,
+} from "./states";
+const ClientRender = ({
+  processing,
+  showDetections,
+  setProcessing,
+  setLoadedCoco,
+  loadedCoco,
+}) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const fps = useRecoilValue(fpsState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
-  const [model, setModel] = useState(undefined)
-  const [detectionThreshold, setDetectonThreshold] = useRecoilState(detectionThresholdState)
+  const [model, setModel] = useState(undefined);
+  const [detectionThreshold, setDetectonThreshold] = useRecoilState(
+    detectionThresholdState
+  );
 
   const thresholdIou = useRecoilValue(thresholdIouState);
   let overlayXRef = useRef(null);
@@ -52,7 +65,6 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
       tf.engine().startScope();
 
       const input = tf.tidy(() => {
-        
         const img = tf.image
           .resizeBilinear(tf.browser.fromPixels(video), model_dim)
           .div(255.0)
@@ -109,11 +121,11 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
           100,
           thresholdIou
         );
-      
+
         // detectionIndices = nmsDetections.selectedIndices.dataSync();
         // detectionScores = nmsDetections.selectedScores.dataSync();
-        detectionIndices = nmsDetections.dataSync()
-       
+        detectionIndices = nmsDetections.dataSync();
+
         for (let i = 0; i < detectionIndices.length; i++) {
           const detectionIndex = detectionIndices[i];
           // const detectionScore = detectionScores[i];
@@ -159,17 +171,15 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
       } else {
         clearCanvas(overlayXRef, imageWidth, imageHeight);
       }
-     
-     
+
       // // get another frame
       // requestAnimationFrame(() =>  {  setTimeout(() => {
       //   // detectFrame(model)
       // }, 200) })
       // console.log('I am a busy bee')
-        tf.dispose(res)
-        tf.engine().endScope();
+      tf.dispose(res);
+      tf.engine().endScope();
       let end = Date.now();
-   
     }
   };
 
@@ -181,42 +191,42 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
         onProgress: (fractions) => {},
       }
     );
-  
+
     const dummyInput = tf.ones(yolov7.inputs[0].shape);
     const warmupResult = await yolov7.executeAsync(dummyInput);
     tf.dispose(warmupResult);
     tf.dispose(dummyInput);
     setLoadedCoco(true);
-    setModel(yolov7)
-    id = setInterval(() => 
-    {
-    detectFrame(yolov7)
-    }, fps)
+    setModel(yolov7);
+    id = setInterval(() => {
+      detectFrame(yolov7);
+    }, fps);
 
-    
     return id;
   };
 
   useEffect(() => {
     // console.log(" I HAVE FUN");
-    console.log("Load Yolo Use Effect Rerun", `Processing is currently: ${processing}`);
-   let id;
+    console.log(
+      "Load Yolo Use Effect Rerun",
+      `Processing is currently: ${processing}`
+    );
+    let id;
 
     if (processing) {
       loadYolo().then((res) => {
-        id = res
+        id = res;
       });
     }
 
     //Clean up
     return function () {
-      clearInterval(id)
+      clearInterval(id);
       clearCanvas(overlayXRef, imageWidth, imageHeight);
-      if(model != undefined) 
-      {
-       tf.dispose(model)
-       setLoadedCoco(false)
-       setModel(undefined)
+      if (model != undefined) {
+        tf.dispose(model);
+        setLoadedCoco(false);
+        setModel(undefined);
       }
     };
   }, [processing, showDetections]);
@@ -232,9 +242,8 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
           className="fixed"
         ></canvas>
       ) : null}
-        {
+      {
         <Webcam
-        
           height={imageHeight}
           width={imageWidth}
           style={{ height: imageHeight }}
@@ -242,7 +251,8 @@ const ClientRender = ({ processing, showDetections, setProcessing, setLoadedCoco
           ref={webcamRef}
           muted={true}
           className=""
-        />}
+        />
+      }
     </>
   );
 };

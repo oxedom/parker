@@ -24,12 +24,7 @@ const Navlink = ({ url, text }) => {
          text-white font-bold ${selectedPathname()}`}
         href={url}
       >
-        <span
-
-        >
-          {" "}
-          {text}{" "}
-        </span>
+        <span> {text} </span>
       </Link>
     </div>
   );

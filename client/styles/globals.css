@@ -6,14 +6,14 @@
 }
 
 @font-face {
-  font-family: "Montserrat" ;
+  font-family: "Montserrat";
   src: url("../public/fonts/Montserrat/Montserrat-Bold.ttf");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Montserrat" ;
+  font-family: "Montserrat";
   src: url("../public/fonts/Montserrat/Montserrat-Medium.ttf");
   font-weight: normal;
   font-style: normal;
