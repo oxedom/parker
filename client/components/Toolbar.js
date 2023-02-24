@@ -2,6 +2,7 @@ import {
   imageHeightState,
   detectionThresholdState,
   thresholdIouState,
+  selectedRoiState,
   fpsState,
 } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -34,8 +35,22 @@ const Toolbar = ({
     useState(undefined);
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
+  const selectedRois = useRecoilValue(selectedRoiState)
+
+  const totalOccupied = (roiArr) => {
+    let OccupiedCount = 0;
+    let availableCount = 0
+    roiArr.forEach(roi => {
+       if(roi.occupied === true) { OccupiedCount++} 
+       if(roi.occupied === false) { availableCount++}
+     } )
+    return { OccupiedCount, availableCount}
+  }
+
+  let counts = totalOccupied(selectedRois)
 
   useEffect(() => {
+    setSettingsChange(false)
     setLocalFps(fps);
     setLocalIouThreshold(iouThreshold * 100);
     setLocalDetectonThreshold(detectionThreshold * 100);
@@ -49,14 +64,15 @@ const Toolbar = ({
     setDetectonThreshold(localDetectonThreshold / 100);
     setIouThreshold(localIouThreshold / 100);
     setFps(localFps);
-    setTimeout(() => {
+
       setProcessing(false);
-    }, 0);
-    setTimeout(() => {
-      setProcessing(true);
-    }, 0);
+
+
     // setProcessing(true)
     closeModal();
+    setTimeout(() => {
+      setProcessing(true);
+    }, 10);
   };
 
   function handleProcessing() {
@@ -162,16 +178,16 @@ const Toolbar = ({
 
               <Decrementor
                 alt="fps"
-                step={100}
-                min={100}
-                max={10000}
+                step={0.01}
+                min={0.1}
+                max={60}
                 value={localFps}
-                label="FPS"
+                label={`Render rate`}
                 setter={(value) => { setLocalFps(value); setSettingsChange(true) } }
               />
 
               <Button
-                colors={{ color: `${settingChange ? "bg-blue-500" : "bg-blue-300 cursor-not-allowed"}`, textColor: "text-white" }}
+                colors={{ color: `${settingChange ? "bg-blue-500" : "bg-blue-300 hover:cursor-not-allowed"}`, textColor: "text-white" }}
                 callback={handleSaveSettings}
                 text={"Save settings"}
               >
@@ -195,6 +211,12 @@ const Toolbar = ({
         colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
         text="Auto detect"
       />
+
+      <h6>{` Total spaces: ${selectedRois.length}`}</h6>
+      <h6>{` Total free spaces: ${counts.availableCount}`}</h6>
+      <h6>{` Total occupied spaces: ${counts.OccupiedCount}`}</h6>
+
+
     </div>
   );
 };

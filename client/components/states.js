@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 import uniqid from "uniqid";
-import { finalName, checkRectOverlap } from "../libs/utillity";
+import { checkRectOverlap } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
 
 const selectedRoi = atom({
@@ -15,28 +15,20 @@ const evaluateTimeState = atom({
 
 const detectionThresholdState = atom({
   key: "detectionThresholdState",
-  default: 0.5,
+  default: 0.40,
 });
 
 const thresholdIouState = atom({
   key: "thresholdIouState",
-  default: 0.5,
+  default: 0.65,
 });
 
 const fpsState = atom({
   key: "framesPerSecounds",
-  default: 1000,
+  default: 1,
 });
 
-const roiTypeState = atom({
-  key: "roiType",
-  default: "",
-});
 
-const roiNameState = atom({
-  key: "roiName",
-  default: "",
-});
 
 const processingState = atom({
   key: "processing",
@@ -55,20 +47,17 @@ const selectedRoiState = selector({
     if (action.event === "addRoi") {
       let { cords } = action.payload;
       let date = new Date();
-      let roiType = get(roiTypeState);
-      let roiName = get(roiNameState);
-      const oldRois = get(selectedRoi);
 
+      const oldRois = get(selectedRoi);
       const roiObj = {
-        name: finalName(roiName, oldRois.length),
-        label: roiType,
+        label: "vehicle",
         cords: { ...cords },
         time: date.getTime(),
         uid: uniqid(),
         area: cords.width * cords.height,
         firstSeen: null,
         lastSeen: null,
-        occupied: false,
+        occupied: null,
         hover: false,
         evaluating: true,
       };
@@ -87,6 +76,8 @@ const selectedRoiState = selector({
     if (action.event === "occupation") {
       let { predictionsArr } = action.payload;
 
+      //If no predections have happen, then a dummy predection is sent
+      //so that the function runs! 
       if (predictionsArr.length === 0) {
         predictionsArr = [
           {
@@ -97,7 +88,7 @@ const selectedRoiState = selector({
               height: -999,
             },
 
-            label: "EMPTY_ROI",
+            label: "car",
             confidenceLevel: 99,
             area: -999,
           },
@@ -105,35 +96,38 @@ const selectedRoiState = selector({
       }
 
       //   //Array of ROI objects
+
+
+
+      //If there are no selected objects the function returns because there 
+      //Is nothing to check
       const selectedRois = get(selectedRoi);
       if (selectedRois.length === 0) {
         return;
       }
+      //How long it takes to evaluate if a object is there or not
       const evaluateTime = get(evaluateTimeState);
+      //Get the unix time
+      const currentUnixTime = Date.now();
       const selectedRoisClone = structuredClone(selectedRois);
-      //   //Log N function
+      
 
+      //   //Log N** function on quite a small scale so it's okay
       for (let index = 0; index < selectedRois.length; index++) {
+        
+
+
+        //Checking if the current
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
 
-        //If check that runs if a Selected ROI object is currently occupied
-        //Checks that object hasn't changed occupied status by checking when it was last seen
-        //and sees how long ago it was last seen, if it's under some sort of thresohold, so it will define it status
-        //to unoccupied,
+        console.log(isOverlap);
 
-        //Check if 10 secounds have passed since last seen
-        const currentUnixTime = Date.now();
-
-        //If the ROI is overlapping and hasn't been "seen" set it's timestames to now
-        if (
-          !roiEvaluating(
-            currentUnixTime,
-            selectedRois[index]["time"],
-            evaluateTime
-          )
-        ) {
+        if (!roiEvaluating(currentUnixTime,selectedRois[index]["time"],evaluateTime)) {
           selectedRoisClone[index]["evaluating"] = false;
         }
+
+
+
         if (isOverlap && selectedRois[index]["firstSeen"] === null) {
           selectedRoisClone[index]["firstSeen"] = currentUnixTime;
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
@@ -202,26 +196,10 @@ const selectedRoiState = selector({
     }
   },
 });
-// const track = useRecoilValue(track);
-const trackState = atom({
-  key: "track",
-  default: null,
-});
 
-// const selectingColorState = atom({
-//   key: "selectingColor",
-//   default: "#FF0000",
-// });
 
-const selectedColorState = atom({
-  key: "selectedColor",
-  default: "#f52222",
-});
 
-const detectionColorState = atom({
-  key: "detectionColor",
-  default: "#0000FF",
-});
+
 
 const imageHeightState = atom({
   key: "imageHeight",
@@ -233,23 +211,14 @@ const imageWidthState = atom({
   default: 640,
 });
 
-const outputImageState = atom({
-  key: "outputImage",
-  default: "",
-});
+
 
 export {
-  roiTypeState,
-  trackState,
-  roiNameState,
   imageWidthState,
   imageHeightState,
   fpsState,
-  detectionColorState,
-  selectedColorState,
   processingState,
   evaluateTimeState,
-  outputImageState,
   selectedRoiState,
   detectionThresholdState,
   thresholdIouState,

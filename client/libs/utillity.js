@@ -1,6 +1,4 @@
-const flask_url = "http://127.0.0.1:5000/api/cv/yolo";
-import * as tf from "@tensorflow/tfjs";
-const cocoSsd = require("@tensorflow-models/coco-ssd");
+
 
 function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
@@ -53,29 +51,16 @@ export async function capturedImageServer(capturedImage) {
   return data;
 }
 
-function rectangleArea(rect) {
-  const width = rect.cords.right_x - rect.cords.left_x;
-  const height = rect.cords.bottom_y - rect.cords.top_y;
-  return Math.abs(width * height);
-}
 
-export function finalName(name, arrayLength) {
-  if (name === "") {
-    return `P : ${arrayLength + 1}`;
-  } else return name;
-}
 
 export function checkOverlapArrays(detectionsArr, selectedArr) {
   let overlaps = [];
-
   detectionsArr.forEach((d) => {
     selectedArr.forEach((s) => {
       let overlapCords = getOverlap(d.cords, s.cords);
-      let selectedArea = s.cords.width * s.cords.height;
       if (overlapCords != null) {
         let overlap = {
           ...s,
-          color: "#FFEF00",
           cords: overlapCords,
         };
 
@@ -89,7 +74,9 @@ export function checkOverlapArrays(detectionsArr, selectedArr) {
 export function checkRectOverlap(rect, detectionsArr) {
   let answer = false;
   detectionsArr.forEach((d) => {
-    ///Overlap calculation
+    //If answer is already true return answer
+    if(answer == true) { return answer}
+        ///Overlap calculation
     let overlapCords = getOverlap(d.cords, rect.cords);
     //If overlapcords is null the squares don't intersect
     if (overlapCords == null) {
@@ -118,89 +105,13 @@ export function checkRectOverlap(rect, detectionsArr) {
   return answer;
 }
 
-export async function loadModel() {
-  const model = await cocoSsd.load();
-  console.log("Model loaded");
-  return model;
-}
 
-export function predictWebcam(model, video) {
-  // Now let's start classifying the stream.
 
-  model.detect(video).then(function (predictions) {
-    // Remove any highlighting we did previous frame.
-    // for (let i = 0; i < children.length; i++) {
-    //   liveView.removeChild(children[i]);
-    // }
-    // children.splice(0);
 
-    // Now lets loop through predictions and draw them to the live view if
-    // they have a high confidence score.
-    for (let n = 0; n < predictions.length; n++) {
-      // If we are over 66% sure we are sure we classified it right, draw it!
-      if (predictions[n].score > 0.66) {
-        // const p = document.createElement("p");
-        // p.innerText =
-        //   predictions[n].class +
-        //   " - with " +
-        //   Math.round(parseFloat(predictions[n].score) * 100) +
-        //   "% confidence.";
-        // Draw in top left of bounding box outline.
-        // p.style =
-        //   "left: " +
-        //   predictions[n].bbox[0] +
-        //   "px;" +
-        //   "top: " +
-        //   predictions[n].bbox[1] +
-        //   "px;" +
-        //   "width: " +
-        //   (predictions[n].bbox[2] - 10) +
-        //   "px;";
 
-        // Draw the actual bounding box.
-        const highlighter = document.createElement("div");
-        highlighter.setAttribute("class", "highlighter");
-        const left_x = predictions[n].bbox[0];
-        const top_y = predictions[n].bbox[1];
-        const width = predictions[n].bbox[2];
-        const height = predictions[n].bbox[3];
 
-        const obj = { left_x, top_y, width, height };
+export function isVehicle(label) {
+if(label === 'car' || label === 'truck' ||  "label" == 'motorcycle'  || label ===  'bus'  ) { return true} 
+else { return false}
 
-        const svg = document.createElement("svg");
-        const rect = document.createElement("rect");
-        // rect.setAttribute('x')
-        // rect.setAttribute('y')
-        // rect.setAttribute('width')
-        // rect.setAttribute('height')
-        // rect.setAttribute('x')
-        // rect.setAttribute('x')
-        // rect.setAttribute('fill')
-        // highlighter.style =
-        //   "left: " +
-        //   predictions[n].bbox[0] +
-        //   "px; top: " +
-        //   predictions[n].bbox[1] +
-        //   "px; width: " +
-        //   predictions[n].bbox[2] +
-        //   "px; height: " +
-        //   predictions[n].bbox[3] +
-        //   "px;";
-
-        // liveView.appendChild(highlighter);
-        // liveView.appendChild(p);
-
-        // // Store drawn objects in memory so we can delete them next time around.
-        // children.push(highlighter);
-        // children.push(p);
-      }
-    }
-
-    // Call this function again to keep predicting when the browser is ready.
-    window.requestAnimationFrame(predictWebcam);
-  });
-}
-
-export async function wait(time) {
-  await new Promise((resolve) => setTimeout(resolve, time));
-}
+ }

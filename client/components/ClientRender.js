@@ -14,6 +14,9 @@ import {
   detectionThresholdState,
   fpsState,
 } from "./states";
+import { isVehicle } from "../libs/utillity";
+
+
 const ClientRender = ({
   processing,
   showDetections,
@@ -25,11 +28,8 @@ const ClientRender = ({
   const imageHeight = useRecoilValue(imageHeightState);
   const fps = useRecoilValue(fpsState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
-
   const [model, setModel] = useState(undefined);
-  const [detectionThreshold, setDetectonThreshold] = useRecoilState(
-    detectionThresholdState
-  );
+  const detectionThreshold= useRecoilValue(detectionThresholdState);
 
   const thresholdIou = useRecoilValue(thresholdIouState);
   let overlayXRef = useRef(null);
@@ -99,7 +99,6 @@ const ClientRender = ({
         scores.push(res[max_score_index + 5]);
         class_detect.push(max_score_index);
 
-        // tf.dispose(res);
       }
 
       let nmsDetections;
@@ -107,14 +106,7 @@ const ClientRender = ({
       let detectionScores;
       let predictionsArr = [];
       if (boxes.length > 0) {
-        // nmsDetections = await tf.image.nonMaxSuppressionWithScoreAsync(
-        //   boxes,
-        //   scores,
-        //   20,
-        //   0.6,
-        //   0,
-        //   0
-        // );
+
         nmsDetections = await tf.image.nonMaxSuppressionAsync(
           boxes,
           scores,
@@ -122,15 +114,15 @@ const ClientRender = ({
           thresholdIou
         );
 
-        // detectionIndices = nmsDetections.selectedIndices.dataSync();
-        // detectionScores = nmsDetections.selectedScores.dataSync();
+
         detectionIndices = nmsDetections.dataSync();
 
         for (let i = 0; i < detectionIndices.length; i++) {
           const detectionIndex = detectionIndices[i];
-          // const detectionScore = detectionScores[i];
           const detectionScore = scores[detectionIndex];
           const detectionClass = class_detect[detectionIndex];
+          let dect_label = labels[detectionClass];
+          if(!isVehicle(dect_label)) { return; }
           const roiObj = { cords: {} };
           let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
 
@@ -149,10 +141,10 @@ const ClientRender = ({
           roiObj.cords.height = height;
           // Add the detection score to the bbox object
           roiObj.confidenceLevel = detectionScore;
-          roiObj.label = labels[detectionClass];
+          roiObj.label = dect_label;
           roiObj.area = width * height;
           // Add the bbox object to the bboxes array
-
+        
           predictionsArr.push(roiObj);
         }
       }
@@ -172,11 +164,7 @@ const ClientRender = ({
         clearCanvas(overlayXRef, imageWidth, imageHeight);
       }
 
-      // // get another frame
-      // requestAnimationFrame(() =>  {  setTimeout(() => {
-      //   // detectFrame(model)
-      // }, 200) })
-      // console.log('I am a busy bee')
+
       tf.dispose(res);
       tf.engine().endScope();
       let end = Date.now();
@@ -184,11 +172,16 @@ const ClientRender = ({
   };
 
   const loadYolo = async () => {
+    console.log("LOAD YOLO HAS RUN ");
     let id;
     let yolov7 = await tf.loadGraphModel(
       `${window.location.origin}/${modelName}_web_model/model.json`,
       {
-        onProgress: (fractions) => {},
+        onProgress: (fractions) => {
+        
+  
+   
+        },
       }
     );
 
@@ -200,7 +193,7 @@ const ClientRender = ({
     setModel(yolov7);
     id = setInterval(() => {
       detectFrame(yolov7);
-    }, fps);
+    }, fps*1000);
 
     return id;
   };

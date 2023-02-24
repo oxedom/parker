@@ -12,7 +12,7 @@ import { renderRoi } from "../libs/canvas_utility";
 const DrawingCanvas = ({ setProcessing }) => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
-  const selectedColor = useRecoilValue(selectedColorState);
+  const selectedColor = "f52222"
   const selectingColor = "#979A9A";
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);

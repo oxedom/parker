@@ -3,13 +3,13 @@
 const Button = ({ text, callback, colors }) => {
 
 
-  let audio = new Audio("../static/click.wav")
+  // let audio = new Audio("../static/click.wav")
 
-  const handleSound = () => 
-  {
+  // const handleSound = () => 
+  // {
 
-    audio.play()
-  }
+  //   audio.play()
+  // }
 
   const btnClass = `items-center
     justify-center   cursor-pointer
@@ -35,7 +35,7 @@ const Button = ({ text, callback, colors }) => {
     <div
       onClick={(e) => {
         callback();
-        handleSound();
+        // handleSound();
       }}
       className={btnClass}
     >

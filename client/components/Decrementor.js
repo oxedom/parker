@@ -1,25 +1,27 @@
 import { useState } from "react";
 
 const Decrementor = ({ min, max, step, setter, value, label }) => {
-  const [id_up, setId_up] = useState(undefined);
-  const [id_down, setId_down] = useState(undefined);
+  const [id_up, setId_up] = useState(null);
+  const [id_down, setId_down] = useState(null);
 
   const btnClass = "p-5 w-[50px] h-[50px] rounded shadow";
   function handleIncrement(e) {
-    let afterIncrement = Math.round(parseInt(e.target.value) + step);
-    if (afterIncrement < max) {
+
+    let afterIncrement = ((parseFloat(e.target.value))  + step).toFixed(2);
+    console.log(afterIncrement);
+    if (afterIncrement <= max) {
+      console.log(true);
       setter(afterIncrement);
     }
   }
 
   function handleDecrement(e) {
-    let afterDecrement = Math.round(parseInt(e.target.value) - step);
-    if (afterDecrement > min) {
+    let afterDecrement = ((parseFloat(e.target.value))  - step).toFixed(2);
+    if (afterDecrement >= min) {
       setter(afterDecrement);
     }
   }
-  // onClick={(e) => {handleDecrement(e)}}
-  // onClick={(e) => {handleIncrement(e)}}
+
   return (
     <div className="flex flex-col pt-1 items-center">
       <label
@@ -35,13 +37,13 @@ const Decrementor = ({ min, max, step, setter, value, label }) => {
           value={value}
           label="decrease"
           onMouseUp={() => {
-            clearInterval(id_down);
+            if(setId_down != null) { clearInterval(id_down);setId_down(null) }
           }}
           onMouseDown={(e) => {
             setId_down(
               setInterval(() => {
                 handleDecrement(e);
-              }, 50)
+              }, 75)
             );
           }}
           className={`${btnClass} bg-gray-300`}
@@ -54,13 +56,16 @@ const Decrementor = ({ min, max, step, setter, value, label }) => {
           value={value}
           label="increase"
           onMouseUp={() => {
-            clearInterval(id_up);
+          
+            if(setId_up != null) {clearInterval(id_up);setId_up(null)}
+
           }}
           onMouseDown={(e) => {
             setId_up(
               setInterval(() => {
                 handleIncrement(e);
               }, 50)
+       
             );
           }}
           className={`${btnClass} bg-gray-400  `}
