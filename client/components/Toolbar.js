@@ -10,10 +10,10 @@ import Modal from "./Modal";
 import { useEffect, useState } from "react";
 import Button from "./Button";
 import Decrementor from "./Decrementor";
+
 const Toolbar = ({
   processing,
   setProcessing,
-  openModal,
   closeModal,
   isModalOpen,
   setHasWebcam,
@@ -31,7 +31,7 @@ const Toolbar = ({
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
   const [fps, setFps] = useRecoilState(fpsState);
 
-  const [localDetectonThreshold, setLocalDetectonThreshold] =
+  const [localDetectionThreshold, setLocalDetectionThreshold] =
     useState(undefined);
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
@@ -48,12 +48,18 @@ const Toolbar = ({
   }
 
   let counts = totalOccupied(selectedRois)
+  let detectInfo = 
+  `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
+  let iouInfo = "Advanced setting: Non-maximum Suppression threshold, recommended to between 50-75 "
+  let fpsInfo = `Render in N many secounds (The lower the faster and more compute demanding) 
+  recommended to be 1 render per secound. 
+  `
 
   useEffect(() => {
     setSettingsChange(false)
     setLocalFps(fps);
     setLocalIouThreshold(iouThreshold * 100);
-    setLocalDetectonThreshold(detectionThreshold * 100);
+    setLocalDetectionThreshold(detectionThreshold * 100);
   }, [isModalOpen]);
 
   const handleSaveSettings = () => {
@@ -61,7 +67,7 @@ const Toolbar = ({
     if(!settingChange) { return;}
     let wasProcessing = processing;
 
-    setDetectonThreshold(localDetectonThreshold / 100);
+    setDetectonThreshold(localDetectionThreshold / 100);
     setIouThreshold(localIouThreshold / 100);
     setFps(localFps);
 
@@ -157,16 +163,18 @@ const Toolbar = ({
 
             <div className="flex flex-col justify-center items-center  ">
               <Decrementor
+                information={detectInfo}
                 alt="detection score threshold"
                 step={1}
                 min={0}
                 max={99}
-                value={localDetectonThreshold}
+                value={localDetectionThreshold}
                 setter={(value) => {  setLocalDetectonThreshold(value); setSettingsChange(true) } }
                 label="Detection Threshold"
               />
 
               <Decrementor
+                         information={iouInfo}
                 alt="iou threshold"
                 step={1}
                 min={0}
@@ -176,7 +184,13 @@ const Toolbar = ({
                 setter={(value) => { setLocalIouThreshold(value); setSettingsChange(true) } }
               />
 
+          
+
+           
+
+        
               <Decrementor
+                information={fpsInfo}
                 alt="fps"
                 step={0.01}
                 min={0.1}
@@ -185,7 +199,7 @@ const Toolbar = ({
                 label={`Render rate`}
                 setter={(value) => { setLocalFps(value); setSettingsChange(true) } }
               />
-
+              
               <Button
                 colors={{ color: `${settingChange ? "bg-blue-500" : "bg-blue-300 hover:cursor-not-allowed"}`, textColor: "text-white" }}
                 callback={handleSaveSettings}
