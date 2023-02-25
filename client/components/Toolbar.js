@@ -22,6 +22,7 @@ const Toolbar = ({
   setShowDetections,
   loadedCoco,
   setWebcamEnable,
+  setAutoDetect
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
@@ -31,8 +32,7 @@ const Toolbar = ({
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
   const [fps, setFps] = useRecoilState(fpsState);
 
-  const [localDetectionThreshold, setLocalDetectionThreshold] =
-    useState(undefined);
+  const [localDetectionThreshold, setLocalDetectionThreshold] = useState(undefined);
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
   const selectedRois = useRecoilValue(selectedRoiState)
@@ -61,6 +61,22 @@ const Toolbar = ({
     setLocalIouThreshold(iouThreshold * 100);
     setLocalDetectionThreshold(detectionThreshold * 100);
   }, [isModalOpen]);
+
+
+  const handleAutoDetect = () => 
+  {
+    setAutoDetect(true)
+    setProcessing(false);
+
+    setTimeout(() => {
+   
+      setProcessing(true);
+
+    }, 10);
+
+    setAutoDetect(false)
+  }
+
 
   const handleSaveSettings = () => {
     // closeModal
@@ -223,6 +239,7 @@ const Toolbar = ({
       </Modal>
       <Button
         colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
+        callback={handleAutoDetect}
         text="Auto detect"
       />
 

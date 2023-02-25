@@ -194,6 +194,40 @@ const selectedRoiState = selector({
     if (action.event === "deleteAllRois") {
       set(selectedRoi, []);
     }
+
+    if(action.event === 'addManyRois') 
+    {
+      let date = new Date();
+
+        let { predictionsArr } = action.payload;
+        let rois = []
+        predictionsArr.forEach(p => 
+          {
+            const roiObj = {
+              label: "vehicle",
+              cords: { ...p.cords },
+              time: date,
+              uid: uniqid(),
+              area: p.width * p.height,
+              firstSeen: null,
+              lastSeen: null,
+              occupied: null,
+              hover: false,
+              evaluating: true,
+            };
+            rois.push(roiObj)
+
+          })
+
+  
+        const oldRois = get(selectedRoi);
+
+  
+        const updatedArr = [...oldRois, ...rois];
+  
+        set(selectedRoi, updatedArr);
+     }
+
   },
 });
 
