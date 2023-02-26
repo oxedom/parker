@@ -2,6 +2,7 @@ import {
   imageHeightState,
   detectionThresholdState,
   thresholdIouState,
+  autoDetectState,
   selectedRoiState,
   fpsState,
 } from "./states";
@@ -22,7 +23,6 @@ const Toolbar = ({
   setShowDetections,
   loadedCoco,
   setWebcamEnable,
-  setAutoDetect
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
@@ -31,7 +31,7 @@ const Toolbar = ({
   const [settingChange, setSettingsChange] = useState(false)
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
   const [fps, setFps] = useRecoilState(fpsState);
-
+  const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [localDetectionThreshold, setLocalDetectionThreshold] = useState(undefined);
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
@@ -65,16 +65,21 @@ const Toolbar = ({
 
   const handleAutoDetect = () => 
   {
-    setAutoDetect(true)
-    setProcessing(false);
+    if(autoDetect) {    setAutoDetect(false)}
+    else 
+    {
+      setAutoDetect(true)
+    }
 
-    setTimeout(() => {
+    // setProcessing(false);
+
+    // setTimeout(() => {
    
-      setProcessing(true);
+    //   setProcessing(true);
 
-    }, 10);
+    // }, 10);
 
-    setAutoDetect(false)
+    // setAutoDetect(false)
   }
 
 

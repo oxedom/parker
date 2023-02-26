@@ -75,7 +75,8 @@ const selectedRoiState = selector({
 
     if (action.event === "occupation") {
       let { predictionsArr } = action.payload;
-
+      const autoDetect = get(autoDetectState);
+      console.log(autoDetect);
       //If no predections have happen, then a dummy predection is sent
       //so that the function runs! 
       if (predictionsArr.length === 0) {
@@ -120,7 +121,6 @@ const selectedRoiState = selector({
         //Checking if the current
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
 
-        console.log(isOverlap);
 
         if (!roiEvaluating(currentUnixTime,selectedRois[index]["time"],evaluateTime)) {
           selectedRoisClone[index]["evaluating"] = false;
@@ -231,6 +231,10 @@ const selectedRoiState = selector({
   },
 });
 
+const autoDetectState = atom({
+  key: "autoDetect",
+  default: false,
+});
 
 
 
@@ -256,4 +260,5 @@ export {
   selectedRoiState,
   detectionThresholdState,
   thresholdIouState,
+  autoDetectState
 };

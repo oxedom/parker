@@ -24,7 +24,7 @@ const visionPage = () => {
   const [processing, setProcessing] = useState(true);
   const [showDetections, setShowDetections] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [autoDetect, setAutoDetect] = useState(false)
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -55,7 +55,7 @@ const visionPage = () => {
               setHasWebcam={setHasWebcam}
               isModalOpen={isModalOpen}
               closeModal={closeModal}
-              setAutoDetect={setAutoDetect}
+      
               openModal={openModal}
               showDetections={showDetections}
               processing={processing}
@@ -81,8 +81,6 @@ const visionPage = () => {
               <div className="">
                 <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                 <ClientRender
-                  autoDetect={autoDetect}
-                  setAutoDetect={setAutoDetect}
                   loadedCoco={loadedCoco}
                   setLoadedCoco={setLoadedCoco}
                   setProcessing={setProcessing}
