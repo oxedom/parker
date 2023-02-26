@@ -17,11 +17,12 @@ import {
 } from "./states";
 import { isVehicle } from "../libs/utillity";
 
+
 const ClientRender = ({
   processing,
 
   showDetections,
-  setProcessing,
+
   setLoadedCoco,
   loadedCoco,
 }) => {
@@ -29,7 +30,6 @@ const ClientRender = ({
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const fps = useRecoilValue(fpsState);
-
   const [model, setModel] = useState(undefined);
   const detectionThreshold = useRecoilValue(detectionThresholdState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
@@ -75,7 +75,7 @@ const ClientRender = ({
     if (!webcamRunning) {
       return false;
     }
-
+ 
     const video = webcamRef.current.video;
     const videoWidth = webcamRef.current.video.videoWidth;
     const videoHeight = webcamRef.current.video.videoHeight;
@@ -162,29 +162,23 @@ const ClientRender = ({
       }
     }
 
-    let action;
-    if(autoDetect) 
-    {
-      action = {
-        event: "autoDetect",
-        payload: { predictionsArr: predictionsArr },
-      };
-    }
-    else 
-    {
-      action = {
+    let  action = {
         event: "occupation",
         payload: { predictionsArr: predictionsArr },
-      };
+    };
 
 
-    }
+    
 
 
  
     //Sends action request with a payload, the event is handled
     //inside the state event.
+
+
     setSelectedRois(action);
+
+    
 
     if (showDetections && predictionsArr.length > 0) {
       renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);

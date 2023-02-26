@@ -95,10 +95,10 @@ const selectedRoiState = selector({
       }
       //If no predections have happen, then a dummy predection is sent
       //so that the function runs!
+      console.log('Ran');
 
 
 
-      
       if (predictionsArr.length === 0) {
         predictionsArr = [
           {
