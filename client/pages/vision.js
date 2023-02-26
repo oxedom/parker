@@ -1,15 +1,11 @@
 import ClientRender from "../components/ClientRender";
 import DrawingCanvas from "../components/DrawingCanvas";
 import RoisFeed from "../components/RoisFeed";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ToolbarTwo from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
-import {
-  imageWidthState,
-  imageHeightState,
-  fpsState,
-} from "../components/states";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { imageWidthState, imageHeightState } from "../components/states";
+import { useRecoilValue } from "recoil";
 import EnableWebcam from "../components/EnableWebcam";
 import Head from "next/head";
 import AppNavbar from "../components/AppNavbar";
@@ -49,12 +45,10 @@ const visionPage = () => {
               setReload={setReload}
               setWebcamEnable={setWebcamEnable}
               setProcessing={setProcessing}
-      
               setHasWebcam={setHasWebcam}
               isModalOpen={isModalOpen}
               closeModal={closeModal}
               openModal={openModal}
-
               processing={processing}
               hasWebcam={hasWebcam}
               webcamEnabled={webcamEnabled}
@@ -81,7 +75,6 @@ const visionPage = () => {
                   loadedCoco={loadedCoco}
                   setLoadedCoco={setLoadedCoco}
                   setProcessing={setProcessing}
-  
                   processing={processing}
                 ></ClientRender>
               </div>

@@ -12,3 +12,5 @@ Make UI clean
 Cleanup old code and make everything tider
 Fix bug with displaying green ROI after evulating
 Clean up occupation algo
+Fix plus detection thershold button in settings
+And fix floats in iou Threshold and maybe detections thershold

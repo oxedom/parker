@@ -7,9 +7,9 @@ const Decrementor = ({ min, max, step, setter, value, label, information }) => {
   const btnClass = "p-5 w-[50px] h-[50px] rounded shadow";
   function handleIncrement(e) {
     let afterIncrement = (parseFloat(e.target.value) + step).toFixed(2);
-    console.log(afterIncrement);
+
     if (afterIncrement <= max) {
-      console.log(true);
+
       setter(afterIncrement);
     }
   }
@@ -47,7 +47,7 @@ const Decrementor = ({ min, max, step, setter, value, label, information }) => {
               setId_down(
                 setInterval(() => {
                   handleDecrement(e);
-                }, 75)
+                }, 20)
               );
             }}
             className={`${btnClass} bg-gray-300`}
@@ -72,7 +72,7 @@ const Decrementor = ({ min, max, step, setter, value, label, information }) => {
               setId_up(
                 setInterval(() => {
                   handleIncrement(e);
-                }, 50)
+                }, 20)
               );
             }}
             className={`${btnClass} bg-gray-400  `}

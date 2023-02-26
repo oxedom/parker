@@ -5,7 +5,7 @@ import {
   autoDetectState,
   selectedRoiState,
   fpsState,
-  showDetectionsState
+  showDetectionsState,
 } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 import Modal from "./Modal";
@@ -27,7 +27,8 @@ const Toolbar = ({
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
     detectionThresholdState
   );
-  const [showDetections, setShowDetections] = useRecoilState(showDetectionsState)
+  const [showDetections, setShowDetections] =
+    useRecoilState(showDetectionsState);
   const [settingChange, setSettingsChange] = useState(false);
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
   const [fps, setFps] = useRecoilState(fpsState);
@@ -148,23 +149,6 @@ const Toolbar = ({
                   color: `${processing ? "bg-green-500" : "bg-red-500"}`,
                 }}
               />
-              <Button
-                text={` ${
-                  showDetections ? "View Detections" : " Hide detections "
-                }`}
-                callback={handleDetectionsEnable}
-                colors={{
-                  color: `
-
-        ${
-          showDetections
-            ? `${processing ? "bg-green-500" : "bg-gray-500"}`
-            : `${processing ? "bg-red-500" : "bg-gray-500"}`
-        }
-
-        `,
-                }}
-              />
 
               <div></div>
               <Button
@@ -249,6 +233,22 @@ const Toolbar = ({
         colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
         callback={handleAutoDetect}
         text="Auto detect"
+      />
+
+      <Button
+        text={` ${showDetections ? "View Detections" : " Hide detections "}`}
+        callback={handleDetectionsEnable}
+        colors={{
+          color: `
+
+        ${
+          showDetections
+            ? `${processing ? "bg-green-500" : "bg-gray-500"}`
+            : `${processing ? "bg-red-500" : "bg-gray-500"}`
+        }
+
+        `,
+        }}
       />
 
       <h6>{` Total spaces: ${selectedRois.length}`}</h6>

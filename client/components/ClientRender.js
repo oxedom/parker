@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-// import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
+import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
 import labels from "../utils/labels.json";
-import { renderAllOverlaps, clearCanvas } from "../libs/canvas_utility";
+import { clearCanvas } from "../libs/canvas_utility";
 import { xywh2xyxy } from "../utils/renderBox.js";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
@@ -17,11 +17,8 @@ import {
 } from "./states";
 import { isVehicle } from "../libs/utillity";
 
-
 const ClientRender = ({
   processing,
-
-
 
   setLoadedCoco,
   loadedCoco,
@@ -33,7 +30,7 @@ const ClientRender = ({
   const [model, setModel] = useState(undefined);
   const detectionThreshold = useRecoilValue(detectionThresholdState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
-  const [lastChecked, setLastChecked] = useState(0)
+  const [lastChecked, setLastChecked] = useState(0);
   const thresholdIou = useRecoilValue(thresholdIouState);
   let overlayXRef = useRef(null);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
@@ -76,7 +73,7 @@ const ClientRender = ({
     if (!webcamRunning) {
       return false;
     }
- 
+
     const video = webcamRef.current.video;
     const videoWidth = webcamRef.current.video.videoWidth;
     const videoHeight = webcamRef.current.video.videoHeight;
@@ -163,27 +160,15 @@ const ClientRender = ({
       }
     }
 
-    let  action = {
-        event: "occupation",
-        payload: { predictionsArr: predictionsArr, canvas: overlayXRef },
+    let action = {
+      event: "occupation",
+      payload: { predictionsArr: predictionsArr, canvas: overlayXRef },
     };
 
-
-    
-
-
- 
     //Sends action request with a payload, the event is handled
     //inside the state event.
 
- 
     setSelectedRois(action);
-
-
-
-    
-
-
 
     tf.dispose(res);
     tf.engine().endScope();
