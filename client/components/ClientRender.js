@@ -162,11 +162,26 @@ const ClientRender = ({
       }
     }
 
-    let action = {
-      event: "occupation",
-      payload: { predictionsArr: predictionsArr },
-    };
+    let action;
+    if(autoDetect) 
+    {
+      action = {
+        event: "autoDetect",
+        payload: { predictionsArr: predictionsArr },
+      };
+    }
+    else 
+    {
+      action = {
+        event: "occupation",
+        payload: { predictionsArr: predictionsArr },
+      };
 
+
+    }
+
+
+ 
     //Sends action request with a payload, the event is handled
     //inside the state event.
     setSelectedRois(action);

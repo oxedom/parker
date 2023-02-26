@@ -2,11 +2,9 @@ import { atom, selector } from "recoil";
 import uniqid from "uniqid";
 import { checkRectOverlap } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
+import { Log } from "@tensorflow/tfjs";
 
-const selectedRoi = atom({
-  key: "selectedRois",
-  default: [],
-});
+
 
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
@@ -32,6 +30,18 @@ const processingState = atom({
   key: "processing",
   default: true,
 });
+
+const autoDetectState = atom({
+  key: "autoDetect",
+  default: false,
+});
+
+const selectedRoi = atom({
+  key: "selectedRois",
+  default: [],
+});
+
+
 
 const selectedRoiState = selector({
   key: "selectedRoisState",
@@ -73,10 +83,22 @@ const selectedRoiState = selector({
 
     if (action.event === "occupation") {
       let { predictionsArr } = action.payload;
-      const autoDetect = get(autoDetectState);
-      console.log(autoDetect);
+      let _selectedRoi = get(selectedRoi)
+      let _autoDetect = get(autoDetectState)
+      if(_autoDetect) { 
+        
+
+
+
+        set(selectedRoi, [])
+        set(autoDetectState, false)
+      }
       //If no predections have happen, then a dummy predection is sent
       //so that the function runs!
+
+
+
+      
       if (predictionsArr.length === 0) {
         predictionsArr = [
           {
@@ -151,6 +173,7 @@ const selectedRoiState = selector({
       set(selectedRoi, selectedRoisClone);
     }
 
+
     if (action.event === "selectRoi") {
       let uid = action.payload;
       //Array of ROI objects
@@ -220,10 +243,7 @@ const selectedRoiState = selector({
   },
 });
 
-const autoDetectState = atom({
-  key: "autoDetect",
-  default: false,
-});
+
 
 const imageHeightState = atom({
   key: "imageHeight",
