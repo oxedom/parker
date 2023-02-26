@@ -1,5 +1,3 @@
-
-
 function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
   const intersectionX2 = Math.min(
@@ -51,8 +49,6 @@ export async function capturedImageServer(capturedImage) {
   return data;
 }
 
-
-
 export function checkOverlapArrays(detectionsArr, selectedArr) {
   let overlaps = [];
   detectionsArr.forEach((d) => {
@@ -75,8 +71,10 @@ export function checkRectOverlap(rect, detectionsArr) {
   let answer = false;
   detectionsArr.forEach((d) => {
     //If answer is already true return answer
-    if(answer == true) { return answer}
-        ///Overlap calculation
+    if (answer == true) {
+      return answer;
+    }
+    ///Overlap calculation
     let overlapCords = getOverlap(d.cords, rect.cords);
     //If overlapcords is null the squares don't intersect
     if (overlapCords == null) {
@@ -105,13 +103,15 @@ export function checkRectOverlap(rect, detectionsArr) {
   return answer;
 }
 
-
-
-
-
-
 export function isVehicle(label) {
-if(label === 'car' || label === 'truck' ||  "label" == 'motorcycle'  || label ===  'bus'  ) { return true} 
-else { return false}
-
- }
+  if (
+    label === "car" ||
+    label === "truck" ||
+    "label" == "motorcycle" ||
+    label === "bus"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}

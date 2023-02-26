@@ -15,7 +15,7 @@ const evaluateTimeState = atom({
 
 const detectionThresholdState = atom({
   key: "detectionThresholdState",
-  default: 0.40,
+  default: 0.4,
 });
 
 const thresholdIouState = atom({
@@ -27,8 +27,6 @@ const fpsState = atom({
   key: "framesPerSecounds",
   default: 1,
 });
-
-
 
 const processingState = atom({
   key: "processing",
@@ -78,7 +76,7 @@ const selectedRoiState = selector({
       const autoDetect = get(autoDetectState);
       console.log(autoDetect);
       //If no predections have happen, then a dummy predection is sent
-      //so that the function runs! 
+      //so that the function runs!
       if (predictionsArr.length === 0) {
         predictionsArr = [
           {
@@ -98,9 +96,7 @@ const selectedRoiState = selector({
 
       //   //Array of ROI objects
 
-
-
-      //If there are no selected objects the function returns because there 
+      //If there are no selected objects the function returns because there
       //Is nothing to check
       const selectedRois = get(selectedRoi);
       if (selectedRois.length === 0) {
@@ -111,22 +107,21 @@ const selectedRoiState = selector({
       //Get the unix time
       const currentUnixTime = Date.now();
       const selectedRoisClone = structuredClone(selectedRois);
-      
 
       //   //Log N** function on quite a small scale so it's okay
       for (let index = 0; index < selectedRois.length; index++) {
-        
-
-
         //Checking if the current
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
 
-
-        if (!roiEvaluating(currentUnixTime,selectedRois[index]["time"],evaluateTime)) {
+        if (
+          !roiEvaluating(
+            currentUnixTime,
+            selectedRois[index]["time"],
+            evaluateTime
+          )
+        ) {
           selectedRoisClone[index]["evaluating"] = false;
         }
-
-
 
         if (isOverlap && selectedRois[index]["firstSeen"] === null) {
           selectedRoisClone[index]["firstSeen"] = currentUnixTime;
@@ -195,39 +190,33 @@ const selectedRoiState = selector({
       set(selectedRoi, []);
     }
 
-    if(action.event === 'addManyRois') 
-    {
+    if (action.event === "addManyRois") {
       let date = new Date();
 
-        let { predictionsArr } = action.payload;
-        let rois = []
-        predictionsArr.forEach(p => 
-          {
-            const roiObj = {
-              label: "vehicle",
-              cords: { ...p.cords },
-              time: date,
-              uid: uniqid(),
-              area: p.width * p.height,
-              firstSeen: null,
-              lastSeen: null,
-              occupied: null,
-              hover: false,
-              evaluating: true,
-            };
-            rois.push(roiObj)
+      let { predictionsArr } = action.payload;
+      let rois = [];
+      predictionsArr.forEach((p) => {
+        const roiObj = {
+          label: "vehicle",
+          cords: { ...p.cords },
+          time: date,
+          uid: uniqid(),
+          area: p.width * p.height,
+          firstSeen: null,
+          lastSeen: null,
+          occupied: null,
+          hover: false,
+          evaluating: true,
+        };
+        rois.push(roiObj);
+      });
 
-          })
+      const oldRois = get(selectedRoi);
 
-  
-        const oldRois = get(selectedRoi);
+      const updatedArr = [...oldRois, ...rois];
 
-  
-        const updatedArr = [...oldRois, ...rois];
-  
-        set(selectedRoi, updatedArr);
-     }
-
+      set(selectedRoi, updatedArr);
+    }
   },
 });
 
@@ -235,9 +224,6 @@ const autoDetectState = atom({
   key: "autoDetect",
   default: false,
 });
-
-
-
 
 const imageHeightState = atom({
   key: "imageHeight",
@@ -249,8 +235,6 @@ const imageWidthState = atom({
   default: 640,
 });
 
-
-
 export {
   imageWidthState,
   imageHeightState,
@@ -260,5 +244,5 @@ export {
   selectedRoiState,
   detectionThresholdState,
   thresholdIouState,
-  autoDetectState
+  autoDetectState,
 };

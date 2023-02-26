@@ -1,11 +1,7 @@
-
-
 const Button = ({ text, callback, colors }) => {
-
-
   // let audio = new Audio("../static/click.wav")
 
-  // const handleSound = () => 
+  // const handleSound = () =>
   // {
 
   //   audio.play()

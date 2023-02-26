@@ -13,49 +13,45 @@ import {
   thresholdIouState,
   detectionThresholdState,
   fpsState,
-  autoDetectState
+  autoDetectState,
 } from "./states";
 import { isVehicle } from "../libs/utillity";
 
-
 const ClientRender = ({
   processing,
-  
 
   showDetections,
   setProcessing,
   setLoadedCoco,
   loadedCoco,
 }) => {
-
   const model_dim = [640, 640];
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const fps = useRecoilValue(fpsState);
 
   const [model, setModel] = useState(undefined);
-  const detectionThreshold= useRecoilValue(detectionThresholdState);
-  const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState)
+  const detectionThreshold = useRecoilValue(detectionThresholdState);
+  const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const thresholdIou = useRecoilValue(thresholdIouState);
   let overlayXRef = useRef(null);
-  const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState)
+  const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const webcamRef = useRef(null);
   const modelName = "yolov7";
 
+  const webcamRunning = () => {
+    if (
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
-
-  const webcamRunning = () => 
-  {
-
-    if(      typeof webcamRef.current !== "undefined" &&
-    webcamRef.current !== null &&
-    webcamRef.current.video.readyState === 4) { return true}
-    else { return false}
-
-  }
-
-  const createInput = (video) => 
-  {
+  const createInput = (video) => {
     return tf.tidy(() => {
       const img = tf.image
         .resizeBilinear(tf.browser.fromPixels(video), model_dim)
@@ -65,7 +61,7 @@ const ClientRender = ({
 
       return img;
     });
-  }
+  };
 
   useEffect(() => {
     // Need to do this for canvas2d to work
@@ -76,123 +72,114 @@ const ClientRender = ({
   }, [loadedCoco]);
 
   const detectFrame = async (model) => {
-    
-      if(!webcamRunning) { return false}
+    if (!webcamRunning) {
+      return false;
+    }
 
+    const video = webcamRef.current.video;
+    const videoWidth = webcamRef.current.video.videoWidth;
+    const videoHeight = webcamRef.current.video.videoHeight;
 
+    // Set video width
+    webcamRef.current.video.width = videoWidth;
+    webcamRef.current.video.height = videoHeight;
 
-      const video = webcamRef.current.video;
-      const videoWidth = webcamRef.current.video.videoWidth;
-      const videoHeight = webcamRef.current.video.videoHeight;
+    tf.engine().startScope();
 
-      // Set video width
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
+    const input = createInput(video);
 
-      
-      tf.engine().startScope();
+    let res = model.execute(input);
 
-      const input = createInput(video)
+    res = res.arraySync()[0];
+    //Filtering only detections > conf_thres
+    res = res.filter((dataRow) => dataRow[4] >= detectionThreshold);
 
-      let res = model.execute(input);
+    let boxes = [];
+    let class_detect = [];
+    let scores = [];
 
-      res = res.arraySync()[0];
-      //Filtering only detections > conf_thres
-      res = res.filter((dataRow) => dataRow[4] >= detectionThreshold);
+    res.forEach(process_pred);
 
-      let boxes = [];
-      let class_detect = [];
-      let scores = [];
+    function process_pred(res) {
+      var box = res.slice(0, 4);
 
-      res.forEach(process_pred);
+      const cls_detections = res.slice(5, 85);
+      var max_score_index = cls_detections.reduce(
+        (imax, x, i, arr) => (x > arr[imax] ? i : imax),
+        0
+      );
 
-      function process_pred(res) {
-        var box = res.slice(0, 4);
+      boxes.push(box);
+      scores.push(res[max_score_index + 5]);
+      class_detect.push(max_score_index);
+    }
 
-        const cls_detections = res.slice(5, 85);
-        var max_score_index = cls_detections.reduce(
-          (imax, x, i, arr) => (x > arr[imax] ? i : imax),
-          0
-        );
+    let nmsDetections;
+    let detectionIndices;
+    let detectionScores;
+    let predictionsArr = [];
+    if (boxes.length > 0) {
+      nmsDetections = await tf.image.nonMaxSuppressionAsync(
+        boxes,
+        scores,
+        100,
+        thresholdIou
+      );
 
-        boxes.push(box);
-        scores.push(res[max_score_index + 5]);
-        class_detect.push(max_score_index);
+      detectionIndices = nmsDetections.dataSync();
 
-      }
-
-      let nmsDetections;
-      let detectionIndices;
-      let detectionScores;
-      let predictionsArr = [];
-      if (boxes.length > 0) {
-
-        nmsDetections = await tf.image.nonMaxSuppressionAsync(
-          boxes,
-          scores,
-          100,
-          thresholdIou
-        );
-
-
-        detectionIndices = nmsDetections.dataSync();
-
-        for (let i = 0; i < detectionIndices.length; i++) {
-          const detectionIndex = detectionIndices[i];
-          const detectionScore = scores[detectionIndex];
-          const detectionClass = class_detect[detectionIndex];
-          let dect_label = labels[detectionClass];
-          if(!isVehicle(dect_label)) { return; }
-          const roiObj = { cords: {} };
-          let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
-
-          // Extract the bounding box coordinates from the 'boxes' tensor
-          y1 = y1 * (imageHeight / 640);
-          y2 = y2 * (imageHeight / 640);
-          x1 = x1 * (imageWidth / 640);
-          x2 = x2 * (imageWidth / 640);
-          let width = x2 - x1;
-          let height = y2 - y1;
-          roiObj.cords.bottom_y = y2;
-          roiObj.cords.left_x = x2;
-          roiObj.cords.top_y = y1;
-          roiObj.cords.right_x = x1;
-          roiObj.cords.width = width;
-          roiObj.cords.height = height;
-          // Add the detection score to the bbox object
-          roiObj.confidenceLevel = detectionScore;
-          roiObj.label = dect_label;
-          roiObj.area = width * height;
-          // Add the bbox object to the bboxes array
-        
-          predictionsArr.push(roiObj);
+      for (let i = 0; i < detectionIndices.length; i++) {
+        const detectionIndex = detectionIndices[i];
+        const detectionScore = scores[detectionIndex];
+        const detectionClass = class_detect[detectionIndex];
+        let dect_label = labels[detectionClass];
+        if (!isVehicle(dect_label)) {
+          return;
         }
+        const roiObj = { cords: {} };
+        let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
+
+        // Extract the bounding box coordinates from the 'boxes' tensor
+        y1 = y1 * (imageHeight / 640);
+        y2 = y2 * (imageHeight / 640);
+        x1 = x1 * (imageWidth / 640);
+        x2 = x2 * (imageWidth / 640);
+        let width = x2 - x1;
+        let height = y2 - y1;
+        roiObj.cords.bottom_y = y2;
+        roiObj.cords.left_x = x2;
+        roiObj.cords.top_y = y1;
+        roiObj.cords.right_x = x1;
+        roiObj.cords.width = width;
+        roiObj.cords.height = height;
+        // Add the detection score to the bbox object
+        roiObj.confidenceLevel = detectionScore;
+        roiObj.label = dect_label;
+        roiObj.area = width * height;
+        // Add the bbox object to the bboxes array
+
+        predictionsArr.push(roiObj);
       }
+    }
 
+    let action = {
+      event: "occupation",
+      payload: { predictionsArr: predictionsArr },
+    };
 
+    //Sends action request with a payload, the event is handled
+    //inside the state event.
+    setSelectedRois(action);
 
-      let action = {
-        event: "occupation",
-        payload: { predictionsArr: predictionsArr },
-      };
+    if (showDetections && predictionsArr.length > 0) {
+      renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
+    } else {
+      clearCanvas(overlayXRef, imageWidth, imageHeight);
+    }
 
-      //Sends action request with a payload, the event is handled
-      //inside the state event.
-      setSelectedRois(action);
-
-      if (showDetections && predictionsArr.length > 0) {
-        renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
-      } else {
-        clearCanvas(overlayXRef, imageWidth, imageHeight);
-      }
-
-
-      tf.dispose(res);
-      tf.engine().endScope();
-    
+    tf.dispose(res);
+    tf.engine().endScope();
   };
-
-
 
   const runYolo = async () => {
     console.log("LOAD YOLO HAS RUN ");
@@ -200,11 +187,7 @@ const ClientRender = ({
     let yolov7 = await tf.loadGraphModel(
       `${window.location.origin}/${modelName}_web_model/model.json`,
       {
-        onProgress: (fractions) => {
-        
-  
-   
-        },
+        onProgress: (fractions) => {},
       }
     );
 
@@ -216,7 +199,7 @@ const ClientRender = ({
     setModel(yolov7);
     id = setInterval(() => {
       detectFrame(yolov7);
-    }, fps*1000);
+    }, fps * 1000);
 
     return id;
   };
@@ -234,7 +217,7 @@ const ClientRender = ({
         id = res;
       });
     }
- 
+
     //Clean up
     return function () {
       clearInterval(id);

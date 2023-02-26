@@ -10,7 +10,5 @@ Auto parking function
 Work on docs
 Make UI clean
 Cleanup old code and make everything tider
-Fix bug with displaying green ROI after evulating 
+Fix bug with displaying green ROI after evulating
 Clean up occupation algo
-
-

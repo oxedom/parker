@@ -52,7 +52,6 @@ video {
   max-width: none;
 }
 
-
 .react-tooltip {
   position: absolute;
   top: 100%;
@@ -62,7 +61,6 @@ video {
 }
 
 .react-tooltip .tooltip-inner {
-  
   top: 100%;
   left: 0;
   z-index: 999;

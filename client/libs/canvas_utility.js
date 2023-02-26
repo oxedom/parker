@@ -81,9 +81,11 @@ export function renderRoi(roi, contextCanvas) {
   contextCanvas.current.font = font;
   contextCanvas.textBaseline = "top";
   contextCanvas.fillStyle = "#ffffff";
-  //This prevents the canvas to draw the user selected roi, 
+  //This prevents the canvas to draw the user selected roi,
   //because the label vechicle does not exist in the yolo7 labels (too generic)
-  if(roi.label === 'vehicle') { return;}
+  if (roi.label === "vehicle") {
+    return;
+  }
   contextCanvas.current.fillText(roi.label, centerX, top_y * 0.9);
 }
 

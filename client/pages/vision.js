@@ -25,7 +25,6 @@ const visionPage = () => {
   const [showDetections, setShowDetections] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -55,7 +54,6 @@ const visionPage = () => {
               setHasWebcam={setHasWebcam}
               isModalOpen={isModalOpen}
               closeModal={closeModal}
-      
               openModal={openModal}
               showDetections={showDetections}
               processing={processing}
