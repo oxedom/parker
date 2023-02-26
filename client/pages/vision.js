@@ -22,7 +22,6 @@ const visionPage = () => {
   const imageHeight = useRecoilValue(imageHeightState);
   const [loadedCoco, setLoadedCoco] = useState(false);
   const [processing, setProcessing] = useState(true);
-  const [showDetections, setShowDetections] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -50,12 +49,12 @@ const visionPage = () => {
               setReload={setReload}
               setWebcamEnable={setWebcamEnable}
               setProcessing={setProcessing}
-              setShowDetections={setShowDetections}
+      
               setHasWebcam={setHasWebcam}
               isModalOpen={isModalOpen}
               closeModal={closeModal}
               openModal={openModal}
-              showDetections={showDetections}
+
               processing={processing}
               hasWebcam={hasWebcam}
               webcamEnabled={webcamEnabled}
@@ -82,7 +81,7 @@ const visionPage = () => {
                   loadedCoco={loadedCoco}
                   setLoadedCoco={setLoadedCoco}
                   setProcessing={setProcessing}
-                  showDetections={showDetections}
+  
                   processing={processing}
                 ></ClientRender>
               </div>

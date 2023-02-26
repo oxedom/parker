@@ -2,7 +2,8 @@ import { atom, selector } from "recoil";
 import uniqid from "uniqid";
 import { checkRectOverlap } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
-import { Log } from "@tensorflow/tfjs";
+import { clearCanvas, renderAllOverlaps } from "../libs/canvas_utility";
+import { at } from "lodash";
 
 
 
@@ -20,6 +21,12 @@ const thresholdIouState = atom({
   key: "thresholdIouState",
   default: 0.65,
 });
+
+const showDetectionsState = atom({
+  key: "showDetectionsState",
+  default: false
+
+})
 
 const fpsState = atom({
   key: "framesPerSecounds",
@@ -39,6 +46,11 @@ const autoDetectState = atom({
 const selectedRoi = atom({
   key: "selectedRois",
   default: [],
+});
+
+const lastCheckedState = atom({
+  key: "lastChecked",
+  default: 0,
 });
 
 
@@ -82,9 +94,14 @@ const selectedRoiState = selector({
     }
 
     if (action.event === "occupation") {
-      let { predictionsArr } = action.payload;
+      let { predictionsArr, canvas } = action.payload;
+      let _lastChecked = get(lastCheckedState)
       let _selectedRoi = get(selectedRoi)
       let _autoDetect = get(autoDetectState)
+      let _width = get(imageWidthState)
+      let _height = get(imageHeightState)
+
+
       if(_autoDetect) { 
         
 
@@ -93,12 +110,37 @@ const selectedRoiState = selector({
         set(selectedRoi, [])
         set(autoDetectState, false)
       }
+    
+ 
+      //This if checks prevents the checkOverlap running an execive amount of times,
+      //The rate of the action dispatched is depent on the rate of FPS, and because the FPS is 
+      //determened by a setTimeout I can't internvine with state because the call stack values are
+      //updated up untill the point where the timer was inited. 
+      //This is set too 900 to give some leeway for race condtions, altohugh it's not very crucial that checkOverlap will
+      //Miss one check up. As well as checkOverlap is a O^n2 function so best not to spam it, could be done better but because
+      //max input of N would at it's highest point 100 (And that an exaggerating  it still would run smoothly (tested,
+      // as well there //Is some optimazation in the checkOverlap which would make the amount of actions less.
+      let excessiveCheck = (Date.now() - _lastChecked > 900 && !_autoDetect) 
+   
+      if(excessiveCheck) {
+      console.log('GOOD');
+      set(lastCheckedState, Date.now())
+      }else {
+      console.log('BAD');
+      return 
+      }
+ 
+      if(true && predictionsArr.length > 0) 
+      {
+        renderAllOverlaps(predictionsArr,canvas, _width, _height )
+      }
+      else 
+      {
+        clearCanvas(canvas, _width, _height )
+      }
+
       //If no predections have happen, then a dummy predection is sent
       //so that the function runs!
-      console.log('Ran');
-
-
-
       if (predictionsArr.length === 0) {
         predictionsArr = [
           {
@@ -264,5 +306,6 @@ export {
   selectedRoiState,
   detectionThresholdState,
   thresholdIouState,
+  showDetectionsState,
   autoDetectState,
 };

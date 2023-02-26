@@ -5,6 +5,7 @@ import {
   autoDetectState,
   selectedRoiState,
   fpsState,
+  showDetectionsState
 } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 import Modal from "./Modal";
@@ -19,8 +20,6 @@ const Toolbar = ({
   isModalOpen,
   setHasWebcam,
   webcamEnabled,
-  showDetections,
-  setShowDetections,
   loadedCoco,
   setWebcamEnable,
 }) => {
@@ -28,6 +27,7 @@ const Toolbar = ({
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
     detectionThresholdState
   );
+  const [showDetections, setShowDetections] = useRecoilState(showDetectionsState)
   const [settingChange, setSettingsChange] = useState(false);
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
   const [fps, setFps] = useRecoilState(fpsState);

@@ -21,7 +21,7 @@ import { isVehicle } from "../libs/utillity";
 const ClientRender = ({
   processing,
 
-  showDetections,
+
 
   setLoadedCoco,
   loadedCoco,
@@ -33,6 +33,7 @@ const ClientRender = ({
   const [model, setModel] = useState(undefined);
   const detectionThreshold = useRecoilValue(detectionThresholdState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
+  const [lastChecked, setLastChecked] = useState(0)
   const thresholdIou = useRecoilValue(thresholdIouState);
   let overlayXRef = useRef(null);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
@@ -164,7 +165,7 @@ const ClientRender = ({
 
     let  action = {
         event: "occupation",
-        payload: { predictionsArr: predictionsArr },
+        payload: { predictionsArr: predictionsArr, canvas: overlayXRef },
     };
 
 
@@ -175,16 +176,14 @@ const ClientRender = ({
     //Sends action request with a payload, the event is handled
     //inside the state event.
 
-
+ 
     setSelectedRois(action);
+
+
 
     
 
-    if (showDetections && predictionsArr.length > 0) {
-      renderAllOverlaps(predictionsArr, overlayXRef, imageWidth, imageHeight);
-    } else {
-      clearCanvas(overlayXRef, imageWidth, imageHeight);
-    }
+
 
     tf.dispose(res);
     tf.engine().endScope();
@@ -237,7 +236,7 @@ const ClientRender = ({
         setModel(undefined);
       }
     };
-  }, [processing, showDetections]);
+  }, [processing]);
 
   return (
     <>
