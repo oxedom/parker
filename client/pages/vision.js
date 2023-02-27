@@ -94,20 +94,7 @@ const visionPage = () => {
       </div>
     </DashboardLayout>
   );
-  // } else {
-  //   return (
-  //     <DashboardLayout>
-  //     {/* <EnableWebcam
-  //       setHasWebcam={setHasWebcam}
-  //       hasWebcam={hasWebcam}
-  //       webcamEnabled={webcamEnabled}
-  //       setWebcamEnable={setWebcamEnable}
-  //       reload={reload}
-  //       setReload={setReload}
-  //     ></EnableWebcam> */}
-  //           </DashboardLayout>
-  //   );
-  // }
+
 };
 
 export default visionPage;

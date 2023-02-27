@@ -120,7 +120,7 @@ const DrawingCanvas = ({ setProcessing }) => {
   useEffect(() => {
     const canvasEl = canvasRef.current;
     const overlayEl = overlayRef.current;
-    observer.observe(canvasEl);
+    // observer.observe(canvasEl);
     let canvasOffset = canvasEl.getBoundingClientRect();
     ctxRef.current = canvasEl.getContext("2d");
     ctxoRef.current = overlayEl.getContext("2d");
