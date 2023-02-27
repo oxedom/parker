@@ -36,13 +36,14 @@ const visionPage = () => {
 
       <div className="flex flex-col  p-16   ">
         <div className="">
-          <AppNavbar openModal={openModal}></AppNavbar>
+          {/* <AppNavbar ></AppNavbar> */}
           <div
             className="flex justify-between rounded-lg outline-3 outline outline-black shadow-lg
             "
           >
             <ToolbarTwo
               setReload={setReload}
+           
               setWebcamEnable={setWebcamEnable}
               setProcessing={setProcessing}
               setHasWebcam={setHasWebcam}

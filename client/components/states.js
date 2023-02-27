@@ -3,7 +3,7 @@ import uniqid from "uniqid";
 import { checkRectOverlap } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
 import { clearCanvas, renderAllOverlaps } from "../libs/canvas_utility";
-import { at } from "lodash";
+
 
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
@@ -12,7 +12,7 @@ const evaluateTimeState = atom({
 
 const detectionThresholdState = atom({
   key: "detectionThresholdState",
-  default: 0.4,
+  default: 0.6,
 });
 
 const thresholdIouState = atom({

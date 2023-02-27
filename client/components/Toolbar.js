@@ -16,6 +16,7 @@ import Decrementor from "./Decrementor";
 const Toolbar = ({
   processing,
   setProcessing,
+  openModal,
   closeModal,
   isModalOpen,
   setHasWebcam,
@@ -163,11 +164,11 @@ const Toolbar = ({
                 information={detectInfo}
                 alt="detection score threshold"
                 step={1}
-                min={0}
-                max={99}
+                min={10}
+                max={100}
                 value={localDetectionThreshold}
                 setter={(value) => {
-                  setLocalDetectonThreshold(value);
+                  setLocalDetectionThreshold(value);
                   setSettingsChange(true);
                 }}
                 label="Detection Threshold"
@@ -177,8 +178,8 @@ const Toolbar = ({
                 information={iouInfo}
                 alt="iou threshold"
                 step={1}
-                min={0}
-                max={99}
+                min={10}
+                max={100}
                 value={localIouThreshold}
                 label="iou  Threshold"
                 setter={(value) => {
@@ -227,8 +228,14 @@ const Toolbar = ({
               {" "}
             </Button>
           </div>
+
+  
+
         </div>
       </Modal>
+      <Button text={"Settings"} callback={openModal}  colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}/>
+
+
       <Button
         colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
         callback={handleAutoDetect}
