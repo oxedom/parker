@@ -8,10 +8,11 @@ import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
 import { selectedRoiState } from "../components/states";
 import { renderRoi } from "../libs/canvas_utility";
+import { useWindowSize } from "./hooks/useWindowSize";
 
 const DrawingCanvas = ({ setProcessing }) => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
-
+  const size = useWindowSize()
   const selectedColor = "f52222";
   const selectingColor = "#979A9A";
   const imageWidth = useRecoilValue(imageWidthState);
@@ -39,7 +40,7 @@ const DrawingCanvas = ({ setProcessing }) => {
     });
   };
 
-  let observer = new IntersectionObserver(callback, options);
+
 
   const [isDown, setIsDown] = useState(false);
   const [offsetX, setOffsetX] = useState(undefined);
@@ -116,26 +117,29 @@ const DrawingCanvas = ({ setProcessing }) => {
   }
 
   //Rerender all all rois when state changes
+  function updateBounding (canvasEl){
+    let canvasOffset = canvasEl.getBoundingClientRect();
+    setOffsetX(canvasOffset.left);
+    setOffsetY(canvasOffset.top);
+  }
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
     const overlayEl = overlayRef.current;
-    // observer.observe(canvasEl);
-    let canvasOffset = canvasEl.getBoundingClientRect();
+    updateBounding(canvasEl)
     ctxRef.current = canvasEl.getContext("2d");
     ctxoRef.current = overlayEl.getContext("2d");
-
     const ctx = ctxRef.current;
     const ctxo = ctxoRef.current;
     ctx.strokeStyle = selectingColor;
     ctx.lineWidth = 7;
     ctxo.strokeStyle = selectedColor;
     ctxo.lineWidth = 7;
-    setOffsetX(canvasOffset.left);
-    setOffsetY(canvasOffset.top);
   }, []);
 
   useEffect(() => {
+    console.log('i like running');
+    updateBounding(canvasRef.current)
     if (ctxoRef.current != null) {
       ctxoRef.current.clearRect(
         0,
@@ -156,7 +160,7 @@ const DrawingCanvas = ({ setProcessing }) => {
         );
       }
     }
-  }, [selectedRois]);
+  }, [selectedRois, size]);
 
   function handleMouseDown(e) {
     e.preventDefault();
