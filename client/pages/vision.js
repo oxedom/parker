@@ -2,7 +2,7 @@ import ClientRender from "../components/ClientRender";
 import DrawingCanvas from "../components/DrawingCanvas";
 import RoisFeed from "../components/RoisFeed";
 import { useState } from "react";
-import ToolbarTwo from "../components/Toolbar";
+import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilValue } from "recoil";
@@ -35,12 +35,11 @@ const visionPage = () => {
 
       <div className="flex flex-col  p-16   ">
         <div className="">
-          {/* <AppNavbar ></AppNavbar> */}
           <div
             className="flex justify-between rounded-lg outline-3 outline outline-black shadow-lg
             "
           >
-            <ToolbarTwo
+            <Toolbar
               setReload={setReload}
               setWebcamEnable={setWebcamEnable}
               setProcessing={setProcessing}
@@ -54,20 +53,17 @@ const visionPage = () => {
               loadedCoco={loadedCoco}
             >
               {" "}
-            </ToolbarTwo>
+            </Toolbar>
             {!hasWebcam ? (
               <EnableWebcam
                 setHasWebcam={setHasWebcam}
                 hasWebcam={hasWebcam}
                 webcamEnabled={webcamEnabled}
                 setWebcamEnable={setWebcamEnable}
-                reload={reload}
-                setReload={setReload}
               ></EnableWebcam>
             ) : (
               <></>
             )}
-            {webcamEnabled && hasWebcam ? (
               <div className="">
                 <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                 <ClientRender
@@ -77,15 +73,6 @@ const visionPage = () => {
                   processing={processing}
                 ></ClientRender>
               </div>
-            ) : (
-              <video
-                width={imageWidth}
-                className={`bg-yellow-400 ${!hasWebcam ? "hidden" : "block"}`}
-                style={{ width: imageWidth, height: imageHeight }}
-                height={imageHeight}
-              ></video>
-            )}
-
             <RoisFeed></RoisFeed>
           </div>
         </div>

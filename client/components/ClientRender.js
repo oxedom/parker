@@ -34,6 +34,16 @@ const ClientRender = ({ processing, setLoadedCoco, loadedCoco }) => {
   const [loadedVideo, setLoadedVideo] = useState(false)
   const [demo, setDemo] = useState(true)
   const modelName = "yolov7";
+  
+  function detectWebcam(callback) {
+    let md = navigator.mediaDevices;
+    if (!md || !md.enumerateDevices) return callback(false);
+    md.enumerateDevices().then((devices) => {
+      callback(devices.some((device) => "videoinput" === device.kind));
+    });
+  }
+
+
 
   const webcamRunning = () => {
     if (
