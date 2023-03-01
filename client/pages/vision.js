@@ -16,7 +16,7 @@ const visionPage = () => {
   const [loadedCoco, setLoadedCoco] = useState(false);
   const [processing, setProcessing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [demo, setDemo] = useState(true)
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -39,6 +39,8 @@ const visionPage = () => {
           >
             <Toolbar
               setWebcamEnable={setWebcamEnable}
+              setDemo={setDemo}
+              demo={demo}
               setProcessing={setProcessing}
               setHasWebcam={setHasWebcam}
               isModalOpen={isModalOpen}
@@ -54,6 +56,7 @@ const visionPage = () => {
               <div className="">
                 <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                 <ClientRender
+                  demo={demo}
                   hasWebcam={hasWebcam}
                   loadedCoco={loadedCoco}
                   webcamEnabled={webcamEnabled}

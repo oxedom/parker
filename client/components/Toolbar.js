@@ -20,6 +20,8 @@ const Toolbar = ({
   closeModal,
   isModalOpen,
   setHasWebcam,
+  demo,
+  setDemo,
   webcamEnabled,
   loadedCoco,
   setWebcamEnable,
@@ -39,6 +41,9 @@ const Toolbar = ({
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
   const selectedRois = useRecoilValue(selectedRoiState);
+
+
+
 
   const totalOccupied = (roiArr) => {
     let OccupiedCount = 0;
@@ -76,6 +81,13 @@ const Toolbar = ({
       setAutoDetect(true);
     }
   };
+
+  const handleDemo = () => 
+  {
+
+    demo ? setDemo(false) : setDemo(true)
+
+  }
 
   const handleSaveSettings = () => {
     // closeModal
@@ -240,6 +252,12 @@ const Toolbar = ({
         colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
         callback={handleAutoDetect}
         text="Auto detect"
+      />
+
+        <Button
+        colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
+        callback={handleDemo}
+        text="Demo"
       />
 
       <Button

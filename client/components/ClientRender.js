@@ -19,7 +19,7 @@ import {
 import { isVehicle } from "../libs/utillity";
 
 
-const ClientRender = ({ processing, setLoadedCoco, loadedCoco, hasWebcam, setHasWebcam }) => {
+const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, setHasWebcam }) => {
   const model_dim = [640, 640];
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
@@ -33,10 +33,10 @@ const ClientRender = ({ processing, setLoadedCoco, loadedCoco, hasWebcam, setHas
   const webcamRef = useRef(null);
   const demoRef = useRef(null)
   const [demoLoaded, setDemoLoaded] = useState(true)
-  const [demo, setDemo] = useState(true)
+  const [webcamLoaded, setWebcamLoaded] = useState(false)
   const modelName = "yolov7";
   const [webcamEnabled, setWebcamEnable] = useState(false);
-
+  
 
 
   const webcamRunning = () => {
@@ -66,7 +66,8 @@ const ClientRender = ({ processing, setLoadedCoco, loadedCoco, hasWebcam, setHas
     let video;
     let videoWidth
     let videoHeight
-    if(!demo && hasWebcam && webcamEnabled) 
+
+    if(!demo && hasWebcam && webcamEnabled && webcamLoaded && webcamRef.current != null) 
     {
       video = webcamRef.current.video;
       videoWidth = webcamRef.current.video.videoWidth;
@@ -76,7 +77,7 @@ const ClientRender = ({ processing, setLoadedCoco, loadedCoco, hasWebcam, setHas
       webcamRef.current.video.height = videoHeight;
    
     }
-    else if(demo && demoLoaded) 
+    else if(demo && demoLoaded && !webcamLoaded && demoRef.current != null) 
     {
       video = demoRef.current
       videoWidth = demoRef.current.videoWidth;
@@ -260,6 +261,7 @@ const ClientRender = ({ processing, setLoadedCoco, loadedCoco, hasWebcam, setHas
         {!demo && webcamEnabled ? 
          (<Webcam
           height={imageHeight}
+          onPlay={(e) => { setWebcamLoaded(true)}}
           width={imageWidth}
           style={{ height: imageHeight }}
           videoConstraints={{ height: imageHeight, video: imageWidth }}
@@ -284,6 +286,7 @@ const ClientRender = ({ processing, setLoadedCoco, loadedCoco, hasWebcam, setHas
                 loop={true}
                 onPlay={(e) => {
                   console.log(e);
+                  setWebcamLoaded(false)
                   setImageWidth(e.target.videoWidth)
                   setImageHeight(e.target.videoHeight)
                   setDemoLoaded(true)}}
