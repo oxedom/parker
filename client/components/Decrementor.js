@@ -9,7 +9,6 @@ const Decrementor = ({ min, max, step, setter, value, label, information }) => {
     let afterIncrement = (parseFloat(e.target.value) + step).toFixed(2);
 
     if (afterIncrement <= max) {
-
       setter(afterIncrement);
     }
   }

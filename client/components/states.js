@@ -4,7 +4,6 @@ import { checkRectOverlap } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
 import { clearCanvas, renderAllOverlaps } from "../libs/canvas_utility";
 
-
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
   default: 5000,
@@ -22,7 +21,7 @@ const thresholdIouState = atom({
 
 const showDetectionsState = atom({
   key: "showDetectionsState",
-  default: false,
+  default: true,
 });
 
 const fpsState = atom({

@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import Button from "./Button";
 import Decrementor from "./Decrementor";
 
-
 const Toolbar = ({
   processing,
   setProcessing,
@@ -64,7 +63,6 @@ const Toolbar = ({
   `;
 
   useEffect(() => {
-
     setSettingsChange(false);
     setLocalFps(fps);
     setLocalIouThreshold(iouThreshold * 100);
@@ -124,8 +122,6 @@ const Toolbar = ({
   return (
     <div className={`w-[200px]   min-h-[${imageHeight}px]  bg-blue-300  `}>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
-
- 
         <div
           className="flex flex-col justify-between m-auto w-5/12 xl:w-6/12 bg-emerald-50 p-8 z-30 rounded-lg shadow-neo "
           onClick={(e) => {
@@ -232,13 +228,13 @@ const Toolbar = ({
               {" "}
             </Button>
           </div>
-
-  
-
         </div>
       </Modal>
-      <Button text={"Settings"} callback={openModal}  colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}/>
-
+      <Button
+        text={"Settings"}
+        callback={openModal}
+        colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
+      />
 
       <Button
         colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}

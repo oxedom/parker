@@ -14,3 +14,6 @@ Fix bug with displaying green ROI after evulating
 Clean up occupation algo
 Fix plus detection thershold button in settings
 And fix floats in iou Threshold and maybe detections thershold
+Add PM2 Yaml to repo
+Check out mobile responsive
+Check out touch event for dragging squares

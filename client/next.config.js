@@ -13,3 +13,6 @@
 // };
 
 // module.exports = nextConfig;
+module.exports = {
+  /* config options here */
+};

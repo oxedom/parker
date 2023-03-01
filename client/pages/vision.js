@@ -8,7 +8,6 @@ import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilValue } from "recoil";
 import EnableWebcam from "../components/EnableWebcam";
 import Head from "next/head";
-import AppNavbar from "../components/AppNavbar";
 
 const visionPage = () => {
   const [hasWebcam, setHasWebcam] = useState(false);
@@ -43,7 +42,6 @@ const visionPage = () => {
           >
             <ToolbarTwo
               setReload={setReload}
-           
               setWebcamEnable={setWebcamEnable}
               setProcessing={setProcessing}
               setHasWebcam={setHasWebcam}
@@ -94,7 +92,6 @@ const visionPage = () => {
       </div>
     </DashboardLayout>
   );
-
 };
 
 export default visionPage;

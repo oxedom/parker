@@ -12,7 +12,7 @@ import { useWindowSize } from "./hooks/useWindowSize";
 
 const DrawingCanvas = ({ setProcessing }) => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
-  const size = useWindowSize()
+  const size = useWindowSize();
   const selectedColor = "f52222";
   const selectingColor = "#979A9A";
   const imageWidth = useRecoilValue(imageWidthState);
@@ -39,8 +39,6 @@ const DrawingCanvas = ({ setProcessing }) => {
       }
     });
   };
-
-
 
   const [isDown, setIsDown] = useState(false);
   const [offsetX, setOffsetX] = useState(undefined);
@@ -117,17 +115,16 @@ const DrawingCanvas = ({ setProcessing }) => {
   }
 
   //Rerender all all rois when state changes
-  function updateBounding (canvasEl){
+  function updateBounding(canvasEl) {
     let canvasOffset = canvasEl.getBoundingClientRect();
     setOffsetX(canvasOffset.left);
     setOffsetY(canvasOffset.top);
   }
 
   useEffect(() => {
-
     const canvasEl = canvasRef.current;
     const overlayEl = overlayRef.current;
-    updateBounding(canvasEl)
+    updateBounding(canvasEl);
     ctxRef.current = canvasEl.getContext("2d");
     ctxoRef.current = overlayEl.getContext("2d");
     const ctx = ctxRef.current;
@@ -139,8 +136,7 @@ const DrawingCanvas = ({ setProcessing }) => {
   }, []);
 
   useEffect(() => {
-
-    updateBounding(canvasRef.current)
+    updateBounding(canvasRef.current);
     if (ctxoRef.current != null) {
       ctxoRef.current.clearRect(
         0,
