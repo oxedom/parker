@@ -124,6 +124,7 @@ const DrawingCanvas = ({ setProcessing }) => {
   }
 
   useEffect(() => {
+
     const canvasEl = canvasRef.current;
     const overlayEl = overlayRef.current;
     updateBounding(canvasEl)
@@ -138,7 +139,7 @@ const DrawingCanvas = ({ setProcessing }) => {
   }, []);
 
   useEffect(() => {
-    console.log('i like running');
+
     updateBounding(canvasRef.current)
     if (ctxoRef.current != null) {
       ctxoRef.current.clearRect(

@@ -16,6 +16,7 @@ import {
   autoDetectState,
 } from "./states";
 import { isVehicle } from "../libs/utillity";
+import { mod } from "@tensorflow/tfjs";
 
 const ClientRender = ({
   processing,
@@ -27,7 +28,7 @@ const ClientRender = ({
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const fps = useRecoilValue(fpsState);
-  const [model, setModel] = useState(undefined);
+  let model;
   const detectionThreshold = useRecoilValue(detectionThresholdState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [lastChecked, setLastChecked] = useState(0);
@@ -49,21 +50,11 @@ const ClientRender = ({
     }
   };
 
-  const createInput = (video) => {
-    return tf.tidy(() => {
-      const img = tf.image
-        .resizeBilinear(tf.browser.fromPixels(video), model_dim)
-        .div(255.0)
-        .transpose([2, 0, 1])
-        .expandDims(0);
 
-      return img;
-    });
-  };
 
   useEffect(() => {
     // Need to do this for canvas2d to work
-
+    console.log("Client render loaded Coco");
     if (overlayXRef.current != null && loadedCoco) {
       overlayXRef.current = overlayXRef.current.getContext("2d");
     }
@@ -84,7 +75,18 @@ const ClientRender = ({
 
     tf.engine().startScope();
 
-    const input = createInput(video);
+
+
+    let input =  tf.tidy(() => {
+      return tf.image
+        .resizeBilinear(tf.browser.fromPixels(video), model_dim)
+        .div(255.0)
+        .transpose([2, 0, 1])
+        .expandDims(0);
+
+    });
+
+
 
     let res = model.execute(input);
 
@@ -98,11 +100,12 @@ const ClientRender = ({
 
     res.forEach(process_pred);
 
+
     function process_pred(res) {
-      var box = res.slice(0, 4);
+      let box = res.slice(0, 4);
 
       const cls_detections = res.slice(5, 85);
-      var max_score_index = cls_detections.reduce(
+      let max_score_index = cls_detections.reduce(
         (imax, x, i, arr) => (x > arr[imax] ? i : imax),
         0
       );
@@ -111,7 +114,7 @@ const ClientRender = ({
       scores.push(res[max_score_index + 5]);
       class_detect.push(max_score_index);
     }
-
+    
     let nmsDetections;
     let detectionIndices;
     let detectionScores;
@@ -131,9 +134,9 @@ const ClientRender = ({
         const detectionScore = scores[detectionIndex];
         const detectionClass = class_detect[detectionIndex];
         let dect_label = labels[detectionClass];
-        if (!isVehicle(dect_label)) {
-          return;
-        }
+        if (isVehicle(dect_label)) {
+          
+        
         const roiObj = { cords: {} };
         let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
 
@@ -159,19 +162,26 @@ const ClientRender = ({
         predictionsArr.push(roiObj);
       }
     }
-
+    }
+    //Sends action request with a payload, the event is handled
+    //inside the state event.
     let action = {
       event: "occupation",
       payload: { predictionsArr: predictionsArr, canvas: overlayXRef },
     };
 
-    //Sends action request with a payload, the event is handled
-    //inside the state event.
 
-    setSelectedRois(action);
 
-    tf.dispose(res);
+    Promise.all([tf.dispose(input), tf.dispose(res)]) .catch((err) => {
+      console.error("Memory leak in coming")
+      console.error(err)
+    });
+  
+
+    console.log(tf.memory());
+
     tf.engine().endScope();
+    setSelectedRois(action);
   };
 
   const runYolo = async () => {
@@ -189,7 +199,8 @@ const ClientRender = ({
     tf.dispose(warmupResult);
     tf.dispose(dummyInput);
     setLoadedCoco(true);
-    setModel(yolov7);
+    model = yolov7
+    console.log(model);
     id = setInterval(() => {
       detectFrame(yolov7);
     }, fps * 1000);
@@ -198,7 +209,6 @@ const ClientRender = ({
   };
 
   useEffect(() => {
-    // console.log(" I HAVE FUN");
     console.log(
       "Load Yolo Use Effect Rerun",
       `Processing is currently: ${processing}`
@@ -215,11 +225,10 @@ const ClientRender = ({
     return function () {
       clearInterval(id);
       clearCanvas(overlayXRef, imageWidth, imageHeight);
-      if (model != undefined) {
-        tf.dispose(model);
-        setLoadedCoco(false);
-        setModel(undefined);
-      }
+      setLoadedCoco(false);
+      tf.dispose(model)
+      // setModel(undefined);
+      
     };
   }, [processing]);
 
