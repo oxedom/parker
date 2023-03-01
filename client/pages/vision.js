@@ -6,13 +6,11 @@ import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilValue } from "recoil";
-import EnableWebcam from "../components/EnableWebcam";
 import Head from "next/head";
 
 const visionPage = () => {
   const [hasWebcam, setHasWebcam] = useState(false);
   const [webcamEnabled, setWebcamEnable] = useState(false);
-  const [reload, setReload] = useState(0);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [loadedCoco, setLoadedCoco] = useState(false);
@@ -40,7 +38,6 @@ const visionPage = () => {
             "
           >
             <Toolbar
-              setReload={setReload}
               setWebcamEnable={setWebcamEnable}
               setProcessing={setProcessing}
               setHasWebcam={setHasWebcam}
@@ -54,20 +51,13 @@ const visionPage = () => {
             >
               {" "}
             </Toolbar>
-            {!hasWebcam ? (
-              <EnableWebcam
-                setHasWebcam={setHasWebcam}
-                hasWebcam={hasWebcam}
-                webcamEnabled={webcamEnabled}
-                setWebcamEnable={setWebcamEnable}
-              ></EnableWebcam>
-            ) : (
-              <></>
-            )}
               <div className="">
                 <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                 <ClientRender
+                  hasWebcam={hasWebcam}
                   loadedCoco={loadedCoco}
+                  webcamEnabled={webcamEnabled}
+                  setHasWebcam={setHasWebcam}
                   setLoadedCoco={setLoadedCoco}
                   setProcessing={setProcessing}
                   processing={processing}

@@ -25,20 +25,7 @@ const DrawingCanvas = ({ setProcessing }) => {
   const startX = useRef(null);
   const startY = useRef(null);
 
-  let options = {
-    rootMargin: "0px",
-    threshold: 1.0,
-  };
 
-  let callback = (entries, observer) => {
-    entries.forEach((entry) => {
-      if (canvasRef.current !== null) {
-        let canvasOffset = canvasRef.current.getBoundingClientRect();
-        setOffsetX(canvasOffset.left);
-        setOffsetY(canvasOffset.top);
-      }
-    });
-  };
 
   const [isDown, setIsDown] = useState(false);
   const [offsetX, setOffsetX] = useState(undefined);
@@ -157,7 +144,7 @@ const DrawingCanvas = ({ setProcessing }) => {
         );
       }
     }
-  }, [selectedRois, size]);
+  }, [selectedRois, size, imageHeight, imageWidth]);
 
   function handleMouseDown(e) {
     e.preventDefault();

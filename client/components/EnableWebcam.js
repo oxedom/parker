@@ -15,6 +15,7 @@ const EnableWebcam = ({
  
   async function setUserSettings() {
     let { width, height } = await getSetting();
+ 
     setImageWidth(width);
     setImageHeight(height);
   }
@@ -65,10 +66,10 @@ const EnableWebcam = ({
           await setUserSettings();
           setHasWebcam(hasWebcamBoolean);
           setWebcamEnable(hasWebcamBoolean);
-          setWarrning(!hasWebcamBoolean);
+          // setWarrning(!hasWebcamBoolean);
         } else {
           setHasWebcam(false);
-          setWarrning(true);
+  
         }
       });
     }, 1000);
