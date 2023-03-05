@@ -12,19 +12,24 @@ const Navlink = ({ url, text }) => {
   };
 
   return (
-    <div>
+    <div className="flex ">
       <Link
-        className={`text-bold text-2xl  
-        rounded-2xl p-3 shadow-neo  
+        className={`text-bold   
+        rounded-xl   shadow-neo  
+          
          hover:shadow-neo-hover 
+         sm:w-[100px]
+         h-[50px]
          outline-[1.5px]
          outline
+         
+
          outline-black
          inline-block  shadow-outline
          text-white font-bold ${selectedPathname()}`}
         href={url}
       >
-        <span> {text} </span>
+        <span className="text-center inline-block w-full"> {text} </span>
       </Link>
     </div>
   );

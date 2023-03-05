@@ -34,7 +34,7 @@ const visionPage = () => {
       <div className="flex flex-col  p-16   ">
         <div className="">
           <div
-            className="flex justify-between rounded-lg outline-3 outline outline-black shadow-lg
+            className="hidden md:flex  flex-col md:flex-row  md:justify-between rounded-lg outline-3 outline outline-black shadow-lg
             "
           >
             <Toolbar

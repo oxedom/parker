@@ -132,7 +132,7 @@ const Toolbar = ({
   }
 
   return (
-    <div className={`w-[200px]   min-h-[${imageHeight}px]  bg-blue-300  `}>
+    <div className={`md:w-[200px]   min-h-[${imageHeight}px]  bg-blue-300  `}>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div
           className="flex flex-col justify-between m-auto w-5/12 xl:w-6/12 bg-emerald-50 p-8 z-30 rounded-lg shadow-neo "

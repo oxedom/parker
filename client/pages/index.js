@@ -1,21 +1,46 @@
 import DefaultLayout from "../layouts/DefaultLayout";
-
+import Image
+ from "next/image";
+import eye from '../static/eye.png'
+import webcamIcon from '../static/webcam.png'
 const Home = () => {
   return (
     <DefaultLayout>
       <div className="">
         <main className="">
-          <h2 className="text-3xl font-bold pt-5 bg-green-800">
-            {" "}
-            About parker...
-          </h2>
-          <div className="bg-green-500 p-1 rounded-md">
-            <p>
-              {" "}
-              Hello Everyone and Welcome to parker.com, Parker is a first of
-              it's kind Web app that uses tensorflowJS
-            </p>
-          </div>
+
+          <header className="flex flex-col items-center self-center justify-center gap-2 w-max-[800px] ">
+
+
+          <h2 className=" text-6xl font-bold flex-col  gap-2 ">      
+          {/* Empowering your webcam to do more */}
+          <h1>
+            <div className="flex">
+            <span>Empowering your webcam </span>   
+         <Image className="inline-block" width={75} height={50} src={webcamIcon}></ Image>   
+            </div>
+
+              <div className="flex justify-center">
+              <span > to do more
+          <Image className="ml-55 inline-block" width={100} height={50} src={eye}></ Image>     
+             </span>
+              </div>
+ 
+
+          </h1>
+
+
+   
+        
+          
+
+    
+
+          
+          
+           </h2>
+          </header>
+
         </main>
       </div>
     </DefaultLayout>
