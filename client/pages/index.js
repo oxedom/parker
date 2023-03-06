@@ -9,36 +9,24 @@ const Home = () => {
       <div className="">
         <main className="">
 
-          <header className="flex flex-col items-center self-center justify-center gap-2 w-max-[800px] ">
+          <header className=" grid-cols-2 w-max-[1600px] m-auto  ">
 
 
-          <h2 className=" text-6xl font-bold flex-col  gap-2 ">      
-          {/* Empowering your webcam to do more */}
-          <h1>
-            <div className="flex">
-            <span>Empowering your webcam </span>   
-         <Image className="inline-block" width={75} height={50} src={webcamIcon}></ Image>   
+
+          <h2 className=" text-6xl font-bold ">      
+            <div className="grid grid-temp-col-2">
+            <span>
+              Turn your webcam into <br/>
+          a parking sensor. </span>   
+         <Image className="inline-block" width={10} height={50} src={eye}></ Image>   
             </div>
 
-              <div className="flex justify-center">
-              <span > to do more
-          <Image className="ml-55 inline-block" width={100} height={50} src={eye}></ Image>     
-             </span>
-              </div>
- 
-
-          </h1>
-
-
-   
         
-          
-
-    
-
-          
-          
            </h2>
+
+           <h4> With a HD webcam, you can turns your webcam into a smart computer vision <br></br>
+            parking mointor  </h4>
+
           </header>
 
         </main>

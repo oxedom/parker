@@ -6,8 +6,8 @@ import Navlink from "./Navlink.js";
 const Navbar = () => {
   return (
     <div className="hidden lg:block w-full text-center box-border w-max-[1028px] ">
-      <nav className="z-[100]  h-[70px] relative  bg-yellow-200   grid grid-cols-3    ">
-        <div className="flex">
+      <nav className="z-[100]  h-[70px] relative  bg-yellow-200   ">
+        <div className="flex justify-center items-center">
         <Link href={"/"}>
 
           <h1 className=" text-bold text-3xl     justify-center items-center text-center  font-bold  text-black    hover:cursor-pointer">
@@ -41,7 +41,7 @@ const Navbar = () => {
 
 "
               url={"/docs"}
-              text={"Use"}
+              text={"Docs"}
             />
      
         </div>
