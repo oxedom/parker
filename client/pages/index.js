@@ -5,6 +5,7 @@ import eye from '../static/eye.png'
 import svg from '../public/bg1.svg'
 import githubIcon from "../static/icons/github-mark.png";
 import Head from "next/head";
+import Link from "next/link";
 
 const Home = () => {
 
@@ -39,7 +40,10 @@ const Home = () => {
             <p className="text-xl  sm:text-2xl font-normal"> 
             Using the latest computer vision object detection models<br></br>to turn  your parking lot into  a smart one.  </p>
 
+            <Link href={'/vision'} >
             <button className="text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105"> Use parker </button>
+
+            </Link>
            </h2>
 
           <div>
