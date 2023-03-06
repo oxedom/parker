@@ -22,33 +22,38 @@ const Home = () => {
    
         <main className=" ">
 
-          <header className="grid grid-cols-2 items-center text-white   place-items-center max-h-[1000px]  m-auto py-10 px-20 ">
+          <header className="flex text-clip grid-rows-none  items-center text-white
+             place-items-center 
+               md:m-auto py-20 px-20 ">
 
 
 
-          <h2 className=" text-6xl font-bold ">      
+          <h2 className=" text-6xl mt-10 font-bold ">      
             <div className="grid grid-temp-col-2">
-            <span>
-              Turn your webcam into <br/>
+            <span className="">
+              Turn your webcam into
           a parking sensor. </span>   
          <Image className="inline-block" width={10} height={50} src={eye}></ Image>   
             </div>
 
-            <p className="text-2xl font-normal"> Using your webcam can turn your view into <br/> a smart computer vision 
+            <p className="text-xl  sm:text-2xl font-normal"> 
+            Using your webcam can turn your view into <br></br>  a smart computer vision 
             parking mointor  </p>
 
-            <button className="text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105"> Try parker </button>
+            <button className="text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105"> Use parker </button>
            </h2>
 
           <div>
 
 
            <video
-              className="rounded-3xl object-contain"
-                    // autoPlay
+              className="hidden lg:block rounded-3xl object-contain"
+                    autoPlay
+                    width={640}
+                    height={480}
                      muted={true}
                      loop={true}
-                     src="./test.mp4"
+                     src="./demo.mp4"
           > </video>
 
 

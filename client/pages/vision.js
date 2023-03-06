@@ -7,16 +7,19 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilValue } from "recoil";
 import Head from "next/head";
+import PreMenu from "../components/PreMenu";
+
 
 const visionPage = () => {
   const [hasWebcam, setHasWebcam] = useState(false);
+
   const [webcamEnabled, setWebcamEnable] = useState(false);
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [loadedCoco, setLoadedCoco] = useState(false);
   const [processing, setProcessing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [demo, setDemo] = useState(true)
+  const [demo, setDemo] = useState(false)
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -26,11 +29,14 @@ const visionPage = () => {
   };
 
   return (
+    
     <DashboardLayout>
       <Head>
         <title> Vison</title>
       </Head>
 
+      {(!demo || !webcamEnabled) ?  <PreMenu></PreMenu>: 
+     
       <div className="flex flex-col  p-16   ">
         <div className="">
           <div
@@ -70,6 +76,7 @@ const visionPage = () => {
           </div>
         </div>
       </div>
+}
     </DashboardLayout>
   );
 };

@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 const Navlink = ({ url, text }) => {
   const router = useRouter();
   let selectedPathname = () => {
-    if (router.route == url) {
+    if (router.route == url && router.route != 'vision') {
       return "text-white";
     } else {
-      return "text-white";
+      return "text-gray-200";
     }
   };
 
