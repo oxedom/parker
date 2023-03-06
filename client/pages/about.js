@@ -4,17 +4,37 @@ const About = () => {
   return (
     <DefaultLayout>
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[1000px] gap-5 mt-20  items-stretch  ">
-        <main className="shadow-neo-sm ">
-          <div className="bg-slate-100 p-5 text-lg  ">
-            <h2 className="text-5xl font-bold pt-5 text-center bg-purple-400 p-5 rounded-lg  text-white">
+        <main className=" ">
+          <div className="text-lg  ">
+            <h2 className="text-5xl text-center font-bold pt-5 text-centerrounded-lg  text-white">
               {" "}
-              About parker...
+             About parker
             </h2>
-            <p>
+            <section className="p-5 rounded-md mt-2 flex gap-2 flex-col text-xl  bg-white border-orange-500 border-2">
+            <p className="">
               {" "}
-              Hello Everyone and Welcome to parker.com, Parker is a first of
-              it's kind Web app that uses tensorflowJS
-            </p>
+              <span className="text-2xl font-bold">Parker </span> is a open source smart parking tool that to enable users to mointor parking spaces using their Webcam/CCTV cameras.
+              </p>
+
+            <p>The technology's that run the app are the following: </p>
+              <ul>
+         
+                <li>  TensorFlow.js </li>
+                <li>  <a className="text-blue-500" href="https://github.com/WongKinYiu/yolov7"> YOLO7 </a> </li>
+                <li>  <a className="text-blue-500" href="https://github.com/hugozanini/yolov7-tfjs"> YOLO7-tfjs (Thanks Hugo!) </a> </li>
+                <li>  NextJS </li>
+              </ul>
+              
+              <p>
+              TensorFlow.js is a machine learning libary for Javascript that allows for fast client side ML directly in the browser. 
+              </p>
+   
+            </section>
+ 
+               
+
+
+        
           </div>
         </main>
       </div>

@@ -31,14 +31,13 @@ const Home = () => {
           <h2 className=" text-6xl mt-10 font-bold ">      
             <div className="grid grid-temp-col-2">
             <span className="">
-              Turn your webcam into
-          a parking sensor. </span>   
+              Turning your webcam into
+          a parking mointor. </span>   
          <Image className="inline-block" width={10} height={50} src={eye}></ Image>   
             </div>
 
             <p className="text-xl  sm:text-2xl font-normal"> 
-            Using your webcam can turn your view into <br></br>  a smart computer vision 
-            parking mointor  </p>
+            Using the latest computer vision object detection models<br></br>to turn  your parking lot into  a smart one.  </p>
 
             <button className="text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105"> Use parker </button>
            </h2>
