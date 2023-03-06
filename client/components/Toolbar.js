@@ -132,10 +132,10 @@ const Toolbar = ({
   }
 
   return (
-    <div className={`md:w-[200px]   min-h-[${imageHeight}px]  bg-blue-300  `}>
+    <div className={`md:w-[200px]  flex justify-between flex-col min-h-[${imageHeight}px]  bg-filler  `}>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div
-          className="flex flex-col justify-between m-auto w-5/12 xl:w-6/12 bg-emerald-50 p-8 z-30 rounded-lg shadow-neo "
+          className="flex flex-col justify-between m-auto w-5/12 xl:w-6/12 bg-blue-800 -50 p-8 z-30 rounded-lg  "
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -233,7 +233,7 @@ const Toolbar = ({
 
           <div className="grid grid-cols-2 justify-items-center border-t-2  border-black ">
             <Button
-              colors={{ color: "bg-slate-50" }}
+              colors={{ color: ", " }}
               callback={closeModal}
               text={"Exit "}
             >
@@ -242,20 +242,16 @@ const Toolbar = ({
           </div>
         </div>
       </Modal>
-      <Button
-        text={"Settings"}
-        callback={openModal}
-        colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
-      />
+ 
 
       <Button
-        colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
+
         callback={handleAutoDetect}
         text="Auto detect"
       />
 
         <Button
-        colors={{ color: "bg-slate-200", hover: "bg-slate-100" }}
+
         callback={handleDemo}
         text="Demo"
       />
@@ -279,6 +275,11 @@ const Toolbar = ({
       <h6>{` Total spaces: ${selectedRois.length}`}</h6>
       <h6>{` Total free spaces: ${counts.availableCount}`}</h6>
       <h6>{` Total occupied spaces: ${counts.OccupiedCount}`}</h6>
+           <Button
+        text={"Settings"}
+        callback={openModal}
+
+      />
     </div>
   );
 };

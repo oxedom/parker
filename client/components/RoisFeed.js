@@ -64,18 +64,19 @@ const RoisFeed = ({}) => {
 
   return (
     <div
-      className={`w-[200px] bg-blue-300 flex flex-col justify-between  min-h-[${imageHeight}px]`}
+      className={`w-[200px]  bg-filler flex flex-col justify-between  min-h-[${imageHeight}px]`}
     >
       <div>
         <h4
           className="text-xl text-center font-semibold  
-        bg-blue-100
-      p-4 m-4 text-gray-800 cursor-default rounded-lg border-slate-900 select-none shadow-neo 
-       outline-1 outline outline-black
+      text-white
+      border-b-2 border-orange-600
+
+
        "
         >
           {" "}
-          Marked parking spaces
+          Marked regions
         </h4>
 
         <div className="flex flex-wrap gap-2 m-2">

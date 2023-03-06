@@ -269,12 +269,12 @@ const selectedRoiState = selector({
 
 const imageHeightState = atom({
   key: "imageHeight",
-  default: 640,
+  default: 480,
 });
 
 const imageWidthState = atom({
   key: "imageWidth",
-  default: 640,
+  default: 848,
 });
 
 export {

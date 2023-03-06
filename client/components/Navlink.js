@@ -5,27 +5,20 @@ const Navlink = ({ url, text }) => {
   const router = useRouter();
   let selectedPathname = () => {
     if (router.route == url) {
-      return "bg-purple-500";
+      return "text-white";
     } else {
-      return "bg-orange-400";
+      return "text-white";
     }
   };
 
   return (
-    <div className="flex ">
+    <div className="flex hover:scale-105 duration-200">
       <Link
         className={`text-bold   
-        rounded-xl   shadow-neo  
           
-         hover:shadow-neo-hover 
-         sm:w-[100px]
-         h-[50px]
-         outline-[1.5px]
-         outline
-         
 
-         outline-black
-         inline-block  shadow-outline
+        text-xl
+
          text-white font-bold ${selectedPathname()}`}
         href={url}
       >

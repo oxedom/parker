@@ -9,23 +9,24 @@ const Button = ({ text, callback, colors }) => {
 
   const btnClass = `items-center
     justify-center   cursor-pointer
-    duration-300
+
       rounded-lg 
      
-        ${colors.color}
+     
       transition-colors ease-linear
         hover:brightness-125
-        duration-200
-        shadow-neo
+   
+    
+ 
         outline-[1.5px]
         m-4
-        w-[150px]
+        w-max-w-[150px]
         outline
         outline-black
-        p-4
-       text-gray-800`;
+        text-white
+     `;
 
-  const paraClass = `text font-bold text-center    ${colors.textColor}  pt-2 pb-2`;
+  const paraClass = `text font-bold text-center       duration-100   hover:scale-110   pt-2 pb-2`;
 
   return (
     <div
