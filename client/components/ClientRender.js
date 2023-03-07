@@ -45,7 +45,7 @@ const ClientRender = ({
 
   async function setUserSettings() {
     let { width, height } = await getSetting();
-
+    console.log(width, height);
     setImageWidth(width);
     setImageHeight(height);
   }
@@ -70,7 +70,7 @@ const ClientRender = ({
           if (hasWebcamBoolean) {
             await setUserSettings().then(() => {
               setWebcamLoaded(true);
-              
+              clearInterval(interval_load_webcam_id);
             });
           }
         });
@@ -260,7 +260,7 @@ const ClientRender = ({
       tf.dispose(model);
       // setModel(undefined);
     };
-  }, [processing]);
+  }, [processing, imageHeight, imageWidth]);
 
   return (
     <>

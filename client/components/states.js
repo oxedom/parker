@@ -274,7 +274,7 @@ const imageHeightState = atom({
 
 const imageWidthState = atom({
   key: "imageWidth",
-  default: 848,
+  default: 480,
 });
 
 export {
