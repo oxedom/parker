@@ -5,14 +5,14 @@ import svg from "../public/bg1.svg";
 import githubIcon from "../static/icons/github-mark.png";
 import Head from "next/head";
 import Link from "next/link";
-
+import DashboardLayout from "../layouts/DashboardLayout";
 const Home = () => {
   return (
     <>
       <Head>
         <title> Parker: Empower your webcam</title>
       </Head>
-      <DefaultLayout>
+      <DashboardLayout>
         {/* Free SVG Background by <a target="_blank" href="https://bgjar.com">BGJar</a> */}
         <div className="">
           <main className=" ">
@@ -66,7 +66,7 @@ const Home = () => {
             </div>
           </main>
         </div>
-      </DefaultLayout>
+      </DashboardLayout>
     </>
   );
 };

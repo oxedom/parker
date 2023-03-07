@@ -13,7 +13,7 @@ const Navbar = () => {
   };
   return (
     <div className="hidden lg:block w-full text-center box-border w-max-[1028px] ">
-      <nav className="z-[100]  h-[100px] absolute bg-transparent  ">
+      <nav className="z-[100]  h-[100px] absolute   ">
         <div className="flex gap-2 justify-center items-center">
           <Link href={"/"}>
             <h1 className=" text-bold text-3xl     justify-center items-center text-center  font-bold  text-white    hover:cursor-pointer">

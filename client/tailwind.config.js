@@ -22,6 +22,7 @@ module.exports = {
     
     backgroundImage: {
       hero: "linear-gradient(0deg,#3D85C6,rgba(31,6,85,.1)), url(../public/bg1.svg),linear-gradient(180deg,#063855,#3D85C6) ",
+      heroShort: "linear-gradient(0deg,#0b689e,rgba(31,6,85,.1)), url(../public/bg1.svg),linear-gradient(180deg,#063855,#0b689e) ",
       filler:
         "linear-gradient(0deg,#3D85C6,rgba(31,6,85,.1)) ,linear-gradient(180deg,#063855,#3D85C6);",
     },
