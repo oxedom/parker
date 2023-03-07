@@ -4,7 +4,7 @@ const About = () => {
   return (
     <DefaultLayout>
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[1000px] gap-5 mt-20  items-stretch  ">
-        <main className=" ">
+        <main className=" animate-fade">
           <div className="text-lg  ">
             <h2 className="text-5xl text-center font-bold pt-5 text-centerrounded-lg  text-white">
               {" "}

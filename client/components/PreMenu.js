@@ -23,6 +23,9 @@ const PreMenu = ({ setWebcamEnable, setDemo }) => {
         onClick={(e) => {
           handleClick(e.target.value);
         }}
+        onTouchStart={(e) => {
+          handleClick(e.target.value);
+        }}
         className="bg-orange-600 p-5 rounded-lg hover:scale-105 duration-300"
       >
         Demo{" "}
@@ -30,6 +33,9 @@ const PreMenu = ({ setWebcamEnable, setDemo }) => {
       <button
         value={"webcam"}
         onClick={(e) => {
+          handleClick(e.target.value);
+        }}
+        onTouchStart={(e) => {
           handleClick(e.target.value);
         }}
         className="bg-orange-600 p-5 rounded-lg hover:scale-105 duration-300"

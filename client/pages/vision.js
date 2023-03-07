@@ -4,10 +4,11 @@ import RoisFeed from "../components/RoisFeed";
 import { useState } from "react";
 import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { imageWidthState, imageHeightState } from "../components/states";
+import { imageWidthState, imageHeightState, selectedRoiState } from "../components/states";
 import { useRecoilValue } from "recoil";
 import Head from "next/head";
 import PreMenu from "../components/PreMenu";
+import { totalOccupied } from "../libs/utillity";
 
 const visionPage = () => {
   const [hasWebcam, setHasWebcam] = useState(false);
@@ -20,6 +21,9 @@ const visionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [demo, setDemo] = useState(false);
   const [allowWebcam, setAllowWebcam] = useState(false);
+  const selectedRois = useRecoilValue(selectedRoiState);
+  
+  const counts = totalOccupied(selectedRois)
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -42,14 +46,31 @@ const visionPage = () => {
       {!demo && !webcamEnabled ? (
         <PreMenu setDemo={setDemo} setWebcamEnable={setWebcamEnable}></PreMenu>
       ) : (
-        <div className="flex flex-col  p-16   ">
+        <div className="flex flex-col  p-16    ">
           <div className="">
-            {!demo && !allowWebcam ? (
-              <h4 className="p-5 relative text-2xl text-white rounded-lg font-bold bg-orange-600">
-                {" "}
-                Please Enable Webcam
-                <button
-                  className="p-3  bg-filler rounded-lg ml-2 text-center"
+
+   
+
+              <div className="p-5 relative text-2xl flex items-center  text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600 " >
+
+              {demo ?
+              
+              <>
+              <h5> Demo Mode </h5>
+              <span className="" onClick={handleDisableDemo}>
+              {" "}
+              Click here with your own webcam!
+            </span>
+            </>
+              
+              : ""}
+
+
+              {!demo && !allowWebcam ? 
+              <div className="border border-white rounded-lg ">
+
+              <button
+                  className="p-3  animate-pulse  align-self-center justify-self-center bg-opacity-70 hover:scale-105 duration-300  rounded-lg ml-2 text-center"
                   onClick={(e) => {
                     setAllowWebcam(true);
                   }}
@@ -57,24 +78,30 @@ const visionPage = () => {
                   {" "}
                   Enable Webcam{" "}
                 </button>
-              </h4>
-            ) : (
-              <></>
-            )}
-            {demo ? (
-              <h4 className="p-5 text-2xl text-white rounded-lg font-bold bg-orange-600 ">
-                {" "}
-                DEMO MODE:{" "}
-                <span className="" onClick={handleDisableDemo}>
-                  {" "}
-                  Click here with your own webcam!
-                </span>
-              </h4>
-            ) : (
-              <></>
-            )}
+
+              </div>
+
+              
+              
+              : ""}
+
+            {!demo && allowWebcam ? 
+              <div>
+                <div className="grid grid-cols-3 gap-2 justify-center items-center place-content-center self-center"> 
+                {/* <h6>{`  spaces: ${selectedRois.length}`}</h6> */}
+      <h6>{`  Available : ${counts.availableCount}`}</h6>
+      <h6>{`  Occupied : ${counts.OccupiedCount}`}</h6>
+                  
+                  
+                   </div>
+
+
+              </div>  :""}
+
+              </div> 
+
             <div
-              className="hidden md:flex  flex-col md:flex-row  md:justify-between rounded-lg outline-3 outline outline-black shadow-lg
+              className="hidden md:flex  flex-col md:flex-row  md:justify-between rounded outline-1 outline  outline-black shadow-lg
             "
             >
               <Toolbar

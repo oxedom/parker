@@ -1,3 +1,4 @@
+import { exp } from '@tensorflow/tfjs';
 import uniqid from 'uniqid'
 
 function getOverlap(rectangle1, rectangle2) {
@@ -156,3 +157,17 @@ export function selectedFactory(cords)
 
 
  }
+
+ export  function totalOccupied (roiArr)  {
+  let OccupiedCount = 0;
+  let availableCount = 0;
+  roiArr.forEach((roi) => {
+    if (roi.occupied === true) {
+      OccupiedCount++;
+    }
+    if (roi.occupied === false) {
+      availableCount++;
+    }
+  });
+  return { OccupiedCount, availableCount };
+};

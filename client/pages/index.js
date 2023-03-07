@@ -19,11 +19,11 @@ const Home = () => {
             <header
               className="flex text-clip grid-rows-none  items-center text-white
              place-items-center 
-               md:m-auto py-20 px-20 "
+               md:m-auto md:py-20 px-10 md:px-20 "
             >
               <h2 className=" text-6xl mt-10 font-bold ">
                 <div className="grid grid-temp-col-2">
-                  <span className="">
+                  <span className="animate-fade">
                     Turning your webcam into a parking mointor.{" "}
                   </span>
                   <Image
@@ -35,8 +35,7 @@ const Home = () => {
                 </div>
 
                 <p className="text-xl  sm:text-2xl font-normal">
-                  Using the latest computer vision object detection models
-                  <br></br>to turn your parking lot into a smart one.{" "}
+                  Using computer vision and client side processing <br/>to turn your parking situation into a smart one.{" "}
                 </p>
 
                 <Link href={"/vision"}>
@@ -49,7 +48,7 @@ const Home = () => {
 
               <div>
                 <video
-                  className="hidden lg:block rounded-3xl object-contain"
+                  className="hidden lg:block rounded-3xl object-contain animate-fade"
                   autoPlay
                   width={640}
                   height={480}

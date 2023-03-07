@@ -94,7 +94,7 @@ const RoisFeed = ({}) => {
                 handleRoiDelete(s.uid);
               }}
               className={`  h-10 w-10
-            btn  font-semibold  hover:bg-red-600 transition-colors rounded shadow-neo-sm duration-300 ease-in-out border  
+            btn  font-semibold  hover:bg-red-600 transition-colors rounded  duration-100 ease-in-out border  
                 drop-shadow
                 border-gray-500
               ${s.evaluating ? "bg-gray-400 animate-pulse duration-1000" : ""}

@@ -4,7 +4,6 @@ import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
 import labels from "../utils/labels.json";
 import { clearCanvas } from "../libs/canvas_utility";
-import EnableWebcam from "./EnableWebcam";
 import { xywh2xyxy } from "../utils/renderBox.js";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
@@ -16,8 +15,8 @@ import {
   fpsState,
   autoDetectState,
 } from "./states";
-import { isVehicle } from "../libs/utillity";
-import { detectWebcam, getSetting } from "../libs/utillity";
+
+import { isVehicle, detectWebcam, getSetting } from "../libs/utillity";
 
 const ClientRender = ({
   demo,
@@ -42,6 +41,7 @@ const ClientRender = ({
   const [webcamLoaded, setWebcamLoaded] = useState(false);
   const modelName = "yolov7";
   const [ webcamPlaying , setWebcamPlaying] = useState(false)
+  const enableWebcamRef = useRef(null);
 
   const handleDemoLoaded = (e) => 
   {
@@ -96,6 +96,61 @@ const ClientRender = ({
     }
   }, [loadedCoco]);
 
+  useEffect(() => {
+    let loadingIntervalID;
+    if (enableWebcamRef.current !== null) {
+      let dotSring = "   ";
+      let context = enableWebcamRef.current.getContext("2d");
+      context.clearRect(0, 0, imageWidth, imageHeight);
+      context.font = "bold 40px Arial";
+      context.fillStyle = "blue";
+      context.fillRect(0, 0, imageWidth, imageHeight)
+
+      context.textAlign = "center";
+      loadingIntervalID = setInterval(() => {
+        if (dotSring === "   ") {
+          dotSring = ".  ";
+        } else if (dotSring === ".  ") {
+          dotSring = ".. ";
+        } else if (dotSring === ".. ") {
+          dotSring = "...";
+        } else if (dotSring === "...") {
+          dotSring = "   ";
+        }
+
+      
+
+        context.clearRect(0, 0, imageWidth, imageHeight);
+        context.fillStyle = "blue";
+
+        context.fillRect(0, 0, imageWidth, imageHeight);
+        context.fillStyle = "white";
+        context.fillText(
+          "Please enable your webcam" + dotSring,
+          imageWidth * 0.5,
+          imageHeight * 0.3
+        );
+        context.font = "bold 28px Arial";
+        context.fillText(
+          "Make sure it's plugged in!   ",
+          imageWidth * 0.5,
+          imageHeight * 0.3 + 50
+        );
+        context.fillText(
+          "For Troubleshooting check the docs",
+          imageWidth * 0.5,
+          imageHeight * 0.3 + 100
+        );
+        context.font = "bold 40px Arial";
+      }, 1500);
+    }
+
+
+    return () => {
+      clearInterval(loadingIntervalID);
+
+    };
+  }, []);
   const detectFrame = async (model) => {
     if (!webcamRunning && !demo && webcamPlaying)  {
       return false;
@@ -297,12 +352,13 @@ const ClientRender = ({
       ) : null}
 
       {!demo && !webcamLoaded ? 
-       <video
+       <canvas
+       ref={enableWebcamRef}
        height={imageHeight}
        width={imageWidth}
        >
 
-      </video> : ""}
+      </canvas> : ""}
 
 
       {demo ? (

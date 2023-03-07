@@ -11,7 +11,6 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import Modal from "./Modal";
 import { useEffect, useState } from "react";
 import Button from "./Button";
-import Decrementor from "./Decrementor";
 import ToogleSwitch from "./ToogleSwitch";
 
 const Toolbar = ({
@@ -43,21 +42,9 @@ const Toolbar = ({
   const [localFps, setLocalFps] = useState(undefined);
   const selectedRois = useRecoilValue(selectedRoiState);
 
-  const totalOccupied = (roiArr) => {
-    let OccupiedCount = 0;
-    let availableCount = 0;
-    roiArr.forEach((roi) => {
-      if (roi.occupied === true) {
-        OccupiedCount++;
-      }
-      if (roi.occupied === false) {
-        availableCount++;
-      }
-    });
-    return { OccupiedCount, availableCount };
-  };
 
-  let counts = totalOccupied(selectedRois);
+
+ 
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
     "Advanced setting: Non-maximum Suppression threshold, recommended to between 50-75 ";
@@ -274,9 +261,7 @@ const Toolbar = ({
         }}
       />
 
-      <h6>{` Total spaces: ${selectedRois.length}`}</h6>
-      <h6>{` Total free spaces: ${counts.availableCount}`}</h6>
-      <h6>{` Total occupied spaces: ${counts.OccupiedCount}`}</h6>
+
       <Button text={"Settings"} callback={openModal} />
     </div>
   );
