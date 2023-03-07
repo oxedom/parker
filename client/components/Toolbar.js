@@ -182,19 +182,6 @@ const Toolbar = ({
                 </div>
               </div>
 
-              {/* <Decrementor
-                information={detectInfo}
-                alt="detection score threshold"
-                step={1}
-                min={10}
-                max={100}
-                value={localDetectionThreshold}
-                setter={(value) => {
-                  setLocalDetectionThreshold(value);
-                  setSettingsChange(true);
-                }}
-                label="Detection Threshold"
-              /> */}
 
                 <div className="flex flex-col text-white justify-center items-center">
                 <label> IOU Threshold</label>
@@ -234,7 +221,7 @@ const Toolbar = ({
                     class="slider"
                   />
 
-                  <span> {localFps}% </span>
+                  <span> {localFps} FPS </span>
                 </div>
               </div>     
      
