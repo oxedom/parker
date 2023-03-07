@@ -172,7 +172,23 @@ const Toolbar = ({
             </div>
 
             <div className="flex flex-col justify-center items-center  ">
-              <Decrementor
+
+            <div className="flex flex-col text-white justify-center items-center">
+            <label>  Detection Score Threshold</label>
+            <div>
+            <input type="range" min="10" max="100" value={localDetectionThreshold} onChange={(e) => 
+              {
+                setLocalDetectionThreshold(e.target.value);
+                setSettingsChange(true);
+              }} class="slider" />
+
+
+            <span > {localDetectionThreshold}% </span>
+            </div>
+   
+            </div>
+   
+              {/* <Decrementor
                 information={detectInfo}
                 alt="detection score threshold"
                 step={1}
@@ -184,7 +200,7 @@ const Toolbar = ({
                   setSettingsChange(true);
                 }}
                 label="Detection Threshold"
-              />
+              /> */}
 
               <Decrementor
                 information={iouInfo}
@@ -250,11 +266,7 @@ const Toolbar = ({
         text="Auto detect"
       />
 
-        <Button
 
-        callback={handleDemo}
-        text="Demo"
-      />
 
       <Button
         text={` ${showDetections ? "View Detections" : " Hide detections "}`}

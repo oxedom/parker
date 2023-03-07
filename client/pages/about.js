@@ -10,7 +10,7 @@ const About = () => {
               {" "}
              About parker
             </h2>
-            <section className="p-5 rounded-md mt-2 flex gap-2 flex-col text-xl  bg-white border-orange-500 border-2">
+            <section className="p-5 rounded-md mt-2 flex gap-2 flex-col text-xl bg-white  bg-opacity-75 border-orange-500 border-2">
             <p className="">
               {" "}
               <span className="text-2xl font-bold">Parker </span> is a open source smart parking tool that to enable users to mointor parking spaces using their Webcam/CCTV cameras.

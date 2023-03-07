@@ -46,7 +46,7 @@ const visionPage = () => {
       <div className="flex flex-col  p-16   ">
         <div className="">
 
-          {demo ? <h4 className="p-5 text-2xl text-white rounded-lg font-bold bg-orange-600" > DEMO MODE: <span onClick={handleDisableDemo} className="hover:underline"> Click here with your own webcam!</span></h4> : <></>}
+          {demo ? <h4 className="p-5 text-2xl text-white rounded-lg font-bold bg-orange-600 "  > DEMO MODE: <span className="" onClick={handleDisableDemo} > Click here with your own webcam!</span></h4> : <></>}
           <div
             className="hidden md:flex  flex-col md:flex-row  md:justify-between rounded-lg outline-3 outline outline-black shadow-lg
             "
