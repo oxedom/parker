@@ -12,6 +12,7 @@ import Modal from "./Modal";
 import { useEffect, useState } from "react";
 import Button from "./Button";
 import Decrementor from "./Decrementor";
+import ToogleSwitch from "./ToogleSwitch";
 
 const Toolbar = ({
   processing,
@@ -119,11 +120,7 @@ const Toolbar = ({
     }
   }
 
-  function handleWebcamRefresh() {
-    if (loadedCoco) {
-      setHasWebcam(false);
-    }
-  }
+  
 
   return (
     <div
@@ -141,35 +138,33 @@ const Toolbar = ({
             Settings
           </h1>
           <div className="grid grid-cols-2">
-            <div className="grid grid-rows-3 grid-cols-2  justify-center">
-              <Button
-                text={`${webcamEnabled ? "Webcam Enabled" : "Webcam Disabled"}`}
+            <div className="grid grid-rows-2 gap-10 m-4">
+
+
+
+            <ToogleSwitch 
+                
+                text={"Webcam"}    
+                boolean={webcamEnabled} 
                 callback={handleWebcamEnable}
-                colors={{
-                  color: `${webcamEnabled ? "bg-green-500" : "bg-red-500"}`,
-                }}
-              />
-              <Button
-                text={`${
-                  processing ? "Processing Enabled" : "Processing Disabled "
-                }`}
+                />
+
+
+                <ToogleSwitch 
+                
+                text={"Processing "}    
+                boolean={processing} 
                 callback={handleProcessing}
-                colors={{
-                  color: `${processing ? "bg-green-500" : "bg-red-500"}`,
-                }}
-              />
+                />
+          
 
               <div></div>
-              <Button
-                text={"Reload Webcam"}
-                colors={{ color: "bg-red-500", hover: "bg-red-200" }}
-                callback={handleWebcamRefresh}
-              />
+  
             </div>
 
             <div className="flex flex-col justify-center items-center  ">
               <div className="flex flex-col text-white justify-center items-center">
-                <label> Detection Score Threshold</label>
+                <label> Detection Threshold</label>
                 <div>
                   <input
                     type="range"
@@ -201,39 +196,55 @@ const Toolbar = ({
                 label="Detection Threshold"
               /> */}
 
-              <Decrementor
-                information={iouInfo}
-                alt="iou threshold"
-                step={1}
-                min={10}
-                max={100}
-                value={localIouThreshold}
-                label="iou  Threshold"
-                setter={(value) => {
-                  setLocalIouThreshold(value);
-                  setSettingsChange(true);
-                }}
-              />
+                <div className="flex flex-col text-white justify-center items-center">
+                <label> IOU Threshold</label>
+                <div>
+                  <input
+                    type="range"
+                    min="10"
+                    max="100"
+                    label="iou Threshold"
+                    value={localIouThreshold}
+                    onChange={(e) => {
+                      setLocalIouThreshold(e.target.value);
+                      setSettingsChange(true);
+                    }}
+                    class="slider"
+                  />
 
-              <Decrementor
-                information={fpsInfo}
-                alt="fps"
-                step={0.01}
-                min={0.1}
-                max={60}
-                value={localFps}
-                label={`Render rate`}
-                setter={(value) => {
-                  setLocalFps(value);
-                  setSettingsChange(true);
-                }}
-              />
+                  <span> {localIouThreshold}% </span>
+                </div>
+              </div>
+              
+               
+              <div className="flex flex-col text-white justify-center items-center">
+                <label> Render Rate</label>
+                <div>
+                  <input
+                    type="range"
+                    min={0.1}
+                    step={0.1}
+                    max={5}
+                    label="Render rate"
+                    value={localFps}
+                    onChange={(e) => {
+                      setLocalFps(e.target.value);
+                      setSettingsChange(true);
+                    }}
+                    class="slider"
+                  />
+
+                  <span> {localFps}% </span>
+                </div>
+              </div>     
+     
+
 
               <Button
                 colors={{
                   color: `${
                     settingChange
-                      ? "bg-blue-500"
+                      ? "bg-blue-500 p-5"
                       : "bg-blue-300 hover:cursor-not-allowed"
                   }`,
                   textColor: "text-white",
