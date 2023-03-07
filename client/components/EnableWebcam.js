@@ -3,19 +3,14 @@ import { imageWidthState, imageHeightState } from "../components/states";
 import { useRecoilState } from "recoil";
 import { detectWebcam, getSetting } from "../libs/utillity";
 
-const EnableWebcam = ({
-  hasWebcam,
-  setHasWebcam,
-  setWebcamEnable,
-}) => {
-
+const EnableWebcam = ({ setWebcamLoaded }) => {
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
   const enableWebcamRef = useRef(null);
- 
+
   async function setUserSettings() {
     let { width, height } = await getSetting();
- 
+
     setImageWidth(width);
     setImageHeight(height);
   }
@@ -63,13 +58,9 @@ const EnableWebcam = ({
     const intervalId = setInterval(() => {
       detectWebcam(async (hasWebcamBoolean) => {
         if (hasWebcamBoolean) {
-          await setUserSettings();
-          setHasWebcam(hasWebcamBoolean);
-          setWebcamEnable(hasWebcamBoolean);
-          // setWarrning(!hasWebcamBoolean);
-        } else {
-          setHasWebcam(false);
-  
+          await setUserSettings().then(() => {
+            setWebcamLoaded(true);
+          });
         }
       });
     }, 1000);
@@ -78,7 +69,7 @@ const EnableWebcam = ({
       clearInterval(loadingIntervalID);
       clearInterval(intervalId);
     };
-  }, [hasWebcam]);
+  }, []);
 
   return (
     <canvas
@@ -87,7 +78,6 @@ const EnableWebcam = ({
       height={imageHeight}
       className="flex justify-center items-center flex-1   bg-slate-100  "
     />
-
   );
 };
 

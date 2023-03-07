@@ -42,9 +42,6 @@ const Toolbar = ({
   const [localFps, setLocalFps] = useState(undefined);
   const selectedRois = useRecoilValue(selectedRoiState);
 
-
-
-
   const totalOccupied = (roiArr) => {
     let OccupiedCount = 0;
     let availableCount = 0;
@@ -82,12 +79,9 @@ const Toolbar = ({
     }
   };
 
-  const handleDemo = () => 
-  {
-
-    demo ? setDemo(false) : setDemo(true)
-
-  }
+  const handleDemo = () => {
+    demo ? setDemo(false) : setDemo(true);
+  };
 
   const handleSaveSettings = () => {
     // closeModal
@@ -132,7 +126,9 @@ const Toolbar = ({
   }
 
   return (
-    <div className={`md:w-[200px]  flex justify-between flex-col min-h-[${imageHeight}px]  bg-filler  `}>
+    <div
+      className={`md:w-[200px]  flex justify-between flex-col min-h-[${imageHeight}px]  bg-filler  `}
+    >
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div
           className="flex flex-col justify-between m-auto w-5/12 xl:w-6/12 bg-blue-800 -50 p-8 z-30 rounded-lg  "
@@ -172,22 +168,25 @@ const Toolbar = ({
             </div>
 
             <div className="flex flex-col justify-center items-center  ">
+              <div className="flex flex-col text-white justify-center items-center">
+                <label> Detection Score Threshold</label>
+                <div>
+                  <input
+                    type="range"
+                    min="10"
+                    max="100"
+                    value={localDetectionThreshold}
+                    onChange={(e) => {
+                      setLocalDetectionThreshold(e.target.value);
+                      setSettingsChange(true);
+                    }}
+                    class="slider"
+                  />
 
-            <div className="flex flex-col text-white justify-center items-center">
-            <label>  Detection Score Threshold</label>
-            <div>
-            <input type="range" min="10" max="100" value={localDetectionThreshold} onChange={(e) => 
-              {
-                setLocalDetectionThreshold(e.target.value);
-                setSettingsChange(true);
-              }} class="slider" />
+                  <span> {localDetectionThreshold}% </span>
+                </div>
+              </div>
 
-
-            <span > {localDetectionThreshold}% </span>
-            </div>
-   
-            </div>
-   
               {/* <Decrementor
                 information={detectInfo}
                 alt="detection score threshold"
@@ -258,15 +257,8 @@ const Toolbar = ({
           </div>
         </div>
       </Modal>
- 
 
-      <Button
-
-        callback={handleAutoDetect}
-        text="Auto detect"
-      />
-
-
+      <Button callback={handleAutoDetect} text="Auto detect" />
 
       <Button
         text={` ${showDetections ? "View Detections" : " Hide detections "}`}
@@ -287,11 +279,7 @@ const Toolbar = ({
       <h6>{` Total spaces: ${selectedRois.length}`}</h6>
       <h6>{` Total free spaces: ${counts.availableCount}`}</h6>
       <h6>{` Total occupied spaces: ${counts.OccupiedCount}`}</h6>
-           <Button
-        text={"Settings"}
-        callback={openModal}
-
-      />
+      <Button text={"Settings"} callback={openModal} />
     </div>
   );
 };

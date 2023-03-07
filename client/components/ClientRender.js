@@ -4,7 +4,7 @@ import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
 import labels from "../utils/labels.json";
 import { clearCanvas } from "../libs/canvas_utility";
-import EnableWebcam from "./EnableWebcam"
+import EnableWebcam from "./EnableWebcam";
 import { xywh2xyxy } from "../utils/renderBox.js";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
@@ -17,9 +17,15 @@ import {
   autoDetectState,
 } from "./states";
 import { isVehicle } from "../libs/utillity";
+import { detectWebcam, getSetting } from "../libs/utillity";
 
-
-const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, setHasWebcam }) => {
+const ClientRender = ({
+  demo,
+  processing,
+  setLoadedCoco,
+  loadedCoco,
+  allowWebcam,
+}) => {
   const model_dim = [640, 640];
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
@@ -31,13 +37,18 @@ const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, 
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   let overlayXRef = useRef(null);
   const webcamRef = useRef(null);
-  const demoRef = useRef(null)
-  const [demoLoaded, setDemoLoaded] = useState(true)
-  const [webcamLoaded, setWebcamLoaded] = useState(false)
+  const demoRef = useRef(null);
+  const [demoLoaded, setDemoLoaded] = useState(true);
+  const [webcamLoaded, setWebcamLoaded] = useState(false);
   const modelName = "yolov7";
-  const [webcamEnabled, setWebcamEnable] = useState(false);
   
 
+  async function setUserSettings() {
+    let { width, height } = await getSetting();
+
+    setImageWidth(width);
+    setImageHeight(height);
+  }
 
   const webcamRunning = () => {
     if (
@@ -52,6 +63,25 @@ const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, 
   };
 
   useEffect(() => {
+    let interval_load_webcam_id;
+    if (allowWebcam && !webcamLoaded) {
+      interval_load_webcam_id = setInterval(() => {
+        detectWebcam(async (hasWebcamBoolean) => {
+          if (hasWebcamBoolean) {
+            await setUserSettings().then(() => {
+              setWebcamLoaded(true);
+              
+            });
+          }
+        });
+      }, 1000);
+    }
+    return () => {
+      clearInterval(interval_load_webcam_id);
+    };
+  }, [allowWebcam]);
+
+  useEffect(() => {
     // Need to do this for canvas2d to work
     if (overlayXRef.current != null && loadedCoco) {
       overlayXRef.current = overlayXRef.current.getContext("2d");
@@ -62,31 +92,26 @@ const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, 
     if (!webcamRunning && !demo) {
       return false;
     }
- 
-    let video;
-    let videoWidth
-    let videoHeight
 
-    if(!demo && hasWebcam && webcamEnabled && webcamLoaded && webcamRef.current != null) 
-    {
+    let video;
+    let videoWidth;
+    let videoHeight;
+
+    if (!demo && webcamRef.current != null) {
+   
       video = webcamRef.current.video;
       videoWidth = webcamRef.current.video.videoWidth;
       videoHeight = webcamRef.current.video.videoHeight;
       // Set video width
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
-   
-    }
-    else if(demo && demoLoaded && !webcamLoaded && demoRef.current != null) 
-    {
-      video = demoRef.current
+    } else if (demo && demoLoaded && demoRef.current != null) {
+      video = demoRef.current;
       videoWidth = demoRef.current.videoWidth;
       videoHeight = demoRef.current.videoHeight;
-
+    } else {
+      return;
     }
-    else { return;}
-
-
 
     tf.engine().startScope();
 
@@ -146,13 +171,13 @@ const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, 
         if (isVehicle(dect_label)) {
           const roiObj = { cords: {} };
           let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
-     
+
           // Extract the bounding box coordinates from the 'boxes' tensor
           y1 = y1 * (imageHeight / 640);
           y2 = y2 * (imageHeight / 640);
           x1 = x1 * (imageWidth / 640);
           x2 = x2 * (imageWidth / 640);
-        
+
           let dect_width = x2 - x1;
           let dect_weight = y2 - y1;
           roiObj.cords.bottom_y = y2;
@@ -177,7 +202,7 @@ const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, 
       event: "occupation",
       payload: { predictionsArr: predictionsArr, canvas: overlayXRef },
     };
-    console.log(predictionsArr);
+
     Promise.all([tf.dispose(input), tf.dispose(res)]).catch((err) => {
       console.error("Memory leak in coming");
       console.error(err);
@@ -190,7 +215,6 @@ const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, 
   };
 
   const runYolo = async () => {
-
     let id;
     let yolov7 = await tf.loadGraphModel(
       `${window.location.origin}/${modelName}_web_model/model.json`,
@@ -207,8 +231,9 @@ const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, 
     model = yolov7;
     console.log(model);
     id = setInterval(() => {
-      if(true|| !demo) {    detectFrame(yolov7);}
-  
+      if (true || !demo) {
+        detectFrame(yolov7);
+      }
     }, fps * 1000);
 
     return id;
@@ -249,60 +274,48 @@ const ClientRender = ({ demo, processing, setLoadedCoco, loadedCoco, hasWebcam, 
         ></canvas>
       ) : null}
 
-      {/* Webcam useage and enable webcam */}
-        {!demo && !webcamEnabled ? 
-        <EnableWebcam 
-        hasWebcam={hasWebcam} 
-        setHasWebcam={setHasWebcam} 
-        setWebcamEnable={setWebcamEnable}/>
-          : null
-        }
-        
-        {!demo && webcamEnabled ? 
-         (<Webcam
+
+      {!demo && webcamLoaded ? (
+        <Webcam
           height={imageHeight}
-          onPlay={(e) => { setWebcamLoaded(true)}}
           width={imageWidth}
           style={{ height: imageHeight }}
           videoConstraints={{ height: imageHeight, video: imageWidth }}
           ref={webcamRef}
           muted={true}
           className=""
-        />) : null}
+        />
+      ) : null}
 
-{/* 
-          {demo ?
-            <Demo 
-            setDemoLoaded={setDemoLoaded}
-            ref={demoRef}/>
-          : null} */}
-        {demo ? 
-                <video
-                ref={demoRef}
-                muted={true}
-                width={imageWidth}
-                height={imageHeight}
-                onLoad={(e) => { }}
-                loop={true}
-                onPlay={(e) => {
-                  console.log(e);
-                  setWebcamLoaded(false)
-                  setImageWidth(e.target.videoWidth)
-                  setImageHeight(e.target.videoHeight)
-                  setDemoLoaded(true)}}
-                autoPlay
-                type='video/mp4'
- 
-                src="./demo_encode.mp4"/> : null
-}
-      
+      {!demo && !webcamLoaded ? 
+       <video
+       height={imageHeight}
+       width={imageWidth}
+       >
+
+      </video> : ""}
 
 
-
-
+      {demo ? (
+        <video
+          ref={demoRef}
+          muted={true}
+          width={imageWidth}
+          height={imageHeight}
+          onLoad={(e) => {}}
+          loop={true}
+          onPlay={(e) => {
+            setImageWidth(e.target.videoWidth);
+            setImageHeight(e.target.videoHeight);
+            setDemoLoaded(true);
+          }}
+          autoPlay
+          type="video/mp4"
+          src="./demo_encode.mp4"
+        />
+      ) : null}
     </>
   );
 };
 
 export default ClientRender;
-

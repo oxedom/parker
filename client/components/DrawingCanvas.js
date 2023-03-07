@@ -25,8 +25,6 @@ const DrawingCanvas = ({ setProcessing }) => {
   const startX = useRef(null);
   const startY = useRef(null);
 
-
-
   const [isDown, setIsDown] = useState(false);
   const [offsetX, setOffsetX] = useState(undefined);
   const [offsetY, setOffsetY] = useState(undefined);
