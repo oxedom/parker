@@ -120,7 +120,7 @@ const Toolbar = ({
             e.stopPropagation();
           }}
         >
-          <h1 className="text-center text-4xl text-white font-bold p-5 bg-indigo-500 border-b-1 rounded-full">
+          <h1 className="text-center text-4xl text-white font-bold p-5 bg-orange-600 border-b-1 rounded-full">
             {" "}
             Settings
           </h1>
@@ -196,9 +196,9 @@ const Toolbar = ({
                 <div>
                   <input
                     type="range"
-                    min={0.1}
+                    min={0.0001}
                     step={0.1}
-                    max={5}
+                    max={2}
                     label="Render rate"
                     value={localFps}
                     onChange={(e) => {

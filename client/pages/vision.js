@@ -22,6 +22,7 @@ const visionPage = () => {
   const [demo, setDemo] = useState(false);
   const [allowWebcam, setAllowWebcam] = useState(false);
   const selectedRois = useRecoilValue(selectedRoiState);
+  const [active, setActivate] = useState(false)
   
   const counts = totalOccupied(selectedRois)
   const openModal = () => {
@@ -29,8 +30,11 @@ const visionPage = () => {
   };
 
   const handleDisableDemo = () => {
+    
     setDemo(false);
-    setWebcamEnable(true);
+    // setAllowWebcam(true)
+    // setWebcamEnable(true);
+
   };
 
   const closeModal = () => {
@@ -43,20 +47,20 @@ const visionPage = () => {
         <title> Vison</title>
       </Head>
 
-      {!demo && !webcamEnabled ? (
-        <PreMenu setDemo={setDemo} setWebcamEnable={setWebcamEnable}></PreMenu>
+      {!demo && !active ? (
+        <PreMenu setDemo={setDemo} setActivate={setActivate}></PreMenu>
       ) : (
         <div className="flex flex-col  p-16    ">
           <div className="">
 
    
 
-              <div className="p-5 relative text-2xl flex items-center  text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600 " >
+              <div className="p-5 relative text-2xl flex items-center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  justify-between" >
 
               {demo ?
               
               <>
-              <h5> Demo Mode </h5>
+              <h5 className="font-bold p-4 border-white  text-4xl animate-ping duration-300"> DEMO   </h5>
               <span className="" onClick={handleDisableDemo}>
               {" "}
               Click here with your own webcam!
@@ -98,6 +102,7 @@ const visionPage = () => {
 
               </div>  :""}
 
+                <button  className=" border text-center border-white rounded-md p-4 "> Settings </button>
               </div> 
 
             <div

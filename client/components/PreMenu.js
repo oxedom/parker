@@ -1,4 +1,4 @@
-const PreMenu = ({ setWebcamEnable, setDemo }) => {
+const PreMenu = ({ setActivate, setDemo }) => {
   const handleClick = (value) => {
     switch (value) {
       case "demo": {
@@ -9,7 +9,7 @@ const PreMenu = ({ setWebcamEnable, setDemo }) => {
       }
       case "webcam": {
         setTimeout(() => {
-          setWebcamEnable(true);
+          setActivate(true);
         }, 200);
         break;
       }
