@@ -1,3 +1,5 @@
+import uniqid from 'uniqid'
+
 function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
   const intersectionX2 = Math.min(
@@ -129,3 +131,28 @@ export function detectWebcam(callback) {
     callback(devices.some((device) => "videoinput" === device.kind));
   });
 }
+
+export function selectedFactory(cords) 
+{
+  let date = new Date();
+
+
+  const roiObj = {
+    label: "vehicle",
+    cords: { ...cords },
+    time: date.getTime(),
+    uid: uniqid(),
+    area: cords.width * cords.height,
+    firstSeen: null,
+    lastSeen: null,
+    occupied: null,
+    hover: false,
+    evaluating: true,
+  };
+
+  return roiObj
+
+
+
+
+ }

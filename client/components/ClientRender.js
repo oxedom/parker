@@ -41,7 +41,106 @@ const ClientRender = ({
   const [demoLoaded, setDemoLoaded] = useState(true);
   const [webcamLoaded, setWebcamLoaded] = useState(false);
   const modelName = "yolov7";
+  const [ webcamPlaying , setWebcamPlaying] = useState(false)
+
+  const handleDemoLoaded = (e) => 
+  {
+    setImageWidth(e.target.videoWidth);
+    setImageHeight(e.target.videoHeight);
+    setDemoLoaded(true)
+
+    let arr  =[
+      
+        {
   
+            "cords": {
+                "height": 82,
+                "right_x": 389,
+                "top_y": 215,
+                "width": 80
+            },
+
+        },
+        {
+      
+            "cords": {
+                "height": 76,
+                "right_x": 474,
+                "top_y": 217,
+                "width": 68
+            },
+
+        },
+        {
+          
+            "cords": {
+                "height": 72,
+                "right_x": 322,
+                "top_y": 221,
+                "width": 55
+            },
+
+        },
+        {
+
+            "cords": {
+                "height": 79,
+                "right_x": 227,
+                "top_y": 218,
+                "width": 71
+            },
+
+        },
+        {
+
+            "cords": {
+                "height": 85,
+                "right_x": 138,
+                "top_y": 207,
+                "width": 66
+            },
+
+        },
+        {
+          
+            "cords": {
+                "height": 89,
+                "right_x": 64,
+                "top_y": 206,
+                "width": 61
+            },
+
+        },
+        {
+  
+            "cords": {
+                "height": 80,
+                "right_x": 572,
+                "top_y": 214,
+                "width": 98
+            },
+
+        }
+    
+
+
+
+    ]
+
+    arr.forEach(roi => 
+      {
+        let action = {
+          event: "addRoi",
+          payload: { cords: roi.cords },
+        };
+        // console.log(action);
+        setSelectedRois(action);
+
+      })
+
+
+
+  }
 
   async function setUserSettings() {
     let { width, height } = await getSetting();
@@ -89,7 +188,7 @@ const ClientRender = ({
   }, [loadedCoco]);
 
   const detectFrame = async (model) => {
-    if (!webcamRunning && !demo) {
+    if (!webcamRunning && !demo && webcamPlaying)  {
       return false;
     }
 
@@ -279,6 +378,7 @@ const ClientRender = ({
         <Webcam
           height={imageHeight}
           width={imageWidth}
+          onPlay={()=> { setWebcamPlaying(true )}}
           style={{ height: imageHeight }}
           videoConstraints={{ height: imageHeight, video: imageWidth }}
           ref={webcamRef}
@@ -305,9 +405,8 @@ const ClientRender = ({
           onLoad={(e) => {}}
           loop={true}
           onPlay={(e) => {
-            setImageWidth(e.target.videoWidth);
-            setImageHeight(e.target.videoHeight);
-            setDemoLoaded(true);
+
+            handleDemoLoaded(e)
           }}
           autoPlay
           type="video/mp4"

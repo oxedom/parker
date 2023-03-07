@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 import uniqid from "uniqid";
-import { checkRectOverlap } from "../libs/utillity";
+import { checkRectOverlap, selectedFactory } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
 import { clearCanvas, renderAllOverlaps } from "../libs/canvas_utility";
 
@@ -60,21 +60,9 @@ const selectedRoiState = selector({
   set: ({ set, get }, action) => {
     if (action.event === "addRoi") {
       let { cords } = action.payload;
-      let date = new Date();
+      const roiObj = selectedFactory(cords)
 
       const oldRois = get(selectedRoi);
-      const roiObj = {
-        label: "vehicle",
-        cords: { ...cords },
-        time: date.getTime(),
-        uid: uniqid(),
-        area: cords.width * cords.height,
-        firstSeen: null,
-        lastSeen: null,
-        occupied: null,
-        hover: false,
-        evaluating: true,
-      };
 
       const updatedArr = [...oldRois, roiObj];
 
@@ -96,7 +84,20 @@ const selectedRoiState = selector({
       let _height = get(imageHeightState);
 
       if (_autoDetect) {
-        set(selectedRoi, []);
+        
+      
+        let updatedArr = []
+        predictionsArr.forEach(pred => 
+          {
+            let roiObj = selectedFactory(pred.cords)
+
+              updatedArr.push(roiObj)
+            
+    
+          })
+          set(selectedRoi, updatedArr)
+
+  
         set(autoDetectState, false);
       }
 

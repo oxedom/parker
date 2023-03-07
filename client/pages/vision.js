@@ -45,7 +45,7 @@ const visionPage = () => {
         <div className="flex flex-col  p-16   ">
           <div className="">
             {!demo && !allowWebcam ? (
-              <h4 className="p-5 text-2xl text-white rounded-lg font-bold bg-orange-600">
+              <h4 className="p-5 relative text-2xl text-white rounded-lg font-bold bg-orange-600">
                 {" "}
                 Please Enable Webcam
                 <button

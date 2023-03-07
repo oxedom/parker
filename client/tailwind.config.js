@@ -9,7 +9,7 @@ module.exports = {
 
   theme: {
     backgroundImage: {
-      hero: "linear-gradient(0deg,#3D85C6,rgba(31,6,85,.1)), url(../public/bg1.svg),linear-gradient(180deg,#063855,#3D85C6);",
+      hero: "linear-gradient(0deg,#3D85C6,rgba(31,6,85,.1)), url(../public/bg1.svg),linear-gradient(180deg,#063855,#3D85C6) ",
       filler:
         "linear-gradient(0deg,#3D85C6,rgba(31,6,85,.1)) ,linear-gradient(180deg,#063855,#3D85C6);",
     },

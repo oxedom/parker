@@ -7,7 +7,7 @@ const Navlink = ({ url, text }) => {
     if (router.route == url && router.route != "vision") {
       return "text-white";
     } else {
-      return "text-gray-200";
+      return "text-gray-200 hover:text-white";
     }
   };
 
