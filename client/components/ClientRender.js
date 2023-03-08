@@ -23,6 +23,10 @@ const ClientRender = ({
   processing,
   setLoadedCoco,
   loadedCoco,
+  setDemoLoaded,
+  webcamPlaying,
+  setWebcamPlaying,
+  demoLoaded,
   allowWebcam,
 }) => {
   const model_dim = [640, 640];
@@ -31,16 +35,16 @@ const ClientRender = ({
   const fps = useRecoilValue(fpsState);
   const detectionThreshold = useRecoilValue(detectionThresholdState);
   const thresholdIou = useRecoilValue(thresholdIouState);
-  let model;
+ 
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   let overlayXRef = useRef(null);
   const webcamRef = useRef(null);
   const demoRef = useRef(null);
-  const [demoLoaded, setDemoLoaded] = useState(true);
+  const modelRef = useRef(null);
   const [webcamLoaded, setWebcamLoaded] = useState(false);
   const modelName = "yolov7";
-  const [ webcamPlaying , setWebcamPlaying] = useState(false)
+
   const enableWebcamRef = useRef(null);
 
   const handleDemoLoaded = (e) => 
@@ -48,12 +52,13 @@ const ClientRender = ({
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
     setDemoLoaded(true)
+    setWebcamPlaying(false)
     setAutoDetect(true)
   }
 
   async function setUserSettings() {
     let { width, height } = await getSetting();
-    console.log(width, height);
+
     setImageWidth(width);
     setImageHeight(height);
   }
@@ -171,7 +176,7 @@ const ClientRender = ({
     } else if (demo && demoLoaded && demoRef.current != null) {
 
       video = demoRef.current;
-      console.log(demoRef.current.video);
+
       videoWidth = demoRef.current.videoWidth;
       videoHeight = demoRef.current.videoHeight;
     } else {
@@ -179,8 +184,7 @@ const ClientRender = ({
     }
 
     tf.engine().startScope();
-    console.log('TF BROWSWER:');
-    console.log(video);
+
     let input = tf.tidy(() => {
       return tf.image
         .resizeBilinear(tf.browser.fromPixels(video), model_dim)
@@ -274,7 +278,7 @@ const ClientRender = ({
       console.error(err);
     });
 
-    console.log(tf.memory());
+
 
     tf.engine().endScope();
     setSelectedRois(action);
@@ -288,28 +292,30 @@ const ClientRender = ({
         onProgress: (fractions) => {},
       }
     );
-
+    modelRef.current = yolov7
     const dummyInput = tf.ones(yolov7.inputs[0].shape);
     const warmupResult = await yolov7.executeAsync(dummyInput);
     tf.dispose(warmupResult);
     tf.dispose(dummyInput);
     setLoadedCoco(true);
-    model = yolov7;
-    console.log(model);
+ 
+
+   
     id = setInterval(() => {
-      if (true || !demo) {
+
         detectFrame(yolov7);
-      }
+      
     }, fps * 1000);
 
     return id;
   };
 
   useEffect(() => {
-    console.log(
-      "Load Yolo Use Effect Rerun",
-      `Processing is currently: ${processing}`
-    );
+  
+    // console.log(
+    //   "Load Yolo Use Effect Rerun",
+    //   `Processing is currently: ${processing}`
+    // );
     let id;
 
     if (processing) {
@@ -320,17 +326,25 @@ const ClientRender = ({
 
     //Clean up
     return function () {
+     ;
       clearInterval(id);
       clearCanvas(overlayXRef, imageWidth, imageHeight);
-      setLoadedCoco(false);
-      tf.dispose(model);
+
+
+
+        if (modelRef.current) {
+          modelRef.current.dispose();
+        }
+ 
+        setLoadedCoco(false);
+
       // setModel(undefined);
     };
   }, [processing, imageHeight, imageWidth]);
 
   return (
     <>
-      {loadedCoco ? (
+      {loadedCoco  ? (
         <canvas
           id="overlap-overlay"
           ref={overlayXRef}
@@ -345,7 +359,9 @@ const ClientRender = ({
         <Webcam
           height={imageHeight}
           width={imageWidth}
-          onPlay={()=> { setWebcamPlaying(true )}}
+          onPlay={()=> { 
+            setDemoLoaded(false)
+            setWebcamPlaying(true )}}
           style={{ height: imageHeight }}
           videoConstraints={{ height: imageHeight, video: imageWidth }}
           ref={webcamRef}
@@ -377,6 +393,7 @@ const ClientRender = ({
             handleDemoLoaded(e)
           }}
           autoPlay
+          
           type="video/mp4"
           src="./demo.mp4"
         />

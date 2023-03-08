@@ -13,6 +13,7 @@ import DisplayInfo from "../components/DisplayInfo";
 const visionPage = () => {
   const [hasWebcam, setHasWebcam] = useState(false);
 
+  const [demoLoaded, setDemoLoaded] = useState(false);
   const [webcamEnabled, setWebcamEnable] = useState(false);
   // const imageWidth = useRecoilValue(imageWidthState);
   // const imageHeight = useRecoilValue(imageHeightState);
@@ -21,7 +22,7 @@ const visionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [demo, setDemo] = useState(false);
   const [allowWebcam, setAllowWebcam] = useState(false);
-
+  const [ webcamPlaying , setWebcamPlaying] = useState(false)
   const [active, setActivate] = useState(false)
   
 
@@ -48,20 +49,23 @@ const visionPage = () => {
       </Head>
 
       {!demo && !active ? (
-        <PreMenu setDemo={setDemo} setActivate={setActivate}></PreMenu>
+        <PreMenu 
+
+        setDemo={setDemo} 
+        setActivate={setActivate}></PreMenu>
       ) : (
-        <div className="flex flex-col  p-16    ">
+        <div className={`flex flex-col ${(demo && !demoLoaded) ? "opacity-0 " : "opacity-100"} p-16    `}>
           <div className="flex flex-col justify-center items-center">
 
    
 
-              <div className="bg-filler relative text-2xl grid grid-cols-3 max-w-screen-lg  place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  " >
+              <div className="bg-filler relative text-2xl grid grid-cols-3   place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  " >
 
               {demo ?
               
-                <div>
+                <div onClick={handleDisableDemo}>
               <h5 className="font-bold p-4 rounded-lg text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl animate-ping duration-300  "> Exit    </h5>
-              <span className="" onClick={handleDisableDemo}>
+              <span className="" >
               {" "}
 
             </span>
@@ -102,8 +106,8 @@ const visionPage = () => {
               </div> 
 
             <div
-              className="hidden md:flex  flex-col md:flex-row  md:justify-between rounded outline-1 outline  outline-black shadow-lg
-            "
+              className={`hidden md:flex    flex-col md:flex-row  md:justify-between rounded outline-1 outline  outline-black shadow-lg
+            `}
             >
               <Toolbar
                 setWebcamEnable={setWebcamEnable}
@@ -130,6 +134,10 @@ const visionPage = () => {
                   allowWebcam={allowWebcam}
                   webcamEnabled={webcamEnabled}
                   setHasWebcam={setHasWebcam}
+                  setDemoLoaded={setDemoLoaded}
+                  demoLoaded={demoLoaded}
+                  webcamPlaying={webcamPlaying}
+                  setWebcamPlaying={setWebcamPlaying}
                   setLoadedCoco={setLoadedCoco}
                   setProcessing={setProcessing}
                   processing={processing}

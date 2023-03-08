@@ -149,20 +149,22 @@ const Toolbar = ({
   
             </div>
 
-            <div className="flex flex-col justify-center items-center  ">
-              <div className="flex flex-col text-white justify-center items-center">
+            <div className="flex justify-center flex-col items-center ">
+
+              <div className="flex flex-col text-white justify-center grow">
                 <label> Detection Threshold</label>
-                <div>
+                <div className="grid grid-cols-2  ">
                   <input
                     type="range"
                     min="10"
                     max="100"
+                    className="mr-4"
                     value={localDetectionThreshold}
                     onChange={(e) => {
                       setLocalDetectionThreshold(e.target.value);
                       setSettingsChange(true);
                     }}
-                    class="slider"
+                  
                   />
 
                   <span> {localDetectionThreshold}% </span>
@@ -170,20 +172,21 @@ const Toolbar = ({
               </div>
 
 
-                <div className="flex flex-col text-white justify-center items-center">
+                <div className="flex   flex-col text-white justify-center grow">
                 <label> IOU Threshold</label>
-                <div>
+                <div className="grid grid-cols-2  ">
                   <input
                     type="range"
                     min="10"
                     max="100"
+                    className="mr-4"
                     label="iou Threshold"
                     value={localIouThreshold}
                     onChange={(e) => {
                       setLocalIouThreshold(e.target.value);
                       setSettingsChange(true);
                     }}
-                    class="slider"
+              
                   />
 
                   <span> {localIouThreshold}% </span>
@@ -191,29 +194,32 @@ const Toolbar = ({
               </div>
               
                
-              <div className="flex flex-col text-white justify-center items-center">
+              <div className="flex   flex-col text-white justify-center grow">
                 <label> Render Rate</label>
-                <div>
-                  <input
+                <div className="grid grid-cols-2  ">
+                <input
                     type="range"
                     min={0.0001}
                     step={0.1}
                     max={2}
+                    className="mr-4"
                     label="Render rate"
                     value={localFps}
                     onChange={(e) => {
                       setLocalFps(e.target.value);
                       setSettingsChange(true);
                     }}
-                    class="slider"
+                    
                   />
 
-                  <span> {localFps} FPS </span>
+                  <span> {Math.floor(localFps * 100) /100 } FPS </span>
                 </div>
+           
               </div>     
      
 
-
+              </div>
+              <div></div>
               <Button
                 colors={{
                   color: `${
@@ -228,7 +234,7 @@ const Toolbar = ({
               >
                 {" "}
               </Button>
-            </div>
+        
           </div>
 
           <div className="grid grid-cols-2 justify-items-center border-t-2  border-black ">
