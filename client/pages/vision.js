@@ -4,8 +4,6 @@ import RoisFeed from "../components/RoisFeed";
 import { useState } from "react";
 import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
-// import { imageWidthState, imageHeightState, selectedRoiState } from "../components/states";
-// import { useRecoilValue } from "recoil";
 import Head from "next/head";
 import PreMenu from "../components/PreMenu";
 import DisplayInfo from "../components/DisplayInfo";
@@ -15,8 +13,7 @@ const visionPage = () => {
 
   const [demoLoaded, setDemoLoaded] = useState(false);
   const [webcamEnabled, setWebcamEnable] = useState(false);
-  // const imageWidth = useRecoilValue(imageWidthState);
-  // const imageHeight = useRecoilValue(imageHeightState);
+
   const [loadedCoco, setLoadedCoco] = useState(false);
   const [processing, setProcessing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
