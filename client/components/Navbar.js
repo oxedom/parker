@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import githubIcon from "../static/icons/github-mark.png";
+import githubIcon from "../public/static/icons/github-mark.png";
 import Navlink from "./Navlink.js";
 import Router from "next/router";
 

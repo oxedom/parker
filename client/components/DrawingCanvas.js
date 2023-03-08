@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  selectedColorState,
   imageHeightState,
   imageWidthState,
 } from "./states";

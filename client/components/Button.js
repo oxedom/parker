@@ -1,11 +1,5 @@
 const Button = ({ text, callback, colors }) => {
-  // let audio = new Audio("../static/click.wav")
 
-  // const handleSound = () =>
-  // {
-
-  //   audio.play()
-  // }
 
   const btnClass = `items-center
     justify-center   cursor-pointer

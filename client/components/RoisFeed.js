@@ -1,9 +1,8 @@
 import { selectedRoiState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { imageHeightState, evaluateTimeState } from "./states";
-import deleteIcon from "../static/icons/delete_bin_black.png";
-import loadingIcon from "../static/icons/loading.png";
-import Button from "./Button";
+import deleteIcon from "../public/static/icons/delete_bin_black.png";
+
 const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
   const imageHeight = useRecoilValue(imageHeightState);

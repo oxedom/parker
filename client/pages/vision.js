@@ -4,27 +4,27 @@ import RoisFeed from "../components/RoisFeed";
 import { useState } from "react";
 import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { imageWidthState, imageHeightState, selectedRoiState } from "../components/states";
-import { useRecoilValue } from "recoil";
+// import { imageWidthState, imageHeightState, selectedRoiState } from "../components/states";
+// import { useRecoilValue } from "recoil";
 import Head from "next/head";
 import PreMenu from "../components/PreMenu";
-import { totalOccupied } from "../libs/utillity";
+import DisplayInfo from "../components/DisplayInfo";
 
 const visionPage = () => {
   const [hasWebcam, setHasWebcam] = useState(false);
 
   const [webcamEnabled, setWebcamEnable] = useState(false);
-  const imageWidth = useRecoilValue(imageWidthState);
-  const imageHeight = useRecoilValue(imageHeightState);
+  // const imageWidth = useRecoilValue(imageWidthState);
+  // const imageHeight = useRecoilValue(imageHeightState);
   const [loadedCoco, setLoadedCoco] = useState(false);
   const [processing, setProcessing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [demo, setDemo] = useState(false);
   const [allowWebcam, setAllowWebcam] = useState(false);
-  const selectedRois = useRecoilValue(selectedRoiState);
+
   const [active, setActivate] = useState(false)
   
-  const counts = totalOccupied(selectedRois)
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -55,7 +55,7 @@ const visionPage = () => {
 
    
 
-              <div className="p-5 relative text-2xl flex items-center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  justify-between" >
+              <div className=" relative text-2xl grid grid-cols-3 max-w-screen-lg  place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  " >
 
               {demo ?
               
@@ -91,17 +91,11 @@ const visionPage = () => {
 
             {!demo && allowWebcam ? 
               <div>
-                <div className="grid grid-cols-3 gap-2 justify-center items-center place-content-center self-center"> 
-                {/* <h6>{`  spaces: ${selectedRois.length}`}</h6> */}
-      <h6>{`  Available : ${counts.availableCount}`}</h6>
-      <h6>{`  Occupied : ${counts.OccupiedCount}`}</h6>
-                  
-                  
-                   </div>
+               
 
 
               </div>  :""}
-
+              <DisplayInfo></DisplayInfo>
                 <button  className=" border text-center border-white rounded-md p-4 "> Settings </button>
               </div> 
 
