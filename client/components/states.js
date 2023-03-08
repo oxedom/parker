@@ -1,5 +1,4 @@
 import { atom, selector } from "recoil";
-import uniqid from "uniqid";
 import { checkRectOverlap, selectedFactory } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
 import { clearCanvas, renderAllOverlaps } from "../libs/canvas_utility";
@@ -44,10 +43,7 @@ const selectedRoi = atom({
   default: [],
 });
 
-const lastCheckedState = atom({
-  key: "lastChecked",
-  default: 0,
-});
+
 
 const selectedRoiState = selector({
   key: "selectedRoisState",
@@ -74,7 +70,6 @@ const selectedRoiState = selector({
       const updatedArr = oldRois.filter((roi) => roi.uid !== uid);
       set(selectedRoi, updatedArr);
     }
-
     if (action.event === "occupation") {
       let { predictionsArr, canvas } = action.payload;
       let _lastChecked = get(lastCheckedState);
@@ -198,7 +193,6 @@ const selectedRoiState = selector({
 
       set(selectedRoi, selectedRoisClone);
     }
-
     if (action.event === "selectRoi") {
       let uid = action.payload;
       //Array of ROI objects
@@ -215,7 +209,6 @@ const selectedRoiState = selector({
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
     }
-
     if (action.event === "unSelectRoi") {
       let uid = action.payload;
       //Array of ROI objects
@@ -233,37 +226,8 @@ const selectedRoiState = selector({
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
     }
-
     if (action.event === "deleteAllRois") {
       set(selectedRoi, []);
-    }
-
-    if (action.event === "addManyRois") {
-      let date = new Date();
-
-      let { predictionsArr } = action.payload;
-      let rois = [];
-      predictionsArr.forEach((p) => {
-        const roiObj = {
-          label: "vehicle",
-          cords: { ...p.cords },
-          time: date,
-          uid: uniqid(),
-          area: p.width * p.height,
-          firstSeen: null,
-          lastSeen: null,
-          occupied: null,
-          hover: false,
-          evaluating: true,
-        };
-        rois.push(roiObj);
-      });
-
-      const oldRois = get(selectedRoi);
-
-      const updatedArr = [...oldRois, ...rois];
-
-      set(selectedRoi, updatedArr);
     }
   },
 });
