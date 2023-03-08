@@ -26,7 +26,11 @@ const About = () => {
 
               <ul className="flex flex-col gap-2">
                 <li className="flex gap-2">
-                  <Image width={30} src={tensorflowIcon}></Image>
+                  <Image
+                    alt="tensorflow"
+                    width={30}
+                    src={tensorflowIcon}
+                  ></Image>
                   <a
                     className="text-blue-500"
                     href="https://www.tensorflow.org/js"
@@ -37,7 +41,7 @@ const About = () => {
                 </li>
 
                 <li className="flex gap-2">
-                  <Image width={30} src={nextjsIcon}></Image>
+                  <Image width={30} alt="nextjs" src={nextjsIcon}></Image>
                   <span>NextJS </span>
                 </li>
 

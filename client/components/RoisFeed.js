@@ -2,6 +2,7 @@ import { selectedRoiState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { imageHeightState, evaluateTimeState } from "./states";
 import deleteIcon from "../public/static/icons/delete_bin_black.png";
+import Image from "next/image";
 
 const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
@@ -102,7 +103,8 @@ const RoisFeed = ({}) => {
               }   cursor-default  duration-100  border-slate-900 items-center justify-between`}
             >
               {s.hover ? (
-                <img
+                <Image
+                  alt="Delete "
                   className="invert ease-in duration-200  opacity-0 hover:opacity-90 "
                   src={deleteIcon.src}
                 />

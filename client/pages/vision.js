@@ -28,8 +28,6 @@ const visionPage = () => {
 
   const handleDisableDemo = () => {
     setDemo(false);
-    // setAllowWebcam(true)
-    // setWebcamEnable(true);
   };
 
   const closeModal = () => {

@@ -25,6 +25,7 @@ const Home = () => {
                     Turning your webcam into a parking mointor.{" "}
                   </span>
                   <Image
+                    alt="eye"
                     className="inline-block"
                     width={10}
                     height={50}
