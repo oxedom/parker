@@ -51,21 +51,23 @@ const visionPage = () => {
         <PreMenu setDemo={setDemo} setActivate={setActivate}></PreMenu>
       ) : (
         <div className="flex flex-col  p-16    ">
-          <div className="">
+          <div className="flex flex-col justify-center items-center">
 
    
 
-              <div className=" relative text-2xl grid grid-cols-3 max-w-screen-lg  place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  " >
+              <div className="bg-filler relative text-2xl grid grid-cols-3 max-w-screen-lg  place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  " >
 
               {demo ?
               
-              <>
-              <h5 className="font-bold p-4 border-white  text-4xl animate-ping duration-300"> DEMO   </h5>
+                <div>
+              <h5 className="font-bold p-4 rounded-lg text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl animate-ping duration-300  "> Exit    </h5>
               <span className="" onClick={handleDisableDemo}>
               {" "}
-              Click here with your own webcam!
+
             </span>
-            </>
+
+                </div>
+
               
               : ""}
 

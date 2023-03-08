@@ -28,6 +28,12 @@ const fpsState = atom({
   default: 1,
 });
 
+const lastCheckedState = atom({
+  key: "lastChecked",
+  default: 0,
+});
+
+
 const processingState = atom({
   key: "processing",
   default: true,
@@ -72,8 +78,8 @@ const selectedRoiState = selector({
     }
     if (action.event === "occupation") {
       let { predictionsArr, canvas } = action.payload;
-      let _lastChecked = get(lastCheckedState);
       let _selectedRoi = get(selectedRoi);
+      let _lastChecked = get(lastCheckedState);
       let _autoDetect = get(autoDetectState);
       let _width = get(imageWidthState);
       let _height = get(imageHeightState);

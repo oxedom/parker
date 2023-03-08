@@ -1,8 +1,7 @@
-import DefaultLayout from "../layouts/DefaultLayout";
+
 import Image from "next/image";
-import eye from "../static/eye.png";
-import svg from "../public/bg1.svg";
-import githubIcon from "../static/icons/github-mark.png";
+import eye from "../public/static/eye.png";
+
 import Head from "next/head";
 import Link from "next/link";
 import DashboardLayout from "../layouts/DashboardLayout";

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import DefaultLayout from "../layouts/DefaultLayout";
-import tensorflowIcon from "../static/tesnorflow.png";
-import nextjsIcon from "../static/nextjs.png";
+import tensorflowIcon from "../public/static/tesnorflow.png";
+import nextjsIcon from "../public/static/nextjs.png";
 const About = () => {
   return (
     <DefaultLayout>

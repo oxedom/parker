@@ -169,7 +169,9 @@ const ClientRender = ({
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
     } else if (demo && demoLoaded && demoRef.current != null) {
+
       video = demoRef.current;
+      console.log(demoRef.current.video);
       videoWidth = demoRef.current.videoWidth;
       videoHeight = demoRef.current.videoHeight;
     } else {
@@ -177,7 +179,8 @@ const ClientRender = ({
     }
 
     tf.engine().startScope();
-
+    console.log('TF BROWSWER:');
+    console.log(video);
     let input = tf.tidy(() => {
       return tf.image
         .resizeBilinear(tf.browser.fromPixels(video), model_dim)
@@ -375,7 +378,7 @@ const ClientRender = ({
           }}
           autoPlay
           type="video/mp4"
-          src="./demo_encode.mp4"
+          src="./demo.mp4"
         />
       ) : null}
     </>

@@ -18,8 +18,12 @@ Add PM2 Yaml to repo
 Sort out public and static folder
 Check out mobile responsive
 Check out touch event for dragging squares
-
+Prevent tensorflow trying to render a non browswer images
 Timer one:
 Removed old pieces of state that were unused, added displayInfo comp because it's reused.
 
 Timer two:
+Fixed Demo crashing
+Added cools styles for display info
+Readded lastChecked from state
+Some CSS changes to vision
