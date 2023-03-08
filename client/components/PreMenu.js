@@ -2,16 +2,14 @@ import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { imageWidthState, imageHeightState } from "./states";
 
-
 const PreMenu = ({ setActivate, setDemo }) => {
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
 
   useEffect(() => {
-    setImageWidth(640)
-    setImageHeight(480)
-
-  }, [])
+    setImageWidth(640);
+    setImageHeight(480);
+  }, []);
 
   const handleClick = (value) => {
     switch (value) {

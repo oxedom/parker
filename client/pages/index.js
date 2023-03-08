@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import eye from "../public/static/eye.png";
 
@@ -34,7 +33,8 @@ const Home = () => {
                 </div>
 
                 <p className="text-xl  sm:text-2xl font-normal">
-                  Using computer vision and client side processing <br/>to turn your parking situation into a smart one.{" "}
+                  Using computer vision and client side processing <br />
+                  to turn your parking situation into a smart one.{" "}
                 </p>
 
                 <Link href={"/vision"}>

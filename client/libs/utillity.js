@@ -1,5 +1,5 @@
-import { exp } from '@tensorflow/tfjs';
-import uniqid from 'uniqid'
+import { exp } from "@tensorflow/tfjs";
+import uniqid from "uniqid";
 
 function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
@@ -133,10 +133,8 @@ export function detectWebcam(callback) {
   });
 }
 
-export function selectedFactory(cords) 
-{
+export function selectedFactory(cords) {
   let date = new Date();
-
 
   const roiObj = {
     label: "vehicle",
@@ -151,14 +149,10 @@ export function selectedFactory(cords)
     evaluating: true,
   };
 
-  return roiObj
+  return roiObj;
+}
 
-
-
-
- }
-
- export  function totalOccupied (roiArr)  {
+export function totalOccupied(roiArr) {
   let OccupiedCount = 0;
   let availableCount = 0;
   roiArr.forEach((roi) => {
@@ -170,4 +164,4 @@ export function selectedFactory(cords)
     }
   });
   return { OccupiedCount, availableCount };
-};
+}

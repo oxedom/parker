@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  imageHeightState,
-  imageWidthState,
-} from "./states";
+import { imageHeightState, imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
 import { selectedRoiState } from "../components/states";
@@ -85,7 +82,7 @@ const DrawingCanvas = ({ setProcessing }) => {
     //Sends action request with a payload, the event is handled
     //inside the state event.
     setSelectedRois(action);
-   
+
     //Resetting width to 1 to prevent a nondrag click to become a square in the selectedRoi State
     setCurrentCords({
       right_x: 0,

@@ -15,27 +15,31 @@ const About = () => {
             <section className="p-5  rounded-md mt-2 flex gap-2 flex-col text-xl  ">
               <p className="">
                 {" "}
-                <span className="text-2xl text-gray-700 font-bold">Parker </span> is a open
-                source smart parking tool that to enable users to mointor
-                parking spaces using their Webcam/CCTV cameras.
+                <span className="text-2xl text-gray-700 font-bold">
+                  Parker{" "}
+                </span>{" "}
+                is a open source smart parking tool that to enable users to
+                mointor parking spaces using their Webcam/CCTV cameras.
               </p>
 
-    
               <p className="text-3xl mt-10 text-gray-700 ">Built with</p>
-
 
               <ul className="flex flex-col gap-2">
                 <li className="flex gap-2">
-                <Image width={30} src={tensorflowIcon} ></Image>
-                  <a  className="text-blue-500" href="https://www.tensorflow.org/js"> TensorFlow.js</a>
+                  <Image width={30} src={tensorflowIcon}></Image>
+                  <a
+                    className="text-blue-500"
+                    href="https://www.tensorflow.org/js"
+                  >
+                    {" "}
+                    TensorFlow.js
+                  </a>
+                </li>
 
-                  </li>
-
-                  <li className="flex gap-2"> 
-                
-                <Image width={30}   src={nextjsIcon}></Image>
-                <span>NextJS </span>
-                 </li>
+                <li className="flex gap-2">
+                  <Image width={30} src={nextjsIcon}></Image>
+                  <span>NextJS </span>
+                </li>
 
                 <li>
                   {" "}
@@ -57,12 +61,7 @@ const About = () => {
                     YOLO7-tfjs ( YOLO7 Model for TFJS Thanks Hugo!){" "}
                   </a>{" "}
                 </li>
-
-               
-         
               </ul>
-
- 
             </section>
           </div>
         </main>

@@ -21,7 +21,7 @@ const EnableWebcam = ({ setWebcamLoaded }) => {
       let dotSring = "   ";
       let context = enableWebcamRef.current.getContext("2d");
       context.clearRect(0, 0, imageWidth, imageHeight);
-   
+
       context.font = "bold 40px Arial";
 
       context.textAlign = "center";
@@ -37,7 +37,7 @@ const EnableWebcam = ({ setWebcamLoaded }) => {
         }
         context.clearRect(0, 0, imageWidth, imageHeight);
         context.fillStyle = "blue";
-      context.fill(0, 0, imageWidth, imageHeight);
+        context.fill(0, 0, imageWidth, imageHeight);
 
         context.fillText(
           "Please Enable your webcam" + dotSring,

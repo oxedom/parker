@@ -35,7 +35,7 @@ const ClientRender = ({
   const fps = useRecoilValue(fpsState);
   const detectionThreshold = useRecoilValue(detectionThresholdState);
   const thresholdIou = useRecoilValue(thresholdIouState);
- 
+
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   let overlayXRef = useRef(null);
@@ -47,14 +47,13 @@ const ClientRender = ({
 
   const enableWebcamRef = useRef(null);
 
-  const handleDemoLoaded = (e) => 
-  {
+  const handleDemoLoaded = (e) => {
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
-    setDemoLoaded(true)
-    setWebcamPlaying(false)
-    setAutoDetect(true)
-  }
+    setDemoLoaded(true);
+    setWebcamPlaying(false);
+    setAutoDetect(true);
+  };
 
   async function setUserSettings() {
     let { width, height } = await getSetting();
@@ -109,7 +108,7 @@ const ClientRender = ({
       context.clearRect(0, 0, imageWidth, imageHeight);
       context.font = "bold 40px Arial";
       context.fillStyle = "blue";
-      context.fillRect(0, 0, imageWidth, imageHeight)
+      context.fillRect(0, 0, imageWidth, imageHeight);
 
       context.textAlign = "center";
       loadingIntervalID = setInterval(() => {
@@ -122,8 +121,6 @@ const ClientRender = ({
         } else if (dotSring === "...") {
           dotSring = "   ";
         }
-
-      
 
         context.clearRect(0, 0, imageWidth, imageHeight);
         context.fillStyle = "blue";
@@ -150,14 +147,12 @@ const ClientRender = ({
       }, 1500);
     }
 
-
     return () => {
       clearInterval(loadingIntervalID);
-
     };
   }, []);
   const detectFrame = async (model) => {
-    if (!webcamRunning && !demo && webcamPlaying)  {
+    if (!webcamRunning && !demo && webcamPlaying) {
       return false;
     }
 
@@ -166,7 +161,6 @@ const ClientRender = ({
     let videoHeight;
 
     if (!demo && webcamRef.current != null) {
-   
       video = webcamRef.current.video;
       videoWidth = webcamRef.current.video.videoWidth;
       videoHeight = webcamRef.current.video.videoHeight;
@@ -174,7 +168,6 @@ const ClientRender = ({
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
     } else if (demo && demoLoaded && demoRef.current != null) {
-
       video = demoRef.current;
 
       videoWidth = demoRef.current.videoWidth;
@@ -278,8 +271,6 @@ const ClientRender = ({
       console.error(err);
     });
 
-
-
     tf.engine().endScope();
     setSelectedRois(action);
   };
@@ -292,26 +283,21 @@ const ClientRender = ({
         onProgress: (fractions) => {},
       }
     );
-    modelRef.current = yolov7
+    modelRef.current = yolov7;
     const dummyInput = tf.ones(yolov7.inputs[0].shape);
     const warmupResult = await yolov7.executeAsync(dummyInput);
     tf.dispose(warmupResult);
     tf.dispose(dummyInput);
     setLoadedCoco(true);
- 
 
-   
     id = setInterval(() => {
-
-        detectFrame(yolov7);
-      
+      detectFrame(yolov7);
     }, fps * 1000);
 
     return id;
   };
 
   useEffect(() => {
-  
     // console.log(
     //   "Load Yolo Use Effect Rerun",
     //   `Processing is currently: ${processing}`
@@ -326,17 +312,14 @@ const ClientRender = ({
 
     //Clean up
     return function () {
-     ;
       clearInterval(id);
       clearCanvas(overlayXRef, imageWidth, imageHeight);
 
+      if (modelRef.current) {
+        modelRef.current.dispose();
+      }
 
-
-        if (modelRef.current) {
-          modelRef.current.dispose();
-        }
- 
-        setLoadedCoco(false);
+      setLoadedCoco(false);
 
       // setModel(undefined);
     };
@@ -344,7 +327,7 @@ const ClientRender = ({
 
   return (
     <>
-      {loadedCoco  ? (
+      {loadedCoco ? (
         <canvas
           id="overlap-overlay"
           ref={overlayXRef}
@@ -354,14 +337,14 @@ const ClientRender = ({
         ></canvas>
       ) : null}
 
-
       {!demo && webcamLoaded ? (
         <Webcam
           height={imageHeight}
           width={imageWidth}
-          onPlay={()=> { 
-            setDemoLoaded(false)
-            setWebcamPlaying(true )}}
+          onPlay={() => {
+            setDemoLoaded(false);
+            setWebcamPlaying(true);
+          }}
           style={{ height: imageHeight }}
           videoConstraints={{ height: imageHeight, video: imageWidth }}
           ref={webcamRef}
@@ -370,15 +353,15 @@ const ClientRender = ({
         />
       ) : null}
 
-      {!demo && !webcamLoaded ? 
-       <canvas
-       ref={enableWebcamRef}
-       height={imageHeight}
-       width={imageWidth}
-       >
-
-      </canvas> : ""}
-
+      {!demo && !webcamLoaded ? (
+        <canvas
+          ref={enableWebcamRef}
+          height={imageHeight}
+          width={imageWidth}
+        ></canvas>
+      ) : (
+        ""
+      )}
 
       {demo ? (
         <video
@@ -389,11 +372,9 @@ const ClientRender = ({
           onLoad={(e) => {}}
           loop={true}
           onPlay={(e) => {
-
-            handleDemoLoaded(e)
+            handleDemoLoaded(e);
           }}
           autoPlay
-          
           type="video/mp4"
           src="./demo.mp4"
         />

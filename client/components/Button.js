@@ -1,6 +1,4 @@
 const Button = ({ text, callback, colors }) => {
-
-
   const btnClass = `items-center
     justify-center   cursor-pointer
 

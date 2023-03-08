@@ -22,20 +22,17 @@ const visionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [demo, setDemo] = useState(false);
   const [allowWebcam, setAllowWebcam] = useState(false);
-  const [ webcamPlaying , setWebcamPlaying] = useState(false)
-  const [active, setActivate] = useState(false)
-  
+  const [webcamPlaying, setWebcamPlaying] = useState(false);
+  const [active, setActivate] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
   };
 
   const handleDisableDemo = () => {
-    
     setDemo(false);
     // setAllowWebcam(true)
     // setWebcamEnable(true);
-
   };
 
   const closeModal = () => {
@@ -49,61 +46,50 @@ const visionPage = () => {
       </Head>
 
       {!demo && !active ? (
-        <PreMenu 
-
-        setDemo={setDemo} 
-        setActivate={setActivate}></PreMenu>
+        <PreMenu setDemo={setDemo} setActivate={setActivate}></PreMenu>
       ) : (
-        <div className={`flex flex-col ${(demo && !demoLoaded) ? "opacity-0 " : "opacity-100"} p-16    `}>
+        <div
+          className={`flex flex-col ${
+            demo && !demoLoaded ? "opacity-0 " : "opacity-100"
+          } p-16    `}
+        >
           <div className="flex flex-col justify-center items-center">
-
-   
-
-              <div className="bg-filler relative text-2xl grid grid-cols-3   place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  " >
-
-              {demo ?
-              
+            <div className="bg-filler relative text-2xl grid grid-cols-3   place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  ">
+              {demo ? (
                 <div onClick={handleDisableDemo}>
-              <h5 className="font-bold p-4 rounded-lg text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl animate-ping duration-300  "> Exit    </h5>
-              <span className="" >
-              {" "}
-
-            </span>
-
+                  <h5 className="font-bold p-4 rounded-lg text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl animate-ping duration-300  ">
+                    {" "}
+                    Exit{" "}
+                  </h5>
+                  <span className=""> </span>
                 </div>
+              ) : (
+                ""
+              )}
 
-              
-              : ""}
+              {!demo && !allowWebcam ? (
+                <div className="border border-white rounded-lg ">
+                  <button
+                    className="p-3  animate-pulse  align-self-center justify-self-center bg-opacity-70 hover:scale-105 duration-300  rounded-lg ml-2 text-center"
+                    onClick={(e) => {
+                      setAllowWebcam(true);
+                    }}
+                  >
+                    {" "}
+                    Enable Webcam{" "}
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
 
-
-              {!demo && !allowWebcam ? 
-              <div className="border border-white rounded-lg ">
-
-              <button
-                  className="p-3  animate-pulse  align-self-center justify-self-center bg-opacity-70 hover:scale-105 duration-300  rounded-lg ml-2 text-center"
-                  onClick={(e) => {
-                    setAllowWebcam(true);
-                  }}
-                >
-                  {" "}
-                  Enable Webcam{" "}
-                </button>
-
-              </div>
-
-              
-              
-              : ""}
-
-            {!demo && allowWebcam ? 
-              <div>
-               
-
-
-              </div>  :""}
+              {!demo && allowWebcam ? <div></div> : ""}
               <DisplayInfo></DisplayInfo>
-                <button  className=" border text-center border-white rounded-md p-4 "> Settings </button>
-              </div> 
+              <button className=" border text-center border-white rounded-md p-4 ">
+                {" "}
+                Settings{" "}
+              </button>
+            </div>
 
             <div
               className={`hidden md:flex    flex-col md:flex-row  md:justify-between rounded outline-1 outline  outline-black shadow-lg

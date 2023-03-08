@@ -8,21 +8,20 @@ module.exports = {
   ],
 
   theme: {
-
-    animation: 
-    {
-      fade: 'fadeOut 1s ease-in-out'
+    animation: {
+      fade: "fadeOut 1s ease-in-out",
     },
-    keyframes: opacity => ({
+    keyframes: (opacity) => ({
       fadeOut: {
-        '0%': { opacity: 0   },
+        "0%": { opacity: 0 },
         // '100%': {color: theme('') },
       },
     }),
-    
+
     backgroundImage: {
       hero: "linear-gradient(0deg,#3D85C6,rgba(31,6,85,.1)), url(../public/bg1.svg),linear-gradient(180deg,#063855,#3D85C6) ",
-      heroShort: "linear-gradient(0deg,#0b689e,rgba(31,6,85,.1)), url(../public/bg1.svg),linear-gradient(180deg,#063855,#0b689e) ",
+      heroShort:
+        "linear-gradient(0deg,#0b689e,rgba(31,6,85,.1)), url(../public/bg1.svg),linear-gradient(180deg,#063855,#0b689e) ",
       filler:
         "linear-gradient(0deg,#3D85C6,rgba(31,6,85,.1)) ,linear-gradient(180deg,#063855,#3D85C6);",
     },

@@ -33,7 +33,6 @@ const lastCheckedState = atom({
   default: 0,
 });
 
-
 const processingState = atom({
   key: "processing",
   default: true,
@@ -49,8 +48,6 @@ const selectedRoi = atom({
   default: [],
 });
 
-
-
 const selectedRoiState = selector({
   key: "selectedRoisState",
   default: [],
@@ -62,7 +59,7 @@ const selectedRoiState = selector({
   set: ({ set, get }, action) => {
     if (action.event === "addRoi") {
       let { cords } = action.payload;
-      const roiObj = selectedFactory(cords)
+      const roiObj = selectedFactory(cords);
 
       const oldRois = get(selectedRoi);
 
@@ -85,20 +82,14 @@ const selectedRoiState = selector({
       let _height = get(imageHeightState);
 
       if (_autoDetect) {
-        
-      
-        let updatedArr = []
-        predictionsArr.forEach(pred => 
-          {
-            let roiObj = selectedFactory(pred.cords)
+        let updatedArr = [];
+        predictionsArr.forEach((pred) => {
+          let roiObj = selectedFactory(pred.cords);
 
-              updatedArr.push(roiObj)
-            
-    
-          })
-          set(selectedRoi, updatedArr)
+          updatedArr.push(roiObj);
+        });
+        set(selectedRoi, updatedArr);
 
-  
         set(autoDetectState, false);
       }
 
