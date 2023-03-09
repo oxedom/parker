@@ -16,15 +16,12 @@ import ToogleSwitch from "./ToogleSwitch";
 const Toolbar = ({
   processing,
   setProcessing,
-  openModal,
   closeModal,
   isModalOpen,
-  setHasWebcam,
-  demo,
-  setDemo,
-  webcamEnabled,
+  allowWebcam,
+  setAllowWebcam,
   loadedCoco,
-  setWebcamEnable,
+
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
@@ -40,7 +37,7 @@ const Toolbar = ({
     useState(undefined);
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
-  const selectedRois = useRecoilValue(selectedRoiState);
+;
 
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
@@ -64,9 +61,7 @@ const Toolbar = ({
     }
   };
 
-  const handleDemo = () => {
-    demo ? setDemo(false) : setDemo(true);
-  };
+
 
   const handleSaveSettings = () => {
     // closeModal
@@ -94,8 +89,8 @@ const Toolbar = ({
     }
     processing ? setProcessing(false) : setProcessing(true);
   }
-  function handleWebcamEnable() {
-    webcamEnabled ? setWebcamEnable(false) : setWebcamEnable(true);
+  function handleWebcamToogle() {
+    allowWebcam ? setAllowWebcam(false) : setAllowWebcam(true);
   }
 
   function handleDetectionsEnable() {
@@ -123,8 +118,8 @@ const Toolbar = ({
             <div className="grid grid-rows-2 gap-10 m-4">
               <ToogleSwitch
                 text={"Webcam"}
-                boolean={webcamEnabled}
-                callback={handleWebcamEnable}
+                boolean={allowWebcam}
+                callback={handleWebcamToogle}
               />
 
               <ToogleSwitch
@@ -244,7 +239,7 @@ const Toolbar = ({
         }}
       />
 
-      <Button text={"Settings"} callback={openModal} />
+
     </div>
   );
 };

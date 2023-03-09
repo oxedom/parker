@@ -104,7 +104,9 @@ const RoisFeed = ({}) => {
             >
               {s.hover ? (
                 <Image
-                  alt="Delete "
+                  width={50}
+                  height={50}
+                  alt="Delete"
                   className="invert ease-in duration-200  opacity-0 hover:opacity-90 "
                   src={deleteIcon.src}
                 />

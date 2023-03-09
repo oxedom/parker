@@ -63,15 +63,16 @@ const visionPage = () => {
               )}
 
               {!demo && !allowWebcam ? (
-                <div className="border border-white rounded-lg ">
+                <div className="border animate-pulse transition ease-in animate-indicate border-white rounded-lg ">
                   <button
-                    className="p-3  animate-pulse  align-self-center justify-self-center bg-opacity-70 hover:scale-105 duration-300  rounded-lg ml-2 text-center"
+                    className="p-3  duration-150 align-self-center justify-self-center  rounded-lg text-center"
                     onClick={(e) => {
                       setAllowWebcam(true);
                     }}
                   >
                     {" "}
-                    Enable Webcam{" "}
+                    <span className="hover:animate-spin ">Enable Webcam{" "}</span>
+                    
                   </button>
                 </div>
               ) : (
@@ -80,7 +81,7 @@ const visionPage = () => {
 
               {!demo && allowWebcam ? <div></div> : ""}
               <DisplayInfo></DisplayInfo>
-              <button className=" border text-center border-white rounded-md p-4 ">
+              <button onClick={openModal} className=" border text-center border-white rounded-md p-4 ">
                 {" "}
                 Settings{" "}
               </button>
@@ -91,17 +92,18 @@ const visionPage = () => {
             `}
             >
               <Toolbar
-                setWebcamEnable={setWebcamEnable}
-                setDemo={setDemo}
-                demo={demo}
+     
+           
                 setProcessing={setProcessing}
-                setHasWebcam={setHasWebcam}
+        
                 isModalOpen={isModalOpen}
+                allowWebcam={allowWebcam}
+                setAllowWebcam={setAllowWebcam}
                 closeModal={closeModal}
-                openModal={openModal}
+   
                 processing={processing}
                 hasWebcam={hasWebcam}
-                webcamEnabled={webcamEnabled}
+        
                 loadedCoco={loadedCoco}
               >
                 {" "}

@@ -6,7 +6,7 @@ const About = () => {
   return (
     <DefaultLayout>
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[800px] gap-5 mt-5items-stretch  ">
-        <main className=" animate-fade">
+        <main className="">
           <div className="text-lg  ">
             <h2 className="text-5xl text-center font-bold  rounded-lg  mb-10    text-orange-600">
               {" "}
