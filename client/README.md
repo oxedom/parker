@@ -15,10 +15,18 @@ Clean up occupation algo
 Fix plus detection thershold button in settings
 And fix floats in iou Threshold and maybe detections thershold
 Add PM2 Yaml to repo
+SOrted
 Sort out public and static folder
+
+//Not that good currently. Needs implementation 
 Check out mobile responsive
+Still need to see if I can use them a lot. 
 Check out touch event for dragging squares
+
+*Fixed with bug fix of adding width to the element video.
 Prevent tensorflow trying to render a non browswer images
+
+
 Timer one:
 Removed old pieces of state that were unused, added displayInfo comp because it's reused.
 
