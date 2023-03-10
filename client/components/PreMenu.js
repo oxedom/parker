@@ -29,7 +29,7 @@ const PreMenu = ({ setActivate, setDemo }) => {
 
       case "webrtc": 
       {
-        router.push("output")
+        router.push("input")
       }
     }
   };
