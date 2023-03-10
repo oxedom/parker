@@ -52,7 +52,7 @@ const visionPage = () => {
             <div className="bg-filler relative text-2xl grid grid-cols-3   place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  ">
               {demo ? (
                 <div onClick={handleDisableDemo}>
-                  <h5 className="font-bold p-4 rounded-lg text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl animate-ping duration-300  ">
+                  <h5 className="font-bold p-4 rounded-lg text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl  duration-300  ">
                     {" "}
                     Exit{" "}
                   </h5>
@@ -63,7 +63,7 @@ const visionPage = () => {
               )}
 
               {!demo && !allowWebcam ? (
-                <div className="border animate-pulse transition ease-in animate-indicate border-white rounded-lg ">
+                <div className="border animate-pulse duration-600  transition ease-in  border-white rounded-lg ">
                   <button
                     className="p-3  duration-150 align-self-center justify-self-center  rounded-lg text-center"
                     onClick={(e) => {
@@ -71,7 +71,7 @@ const visionPage = () => {
                     }}
                   >
                     {" "}
-                    <span className="hover:animate-spin ">Enable Webcam{" "}</span>
+                    <span className="">Enable Webcam{" "}</span>
                     
                   </button>
                 </div>

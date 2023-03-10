@@ -17,7 +17,9 @@ And fix floats in iou Threshold and maybe detections thershold
 Add PM2 Yaml to repo
 SOrted
 Sort out public and static folder
-
+Sort out CD/CI with docker
+Make save button change color when a setting has changed.
+Add a reset settings
 //Not that good currently. Needs implementation 
 Check out mobile responsive
 Still need to see if I can use them a lot. 
