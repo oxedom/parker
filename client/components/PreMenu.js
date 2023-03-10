@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { imageWidthState, imageHeightState } from "./states";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const PreMenu = ({ setActivate, setDemo }) => {
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
@@ -27,9 +27,8 @@ const PreMenu = ({ setActivate, setDemo }) => {
         break;
       }
 
-      case "webrtc": 
-      {
-        router.push("input")
+      case "webrtc": {
+        router.push("input");
       }
     }
   };

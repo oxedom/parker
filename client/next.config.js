@@ -14,9 +14,9 @@
 
 // module.exports = nextConfig;
 module.exports = {
-eslint: { ignoreDuringBuilds: true, },
-images: {
-  unoptimized: true
-}
+  eslint: { ignoreDuringBuilds: true },
+  images: {
+    unoptimized: true,
+  },
   /* config options here */
 };

@@ -71,8 +71,7 @@ const visionPage = () => {
                     }}
                   >
                     {" "}
-                    <span className="">Enable Webcam{" "}</span>
-                    
+                    <span className="">Enable Webcam </span>
                   </button>
                 </div>
               ) : (
@@ -81,7 +80,10 @@ const visionPage = () => {
 
               {!demo && allowWebcam ? <div></div> : ""}
               <DisplayInfo></DisplayInfo>
-              <button onClick={openModal} className=" border text-center border-white rounded-md p-4 ">
+              <button
+                onClick={openModal}
+                className=" border text-center border-white rounded-md p-4 "
+              >
                 {" "}
                 Settings{" "}
               </button>
@@ -92,18 +94,13 @@ const visionPage = () => {
             `}
             >
               <Toolbar
-     
-           
                 setProcessing={setProcessing}
-        
                 isModalOpen={isModalOpen}
                 allowWebcam={allowWebcam}
                 setAllowWebcam={setAllowWebcam}
                 closeModal={closeModal}
-   
                 processing={processing}
                 hasWebcam={hasWebcam}
-        
                 loadedCoco={loadedCoco}
               >
                 {" "}

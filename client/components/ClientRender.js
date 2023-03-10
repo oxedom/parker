@@ -46,8 +46,6 @@ const ClientRender = ({
   const [webcamLoaded, setWebcamLoaded] = useState(false);
   const modelName = "yolov7";
 
-
-
   const handleDemoLoaded = (e) => {
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
@@ -100,7 +98,6 @@ const ClientRender = ({
       overlayXRef.current = overlayXRef.current.getContext("2d");
     }
   }, [loadedCoco]);
-
 
   const detectFrame = async (model) => {
     if (!webcamRunning && !demo && webcamPlaying) {
@@ -249,7 +246,6 @@ const ClientRender = ({
   };
 
   useEffect(() => {
-   
     // console.log(
     //   "Load Yolo Use Effect Rerun",
     //   `Processing is currently: ${processing}`
@@ -305,11 +301,7 @@ const ClientRender = ({
         />
       ) : null}
 
-      {!demo && !webcamLoaded ? (
-        <LoadingScreen/>
-      ) : (
-        ""
-      )}
+      {!demo && !webcamLoaded ? <LoadingScreen /> : ""}
 
       {demo ? (
         <video

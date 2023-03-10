@@ -1,4 +1,3 @@
-import { exp } from "@tensorflow/tfjs";
 import uniqid from "uniqid";
 
 function getOverlap(rectangle1, rectangle2) {

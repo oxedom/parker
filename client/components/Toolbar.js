@@ -21,7 +21,6 @@ const Toolbar = ({
   allowWebcam,
   setAllowWebcam,
   loadedCoco,
-
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
@@ -37,8 +36,6 @@ const Toolbar = ({
     useState(undefined);
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
-;
-
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
     "Advanced setting: Non-maximum Suppression threshold, recommended to between 50-75 ";
@@ -60,8 +57,6 @@ const Toolbar = ({
       setAutoDetect(true);
     }
   };
-
-
 
   const handleSaveSettings = () => {
     // closeModal
@@ -238,8 +233,6 @@ const Toolbar = ({
         `,
         }}
       />
-
-
     </div>
   );
 };
