@@ -50,7 +50,11 @@ const Output = () => {
  
   
   const handleOffer = async () => {
+
+
+
     const db = getFirestore(app);
+    // const callDoc = doc(db, 'calls')
     let _localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: false,
@@ -75,36 +79,43 @@ const Output = () => {
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
 
+    const roomWithOffer = {
+      offer: {
+        type: offer.type,
+        sdp: offer.sdp,
+      },
+      candidates: []
+    };
     
-    pc.addEventListener('icecandidate', (e) => 
+    pc.addEventListener('icecandidate', async (e) => 
     {
     if(e.candidate) 
     {
       const json = e.candidate.toJSON();
-      console.log(json);
+      roomWithOffer.candidates.push(json)
+      const roomRef = await addDoc(collection(db, "rooms"), {
+        ...roomWithOffer,
+
+      });
+                  const roomId = roomRef.id; 
+    setOfferID(roomId);
     }
 
     // console.log(e);
       // console.log(e.canidate.toJSON());
     })
 
-    const roomWithOffer = {
-      offer: {
-        type: offer.type,
-        sdp: offer.sdp,
-      },
-    };
-    const roomRef = await addDoc(collection(db, "rooms"), {
-      ...roomWithOffer,
-    });
+
+
+  
+
+    // const roomRef = await setDoc(callDoc, roomWithOffer)
  
-    // const docRef = doc(db, 'calls', "0");
  
-    const roomId = roomRef.id;
+    // const roomId = roomRef.id;
  
-    // const callDoc = collection('calls').doc();
-    // console.log(callDoc);
-    setOfferID(roomId);
+
+    // setOfferID(roomId);
     
   };
 

@@ -54,7 +54,7 @@ const ReceiverRTC = ({recevierRef}) => {
     const roomSnapshot = await getDoc(roomRef);
     data = { ...roomSnapshot.data() };
     pc = new RTCPeerConnection(servers);
-
+    console.log((data));
 
 
     pc.addEventListener("track", async (e) => {
@@ -62,7 +62,6 @@ const ReceiverRTC = ({recevierRef}) => {
 
       let remoteVideo = document.getElementById('remoteVideo')
       const track = e.streams[0]
-      console.log(track);
       setStream(track)
       recevierRef.current.srcObject = track
       
