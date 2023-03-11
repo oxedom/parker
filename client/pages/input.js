@@ -11,6 +11,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import ReceiverRTC from "../components/WebRTC/RecevierRTC";
+
 // import uniqid from uniqid
 
 const Output = () => {
@@ -22,7 +23,7 @@ const Output = () => {
   const allowBtnRef = useRef(null);
   const offerBtnRef = useRef(null);
   const outputRef = useRef(null);
-
+  const recevierRef = useRef(null);
   const app = initializeApp(firebaseConfig);
 
   const servers = {
@@ -39,19 +40,29 @@ const Output = () => {
 
   let pc;
 
+
+
+
+
   if (typeof window !== "undefined") {
     pc = new RTCPeerConnection(servers);
   }
-
+ 
+  
   const handleOffer = async () => {
+    const db = getFirestore(app);
     let _localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
-      audio: true,
+      audio: false,
     });
     outputRef.current.srcObject = _localStream;
 
+
+
     console.log(pc);
     _localStream.getTracks().forEach((track) => {
+      console.log(track);
+      // pc.addTrack(track)
       pc.addTrack(track, _localStream);
     });
     // pc.addStream(_localStream)
@@ -63,7 +74,19 @@ const Output = () => {
 
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
-    const db = getFirestore(app);
+
+    
+    pc.addEventListener('icecandidate', (e) => 
+    {
+    if(e.candidate) 
+    {
+      const json = e.candidate.toJSON();
+      console.log(json);
+    }
+
+    // console.log(e);
+      // console.log(e.canidate.toJSON());
+    })
 
     const roomWithOffer = {
       offer: {
@@ -71,16 +94,21 @@ const Output = () => {
         sdp: offer.sdp,
       },
     };
-    // const docRef = doc(db, 'calls', "0");
     const roomRef = await addDoc(collection(db, "rooms"), {
       ...roomWithOffer,
     });
+ 
+    // const docRef = doc(db, 'calls', "0");
+ 
     const roomId = roomRef.id;
-
+ 
     // const callDoc = collection('calls').doc();
     // console.log(callDoc);
     setOfferID(roomId);
+    
   };
+
+
   const handleAnswerCall = async () => {};
 
   return (
@@ -93,6 +121,15 @@ const Output = () => {
           ref={outputRef}
         ></video>
 
+        <video 
+               ref={recevierRef}
+               muted={true}
+               autoPlay={true}
+        >
+ 
+
+        </video>
+
         <div>
           <p> {offerID} </p>
           <button onClick={handleOffer} className="bg-blue-500 p-5">
@@ -101,7 +138,7 @@ const Output = () => {
           </button>
         </div>
 
-        <ReceiverRTC></ReceiverRTC>
+        <ReceiverRTC recevierRef={recevierRef}></ReceiverRTC>
       </main>
     </DefaultLayout>
   );

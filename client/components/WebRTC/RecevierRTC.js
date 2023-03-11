@@ -12,22 +12,18 @@ import {
 } from "firebase/firestore";
 
 
-const ReceiverRTC = () => {
-  const kekRef = useRef(null);
+const ReceiverRTC = ({recevierRef}) => {
+
   const app = initializeApp(firebaseConfig);
-  const [videoStream, setStream] = useState(null)
+  const [stream,setStream] = useState(null)
+  useEffect(() => {
+    if(stream != null) 
+    {
+      recevierRef.current.srcObject = stream
+    }
+  
+  }, [stream])
 
-  // useEffect(() => {
-  //   if(videoStream != null) 
-  //   {
-  //     // const videoTracks = videoStream.getVideoTracks();
-
-  //     // console.log(videoStream);
-  //     kekRef.current.srcObject = videoStream
-   
-  //   }
-
-  // }, [videoStream])
 
   const servers = {
     iceServers: [
@@ -52,33 +48,33 @@ const ReceiverRTC = () => {
       return;
     }
     let data = {};
+    
     const db = getFirestore(app);
     const roomRef = doc(db, "rooms", connectID);
     const roomSnapshot = await getDoc(roomRef);
     data = { ...roomSnapshot.data() };
     pc = new RTCPeerConnection(servers);
-    const { offer } = data;
-    console.log(offer);
 
-    
-    await pc.setRemoteDescription(offer);
-    // const answer = await pc.createAnswer();
-    // await pc.setLocalDescription(answer);
-    console.log(    pc.ondatachannel);
 
-    pc.addEventListener("track", (e) => {
-      console.log(e);
-      alert("my name is track")
-      const videoElement = document.getElementById('output')
-      videoElement.srcObject = e.streams[0];
+
+    pc.addEventListener("track", async (e) => {
+     
+
+      let remoteVideo = document.getElementById('remoteVideo')
+      const track = e.streams[0]
+      console.log(track);
+      setStream(track)
+      recevierRef.current.srcObject = track
+      
+
     });
-  
-    
+
+
+    await pc.setRemoteDescription(data.offer)
 
   };
   return (
     <div className="bg-yellow-500 p-10">
-      <video id="output"  autoPlay={true} className="p-1"  width={640} height={480} key="1000000000000"  ref={kekRef}/>
       <input
         onChange={(e) => {
           setConnectID(e.target.value);
