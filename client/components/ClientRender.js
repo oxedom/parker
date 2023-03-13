@@ -125,27 +125,9 @@ const ClientRender = ({
 
     let res = model.execute(input);
 
-    res = res.arraySync()[0];
-    //Filtering only detections > conf_thres
-    res = res.filter((dataRow) => dataRow[4] >= detectionThreshold);
-    const {boxes, class_detect, scores} = processDetectionResults(res) 
 
+    const {boxes, class_detect, scores} = processDetectionResults(res, detectionThreshold) 
 
-
-   
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
 
     let nmsDetections;
     let detectionIndices;

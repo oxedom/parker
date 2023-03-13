@@ -14,7 +14,10 @@ export function processInputImage(video, model_dim)
   return input
 }
 
-export function processDetectionResults(res) {
+export function processDetectionResults(res, detectionThreshold) {
+    res = res.arraySync()[0];
+    //Filtering only detections > conf_thres
+    res = res.filter((dataRow) => dataRow[4] >= detectionThreshold);
     let _boxes = [];
     let _class_detect = [];
     let _scores = [];
@@ -34,6 +37,6 @@ export function processDetectionResults(res) {
     }
 
     res.forEach(process_pred);
-    
+
     return {scores:_scores, class_detect: _class_detect, boxes: _boxes}
     } 
