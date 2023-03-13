@@ -150,6 +150,7 @@ const ClientRender = ({
     });
 
     tf.engine().endScope();
+    clearCanvas(overlayXRef, imageWidth, imageHeight);
     setSelectedRois(action);
   };
 
@@ -158,7 +159,10 @@ const ClientRender = ({
     let yolov7 = await tf.loadGraphModel(
       `${window.location.origin}/${modelName}_web_model/model.json`,
       {
-        onProgress: (fractions) => {},
+        onProgress: (fractions) => {
+          //Loading
+          console.log(fractions);
+        },
       }
     );
     modelRef.current = yolov7;
@@ -176,10 +180,7 @@ const ClientRender = ({
   };
 
   useEffect(() => {
-    // console.log(
-    //   "Load Yolo Use Effect Rerun",
-    //   `Processing is currently: ${processing}`
-    // );
+
     let id;
 
     if (processing) {

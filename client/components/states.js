@@ -81,38 +81,35 @@ const selectedRoiState = selector({
     }
     if (action.event === "occupation") {
       let { predictionsArr, canvas } = action.payload;
-      let _selectedRoi = get(selectedRoi);
+
       let _lastChecked = get(lastCheckedState);
       let _autoDetect = get(autoDetectState);
       let _width = get(imageWidthState);
       let _height = get(imageHeightState);
+      
 
-      if (_autoDetect) {
-        let updatedArr = [];
-        predictionsArr.forEach((pred) => {
-          let roiObj = selectedFactory(pred.cords);
+      // if (_autoDetect) {
+      //   let updatedArr = [];
+      //   predictionsArr.forEach((pred) => {
+      //     let roiObj = selectedFactory(pred.cords);
 
-          updatedArr.push(roiObj);
-        });
-        set(selectedRoi, updatedArr);
+      //     updatedArr.push(roiObj);
+      //   });
+      //   set(selectedRoi, updatedArr);
 
-        set(autoDetectState, false);
-      }
+      //   set(autoDetectState, false);
+      // }
 
       if (get(showDetectionsState) && predictionsArr.length > 0) {
         renderAllOverlaps(predictionsArr, canvas, _width, _height);
-      } else {
-        clearCanvas(canvas, _width, _height);
-      }
+      } 
 
-      //This if checks prevents the checkOverlap running an execive amount of times,
-      //The rate of the action dispatched is depent on the rate of FPS, and because the FPS is
-      //determened by a setTimeout I can't internvine with state because the call stack values are
-      //updated up untill the point where the timer was inited.
-      //This is set too 900 to give some leeway for race condtions, altohugh it's not very crucial that checkOverlap will
-      //Miss one check up. As well as checkOverlap is a O^n2 function so best not to spam it, could be done better but because
-      //max input of N would at it's highest point 100 (And that an exaggerating  it still would run smoothly (tested,
-      // as well there //Is some optimazation in the checkOverlap which would make the amount of actions less.
+      // This if statement prevents excessive calls to checkOverlap.
+      // The rate of action dispatch is determined by the FPS, which is set by setTimeout,
+      // so I cannot intervene with state updates. The value is set to 900 to allow for race conditions,
+      // although it is not crucial for checkOverlap to miss a check. checkOverlap is an O(n^2) function,
+      // so it is best not to spam it. Optimization in checkOverlap reduces the number of actions required.
+      // The maximum input value for N is 100, so it still runs smoothly.
       let excessiveCheck = Date.now() - _lastChecked > 900 && !_autoDetect;
 
       if (excessiveCheck) {
