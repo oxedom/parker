@@ -15,7 +15,7 @@ import {
   fpsState,
   autoDetectState,
 } from "./states";
-import { processInputImage } from "../libs/tensorflow_utility";
+import { processInputImage, processDetectionResults } from "../libs/tensorflow_utility";
 import { isVehicle, detectWebcam, getSetting, webcamRunning } from "../libs/utillity";
 import LoadingScreen from "./LoadingScreen";
 
@@ -128,26 +128,24 @@ const ClientRender = ({
     res = res.arraySync()[0];
     //Filtering only detections > conf_thres
     res = res.filter((dataRow) => dataRow[4] >= detectionThreshold);
+    const {boxes, class_detect, scores} = processDetectionResults(res) 
 
-    let boxes = [];
-    let class_detect = [];
-    let scores = [];
 
-    res.forEach(process_pred);
 
-    function process_pred(res) {
-      let box = res.slice(0, 4);
+   
 
-      const cls_detections = res.slice(5, 85);
-      let max_score_index = cls_detections.reduce(
-        (imax, x, i, arr) => (x > arr[imax] ? i : imax),
-        0
-      );
 
-      boxes.push(box);
-      scores.push(res[max_score_index + 5]);
-      class_detect.push(max_score_index);
-    }
+
+
+  
+
+
+
+
+
+  
+
+  
 
     let nmsDetections;
     let detectionIndices;

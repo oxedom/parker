@@ -1,4 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
+import { exp } from "@tensorflow/tfjs";
 
 export function processInputImage(video, model_dim) 
 {
@@ -12,3 +13,27 @@ export function processInputImage(video, model_dim)
 
   return input
 }
+
+export function processDetectionResults(res) {
+    let _boxes = [];
+    let _class_detect = [];
+    let _scores = [];
+
+    function process_pred(res) {
+      let box = res.slice(0, 4);
+
+      const cls_detections = res.slice(5, 85);
+      let max_score_index = cls_detections.reduce(
+        (imax, x, i, arr) => (x > arr[imax] ? i : imax),
+        0
+      );
+
+      _boxes.push(box);
+      _scores.push(res[max_score_index + 5]);
+      _class_detect.push(max_score_index);
+    }
+
+    res.forEach(process_pred);
+    
+    return {scores:_scores, class_detect: _class_detect, boxes: _boxes}
+    } 
