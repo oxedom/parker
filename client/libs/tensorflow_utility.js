@@ -40,3 +40,29 @@ export function processDetectionResults(res, detectionThreshold) {
 
     return {scores:_scores, class_detect: _class_detect, boxes: _boxes}
     } 
+
+export  async function nmsDetectionProcess(boxes, scores, thresholdIou) 
+{
+  let _nmsDetections;
+  let _detectionIndices;
+  if(boxes.length < 0) { return []}
+  _nmsDetections = await tf.image.nonMaxSuppressionAsync(
+    boxes,
+    scores,
+    100,
+    thresholdIou
+  );
+
+  _detectionIndices = _nmsDetections.dataSync();
+
+  return {detectionIndices: _detectionIndices}
+}
+
+export async function disposeTensors(input,res) 
+{
+    console.log('Im disposing');
+    return Promise.all([tf.dispose(input), tf.dispose(res)]).catch((err) => {
+        console.error("Memory leak in coming");
+        console.error(err);
+      });
+}

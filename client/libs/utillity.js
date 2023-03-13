@@ -1,4 +1,7 @@
+import { exp } from "@tensorflow/tfjs";
 import uniqid from "uniqid";
+import labels from "../utils/labels.json"
+import { xywh2xyxy } from "../utils/renderBox.js";
 
 function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
@@ -176,3 +179,45 @@ export function webcamRunning (){
     return false;
   }
 };
+
+export   function detectionsToROIArr(detectionIndices, boxes, class_detect, scores, imageWidth, imageHeight, vehicleOnly) 
+{
+  let _predictionsArr = []
+  if(detectionIndices.length < 0) { return [] }
+
+  for (let i = 0; i < detectionIndices.length; i++) {
+    const detectionIndex = detectionIndices[i];
+    const detectionScore = scores[detectionIndex];
+    const detectionClass = class_detect[detectionIndex];
+    let dect_label = labels[detectionClass];
+    if (isVehicle(dect_label)) {
+      const roiObj = { cords: {} };
+      let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
+
+      // Extract the bounding box coordinates from the 'boxes' tensor
+      y1 = y1 * (imageHeight / 640);
+      y2 = y2 * (imageHeight / 640);
+      x1 = x1 * (imageWidth / 640);
+      x2 = x2 * (imageWidth / 640);
+
+      let dect_width = x2 - x1;
+      let dect_weight = y2 - y1;
+      roiObj.cords.bottom_y = y2;
+      roiObj.cords.left_x = x2;
+      roiObj.cords.top_y = y1;
+      roiObj.cords.right_x = x1;
+      roiObj.cords.width = dect_width;
+      roiObj.cords.height = dect_weight;
+      // Add the detection score to the bbox object
+      roiObj.confidenceLevel = detectionScore;
+      roiObj.label = dect_label;
+      roiObj.area = dect_width * dect_weight;
+      // Add the bbox object to the bboxes array
+
+      _predictionsArr.push(roiObj);
+    }
+  }
+
+  return _predictionsArr
+
+}

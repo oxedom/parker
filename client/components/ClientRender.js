@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
-import labels from "../utils/labels.json";
+
 import { clearCanvas } from "../libs/canvas_utility";
-import { xywh2xyxy } from "../utils/renderBox.js";
+
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
   imageWidthState,
@@ -13,10 +13,11 @@ import {
   thresholdIouState,
   detectionThresholdState,
   fpsState,
+  vehicleOnlyState,
   autoDetectState,
 } from "./states";
-import { processInputImage, processDetectionResults } from "../libs/tensorflow_utility";
-import { isVehicle, detectWebcam, getSetting, webcamRunning } from "../libs/utillity";
+import { processInputImage, processDetectionResults, nmsDetectionProcess} from "../libs/tensorflow_utility";
+import {  detectWebcam, getSetting, webcamRunning, detectionsToROIArr } from "../libs/utillity";
 import LoadingScreen from "./LoadingScreen";
 
 const ClientRender = ({
@@ -36,7 +37,7 @@ const ClientRender = ({
   const fps = useRecoilValue(fpsState);
   const detectionThreshold = useRecoilValue(detectionThresholdState);
   const thresholdIou = useRecoilValue(thresholdIouState);
-
+  const vehicleOnly = useRecoilValue(vehicleOnlyState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   let overlayXRef = useRef(null);
@@ -128,54 +129,13 @@ const ClientRender = ({
 
     const {boxes, class_detect, scores} = processDetectionResults(res, detectionThreshold) 
 
+    const {detectionIndices  } = await nmsDetectionProcess(boxes, scores, thresholdIou) 
 
-    let nmsDetections;
-    let detectionIndices;
-    let detectionScores;
-    let predictionsArr = [];
-    if (boxes.length > 0) {
-      nmsDetections = await tf.image.nonMaxSuppressionAsync(
-        boxes,
-        scores,
-        100,
-        thresholdIou
-      );
+  
 
-      detectionIndices = nmsDetections.dataSync();
+    const predictionsArr = detectionsToROIArr(detectionIndices, boxes, class_detect, scores, imageWidth, imageHeight, vehicleOnly,boxes, class_detect, scores) 
 
-      for (let i = 0; i < detectionIndices.length; i++) {
-        const detectionIndex = detectionIndices[i];
-        const detectionScore = scores[detectionIndex];
-        const detectionClass = class_detect[detectionIndex];
-        let dect_label = labels[detectionClass];
-        if (isVehicle(dect_label)) {
-          const roiObj = { cords: {} };
-          let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
 
-          // Extract the bounding box coordinates from the 'boxes' tensor
-          y1 = y1 * (imageHeight / 640);
-          y2 = y2 * (imageHeight / 640);
-          x1 = x1 * (imageWidth / 640);
-          x2 = x2 * (imageWidth / 640);
-
-          let dect_width = x2 - x1;
-          let dect_weight = y2 - y1;
-          roiObj.cords.bottom_y = y2;
-          roiObj.cords.left_x = x2;
-          roiObj.cords.top_y = y1;
-          roiObj.cords.right_x = x1;
-          roiObj.cords.width = dect_width;
-          roiObj.cords.height = dect_weight;
-          // Add the detection score to the bbox object
-          roiObj.confidenceLevel = detectionScore;
-          roiObj.label = dect_label;
-          roiObj.area = dect_width * dect_weight;
-          // Add the bbox object to the bboxes array
-
-          predictionsArr.push(roiObj);
-        }
-      }
-    }
     //Sends action request with a payload, the event is handled
     //inside the state event.
     let action = {
@@ -183,6 +143,7 @@ const ClientRender = ({
       payload: { predictionsArr: predictionsArr, canvas: overlayXRef },
     };
 
+   //Disposing tensors
     Promise.all([tf.dispose(input), tf.dispose(res)]).catch((err) => {
       console.error("Memory leak in coming");
       console.error(err);

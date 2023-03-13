@@ -13,6 +13,12 @@ const detectionThresholdState = atom({
   default: 0.6,
 });
 
+const vehicleOnlyState = atom({
+  key: "vehicleOnlyState",
+  default: true,
+});
+
+
 const thresholdIouState = atom({
   key: "thresholdIouState",
   default: 0.65,
@@ -249,5 +255,6 @@ export {
   detectionThresholdState,
   thresholdIouState,
   showDetectionsState,
+  vehicleOnlyState,
   autoDetectState,
 };
