@@ -1,8 +1,9 @@
 import { atom, selector } from "recoil";
 import { checkRectOverlap, selectedFactory } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
-import { clearCanvas, renderAllOverlaps } from "../libs/canvas_utility";
-import { Log } from "@tensorflow/tfjs";
+import {  renderAllOverlaps } from "../libs/canvas_utility";
+
+
 
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
@@ -119,6 +120,16 @@ const selectedRoiState = selector({
         return;
       }
 
+
+
+      //   //Array of ROI objects
+
+      //If there are no selected objects the function returns because there
+      //Is nothing to check
+      const selectedRois = get(selectedRoi);
+      if (selectedRois.length === 0) {
+      return;
+      }
       //If no predections have happen, then a dummy predection is sent
       //so that the function runs!
       if (predictionsArr.length === 0) {
@@ -138,14 +149,12 @@ const selectedRoiState = selector({
         ];
       }
 
-      //   //Array of ROI objects
+            //   //Array of ROI objects
 
       //If there are no selected objects the function returns because there
       //Is nothing to check
-      const selectedRois = get(selectedRoi);
-      if (selectedRois.length === 0) {
-      return;
-      }
+      // const selectedRois = get(selectedRoi);
+ 
 
       //How long it takes to evaluate if a object is there or not
       const evaluateTime = get(evaluateTimeState);
@@ -194,6 +203,8 @@ const selectedRoiState = selector({
       }
 
       set(selectedRoi, selectedRoisClone);
+      //How long it takes to evaluate if a object is there or not
+      
     }
 
     if (action.event === "selectRoi") {

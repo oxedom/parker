@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
-
+import Loader from "./Loader";
 import { clearCanvas } from "../libs/canvas_utility";
 
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -45,6 +45,8 @@ const ClientRender = ({
   const demoRef = useRef(null);
   const modelRef = useRef(null);
   const [webcamLoaded, setWebcamLoaded] = useState(false);
+  const [loadingYolo, setYoloLoading] = useState({ loaded: false, progress:0})
+
   const modelName = "yolov7";
 
   const handleDemoLoaded = (e) => {
@@ -161,10 +163,15 @@ const ClientRender = ({
       {
         onProgress: (fractions) => {
           //Loading
-          console.log(fractions);
+          setYoloLoading({loaded: false, progress: fractions})
+
         },
       }
     );
+  
+
+
+    setYoloLoading({loaded: true, progress: 0})
     modelRef.current = yolov7;
     const dummyInput = tf.ones(yolov7.inputs[0].shape);
     const warmupResult = await yolov7.executeAsync(dummyInput);
@@ -205,6 +212,7 @@ const ClientRender = ({
   }, [processing, imageHeight, imageWidth]);
 
   return (
+    loadingYolo.loaded ?
     <>
       {loadedCoco ? (
         <canvas
@@ -250,7 +258,9 @@ const ClientRender = ({
           src="./demo.mp4"
         />
       ) : null}
-    </>
+    </> :
+
+    <Loader progress={loadingYolo.progress}/>
   );
 };
 
