@@ -6,6 +6,7 @@ import {
   selectedRoiState,
   fpsState,
   showDetectionsState,
+  vehicleOnlyState,
 } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 import Modal from "./Modal";
@@ -23,6 +24,9 @@ const Toolbar = ({
   loadedCoco,
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
+  const [vehicleOnly, setVehicleOnly] = useRecoilState(
+    vehicleOnlyState
+  );
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
     detectionThresholdState
   );
@@ -32,10 +36,14 @@ const Toolbar = ({
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
   const [fps, setFps] = useRecoilState(fpsState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
-  const [localDetectionThreshold, setLocalDetectionThreshold] =
-    useState(undefined);
+  const [localDetectionThreshold, setLocalDetectionThreshold] = useState(undefined);
+  const [localVehicleOnly, setLocalVehicleOnly] = useState(undefined)
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
+
+
+
+
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
     "Advanced setting: Non-maximum Suppression threshold, recommended to between 50-75 ";
@@ -48,6 +56,7 @@ const Toolbar = ({
     setLocalFps(fps);
     setLocalIouThreshold(iouThreshold * 100);
     setLocalDetectionThreshold(detectionThreshold * 100);
+    setLocalVehicleOnly(vehicleOnly)
   }, [isModalOpen]);
 
   const handleAutoDetect = () => {
@@ -68,6 +77,7 @@ const Toolbar = ({
     setDetectonThreshold(localDetectionThreshold / 100);
     setIouThreshold(localIouThreshold / 100);
     setFps(localFps);
+    setVehicleOnly(localVehicleOnly)
 
     setProcessing(false);
 
@@ -92,6 +102,14 @@ const Toolbar = ({
     if (processing && loadedCoco) {
       showDetections ? setShowDetections(false) : setShowDetections(true);
     }
+  }
+
+  
+
+  function handleVehicleOnly() {
+    setSettingsChange(true);
+
+    vehicleOnly ?  setLocalVehicleOnly(false) : setLocalVehicleOnly(true)
   }
 
   return (
@@ -121,6 +139,12 @@ const Toolbar = ({
                 text={"Processing "}
                 boolean={processing}
                 callback={handleProcessing}
+              />
+
+            <ToogleSwitch
+                text={"Vehicle Only "}
+                boolean={localVehicleOnly}
+                callback={handleVehicleOnly}
               />
 
               <div></div>

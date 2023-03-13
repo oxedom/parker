@@ -71,7 +71,7 @@ export function checkOverlapArrays(detectionsArr, selectedArr) {
   return overlaps;
 }
 
-export function checkRectOverlap(rect, detectionsArr) {
+export function checkRectOverlap(rect, detectionsArr, overlapThreshold) {
   let answer = false;
   detectionsArr.forEach((d) => {
     //If answer is already true return answer
@@ -199,8 +199,15 @@ export function detectionsToROIArr(
     const detectionClass = class_detect[detectionIndex];
     let dect_label = labels[detectionClass];
 
-    let condition = true 
-    vehicleOnly ? condition = isVehicle(dect_label) : null
+    let condition = false 
+
+    if(vehicleOnly === false) {
+      condition = true
+    }
+    else 
+    {
+      condition = isVehicle(dect_label)
+    }
 
 
     if (condition) {

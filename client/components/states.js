@@ -18,6 +18,12 @@ const detectionThresholdState = atom({
   default: 0.6,
 });
 
+const overlapThresholdState = atom({
+  key: "overlapThresholdState",
+  default: 0.4,
+});
+
+
 const vehicleOnlyState = atom({
   key: "vehicleOnlyState",
   default: true,
@@ -144,11 +150,12 @@ const selectedRoiState = selector({
       const selectedRoisClone = structuredClone(selectedRois);
 
       const evaluateTime = get(evaluateTimeState);
+      const overlapThreshold = get(overlapThresholdState)
 
       //   //Log N** function on quite a small scale so it's okay
       for (let index = 0; index < selectedRois.length; index++) {
         //Checking if the current
-        let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
+        let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr, overlapThreshold);
 
         let roiNotEvaluating = !roiEvaluating(
           currentUnixTime,
@@ -156,9 +163,7 @@ const selectedRoiState = selector({
           evaluateTime
         );
 
-        roiNotEvaluating
-          ? (selectedRoisClone[index]["evaluating"] = false)
-          : null;
+        if(roiNotEvaluating) {selectedRoisClone[index]["evaluating"] = false}
 
         if (overlapsFirstDetect(isOverlap, selectedRois, index)) {
           //Update lastSeen and First Seen to current time
