@@ -22,7 +22,7 @@ const Home = () => {
               <h2 className=" text-6xl mt-10 font-bold ">
                 <div className="grid grid-temp-col-2">
                   <span className="animate-fade">
-                    Turning your webcam into a parking mointor.{" "}
+                    Turning any camera into a parking mointor.{" "}
                   </span>
                   <Image
                     alt="eye"

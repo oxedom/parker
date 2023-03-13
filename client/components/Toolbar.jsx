@@ -3,7 +3,7 @@ import {
   detectionThresholdState,
   thresholdIouState,
   autoDetectState,
-  selectedRoiState,
+
   fpsState,
   showDetectionsState,
   vehicleOnlyState,
@@ -66,6 +66,8 @@ const Toolbar = ({
       setAutoDetect(true);
     }
   };
+
+
 
   const handleSaveSettings = () => {
 
@@ -178,6 +180,9 @@ const Toolbar = ({
                 </div>
               </div>
             </div>
+
+
+            
             <div></div>
             <Button
               colors={{
@@ -193,6 +198,8 @@ const Toolbar = ({
             >
               {" "}
             </Button>
+
+
           </div>
 
           <div className="grid grid-cols-2 justify-items-center border-t-2  border-black ">

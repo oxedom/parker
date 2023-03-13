@@ -177,27 +177,27 @@ const ClientRender = ({
 
   const runYolo = async () => {
     let id;
-    let yolov7 = await tf.loadGraphModel(
-      `${window.location.origin}/${modelName}_web_model/model.json`,
-      {
-        onProgress: (fractions) => {
-          //Loading
-          setYoloLoading({ loaded: false, progress: fractions });
-        },
-      }
-    );
-
-    setYoloLoading({ loaded: true, progress: 0 });
-    modelRef.current = yolov7;
-    const dummyInput = tf.ones(yolov7.inputs[0].shape);
-    const warmupResult = await yolov7.executeAsync(dummyInput);
-    tf.dispose(warmupResult);
-    tf.dispose(dummyInput);
-    setLoadedCoco(true);
-
-    id = setInterval(() => {
-      detectFrame(yolov7);
-    }, fps * 1000);
+      let yolov7 = await tf.loadGraphModel(
+        `${window.location.origin}/${modelName}_web_model/model.json`,
+        {
+          onProgress: (fractions) => {
+            //Loading
+            setYoloLoading({ loaded: false, progress: fractions });
+          },
+        }
+      );
+  
+      setYoloLoading({ loaded: true, progress: 0 });
+      modelRef.current = yolov7;
+      const dummyInput = tf.ones(yolov7.inputs[0].shape);
+      const warmupResult = await yolov7.executeAsync(dummyInput);
+      tf.dispose(warmupResult);
+      tf.dispose(dummyInput);
+      setLoadedCoco(true);
+  
+      id = setInterval(() => {
+        detectFrame(yolov7);
+      }, fps * 1000);
 
     return id;
   };
@@ -221,8 +221,6 @@ const ClientRender = ({
       }
 
       setLoadedCoco(false);
-
-      // setModel(undefined);
     };
   }, [processing, imageHeight, imageWidth]);
 
