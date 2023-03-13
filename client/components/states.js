@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 import { checkRectOverlap, selectedFactory } from "../libs/utillity";
-import { roiEvaluating } from "../libs/states_utility";
+import { roiEvaluating, overlapsAndKnown,  overlapsFirstDetect,  calculateTimeDiff } from "../libs/states_utility";
 import {  renderAllOverlaps } from "../libs/canvas_utility";
 
 
@@ -83,13 +83,13 @@ const selectedRoiState = selector({
     }
     if (action.event === "occupation") {
       let { predictionsArr, canvas } = action.payload;
-      console.log(predictionsArr);
+
       let _lastChecked = get(lastCheckedState);
       let _autoDetect = get(autoDetectState);
       let _width = get(imageWidthState);
       let _height = get(imageHeightState);
-      
-      console.log("PIG");
+      const currentUnixTime = Date.now();
+
       if (_autoDetect) {
         let updatedArr = [];
         predictionsArr.forEach((pred) => {
@@ -106,12 +106,7 @@ const selectedRoiState = selector({
         renderAllOverlaps(predictionsArr, canvas, _width, _height);
       } 
 
-      // This if statement prevents excessive calls to checkOverlap.
-      // The rate of action dispatch is determined by the FPS, which is set by setTimeout,
-      // so I cannot intervene with state updates. The value is set to 900 to allow for race conditions,
-      // although it is not crucial for checkOverlap to miss a check. checkOverlap is an O(n^2) function,
-      // so it is best not to spam it. Optimization in checkOverlap reduces the number of actions required.
-      // The maximum input value for N is 100, so it still runs smoothly.
+      // This if statement prevents excessive calls to checkOverlap with ROIS.
       let excessiveCheck = Date.now() - _lastChecked > 900 && !_autoDetect;
 
       if (excessiveCheck) {
@@ -122,16 +117,14 @@ const selectedRoiState = selector({
 
 
 
-      //   //Array of ROI objects
 
-      //If there are no selected objects the function returns because there
-      //Is nothing to check
+      //If there are ROI to check objects the function returns
       const selectedRois = get(selectedRoi);
       if (selectedRois.length === 0) {
       return;
       }
       //If no predections have happen, then a dummy predection is sent
-      //so that the function runs!
+      //so that the function runs and updates the selectedRois!
       if (predictionsArr.length === 0) {
         predictionsArr = [
           {
@@ -149,53 +142,39 @@ const selectedRoiState = selector({
         ];
       }
 
-            //   //Array of ROI objects
 
-      //If there are no selected objects the function returns because there
-      //Is nothing to check
-      // const selectedRois = get(selectedRoi);
- 
-
-      //How long it takes to evaluate if a object is there or not
-      const evaluateTime = get(evaluateTimeState);
-      //Get the unix time
-      const currentUnixTime = Date.now();
       const selectedRoisClone = structuredClone(selectedRois);
+
+      const evaluateTime = get(evaluateTimeState);
 
       //   //Log N** function on quite a small scale so it's okay
       for (let index = 0; index < selectedRois.length; index++) {
         //Checking if the current
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
+        
+        let roiNotEvaluating = (!roiEvaluating(currentUnixTime,selectedRois[index]["time"],evaluateTime))
 
-        if (
-          !roiEvaluating(
-            currentUnixTime,
-            selectedRois[index]["time"],
-            evaluateTime
-          )
-        ) {
-          selectedRoisClone[index]["evaluating"] = false;
-        }
+        roiNotEvaluating ? selectedRoisClone[index]["evaluating"] = false : null
 
-        if (isOverlap && selectedRois[index]["firstSeen"] === null) {
+
+        if (overlapsFirstDetect(isOverlap, selectedRois, index)) {
+          //Update lastSeen and First Seen to current time
           selectedRoisClone[index]["firstSeen"] = currentUnixTime;
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
-          //If the ROI is overlapping and has "seen", see if it's lastsee - minus it's first seen is bigger than
-          //the allowed time differnce if so set the occupation to true, and afterwards update the lastSeen
-        } else if (isOverlap && selectedRois[index]["firstSeen"] != null) {
-          let timeDiff =
-            selectedRois[index]["lastSeen"] - selectedRois[index]["firstSeen"];
 
-          if (timeDiff > evaluateTime) {
-            selectedRoisClone[index].occupied = true;
-          }
-          selectedRoisClone[index].lastSeen = currentUnixTime;
+        } else if (overlapsAndKnown(isOverlap, selectedRois, index)) {
+          selectedRoisClone[index]["lastSeen"] = currentUnixTime;
+          //Calculate timeDIffernce
+          let timeDiff = calculateTimeDiff(selectedRois, index)
+
+          (timeDiff > evaluateTime) ? selectedRoisClone[index].occupied = true : null
+          
+   
         } else if (
-          currentUnixTime - selectedRois[index]["lastSeen"] >
-          evaluateTime
+          currentUnixTime - selectedRois[index]["lastSeen"] > evaluateTime
         ) {
-          //reset the selected ROI
-
+     
+          //Reset
           selectedRoisClone[index]["firstSeen"] = null;
           selectedRoisClone[index]["lastSeen"] = null;
           selectedRoisClone[index]["occupied"] = false;
