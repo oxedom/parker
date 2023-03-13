@@ -58,10 +58,16 @@ const ClientRender = ({
     loaded: false,
     progress: 0,
   });
+  const videoConstraints = {
 
+    maxWidth: 1280,
+    maxHeight: 720,
+  };
   const modelName = "yolov7";
 
   const handleDemoLoaded = (e) => {
+
+  
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
     setDemoLoaded(true);
@@ -71,7 +77,7 @@ const ClientRender = ({
 
   async function setUserSettings() {
     let { width, height } = await getSetting();
-
+    
     setImageWidth(width);
     setImageHeight(height);
   }
@@ -239,6 +245,8 @@ const ClientRender = ({
     };
   }, [processing, imageHeight, imageWidth]);
 
+
+
   return loadingYolo.loaded ? (
     <>
       {loadedCoco ? (
@@ -255,12 +263,13 @@ const ClientRender = ({
         <Webcam
           height={imageHeight}
           width={imageWidth}
+       
           onPlay={() => {
             setDemoLoaded(false);
             setWebcamPlaying(true);
           }}
-          style={{ height: imageHeight }}
-          videoConstraints={{ height: imageHeight, video: imageWidth }}
+          // style={{ height: imageHeight }}
+          videoConstraints={videoConstraints}
           ref={webcamRef}
           muted={true}
           className=""

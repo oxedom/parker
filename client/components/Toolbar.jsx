@@ -244,7 +244,7 @@ const Toolbar = ({
                     min="10"
                     max="100"
                     className="mr-4"
-                    label="iou Threshold"
+                    label="NMS IOU Threshold"
                     value={localIouThreshold}
                     onChange={(e) => {
                       setLocalIouThreshold(e.target.value);

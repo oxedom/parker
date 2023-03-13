@@ -43,8 +43,10 @@ export function processDetectionResults(res, detectionThreshold) {
 export async function nmsDetectionProcess(boxes, scores, thresholdIou) {
   let _nmsDetections;
   let _detectionIndices;
+
   if (boxes.length < 0) {
-    return [];
+    //Need to return a 2d tensor and not that
+    return tf.zeros([1, 1]);
   }
   try {
     _nmsDetections = await tf.image.nonMaxSuppressionAsync(
