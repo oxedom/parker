@@ -58,6 +58,7 @@ export async function nmsDetectionProcess(boxes, scores, thresholdIou) {
   
     
   } catch (error) {
+
     console.error(error)
   }
 

@@ -189,7 +189,8 @@ export function detectionsToROIArr(
   vehicleOnly
 ) {
   let _predictionsArr = [];
-  if (detectionIndices.length < 0) {
+  console.log(detectionIndices);
+  if (detectionIndices === undefined || detectionIndices.length <= 0) {
     return [];
   }
 

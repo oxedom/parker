@@ -177,6 +177,8 @@ const ClientRender = ({
 
   const runYolo = async () => {
     let id;
+    if(modelRef.current === null) 
+    {
       let yolov7 = await tf.loadGraphModel(
         `${window.location.origin}/${modelName}_web_model/model.json`,
         {
@@ -198,6 +200,18 @@ const ClientRender = ({
       id = setInterval(() => {
         detectFrame(yolov7);
       }, fps * 1000);
+    }
+    else 
+    {
+
+  
+      id = setInterval(() => {
+        detectFrame(modelRef.current);
+      }, fps * 1000);
+    }
+  
+    
+
 
     return id;
   };
@@ -217,10 +231,11 @@ const ClientRender = ({
       clearCanvas(overlayXRef, imageWidth, imageHeight);
 
       if (modelRef.current) {
-        modelRef.current.dispose();
+        
+        // modelRef.current.dispose();
       }
 
-      setLoadedCoco(false);
+      // setLoadedCoco(false);
     };
   }, [processing, imageHeight, imageWidth]);
 
