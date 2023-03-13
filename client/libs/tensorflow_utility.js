@@ -46,14 +46,21 @@ export async function nmsDetectionProcess(boxes, scores, thresholdIou) {
   if (boxes.length < 0) {
     return [];
   }
-  _nmsDetections = await tf.image.nonMaxSuppressionAsync(
-    boxes,
-    scores,
-    100,
-    thresholdIou
-  );
+  try {
+    _nmsDetections = await tf.image.nonMaxSuppressionAsync(
+      boxes,
+      scores,
+      100,
+      thresholdIou
+    );
+  
+    _detectionIndices = _nmsDetections.dataSync();
+  
+    
+  } catch (error) {
+    console.error(error)
+  }
 
-  _detectionIndices = _nmsDetections.dataSync();
 
   return { detectionIndices: _detectionIndices };
 }
