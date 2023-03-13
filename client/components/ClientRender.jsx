@@ -16,8 +16,17 @@ import {
   vehicleOnlyState,
   autoDetectState,
 } from "./states";
-import { processInputImage, processDetectionResults, nmsDetectionProcess} from "../libs/tensorflow_utility";
-import {  detectWebcam, getSetting, webcamRunning, detectionsToROIArr } from "../libs/utillity";
+import {
+  processInputImage,
+  processDetectionResults,
+  nmsDetectionProcess,
+} from "../libs/tensorflow_utility";
+import {
+  detectWebcam,
+  getSetting,
+  webcamRunning,
+  detectionsToROIArr,
+} from "../libs/utillity";
 import LoadingScreen from "./LoadingScreen";
 
 const ClientRender = ({
@@ -45,7 +54,10 @@ const ClientRender = ({
   const demoRef = useRef(null);
   const modelRef = useRef(null);
   const [webcamLoaded, setWebcamLoaded] = useState(false);
-  const [loadingYolo, setYoloLoading] = useState({ loaded: false, progress:0})
+  const [loadingYolo, setYoloLoading] = useState({
+    loaded: false,
+    progress: 0,
+  });
 
   const modelName = "yolov7";
 
@@ -63,8 +75,6 @@ const ClientRender = ({
     setImageWidth(width);
     setImageHeight(height);
   }
-
-
 
   useEffect(() => {
     let interval_load_webcam_id;
@@ -101,9 +111,6 @@ const ClientRender = ({
     let videoWidth;
     let videoHeight;
 
-
-    
-
     if (!demo && webcamRef.current != null) {
       video = webcamRef.current.video;
       videoWidth = webcamRef.current.video.videoWidth;
@@ -122,21 +129,33 @@ const ClientRender = ({
 
     tf.engine().startScope();
 
-
-
-    let input = processInputImage(video, model_dim)
+    let input = processInputImage(video, model_dim);
 
     let res = model.execute(input);
 
+    const { boxes, class_detect, scores } = processDetectionResults(
+      res,
+      detectionThreshold
+    );
 
-    const {boxes, class_detect, scores} = processDetectionResults(res, detectionThreshold) 
+    const { detectionIndices } = await nmsDetectionProcess(
+      boxes,
+      scores,
+      thresholdIou
+    );
 
-    const {detectionIndices  } = await nmsDetectionProcess(boxes, scores, thresholdIou) 
-
-  
-
-    const predictionsArr = detectionsToROIArr(detectionIndices, boxes, class_detect, scores, imageWidth, imageHeight, vehicleOnly,boxes, class_detect, scores) 
-
+    const predictionsArr = detectionsToROIArr(
+      detectionIndices,
+      boxes,
+      class_detect,
+      scores,
+      imageWidth,
+      imageHeight,
+      vehicleOnly,
+      boxes,
+      class_detect,
+      scores
+    );
 
     //Sends action request with a payload, the event is handled
     //inside the state event.
@@ -145,7 +164,7 @@ const ClientRender = ({
       payload: { predictionsArr: predictionsArr, canvas: overlayXRef },
     };
 
-   //Disposing tensors
+    //Disposing tensors
     Promise.all([tf.dispose(input), tf.dispose(res)]).catch((err) => {
       console.error("Memory leak in coming");
       console.error(err);
@@ -163,15 +182,12 @@ const ClientRender = ({
       {
         onProgress: (fractions) => {
           //Loading
-          setYoloLoading({loaded: false, progress: fractions})
-
+          setYoloLoading({ loaded: false, progress: fractions });
         },
       }
     );
-  
 
-
-    setYoloLoading({loaded: true, progress: 0})
+    setYoloLoading({ loaded: true, progress: 0 });
     modelRef.current = yolov7;
     const dummyInput = tf.ones(yolov7.inputs[0].shape);
     const warmupResult = await yolov7.executeAsync(dummyInput);
@@ -187,7 +203,6 @@ const ClientRender = ({
   };
 
   useEffect(() => {
-
     let id;
 
     if (processing) {
@@ -211,8 +226,7 @@ const ClientRender = ({
     };
   }, [processing, imageHeight, imageWidth]);
 
-  return (
-    loadingYolo.loaded ?
+  return loadingYolo.loaded ? (
     <>
       {loadedCoco ? (
         <canvas
@@ -258,9 +272,9 @@ const ClientRender = ({
           src="./demo.mp4"
         />
       ) : null}
-    </> :
-
-    <Loader progress={loadingYolo.progress}/>
+    </>
+  ) : (
+    <Loader progress={loadingYolo.progress} />
   );
 };
 

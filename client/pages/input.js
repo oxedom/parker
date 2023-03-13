@@ -40,19 +40,11 @@ const Output = () => {
 
   let pc;
 
-
-
-
-
   if (typeof window !== "undefined") {
     pc = new RTCPeerConnection(servers);
   }
- 
-  
+
   const handleOffer = async () => {
-
-
-
     const db = getFirestore(app);
     // const callDoc = doc(db, 'calls')
     let _localStream = await navigator.mediaDevices.getUserMedia({
@@ -60,8 +52,6 @@ const Output = () => {
       audio: false,
     });
     outputRef.current.srcObject = _localStream;
-
-
 
     console.log(pc);
     _localStream.getTracks().forEach((track) => {
@@ -84,41 +74,30 @@ const Output = () => {
         type: offer.type,
         sdp: offer.sdp,
       },
-      candidates: []
+      candidates: [],
     };
-    
-    pc.addEventListener('icecandidate', async (e) => 
-    {
-    if(e.candidate) 
-    {
-      const json = e.candidate.toJSON();
-      roomWithOffer.candidates.push(json)
-      const roomRef = await addDoc(collection(db, "rooms"), {
-        ...roomWithOffer,
 
-      });
-    const roomId = roomRef.id; 
-    setOfferID(roomId);
-    }
+    pc.addEventListener("icecandidate", async (e) => {
+      if (e.candidate) {
+        const json = e.candidate.toJSON();
+        roomWithOffer.candidates.push(json);
+        const roomRef = await addDoc(collection(db, "rooms"), {
+          ...roomWithOffer,
+        });
+        const roomId = roomRef.id;
+        setOfferID(roomId);
+      }
 
-    // console.log(e);
+      // console.log(e);
       // console.log(e.canidate.toJSON());
-    })
-
-
-
-  
+    });
 
     // const roomRef = await setDoc(callDoc, roomWithOffer)
- 
- 
+
     // const roomId = roomRef.id;
- 
 
     // setOfferID(roomId);
-    
   };
-
 
   const handleAnswerCall = async () => {};
 
@@ -132,14 +111,7 @@ const Output = () => {
           ref={outputRef}
         ></video>
 
-        <video 
-               ref={recevierRef}
-               muted={true}
-               autoPlay={true}
-        >
- 
-
-        </video>
+        <video ref={recevierRef} muted={true} autoPlay={true}></video>
 
         <div>
           <p> {offerID} </p>

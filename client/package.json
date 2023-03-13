@@ -24,7 +24,6 @@
     "react-webcam": "^7.0.1",
     "recoil": "^0.7.6",
     "uniqid": "^5.4.0"
-
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",

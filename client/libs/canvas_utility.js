@@ -39,8 +39,7 @@ export function rectangleArea(rect) {
   return Math.abs(rect.width * rect.height);
 }
 
-function setColor(roi) 
-{
+function setColor(roi) {
   let color = "#22c55e";
 
   if (roi.occupied && roi.hover == false) {
@@ -57,9 +56,9 @@ function setColor(roi)
   }
 
   if (roi.hover) {
-      color = "#ffc400";
+    color = "#ffc400";
   }
-  return color
+  return color;
 }
 
 export function renderRoi(roi, contextCanvas) {
@@ -70,13 +69,11 @@ export function renderRoi(roi, contextCanvas) {
   const offset = borderWidth * 2;
   context.lineWidth = 4;
   //bg-green-500 hex
-  let color = setColor(roi)
+  let color = setColor(roi);
   context.strokeStyle = color;
 
-
-
   if (roi.hover) {
-      context.lineWidth = 7
+    context.lineWidth = 7;
   }
 
   //Gets centerX
@@ -85,7 +82,6 @@ export function renderRoi(roi, contextCanvas) {
 
   //Draws a rect on the detection
   context.strokeStyle = color;
-
 
   contextCanvas.current.strokeRect(right_x, top_y, width, height);
 

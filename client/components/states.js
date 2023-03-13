@@ -1,9 +1,12 @@
 import { atom, selector } from "recoil";
 import { checkRectOverlap, selectedFactory } from "../libs/utillity";
-import { roiEvaluating, overlapsAndKnown,  overlapsFirstDetect,  calculateTimeDiff } from "../libs/states_utility";
-import {  renderAllOverlaps } from "../libs/canvas_utility";
-
-
+import {
+  roiEvaluating,
+  overlapsAndKnown,
+  overlapsFirstDetect,
+  calculateTimeDiff,
+} from "../libs/states_utility";
+import { renderAllOverlaps } from "../libs/canvas_utility";
 
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
@@ -19,7 +22,6 @@ const vehicleOnlyState = atom({
   key: "vehicleOnlyState",
   default: true,
 });
-
 
 const thresholdIouState = atom({
   key: "thresholdIouState",
@@ -104,7 +106,7 @@ const selectedRoiState = selector({
 
       if (get(showDetectionsState) && predictionsArr.length > 0) {
         renderAllOverlaps(predictionsArr, canvas, _width, _height);
-      } 
+      }
 
       // This if statement prevents excessive calls to checkOverlap with ROIS.
       let excessiveCheck = Date.now() - _lastChecked > 900 && !_autoDetect;
@@ -115,13 +117,10 @@ const selectedRoiState = selector({
         return;
       }
 
-
-
-
       //If there are ROI to check objects the function returns
       const selectedRois = get(selectedRoi);
       if (selectedRois.length === 0) {
-      return;
+        return;
       }
       //If no predections have happen, then a dummy predection is sent
       //so that the function runs and updates the selectedRois!
@@ -142,7 +141,6 @@ const selectedRoiState = selector({
         ];
       }
 
-
       const selectedRoisClone = structuredClone(selectedRois);
 
       const evaluateTime = get(evaluateTimeState);
@@ -151,29 +149,34 @@ const selectedRoiState = selector({
       for (let index = 0; index < selectedRois.length; index++) {
         //Checking if the current
         let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr);
-        
-        let roiNotEvaluating = (!roiEvaluating(currentUnixTime,selectedRois[index]["time"],evaluateTime))
 
-        roiNotEvaluating ? selectedRoisClone[index]["evaluating"] = false : null
+        let roiNotEvaluating = !roiEvaluating(
+          currentUnixTime,
+          selectedRois[index]["time"],
+          evaluateTime
+        );
 
+        roiNotEvaluating
+          ? (selectedRoisClone[index]["evaluating"] = false)
+          : null;
 
         if (overlapsFirstDetect(isOverlap, selectedRois, index)) {
           //Update lastSeen and First Seen to current time
           selectedRoisClone[index]["firstSeen"] = currentUnixTime;
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
-
         } else if (overlapsAndKnown(isOverlap, selectedRois, index)) {
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
           //Calculate timeDIffernce
-          let timeDiff = calculateTimeDiff(selectedRois, index)
-
-          (timeDiff > evaluateTime) ? selectedRoisClone[index].occupied = true : null
-          
-   
+          let timeDiff = calculateTimeDiff(
+            selectedRois,
+            index
+          )(timeDiff > evaluateTime)
+            ? (selectedRoisClone[index].occupied = true)
+            : null;
         } else if (
-          currentUnixTime - selectedRois[index]["lastSeen"] > evaluateTime
+          currentUnixTime - selectedRois[index]["lastSeen"] >
+          evaluateTime
         ) {
-     
           //Reset
           selectedRoisClone[index]["firstSeen"] = null;
           selectedRoisClone[index]["lastSeen"] = null;
@@ -183,7 +186,6 @@ const selectedRoiState = selector({
 
       set(selectedRoi, selectedRoisClone);
       //How long it takes to evaluate if a object is there or not
-      
     }
 
     if (action.event === "selectRoi") {

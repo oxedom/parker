@@ -1,6 +1,6 @@
 import { exp } from "@tensorflow/tfjs";
 import uniqid from "uniqid";
-import labels from "../utils/labels.json"
+import labels from "../utils/labels.json";
 import { xywh2xyxy } from "../utils/renderBox.js";
 
 function getOverlap(rectangle1, rectangle2) {
@@ -168,7 +168,7 @@ export function totalOccupied(roiArr) {
   return { OccupiedCount, availableCount };
 }
 
-export function webcamRunning (){
+export function webcamRunning() {
   if (
     typeof webcamRef.current !== "undefined" &&
     webcamRef.current !== null &&
@@ -178,19 +178,33 @@ export function webcamRunning (){
   } else {
     return false;
   }
-};
+}
 
-export   function detectionsToROIArr(detectionIndices, boxes, class_detect, scores, imageWidth, imageHeight, vehicleOnly) 
-{
-  let _predictionsArr = []
-  if(detectionIndices.length < 0) { return [] }
+export function detectionsToROIArr(
+  detectionIndices,
+  boxes,
+  class_detect,
+  scores,
+  imageWidth,
+  imageHeight,
+  vehicleOnly
+) {
+  let _predictionsArr = [];
+  if (detectionIndices.length < 0) {
+    return [];
+  }
 
   for (let i = 0; i < detectionIndices.length; i++) {
     const detectionIndex = detectionIndices[i];
     const detectionScore = scores[detectionIndex];
     const detectionClass = class_detect[detectionIndex];
     let dect_label = labels[detectionClass];
-    if (isVehicle(dect_label)) {
+
+    let condition = true 
+    vehicleOnly ? condition = isVehicle(dect_label) : null
+
+    
+    if (condition) {
       const roiObj = { cords: {} };
       let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
 
@@ -218,6 +232,5 @@ export   function detectionsToROIArr(detectionIndices, boxes, class_detect, scor
     }
   }
 
-  return _predictionsArr
-
+  return _predictionsArr;
 }

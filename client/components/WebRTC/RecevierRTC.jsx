@@ -11,19 +11,14 @@ import {
   addDoc,
 } from "firebase/firestore";
 
-
-const ReceiverRTC = ({recevierRef}) => {
-
+const ReceiverRTC = ({ recevierRef }) => {
   const app = initializeApp(firebaseConfig);
-  const [stream,setStream] = useState(null)
+  const [stream, setStream] = useState(null);
   useEffect(() => {
-    if(stream != null) 
-    {
-      recevierRef.current.srcObject = stream
+    if (stream != null) {
+      recevierRef.current.srcObject = stream;
     }
-  
-  }, [stream])
-
+  }, [stream]);
 
   const servers = {
     iceServers: [
@@ -48,29 +43,22 @@ const ReceiverRTC = ({recevierRef}) => {
       return;
     }
     let data = {};
-    
+
     const db = getFirestore(app);
     const roomRef = doc(db, "rooms", connectID);
     const roomSnapshot = await getDoc(roomRef);
     data = { ...roomSnapshot.data() };
     pc = new RTCPeerConnection(servers);
-    console.log((data));
-
+    console.log(data);
 
     pc.addEventListener("track", async (e) => {
-     
-
-      let remoteVideo = document.getElementById('remoteVideo')
-      const track = e.streams[0]
-      setStream(track)
-      recevierRef.current.srcObject = track
-      
-
+      let remoteVideo = document.getElementById("remoteVideo");
+      const track = e.streams[0];
+      setStream(track);
+      recevierRef.current.srcObject = track;
     });
 
-
-    await pc.setRemoteDescription(data.offer)
-
+    await pc.setRemoteDescription(data.offer);
   };
   return (
     <div className="bg-yellow-500 p-10">

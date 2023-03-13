@@ -43,9 +43,7 @@ const visionPage = () => {
       {!demo && !active ? (
         <PreMenu setDemo={setDemo} setActivate={setActivate}></PreMenu>
       ) : (
-        <div
-          className={`flex flex-col  p-16    `}
-        >
+        <div className={`flex flex-col  p-16    `}>
           <div className="flex flex-col justify-center items-center">
             <div className="bg-filler relative text-2xl grid grid-cols-3   place-items-center items-center center   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  ">
               {demo ? (
