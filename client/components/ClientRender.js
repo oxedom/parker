@@ -15,8 +15,8 @@ import {
   fpsState,
   autoDetectState,
 } from "./states";
-
-import { isVehicle, detectWebcam, getSetting } from "../libs/utillity";
+import { processInputImage } from "../libs/tensorflow_utility";
+import { isVehicle, detectWebcam, getSetting, webcamRunning } from "../libs/utillity";
 import LoadingScreen from "./LoadingScreen";
 
 const ClientRender = ({
@@ -61,17 +61,7 @@ const ClientRender = ({
     setImageHeight(height);
   }
 
-  const webcamRunning = () => {
-    if (
-      typeof webcamRef.current !== "undefined" &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+
 
   useEffect(() => {
     let interval_load_webcam_id;
@@ -108,6 +98,9 @@ const ClientRender = ({
     let videoWidth;
     let videoHeight;
 
+
+    
+
     if (!demo && webcamRef.current != null) {
       video = webcamRef.current.video;
       videoWidth = webcamRef.current.video.videoWidth;
@@ -126,13 +119,9 @@ const ClientRender = ({
 
     tf.engine().startScope();
 
-    let input = tf.tidy(() => {
-      return tf.image
-        .resizeBilinear(tf.browser.fromPixels(video), model_dim)
-        .div(255.0)
-        .transpose([2, 0, 1])
-        .expandDims(0);
-    });
+
+
+    let input = processInputImage(video, model_dim)
 
     let res = model.execute(input);
 

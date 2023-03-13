@@ -97,7 +97,7 @@ const Output = () => {
         ...roomWithOffer,
 
       });
-                  const roomId = roomRef.id; 
+    const roomId = roomRef.id; 
     setOfferID(roomId);
     }
 

@@ -164,3 +164,15 @@ export function totalOccupied(roiArr) {
   });
   return { OccupiedCount, availableCount };
 }
+
+export function webcamRunning (){
+  if (
+    typeof webcamRef.current !== "undefined" &&
+    webcamRef.current !== null &&
+    webcamRef.current.video.readyState === 4
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
