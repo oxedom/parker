@@ -167,12 +167,10 @@ const selectedRoiState = selector({
         } else if (overlapsAndKnown(isOverlap, selectedRois, index)) {
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
           //Calculate timeDIffernce
-          let timeDiff = calculateTimeDiff(
-            selectedRois,
-            index
-          )(timeDiff > evaluateTime)
-            ? (selectedRoisClone[index].occupied = true)
-            : null;
+          let timeDiff = calculateTimeDiff(selectedRois, index)
+          if(timeDiff > evaluateTime) { (selectedRoisClone[index].occupied = true)}
+   
+         
         } else if (
           currentUnixTime - selectedRois[index]["lastSeen"] >
           evaluateTime

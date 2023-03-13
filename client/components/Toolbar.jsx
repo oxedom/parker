@@ -127,44 +127,6 @@ const Toolbar = ({
             </div>
 
             <div className="flex justify-center flex-col items-center ">
-              <div className="flex flex-col text-white justify-center grow">
-                <label> Detection Threshold</label>
-                <div className="grid grid-cols-2  ">
-                  <input
-                    type="range"
-                    min="10"
-                    max="100"
-                    className="mr-4"
-                    value={localDetectionThreshold}
-                    onChange={(e) => {
-                      setLocalDetectionThreshold(e.target.value);
-                      setSettingsChange(true);
-                    }}
-                  />
-
-                  <span> {localDetectionThreshold}% </span>
-                </div>
-              </div>
-
-              <div className="flex   flex-col text-white justify-center grow">
-                <label> IOU Threshold</label>
-                <div className="grid grid-cols-2  ">
-                  <input
-                    type="range"
-                    min="10"
-                    max="100"
-                    className="mr-4"
-                    label="iou Threshold"
-                    value={localIouThreshold}
-                    onChange={(e) => {
-                      setLocalIouThreshold(e.target.value);
-                      setSettingsChange(true);
-                    }}
-                  />
-
-                  <span> {localIouThreshold}% </span>
-                </div>
-              </div>
 
               <div className="flex   flex-col text-white justify-center grow">
                 <label> Render Rate</label>
@@ -215,6 +177,72 @@ const Toolbar = ({
           </div>
         </div>
       </Modal>
+
+      <div className="flex justify-center flex-col items-center gap-2  ">
+              <div className="flex flex-col text-white justify-center items-center grow">
+                <label> Detection Threshold</label>
+                <div className="grid grid-cols-2  ">
+                <span> {localDetectionThreshold}% </span>
+                  <input
+                    type="range"
+                    min="10"
+                    max="100"
+                    className="mr-4"
+                    value={localDetectionThreshold}
+                    onChange={(e) => {
+                      setLocalDetectionThreshold(e.target.value);
+                      setSettingsChange(true);
+                    }}
+                  />
+
+            
+                </div>
+              </div>
+
+              <div className="flex   flex-col text-white justify-center items-center grow ">
+                <label> IOU Threshold</label>
+                <div className="grid grid-cols-2  ">
+                <span> {localIouThreshold}% </span>
+                  <input
+                    type="range"
+                    min="10"
+                    max="100"
+                    className="mr-4"
+                    label="iou Threshold"
+                    value={localIouThreshold}
+                    onChange={(e) => {
+                      setLocalIouThreshold(e.target.value);
+                      setSettingsChange(true);
+                    }}
+                  />
+
+      
+                </div>
+              </div>
+
+
+              <Button
+              colors={{
+                color: `${
+                  settingChange
+                    ? "bg-blue-500 p-5"
+                    : "bg-blue-300 hover:cursor-not-allowed"
+                }`,
+                textColor: "text-white",
+              }}
+              callback={handleSaveSettings}
+              text={"Save settings"}
+            >
+              {" "}
+            </Button>
+                    </div>
+
+
+
+
+
+
+
 
       <Button callback={handleAutoDetect} text="Auto detect" />
 

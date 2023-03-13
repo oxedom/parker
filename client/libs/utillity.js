@@ -1,4 +1,3 @@
-import { exp } from "@tensorflow/tfjs";
 import uniqid from "uniqid";
 import labels from "../utils/labels.json";
 import { xywh2xyxy } from "../utils/renderBox.js";
@@ -203,7 +202,7 @@ export function detectionsToROIArr(
     let condition = true 
     vehicleOnly ? condition = isVehicle(dect_label) : null
 
-    
+
     if (condition) {
       const roiObj = { cords: {} };
       let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
