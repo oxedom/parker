@@ -94,7 +94,7 @@ const RoisFeed = ({}) => {
                 handleRoiDelete(s.uid);
               }}
               className={`  h-10 w-10
-            btn  font-semibold  hover:bg-red-600 transition-colors rounded  duration-100 ease-in-out border  
+            btn  font-semibold  hover:bg-yellow-600 transition-colors rounded   border  
                 drop-shadow
                 border-gray-500
               ${s.evaluating ? "bg-gray-400 animate-pulse duration-1000" : ""}
@@ -107,7 +107,7 @@ const RoisFeed = ({}) => {
                   width={50}
                   height={50}
                   alt="Delete"
-                  className="invert ease-in duration-200  opacity-0 hover:opacity-90 "
+                  className="invert  opacity-0 hover:opacity-90 "
                   src={deleteIcon.src}
                 />
               ) : (

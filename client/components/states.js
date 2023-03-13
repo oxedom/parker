@@ -2,6 +2,7 @@ import { atom, selector } from "recoil";
 import { checkRectOverlap, selectedFactory } from "../libs/utillity";
 import { roiEvaluating } from "../libs/states_utility";
 import { clearCanvas, renderAllOverlaps } from "../libs/canvas_utility";
+import { Log } from "@tensorflow/tfjs";
 
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
@@ -81,24 +82,24 @@ const selectedRoiState = selector({
     }
     if (action.event === "occupation") {
       let { predictionsArr, canvas } = action.payload;
-
+      console.log(predictionsArr);
       let _lastChecked = get(lastCheckedState);
       let _autoDetect = get(autoDetectState);
       let _width = get(imageWidthState);
       let _height = get(imageHeightState);
       
+      console.log("PIG");
+      if (_autoDetect) {
+        let updatedArr = [];
+        predictionsArr.forEach((pred) => {
+          let roiObj = selectedFactory(pred.cords);
 
-      // if (_autoDetect) {
-      //   let updatedArr = [];
-      //   predictionsArr.forEach((pred) => {
-      //     let roiObj = selectedFactory(pred.cords);
+          updatedArr.push(roiObj);
+        });
+        set(selectedRoi, updatedArr);
 
-      //     updatedArr.push(roiObj);
-      //   });
-      //   set(selectedRoi, updatedArr);
-
-      //   set(autoDetectState, false);
-      // }
+        set(autoDetectState, false);
+      }
 
       if (get(showDetectionsState) && predictionsArr.length > 0) {
         renderAllOverlaps(predictionsArr, canvas, _width, _height);
@@ -143,8 +144,9 @@ const selectedRoiState = selector({
       //Is nothing to check
       const selectedRois = get(selectedRoi);
       if (selectedRois.length === 0) {
-        return;
+      return;
       }
+
       //How long it takes to evaluate if a object is there or not
       const evaluateTime = get(evaluateTimeState);
       //Get the unix time
@@ -193,6 +195,7 @@ const selectedRoiState = selector({
 
       set(selectedRoi, selectedRoisClone);
     }
+
     if (action.event === "selectRoi") {
       let uid = action.payload;
       //Array of ROI objects

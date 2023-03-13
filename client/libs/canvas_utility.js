@@ -39,14 +39,8 @@ export function rectangleArea(rect) {
   return Math.abs(rect.width * rect.height);
 }
 
-export function renderRoi(roi, contextCanvas) {
-  //Cords
-  const { height, right_x, top_y, width } = roi.cords;
-  const context = contextCanvas.current;
-  const borderWidth = 5;
-  const offset = borderWidth * 2;
-
-  //bg-green-500 hex
+function setColor(roi) 
+{
   let color = "#22c55e";
 
   if (roi.occupied && roi.hover == false) {
@@ -63,7 +57,26 @@ export function renderRoi(roi, contextCanvas) {
   }
 
   if (roi.hover) {
-    color = "#FF0000";
+      color = "#ffc400";
+  }
+  return color
+}
+
+export function renderRoi(roi, contextCanvas) {
+  //Cords
+  const { height, right_x, top_y, width } = roi.cords;
+  const context = contextCanvas.current;
+  let borderWidth = 5;
+  const offset = borderWidth * 2;
+  context.lineWidth = 4;
+  //bg-green-500 hex
+  let color = setColor(roi)
+  context.strokeStyle = color;
+
+
+
+  if (roi.hover) {
+      context.lineWidth = 7
   }
 
   //Gets centerX
@@ -72,7 +85,7 @@ export function renderRoi(roi, contextCanvas) {
 
   //Draws a rect on the detection
   context.strokeStyle = color;
-  context.lineWidth = 4;
+
 
   contextCanvas.current.strokeRect(right_x, top_y, width, height);
 
