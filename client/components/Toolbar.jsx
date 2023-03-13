@@ -68,18 +68,23 @@ const Toolbar = ({
   };
 
   const handleSaveSettings = () => {
+
     // closeModal
     if (!settingChange) {
       return;
     }
-    let wasProcessing = processing;
 
-    setDetectonThreshold(localDetectionThreshold / 100);
-    setIouThreshold(localIouThreshold / 100);
-    setFps(localFps);
-    setVehicleOnly(localVehicleOnly)
 
-    setProcessing(false);
+      setDetectonThreshold(localDetectionThreshold / 100);
+      setIouThreshold(localIouThreshold / 100);
+      setFps(localFps);
+      setVehicleOnly(localVehicleOnly)
+      setProcessing(false);
+      setSettingsChange(false)
+
+
+
+
 
     // setProcessing(true)
     closeModal();
