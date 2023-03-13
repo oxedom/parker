@@ -1,6 +1,6 @@
 import { totalOccupied } from "../libs/utillity";
 import { useRecoilValue } from "recoil";
-import { selectedRoiState } from "../components/states";
+import { selectedRoiState } from "./states";
 
 const DisplayInfo = () => {
   const selectedRois = useRecoilValue(selectedRoiState);

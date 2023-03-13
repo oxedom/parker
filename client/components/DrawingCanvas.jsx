@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { imageHeightState, imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
-import { selectedRoiState } from "../components/states";
+import { selectedRoiState } from "./states";
 import { renderRoi } from "../libs/canvas_utility";
 import { useWindowSize } from "./hooks/useWindowSize";
 

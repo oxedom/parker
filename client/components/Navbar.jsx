@@ -1,7 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
-import githubIcon from "../public/static/icons/github-mark.png";
-import Navlink from "./Navlink.js";
+import Navlink from "./Navlink.jsx";
 import Router from "next/router";
 
 const Navbar = () => {
