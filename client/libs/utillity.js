@@ -200,16 +200,13 @@ export function detectionsToROIArr(
     const detectionClass = class_detect[detectionIndex];
     let dect_label = labels[detectionClass];
 
-    let condition = false 
+    let condition = false;
 
-    if(vehicleOnly === false) {
-      condition = true
+    if (vehicleOnly === false) {
+      condition = true;
+    } else {
+      condition = isVehicle(dect_label);
     }
-    else 
-    {
-      condition = isVehicle(dect_label)
-    }
-
 
     if (condition) {
       const roiObj = { cords: {} };

@@ -27,34 +27,29 @@ const Input = () => {
   const recevierRef = useRef(null);
   const app = initializeApp(firebaseConfig);
 
-
   const [peer, setPeer] = useState(null);
   const [stream, setStream] = useState(null);
-  const [peerId, setPeerId] = useState('');
+  const [peerId, setPeerId] = useState("");
 
+  //   useEffect(() =>
+  //   {
+  //     if (typeof window !== "undefined") {
+  //      const newPeer = new Peer(peerId);
 
+  //         newPeer.on('open', () => {
+  //           console.log(`Peer connection open with ID ${newPeer.id}`);
+  //           setPeer(newPeer);
+  //         });
 
-//   useEffect(() => 
-//   {
-//     if (typeof window !== "undefined") {
-//      const newPeer = new Peer(peerId);
- 
-//         newPeer.on('open', () => {
-//           console.log(`Peer connection open with ID ${newPeer.id}`);
-//           setPeer(newPeer);
-//         });
+  //           // Set up the event listener for when someone else tries to connect to this peer
+  //           newPeer.on('connection', (conn) => {
+  //             console.log(`New connection from ${conn.peer}`);
+  //           });
 
-//           // Set up the event listener for when someone else tries to connect to this peer
-//           newPeer.on('connection', (conn) => {
-//             console.log(`New connection from ${conn.peer}`);
-//           });
-
-//  }
-//   }, [])
-
+  //  }
+  //   }, [])
 
   // const handleOffer = async () => {
-
 
   //   navigator.mediaDevices.getUserMedia({ video: true, audio: false })
   //     .then((stream) => {
@@ -67,13 +62,10 @@ const Input = () => {
 
   //     return () => {
   //       newPeer.destroy();
-    
-  //     };
-    
 
+  //     };
 
   // };
-
 
   return (
     <DefaultLayout>

@@ -2,8 +2,6 @@ import DefaultLayout from "../../layouts/DefaultLayout";
 import "firebase/firestore";
 
 const DocsPage = () => {
-
-
   return (
     <DefaultLayout>
       <div className="flex-1 ">

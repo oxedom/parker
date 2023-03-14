@@ -59,15 +59,12 @@ const ClientRender = ({
     progress: 0,
   });
   const videoConstraints = {
-
     maxWidth: 1280,
     maxHeight: 720,
   };
   const modelName = "yolov7";
 
   const handleDemoLoaded = (e) => {
-
-  
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
     setDemoLoaded(true);
@@ -77,7 +74,7 @@ const ClientRender = ({
 
   async function setUserSettings() {
     let { width, height } = await getSetting();
-    
+
     setImageWidth(width);
     setImageHeight(height);
   }
@@ -183,8 +180,7 @@ const ClientRender = ({
 
   const runYolo = async () => {
     let id;
-    if(modelRef.current === null) 
-    {
+    if (modelRef.current === null) {
       let yolov7 = await tf.loadGraphModel(
         `${window.location.origin}/${modelName}_web_model/model.json`,
         {
@@ -194,7 +190,7 @@ const ClientRender = ({
           },
         }
       );
-  
+
       setYoloLoading({ loaded: true, progress: 0 });
       modelRef.current = yolov7;
       const dummyInput = tf.ones(yolov7.inputs[0].shape);
@@ -202,22 +198,15 @@ const ClientRender = ({
       tf.dispose(warmupResult);
       tf.dispose(dummyInput);
       setLoadedCoco(true);
-  
+
       id = setInterval(() => {
         detectFrame(yolov7);
       }, fps * 1000);
-    }
-    else 
-    {
-
-  
+    } else {
       id = setInterval(() => {
         detectFrame(modelRef.current);
       }, fps * 1000);
     }
-  
-    
-
 
     return id;
   };
@@ -237,15 +226,12 @@ const ClientRender = ({
       clearCanvas(overlayXRef, imageWidth, imageHeight);
 
       if (modelRef.current) {
-        
         // modelRef.current.dispose();
       }
 
       // setLoadedCoco(false);
     };
   }, [processing, imageHeight, imageWidth]);
-
-
 
   return loadingYolo.loaded ? (
     <>
@@ -263,7 +249,6 @@ const ClientRender = ({
         <Webcam
           height={imageHeight}
           width={imageWidth}
-       
           onPlay={() => {
             setDemoLoaded(false);
             setWebcamPlaying(true);

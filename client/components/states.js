@@ -6,7 +6,7 @@ import {
   overlapsFirstDetect,
   calculateTimeDiff,
   supressedRoisProcess,
-  convertRoisSelected
+  convertRoisSelected,
 } from "../libs/states_utility";
 import { renderAllOverlaps } from "../libs/canvas_utility";
 
@@ -14,8 +14,6 @@ const evaluateTimeState = atom({
   key: "evaluateTimeState",
   default: 5000,
 });
-
-
 
 const detectionThresholdState = atom({
   key: "detectionThresholdState",
@@ -26,7 +24,6 @@ const overlapThresholdState = atom({
   key: "overlapThresholdState",
   default: 0.4,
 });
-
 
 const vehicleOnlyState = atom({
   key: "vehicleOnlyState",
@@ -75,7 +72,7 @@ const autoDetectArrState = atom({
 
 const autoCheckedState = atom({
   key: "autoCheckedState",
-  default: 0
+  default: 0,
 });
 
 const selectedRoiState = selector({
@@ -112,18 +109,16 @@ const selectedRoiState = selector({
       let _height = get(imageHeightState);
       const currentUnixTime = Date.now();
 
-
       if (get(showDetectionsState) && predictionsArr.length > 0) {
         renderAllOverlaps(predictionsArr, canvas, _width, _height);
       }
-  
+
       // This if statement prevents excessive calls to checkOverlap with ROIS.
       let excessiveCheck = Date.now() - _lastChecked > 900 && !_autoDetect;
-      
+
       if (excessiveCheck) {
         set(lastCheckedState, Date.now());
-      } 
-      else if(!_autoDetect) {
+      } else if (!_autoDetect) {
         return;
       }
 
@@ -132,7 +127,7 @@ const selectedRoiState = selector({
       if (selectedRois.length === 0 && !_autoDetect) {
         return;
       }
-   
+
       //If no predections have happen, then a dummy predection is sent
       //so that the function runs and updates the selectedRois!
       if (predictionsArr.length === 0) {
@@ -155,12 +150,16 @@ const selectedRoiState = selector({
       const selectedRoisClone = structuredClone(selectedRois);
 
       const evaluateTime = get(evaluateTimeState);
-      const overlapThreshold = get(overlapThresholdState)
+      const overlapThreshold = get(overlapThresholdState);
 
       //   //Log N** function on quite a small scale so it's okay
       for (let index = 0; index < selectedRois.length; index++) {
         //Checking if the current
-        let isOverlap = checkRectOverlap(selectedRois[index], predictionsArr, overlapThreshold);
+        let isOverlap = checkRectOverlap(
+          selectedRois[index],
+          predictionsArr,
+          overlapThreshold
+        );
 
         let roiNotEvaluating = !roiEvaluating(
           currentUnixTime,
@@ -168,7 +167,9 @@ const selectedRoiState = selector({
           evaluateTime
         );
 
-        if(roiNotEvaluating) {selectedRoisClone[index]["evaluating"] = false}
+        if (roiNotEvaluating) {
+          selectedRoisClone[index]["evaluating"] = false;
+        }
 
         if (overlapsFirstDetect(isOverlap, selectedRois, index)) {
           //Update lastSeen and First Seen to current time
@@ -177,10 +178,10 @@ const selectedRoiState = selector({
         } else if (overlapsAndKnown(isOverlap, selectedRois, index)) {
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
           //Calculate timeDIffernce
-          let timeDiff = calculateTimeDiff(selectedRois, index)
-          if(timeDiff > evaluateTime) { (selectedRoisClone[index].occupied = true)}
-   
-         
+          let timeDiff = calculateTimeDiff(selectedRois, index);
+          if (timeDiff > evaluateTime) {
+            selectedRoisClone[index].occupied = true;
+          }
         } else if (
           currentUnixTime - selectedRois[index]["lastSeen"] >
           evaluateTime
@@ -192,37 +193,27 @@ const selectedRoiState = selector({
         }
       }
 
- 
       if (_autoDetect) {
         const autoChecked = get(autoCheckedState);
-        let adding = Date.now() - autoChecked
-        if(autoChecked === 0) { set(autoCheckedState, Date.now());}
-        else if((adding <= evaluateTime)) 
-        {
-      
-          const autoDetectArr = get(autoDetectArrState)
+        let adding = Date.now() - autoChecked;
+        if (autoChecked === 0) {
+          set(autoCheckedState, Date.now());
+        } else if (adding <= evaluateTime) {
+          const autoDetectArr = get(autoDetectArrState);
           set(autoDetectArrState, [...autoDetectArr, predictionsArr]);
-        }
-        else 
-        {
-          const autoDetectArr = get(autoDetectArrState)
- 
-          const suppresedRois = supressedRoisProcess(autoDetectArr)
+        } else {
+          const autoDetectArr = get(autoDetectArrState);
 
-          const convertedToSelected = convertRoisSelected(suppresedRois)
+          const suppresedRois = supressedRoisProcess(autoDetectArr);
+
+          const convertedToSelected = convertRoisSelected(suppresedRois);
 
           set(selectedRoi, convertedToSelected);
           set(autoDetectState, false);
-          set(autoDetectArrState,[])
-          set(autoCheckedState, 0)
-          
+          set(autoDetectArrState, []);
+          set(autoCheckedState, 0);
         }
-
- 
-
-      }
-      else 
-      {
+      } else {
         set(selectedRoi, selectedRoisClone);
       }
 
@@ -258,8 +249,6 @@ const selectedRoiState = selector({
       const selectedRoisClone = structuredClone(selectedRois);
 
       roiClone.hover = false;
-
-
 
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);

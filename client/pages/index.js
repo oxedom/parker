@@ -41,7 +41,7 @@ const Home = () => {
                 <Link href={"/vision"}>
                   <button className="text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105">
                     {" "}
-                    Use parker!!!{" "}
+                    Use parker{" "}
                   </button>
                 </Link>
               </h2>

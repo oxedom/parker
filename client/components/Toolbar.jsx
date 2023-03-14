@@ -3,7 +3,6 @@ import {
   detectionThresholdState,
   thresholdIouState,
   autoDetectState,
-
   fpsState,
   showDetectionsState,
   vehicleOnlyState,
@@ -24,9 +23,7 @@ const Toolbar = ({
   loadedCoco,
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
-  const [vehicleOnly, setVehicleOnly] = useRecoilState(
-    vehicleOnlyState
-  );
+  const [vehicleOnly, setVehicleOnly] = useRecoilState(vehicleOnlyState);
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
     detectionThresholdState
   );
@@ -36,13 +33,11 @@ const Toolbar = ({
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
   const [fps, setFps] = useRecoilState(fpsState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
-  const [localDetectionThreshold, setLocalDetectionThreshold] = useState(undefined);
-  const [localVehicleOnly, setLocalVehicleOnly] = useState(undefined)
+  const [localDetectionThreshold, setLocalDetectionThreshold] =
+    useState(undefined);
+  const [localVehicleOnly, setLocalVehicleOnly] = useState(undefined);
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
-
-
-
 
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
@@ -56,7 +51,7 @@ const Toolbar = ({
     setLocalFps(fps);
     setLocalIouThreshold(iouThreshold * 100);
     setLocalDetectionThreshold(detectionThreshold * 100);
-    setLocalVehicleOnly(vehicleOnly)
+    setLocalVehicleOnly(vehicleOnly);
   }, [isModalOpen]);
 
   const handleAutoDetect = () => {
@@ -67,26 +62,18 @@ const Toolbar = ({
     }
   };
 
-
-
   const handleSaveSettings = () => {
-
     // closeModal
     if (!settingChange) {
       return;
     }
 
-
-      setDetectonThreshold(localDetectionThreshold / 100);
-      setIouThreshold(localIouThreshold / 100);
-      setFps(localFps);
-      setVehicleOnly(localVehicleOnly)
-      setProcessing(false);
-      setSettingsChange(false)
-
-
-
-
+    setDetectonThreshold(localDetectionThreshold / 100);
+    setIouThreshold(localIouThreshold / 100);
+    setFps(localFps);
+    setVehicleOnly(localVehicleOnly);
+    setProcessing(false);
+    setSettingsChange(false);
 
     // setProcessing(true)
     closeModal();
@@ -111,12 +98,10 @@ const Toolbar = ({
     }
   }
 
-  
-
   function handleVehicleOnly() {
     setSettingsChange(true);
 
-    vehicleOnly ?  setLocalVehicleOnly(false) : setLocalVehicleOnly(true)
+    vehicleOnly ? setLocalVehicleOnly(false) : setLocalVehicleOnly(true);
   }
 
   return (
@@ -148,7 +133,7 @@ const Toolbar = ({
                 callback={handleProcessing}
               />
 
-            <ToogleSwitch
+              <ToogleSwitch
                 text={"Vehicle Only "}
                 boolean={localVehicleOnly}
                 callback={handleVehicleOnly}
@@ -158,7 +143,6 @@ const Toolbar = ({
             </div>
 
             <div className="flex justify-center flex-col items-center ">
-
               <div className="flex   flex-col text-white justify-center grow">
                 <label> Render Rate</label>
                 <div className="grid grid-cols-2  ">
@@ -181,8 +165,6 @@ const Toolbar = ({
               </div>
             </div>
 
-
-            
             <div></div>
             <Button
               colors={{
@@ -198,8 +180,6 @@ const Toolbar = ({
             >
               {" "}
             </Button>
-
-
           </div>
 
           <div className="grid grid-cols-2 justify-items-center border-t-2  border-black ">
@@ -215,70 +195,58 @@ const Toolbar = ({
       </Modal>
 
       <div className="flex justify-center flex-col items-center gap-2  ">
-              <div className="flex flex-col text-white justify-center items-center grow">
-                <label> Detection Threshold</label>
-                <div className="grid grid-cols-2  ">
-                <span> {localDetectionThreshold}% </span>
-                  <input
-                    type="range"
-                    min="10"
-                    max="100"
-                    className="mr-4"
-                    value={localDetectionThreshold}
-                    onChange={(e) => {
-                      setLocalDetectionThreshold(e.target.value);
-                      setSettingsChange(true);
-                    }}
-                  />
-
-            
-                </div>
-              </div>
-
-              <div className="flex   flex-col text-white justify-center items-center grow ">
-                <label> IOU Threshold</label>
-                <div className="grid grid-cols-2  ">
-                <span> {localIouThreshold}% </span>
-                  <input
-                    type="range"
-                    min="10"
-                    max="100"
-                    className="mr-4"
-                    label="NMS IOU Threshold"
-                    value={localIouThreshold}
-                    onChange={(e) => {
-                      setLocalIouThreshold(e.target.value);
-                      setSettingsChange(true);
-                    }}
-                  />
-
-      
-                </div>
-              </div>
-
-
-              <Button
-              colors={{
-                color: `${
-                  settingChange
-                    ? "bg-blue-500 p-5"
-                    : "bg-blue-300 hover:cursor-not-allowed"
-                }`,
-                textColor: "text-white",
+        <div className="flex flex-col text-white justify-center items-center grow">
+          <label> Detection Threshold</label>
+          <div className="grid grid-cols-2  ">
+            <span> {localDetectionThreshold}% </span>
+            <input
+              type="range"
+              min="10"
+              max="100"
+              className="mr-4"
+              value={localDetectionThreshold}
+              onChange={(e) => {
+                setLocalDetectionThreshold(e.target.value);
+                setSettingsChange(true);
               }}
-              callback={handleSaveSettings}
-              text={"Save settings"}
-            >
-              {" "}
-            </Button>
-                    </div>
+            />
+          </div>
+        </div>
 
+        <div className="flex   flex-col text-white justify-center items-center grow ">
+          <label> IOU Threshold</label>
+          <div className="grid grid-cols-2  ">
+            <span> {localIouThreshold}% </span>
+            <input
+              type="range"
+              min="10"
+              max="100"
+              className="mr-4"
+              label="NMS IOU Threshold"
+              value={localIouThreshold}
+              onChange={(e) => {
+                setLocalIouThreshold(e.target.value);
+                setSettingsChange(true);
+              }}
+            />
+          </div>
+        </div>
 
-
-
-
-
-
+        <Button
+          colors={{
+            color: `${
+              settingChange
+                ? "bg-blue-500 p-5"
+                : "bg-blue-300 hover:cursor-not-allowed"
+            }`,
+            textColor: "text-white",
+          }}
+          callback={handleSaveSettings}
+          text={"Save settings"}
+        >
+          {" "}
+        </Button>
+      </div>
 
       <Button callback={handleAutoDetect} text="Auto detect" />
 

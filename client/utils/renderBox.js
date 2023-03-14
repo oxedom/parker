@@ -25,7 +25,6 @@ export const renderBoxes = (
   canvasRef.textBaseline = "top";
 
   for (let i = 0; i < scores_data.length; ++i) {
-
     if (scores_data[i] > threshold) {
       const klass = labels[classes_data[i]];
       const score = (scores_data[i] * 100).toFixed(1);

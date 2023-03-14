@@ -4,7 +4,6 @@ import Router from "next/router";
 
 const Navbar = () => {
   const handleVision = () => {
-
     if (Router.route == "/vision") {
       window.location.reload();
     }

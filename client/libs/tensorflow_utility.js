@@ -55,15 +55,11 @@ export async function nmsDetectionProcess(boxes, scores, thresholdIou) {
       100,
       thresholdIou
     );
-  
+
     _detectionIndices = _nmsDetections.dataSync();
-  
-    
   } catch (error) {
-
-    console.error(error)
+    console.error(error);
   }
-
 
   return { detectionIndices: _detectionIndices };
 }

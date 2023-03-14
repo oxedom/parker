@@ -20,24 +20,22 @@ export function calculateTimeDiff(selectedRois, index) {
   return timeDiff;
 }
 
-export function supressedRoisProcess(roiMatrix) 
-{
+export function supressedRoisProcess(roiMatrix) {
   console.log(roiMatrix);
-  let candidates = getShortestArray(roiMatrix)
+  let candidates = getShortestArray(roiMatrix);
   console.log(candidates);
 
-  return candidates
+  return candidates;
 }
 
-export function convertRoisSelected (arr) {
+export function convertRoisSelected(arr) {
   let updatedArr = [];
   arr.forEach((pred) => {
     let roiObj = selectedFactory(pred.cords);
     updatedArr.push(roiObj);
   });
 
-
-return updatedArr
+  return updatedArr;
 }
 
 function getShortestArray(arr) {
