@@ -60,15 +60,18 @@ const autoDetectState = atom({
   default: false,
 });
 
+//Made for ROIS selected by hand or auto detected 
 const selectedRoi = atom({
   key: "selectedRois",
   default: [],
 });
 
+//Temo Arrays for FPS / Detection time. 
 const autoDetectArrState = atom({
   key: "autoDetectArrState",
   default: [],
 });
+
 
 const autoCheckedState = atom({
   key: "autoCheckedState",
