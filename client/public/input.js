@@ -15,7 +15,7 @@ import { Peer } from "peerjs";
 
 // import uniqid from uniqid
 
-const Output = () => {
+const Input = () => {
   const [database, setDatabase] = useState(null);
   const [connectUser, setConnectedUser] = useState(null);
   const [localStream, setLocalStream] = useState(null);
@@ -34,50 +34,50 @@ const Output = () => {
 
 
 
-  useEffect(() => 
-  {
-    if (typeof window !== "undefined") {
-     const newPeer = new Peer(peerId);
+//   useEffect(() => 
+//   {
+//     if (typeof window !== "undefined") {
+//      const newPeer = new Peer(peerId);
  
-        newPeer.on('open', () => {
-          console.log(`Peer connection open with ID ${newPeer.id}`);
-          setPeer(newPeer);
-        });
+//         newPeer.on('open', () => {
+//           console.log(`Peer connection open with ID ${newPeer.id}`);
+//           setPeer(newPeer);
+//         });
 
-          // Set up the event listener for when someone else tries to connect to this peer
-          newPeer.on('connection', (conn) => {
-            console.log(`New connection from ${conn.peer}`);
-          });
+//           // Set up the event listener for when someone else tries to connect to this peer
+//           newPeer.on('connection', (conn) => {
+//             console.log(`New connection from ${conn.peer}`);
+//           });
 
- }
-  }, [])
-
-
-  const handleOffer = async () => {
+//  }
+//   }, [])
 
 
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then((stream) => {
-        setStream(stream);
-        outputRef.current.srcObject = stream;
-      })
-      .catch((error) => {
-        console.error('Error accessing user media:', error);
-      });
+  // const handleOffer = async () => {
 
-      return () => {
-        newPeer.destroy();
+
+  //   navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+  //     .then((stream) => {
+  //       setStream(stream);
+  //       outputRef.current.srcObject = stream;
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error accessing user media:', error);
+  //     });
+
+  //     return () => {
+  //       newPeer.destroy();
     
-      };
+  //     };
     
 
 
-  };
+  // };
 
 
   return (
     <DefaultLayout>
-      <main>
+      {/* <main>
         <div className="bg-green-500 p-5">
         <video
           className=""
@@ -102,9 +102,9 @@ const Output = () => {
         
 
 
-      </main>
+      </main> */}
     </DefaultLayout>
   );
 };
 
-export default Output;
+export default Input;
