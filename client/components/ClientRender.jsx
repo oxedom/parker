@@ -109,7 +109,7 @@ const ClientRender = ({
   }, [loadedCoco]);
 
   const detectFrame = async (model) => {
-    if (!webcamRunning && !demo && webcamPlaying) {
+    if (!webcamRunning && !demo && !webcamPlaying) {
       return false;
     }
 

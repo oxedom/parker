@@ -11,6 +11,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import ReceiverRTC from "../components/WebRTC/RecevierRTC";
+import { Peer } from "peerjs";
 
 // import uniqid from uniqid
 
@@ -26,84 +27,58 @@ const Output = () => {
   const recevierRef = useRef(null);
   const app = initializeApp(firebaseConfig);
 
-  const servers = {
-    iceServers: [
-      {
-        urls: [
-          "stun:stun1.l.google.com:19302",
-          "stun:stun2.l.google.com:19302",
-        ],
-      },
-    ],
-    iceCandidatePoolSize: 10,
-  };
 
-  let pc;
+  const [peer, setPeer] = useState(null);
+  const [stream, setStream] = useState(null);
+  const [peerId, setPeerId] = useState('');
 
-  if (typeof window !== "undefined") {
-    pc = new RTCPeerConnection(servers);
-  }
+
+
+  useEffect(() => 
+  {
+    if (typeof window !== "undefined") {
+     const newPeer = new Peer(peerId);
+ 
+        newPeer.on('open', () => {
+          console.log(`Peer connection open with ID ${newPeer.id}`);
+          setPeer(newPeer);
+        });
+
+          // Set up the event listener for when someone else tries to connect to this peer
+          newPeer.on('connection', (conn) => {
+            console.log(`New connection from ${conn.peer}`);
+          });
+
+ }
+  }, [])
+
 
   const handleOffer = async () => {
-    const db = getFirestore(app);
-    // const callDoc = doc(db, 'calls')
-    let _localStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: false,
-    });
-    outputRef.current.srcObject = _localStream;
 
-    console.log(pc);
-    _localStream.getTracks().forEach((track) => {
-      console.log(track);
-      // pc.addTrack(track)
-      pc.addTrack(track, _localStream);
-    });
-    // pc.addStream(_localStream)
-    pc.ontrack = (event) => {
-      event.streams[0].getTracks().forEach((track) => {
-        remoteStream.addTrack(track);
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then((stream) => {
+        setStream(stream);
+        outputRef.current.srcObject = stream;
+      })
+      .catch((error) => {
+        console.error('Error accessing user media:', error);
       });
-    };
 
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
+      return () => {
+        newPeer.destroy();
+    
+      };
+    
 
-    const roomWithOffer = {
-      offer: {
-        type: offer.type,
-        sdp: offer.sdp,
-      },
-      candidates: [],
-    };
 
-    pc.addEventListener("icecandidate", async (e) => {
-      if (e.candidate) {
-        const json = e.candidate.toJSON();
-        roomWithOffer.candidates.push(json);
-        const roomRef = await addDoc(collection(db, "rooms"), {
-          ...roomWithOffer,
-        });
-        const roomId = roomRef.id;
-        setOfferID(roomId);
-      }
-
-      // console.log(e);
-      // console.log(e.canidate.toJSON());
-    });
-
-    // const roomRef = await setDoc(callDoc, roomWithOffer)
-
-    // const roomId = roomRef.id;
-
-    // setOfferID(roomId);
   };
 
-  const handleAnswerCall = async () => {};
 
   return (
     <DefaultLayout>
       <main>
+        <div className="bg-green-500 p-5">
         <video
           className=""
           autoPlay={true}
@@ -120,8 +95,13 @@ const Output = () => {
             create Offer
           </button>
         </div>
-
+        </div>
+        <div className="bg-yellow-500 p-5">
         <ReceiverRTC recevierRef={recevierRef}></ReceiverRTC>
+        </div>
+        
+
+
       </main>
     </DefaultLayout>
   );
