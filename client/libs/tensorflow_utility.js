@@ -67,11 +67,3 @@ export async function nmsDetectionProcess(boxes, scores, thresholdIou) {
 
   return { detectionIndices: _detectionIndices };
 }
-
-export async function disposeTensors(input, res) {
-  console.log("Im disposing");
-  return Promise.all([tf.dispose(input), tf.dispose(res)]).catch((err) => {
-    console.error("Memory leak in coming");
-    console.error(err);
-  });
-}

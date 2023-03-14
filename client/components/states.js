@@ -5,6 +5,8 @@ import {
   overlapsAndKnown,
   overlapsFirstDetect,
   calculateTimeDiff,
+  supressedRoisProcess,
+  convertRoisSelected
 } from "../libs/states_utility";
 import { renderAllOverlaps } from "../libs/canvas_utility";
 
@@ -66,6 +68,16 @@ const selectedRoi = atom({
   default: [],
 });
 
+const autoDetectArrState = atom({
+  key: "autoDetectArrState",
+  default: [],
+});
+
+const autoCheckedState = atom({
+  key: "autoCheckedState",
+  default: 0
+});
+
 const selectedRoiState = selector({
   key: "selectedRoisState",
   default: [],
@@ -100,36 +112,27 @@ const selectedRoiState = selector({
       let _height = get(imageHeightState);
       const currentUnixTime = Date.now();
 
-      if (_autoDetect) {
-        let updatedArr = [];
-        predictionsArr.forEach((pred) => {
-          let roiObj = selectedFactory(pred.cords);
-
-          updatedArr.push(roiObj);
-        });
-        set(selectedRoi, updatedArr);
-
-        set(autoDetectState, false);
-      }
 
       if (get(showDetectionsState) && predictionsArr.length > 0) {
         renderAllOverlaps(predictionsArr, canvas, _width, _height);
       }
-
+  
       // This if statement prevents excessive calls to checkOverlap with ROIS.
       let excessiveCheck = Date.now() - _lastChecked > 900 && !_autoDetect;
-
+      
       if (excessiveCheck) {
         set(lastCheckedState, Date.now());
-      } else {
+      } 
+      else if(!_autoDetect) {
         return;
       }
 
       //If there are ROI to check objects the function returns
       const selectedRois = get(selectedRoi);
-      if (selectedRois.length === 0) {
+      if (selectedRois.length === 0 && !_autoDetect) {
         return;
       }
+   
       //If no predections have happen, then a dummy predection is sent
       //so that the function runs and updates the selectedRois!
       if (predictionsArr.length === 0) {
@@ -189,7 +192,40 @@ const selectedRoiState = selector({
         }
       }
 
-      set(selectedRoi, selectedRoisClone);
+ 
+      if (_autoDetect) {
+        const autoChecked = get(autoCheckedState);
+        let adding = Date.now() - autoChecked
+        if(autoChecked === 0) { set(autoCheckedState, Date.now());}
+        else if((adding <= evaluateTime)) 
+        {
+      
+          const autoDetectArr = get(autoDetectArrState)
+          set(autoDetectArrState, [...autoDetectArr, predictionsArr]);
+        }
+        else 
+        {
+          const autoDetectArr = get(autoDetectArrState)
+ 
+          const suppresedRois = supressedRoisProcess(autoDetectArr)
+
+          const convertedToSelected = convertRoisSelected(suppresedRois)
+
+          set(selectedRoi, convertedToSelected);
+          set(autoDetectState, false);
+          set(autoDetectArrState,[])
+          set(autoCheckedState, 0)
+          
+        }
+
+ 
+
+      }
+      else 
+      {
+        set(selectedRoi, selectedRoisClone);
+      }
+
       //How long it takes to evaluate if a object is there or not
     }
 
@@ -222,6 +258,8 @@ const selectedRoiState = selector({
       const selectedRoisClone = structuredClone(selectedRois);
 
       roiClone.hover = false;
+
+
 
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
