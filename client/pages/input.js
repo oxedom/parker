@@ -78,8 +78,8 @@ const Input = () => {
     <DefaultLayout>
     <div className="bg-green">
       <p>Current Peer ID: {peerId}</p>
-      <button className="bg-green-500" onClick={shareVideo}>Share Video</button>
-      <video id="video" width="640" height="480" autoPlay></video>
+
+      <video id="input" width="640" height="480" autoPlay></video>
 
     </div>
 

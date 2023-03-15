@@ -45,7 +45,7 @@ const ReceiverRTC = ({theID  }) => {
   return (
     <div className="bg-yellow-500 p-10">
 
-    <video id="video" ref={remoteVideoRef} width="640" height="480" autoPlay></video>
+    <video id="output" ref={remoteVideoRef} width="640" height="480" autoPlay></video>
 
   
     <button className="w-10 bg-green-500 h-10" onClick={handleConnect}>Connect</button>
