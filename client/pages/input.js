@@ -1,108 +1,91 @@
 import { useEffect, useRef, useState } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
-import { firebaseConfig } from "../config";
-import { initializeApp } from "firebase/app";
-import dynamic from 'next/dynamic';
-import {
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  getFirestore,
-  addDoc,
-} from "firebase/firestore";
-
-
-// import { Peer } from "peerjs";
-
-// import uniqid from uniqid
-
-
+import ReceiverRTC from "../components/WebRTC/RecevierRTC";
 
 const Input = () => {
-  const [database, setDatabase] = useState(null);
-  const [connectUser, setConnectedUser] = useState(null);
-  const [localStream, setLocalStream] = useState(null);
-  const [localConnection, setLocalConnection] = useState(null);
-  const [offerID, setOfferID] = useState(null);
-  const allowBtnRef = useRef(null);
-  const offerBtnRef = useRef(null);
-  const outputRef = useRef(null);
-  const recevierRef = useRef(null);
 
 
   const [peer, setPeer] = useState(null);
   const [stream, setStream] = useState(null);
-  const [peerId, setPeerId] = useState("");
+  const [peerId, setPeerId] = useState(null);
 
 
-    useEffect(() =>
-    {
-    
-      import('peerjs').then(({ default: Peer }) => {
-   
-       const newPeer = new Peer(peerId);
-          newPeer.on('open', () => {
-            console.log(`Peer connection open with ID ${newPeer.id}`);
-            setPeerId(newPeer.id)
-            setPeer(newPeer);
-          });
 
-            // Set up the event listener for when someone else tries to connect to this peer
-            newPeer.on('connection', (conn) => {
-              console.log(`New connection from ${conn.peer}`);
-            });
 
-          });
-    }, [])
-
-  const handleOffer = async () => {
-
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then((stream) => {
-        setStream(stream);
-        outputRef.current.srcObject = stream;
-      })
-      .catch((error) => {
-        console.error('Error accessing user media:', error);
+  useEffect(() => {
+    const initPeerJS = async () => {
+      const { default: Peer } = await import("peerjs");
+      const newPeer = new Peer();
+      
+      newPeer.on("open", () => {
+        console.log(`Input Peer connection open with ID: ${newPeer.id}`);
+        setPeerId(newPeer.id);
+        
       });
 
-      return () => {
-        newPeer.destroy();
+      newPeer.on('connection', function(conn) {
+        conn.on('data', (data) => {
 
-      };
+          console.log(data); // should log "hello world"
+        });
 
+        conn.send(stream)
+
+      })
+
+  
+
+
+
+    };
+
+    initPeerJS();
+  }, []);
+
+
+
+
+  const shareVideo = async () => {
+    try {
+      const videostream = await navigator.mediaDevices.getUserMedia({ video: true });
+      setStream(videostream);
+      const video = document.querySelector("#video");
+      video.srcObject = stream;
+      video.play();
+
+
+
+
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+
+  useEffect(() => {
+    if(stream && peer) 
+    {
+      peer.on("connection", (conn) => {
+        conn.send("yellow");
+    })
+    }
+
+
+  }, [stream])
 
   return (
     <DefaultLayout>
-      <main>
-        <div className="bg-green-500 p-5">
-          <p> {peerId}</p>
-        <video
-          className=""
-          autoPlay={true}
-          muted={true}
-          ref={outputRef}
-        ></video>
+    <div className="bg-green">
+      <p>Current Peer ID: {peerId}</p>
+      <button className="bg-green-500" onClick={shareVideo}>Share Video</button>
+      <video id="video" width="640" height="480" autoPlay></video>
 
-        <video ref={recevierRef} muted={true} autoPlay={true}></video>
-
-        <div>
-          <p> {offerID} </p>
-          <button onClick={handleOffer} className="bg-blue-500 p-5">
-            {" "}
-            create Offer
-          </button>
-        </div>
-        </div>
-        <div className="bg-yellow-500 p-5">
-        {/* <ReceiverRTC recevierRef={recevierRef}></ReceiverRTC> */}
-        </div>
-        
+    </div>
 
 
-      </main>
+    <ReceiverRTC theID={peerId}> </ReceiverRTC>
+
+
     </DefaultLayout>
   );
 };

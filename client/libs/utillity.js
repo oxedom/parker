@@ -2,6 +2,9 @@ import uniqid from "uniqid";
 import labels from "../utils/labels.json";
 import { xywh2xyxy } from "../utils/renderBox.js";
 
+//The getOverlap function takes two rectangles as input and 
+// returns a new rectangle that represents the overlapping area between the two rectangles. 
+// If there is no overlap, the function returns null.
 function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
   const intersectionX2 = Math.min(
@@ -71,6 +74,10 @@ export function checkOverlapArrays(detectionsArr, selectedArr) {
   return overlaps;
 }
 
+// The checkRectOverlap function takes three arguments: a rect object representing a rectangle to check for overlap with other rectangles,
+// an array of detectionsArr containing other rectangles to compare with, and an overlapThreshold 
+// representing the minimum percentage of overlap required to consider two rectangles as overlapping. The function returns
+// a boolean value indicating whether there is an overlap between the given rectangle and any of the rectangles in the detectionsArr array.
 export function checkRectOverlap(rect, detectionsArr, overlapThreshold) {
   let answer = false;
   detectionsArr.forEach((d) => {
