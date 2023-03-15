@@ -5,40 +5,53 @@ import ReceiverRTC from "../components/WebRTC/RecevierRTC";
 const Input = () => {
 
 
+
   const [peer, setPeer] = useState(null);
-  const [stream, setStream] = useState(null);
-  const [peerId, setPeerId] = useState(null);
+  const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
+  const [peerId, setPeerId] = useState("")
+  const peerRef = useRef(null)
+  const streamRef = useRef(null)
 
 
 
 
   useEffect(() => {
+
+
     const initPeerJS = async () => {
+      await   shareVideo()
       const { default: Peer } = await import("peerjs");
-      const newPeer = new Peer();
-      
-      newPeer.on("open", () => {
-        console.log(`Input Peer connection open with ID: ${newPeer.id}`);
-        setPeerId(newPeer.id);
+      const peer = new Peer();
+
+      peer.on("open", () => {
+
+        console.log(`Input Peer connection open with ID: ${peer.id}`);
+        setPeerId(peer.id);
         
       });
 
-      newPeer.on('connection', function(conn) {
-        conn.on('data', (data) => {
+     
+      
 
-          console.log(data); // should log "hello world"
-        });
-
-        conn.send(stream)
-
-      })
-
+      peer.on('call', (call) => {
   
+        call.answer(streamRef.current)
+        console.log('im getting a call ');
+        call.on("stream", (remoteSteam) => 
+        {
+          document.getElementById('video').srcObject = remoteSteam
+        })
+
+
+
+
+        
+      })
 
 
 
     };
-
+  
     initPeerJS();
   }, []);
 
@@ -48,10 +61,7 @@ const Input = () => {
   const shareVideo = async () => {
     try {
       const videostream = await navigator.mediaDevices.getUserMedia({ video: true });
-      setStream(videostream);
-      const video = document.querySelector("#video");
-      video.srcObject = stream;
-      video.play();
+      streamRef.current = videostream
 
 
 
@@ -62,16 +72,7 @@ const Input = () => {
   };
 
 
-  useEffect(() => {
-    if(stream && peer) 
-    {
-      peer.on("connection", (conn) => {
-        conn.send("yellow");
-    })
-    }
 
-
-  }, [stream])
 
   return (
     <DefaultLayout>

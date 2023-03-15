@@ -3,31 +3,39 @@ import { useState, useRef, useEffect } from "react";
 
 
 const ReceiverRTC = ({theID  }) => {
-  const [peer, setPeer] = useState(null);
-  const [stream, setStream] = useState(null);
+
+  const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
   const [peerId, setPeerID] = useState("")
+  const peerRef = useRef(null)
+  const remoteVideoRef = useRef(null)
 
   function handleConnect (){
-    alert()
-    var conn = peer.connect(peerId);
-    console.log(conn);
-    conn.on('open', () => {
-      conn.send('hello world');
+  
+    call(peerId)
+  }
+
+  async function call(peerID) 
+  {
+    let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+
+    const call = peerRef.current.call(peerID, stream)
+
+
+    call.on('stream', (remoteStream) => {
+      remoteVideoRef.current.srcObject = remoteStream
+      remoteVideoRef.current.play();
     });
 
-    conn.on('data', (data) => {
-
-      console.log(data); // should log "hello world"
-    });
-
+    
   }
 
   useEffect(() => {
+
     const initPeerJS = async () => {
       const { default: Peer } = await import("peerjs");
       const newPeer = new Peer();
-      setPeer(newPeer)
-      // newPeer.on('connection', function(conn) { console.log(conn)});
+      peerRef.current = newPeer
+      console.log(peerRef.current);
     };
 
     initPeerJS();
@@ -36,7 +44,8 @@ const ReceiverRTC = ({theID  }) => {
 
   return (
     <div className="bg-yellow-500 p-10">
-    {/* <video id="video" width="640" height="480" autoPlay></video> */}
+
+    <video id="video" ref={remoteVideoRef} width="640" height="480" autoPlay></video>
 
   
     <button className="w-10 bg-green-500 h-10" onClick={handleConnect}>Connect</button>
