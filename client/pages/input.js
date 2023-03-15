@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
 import { firebaseConfig } from "../config";
 import { initializeApp } from "firebase/app";
+import dynamic from 'next/dynamic';
 import {
   collection,
   getDocs,
@@ -10,10 +11,13 @@ import {
   getFirestore,
   addDoc,
 } from "firebase/firestore";
-import ReceiverRTC from "../components/WebRTC/RecevierRTC";
-import { Peer } from "peerjs";
+
+
+// import { Peer } from "peerjs";
 
 // import uniqid from uniqid
+
+
 
 const Input = () => {
   const [database, setDatabase] = useState(null);
@@ -25,52 +29,56 @@ const Input = () => {
   const offerBtnRef = useRef(null);
   const outputRef = useRef(null);
   const recevierRef = useRef(null);
-  const app = initializeApp(firebaseConfig);
+
 
   const [peer, setPeer] = useState(null);
   const [stream, setStream] = useState(null);
   const [peerId, setPeerId] = useState("");
 
-  //   useEffect(() =>
-  //   {
-  //     if (typeof window !== "undefined") {
-  //      const newPeer = new Peer(peerId);
 
-  //         newPeer.on('open', () => {
-  //           console.log(`Peer connection open with ID ${newPeer.id}`);
-  //           setPeer(newPeer);
-  //         });
+    useEffect(() =>
+    {
+    
+      import('peerjs').then(({ default: Peer }) => {
+   
+       const newPeer = new Peer(peerId);
+          newPeer.on('open', () => {
+            console.log(`Peer connection open with ID ${newPeer.id}`);
+            setPeerId(newPeer.id)
+            setPeer(newPeer);
+          });
 
-  //           // Set up the event listener for when someone else tries to connect to this peer
-  //           newPeer.on('connection', (conn) => {
-  //             console.log(`New connection from ${conn.peer}`);
-  //           });
+            // Set up the event listener for when someone else tries to connect to this peer
+            newPeer.on('connection', (conn) => {
+              console.log(`New connection from ${conn.peer}`);
+            });
 
-  //  }
-  //   }, [])
+          });
+    }, [])
 
-  // const handleOffer = async () => {
+  const handleOffer = async () => {
 
-  //   navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-  //     .then((stream) => {
-  //       setStream(stream);
-  //       outputRef.current.srcObject = stream;
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error accessing user media:', error);
-  //     });
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then((stream) => {
+        setStream(stream);
+        outputRef.current.srcObject = stream;
+      })
+      .catch((error) => {
+        console.error('Error accessing user media:', error);
+      });
 
-  //     return () => {
-  //       newPeer.destroy();
+      return () => {
+        newPeer.destroy();
 
-  //     };
+      };
 
-  // };
+  };
 
   return (
     <DefaultLayout>
-      {/* <main>
+      <main>
         <div className="bg-green-500 p-5">
+          <p> {peerId}</p>
         <video
           className=""
           autoPlay={true}
@@ -89,12 +97,12 @@ const Input = () => {
         </div>
         </div>
         <div className="bg-yellow-500 p-5">
-        <ReceiverRTC recevierRef={recevierRef}></ReceiverRTC>
+        {/* <ReceiverRTC recevierRef={recevierRef}></ReceiverRTC> */}
         </div>
         
 
 
-      </main> */}
+      </main>
     </DefaultLayout>
   );
 };
