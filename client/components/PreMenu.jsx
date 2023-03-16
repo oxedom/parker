@@ -57,7 +57,7 @@ const PreMenu = ({ setActivate, setDemo }) => {
         }}
         className="bg-orange-600 p-5 rounded-lg hover:scale-105 duration-300"
       >
-        Use Webcam{" "}
+        Parker{" "}
       </button>
 
       <button
@@ -70,7 +70,7 @@ const PreMenu = ({ setActivate, setDemo }) => {
         }}
         className="bg-orange-600 p-5 rounded-lg hover:scale-105 duration-300"
       >
-        Livestream{" "}
+        Stream{" "}
       </button>
     </main>
   );

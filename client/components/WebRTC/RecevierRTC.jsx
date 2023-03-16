@@ -14,7 +14,7 @@ const ReceiverRTC = ({theID  }) => {
     call(peerId)
   }
 
-  async function call(peerID) 
+  async function call(peerID, videoEl) 
   {
     let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
 
@@ -22,8 +22,8 @@ const ReceiverRTC = ({theID  }) => {
 
 
     call.on('stream', (remoteStream) => {
-      remoteVideoRef.current.srcObject = remoteStream
-      remoteVideoRef.current.play();
+      videoEl.current.srcObject = remoteStream
+      videoEl.current.play();
     });
 
     

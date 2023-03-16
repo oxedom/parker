@@ -1,25 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
-import ReceiverRTC from "../components/WebRTC/RecevierRTC";
+
 
 const Input = () => {
-
-
 
   const [peer, setPeer] = useState(null);
   const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
   const [peerId, setPeerId] = useState("")
-  const peerRef = useRef(null)
+  const inputRef = useRef(null)
   const streamRef = useRef(null)
-
-
 
 
   useEffect(() => {
 
 
     const initPeerJS = async () => {
-      await   shareVideo()
+      await  shareVideo()
       const { default: Peer } = await import("peerjs");
       const peer = new Peer();
 
@@ -30,25 +26,10 @@ const Input = () => {
         
       });
 
-     
-      
-
       peer.on('call', (call) => {
-  
         call.answer(streamRef.current)
         console.log('im getting a call ');
-        call.on("stream", (remoteSteam) => 
-        {
-          document.getElementById('video').srcObject = remoteSteam
-        })
-
-
-
-
-        
       })
-
-
 
     };
   
@@ -62,31 +43,20 @@ const Input = () => {
     try {
       const videostream = await navigator.mediaDevices.getUserMedia({ video: true });
       streamRef.current = videostream
-
-
-
-
+      console.log(videostream);
+      inputRef.current.srcObject = videostream
     } catch (error) {
       console.error(error);
     }
   };
 
 
-
-
   return (
     <DefaultLayout>
-    <div className="bg-green">
+    <div className="bg-green-500">
       <p>Current Peer ID: {peerId}</p>
-
-      <video id="input" width="640" height="480" autoPlay></video>
-
+      <video autoPlay={true} ref={inputRef}></video>
     </div>
-
-
-    <ReceiverRTC theID={peerId}> </ReceiverRTC>
-
-
     </DefaultLayout>
   );
 };

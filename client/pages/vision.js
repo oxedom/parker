@@ -1,26 +1,43 @@
 import ClientRender from "../components/ClientRender";
 import DrawingCanvas from "../components/DrawingCanvas";
 import RoisFeed from "../components/RoisFeed";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Head from "next/head";
 import PreMenu from "../components/PreMenu";
 import DisplayInfo from "../components/DisplayInfo";
+import Call from "../components/Call";
+
 
 const visionPage = () => {
+
+  const [allowWebcam, setAllowWebcam] = useState(false);
   const [hasWebcam, setHasWebcam] = useState(false);
+  const [webcamEnabled, setWebcamEnable] = useState(false);
+  const [webcamPlaying, setWebcamPlaying] = useState(false);
 
   const [demoLoaded, setDemoLoaded] = useState(false);
-  const [webcamEnabled, setWebcamEnable] = useState(false);
+  const [demo, setDemo] = useState(false);
+
+
+  const [active, setActivate] = useState(true);
 
   const [loadedCoco, setLoadedCoco] = useState(false);
+
   const [processing, setProcessing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [demo, setDemo] = useState(false);
-  const [allowWebcam, setAllowWebcam] = useState(false);
-  const [webcamPlaying, setWebcamPlaying] = useState(false);
-  const [active, setActivate] = useState(false);
+
+
+
+
+
+  const [WebRTCMode, setWebRTCMode] = useState(false)
+  const [peerId, setPeerID] = useState("")
+  const peerRef = useRef(null)
+  const rtcOutputRef = useRef(null)
+
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -33,6 +50,21 @@ const visionPage = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const initPeerJS = async () => {
+    const { default: Peer } = await import("peerjs");
+    const newPeer = new Peer();
+    peerRef.current = newPeer
+    console.log(peerRef.current);
+  };
+
+
+
+
+
+
+
+
 
   return (
     <DashboardLayout>
@@ -58,7 +90,7 @@ const visionPage = () => {
                 ""
               )}
 
-              {!demo && !allowWebcam ? (
+              {!demo && !allowWebcam && !WebRTCMode ? (
                 <div className="border animate-pulse duration-600  transition ease-in  border-white rounded-lg ">
                   <button
                     className="p-3  duration-150 align-self-center justify-self-center  rounded-lg text-center"
@@ -67,12 +99,41 @@ const visionPage = () => {
                     }}
                   >
                     {" "}
-                    <span className="">Enable Webcam </span>
+                    <span className=""> Webcam </span>
                   </button>
+
+                  <button
+                    className="p-3  duration-150 align-self-center justify-self-center  rounded-lg text-center"
+                    onClick={(e) => {
+                      setWebRTCMode(true);
+                    }}
+                  >
+                    {" "}
+                    <span className="">RTC  </span>
+                  </button>
+
+
                 </div>
               ) : (
                 ""
               )}
+
+              {WebRTCMode ?
+              
+              
+                <div>
+                  <Call peerId={peerId} remoteVideoRef={rtcOutputRef}></Call>
+                             <input className="w-[150px] text-black" value={peerId}  alt="connectID" placeholder="connectID" onChange={(e) => { 
+                e.preventDefault()
+                setPeerID(e.target.value)}} type="text"/>
+                  </div>
+
+   
+   
+             
+
+        
+               : null}
 
               {!demo && allowWebcam ? <div></div> : ""}
               <DisplayInfo></DisplayInfo>
@@ -110,7 +171,10 @@ const visionPage = () => {
                   allowWebcam={allowWebcam}
                   webcamEnabled={webcamEnabled}
                   setHasWebcam={setHasWebcam}
+                  WebRTCMode={WebRTCMode}
+                  setWebRTCMode={setWebRTCMode}
                   setDemoLoaded={setDemoLoaded}
+                  rtcOutputRef={rtcOutputRef}
                   demoLoaded={demoLoaded}
                   webcamPlaying={webcamPlaying}
                   setWebcamPlaying={setWebcamPlaying}
