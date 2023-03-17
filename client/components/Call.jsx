@@ -25,7 +25,7 @@ const Call = ({peerId, remoteVideoRef}) => {
     async function call(peerID) 
       {
         let emptyStream = createEmptyStream()
-        let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        // let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
     
         const call = peerRef.current.call(peerID, emptyStream)
     
