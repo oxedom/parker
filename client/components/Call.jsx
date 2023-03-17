@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-
+import { createEmptyStream } from "../libs/webRTC_utility";
 const Call = ({peerId, remoteVideoRef}) => {
 
     const peerRef = useRef(null)    
@@ -24,14 +24,17 @@ const Call = ({peerId, remoteVideoRef}) => {
 
     async function call(peerID) 
       {
+        let emptyStream = createEmptyStream()
         let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
     
-        const call = peerRef.current.call(peerID, stream)
+        const call = peerRef.current.call(peerID, emptyStream)
     
     
-        call.on('stream', (remoteStream) => {
+        call.on('stream', async (remoteStream) => {
           remoteVideoRef.current.srcObject = remoteStream
           remoteVideoRef.current.play();
+        
+
         });
     
         

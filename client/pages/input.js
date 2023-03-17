@@ -15,7 +15,7 @@ const Input = () => {
 
 
     const initPeerJS = async () => {
-      await  shareVideo()
+
       const { default: Peer } = await import("peerjs");
       const peer = new Peer();
 
@@ -41,12 +41,25 @@ const Input = () => {
 
   const shareVideo = async () => {
     try {
-      const videostream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const videostream = await navigator.mediaDevices.getUserMedia({ video:
+        {    facingMode: { exact: "environment" },} })
+
       streamRef.current = videostream
-      console.log(videostream);
       inputRef.current.srcObject = videostream
     } catch (error) {
-      console.error(error);
+
+      try {
+        const videostream = await navigator.mediaDevices.getUserMedia({ video: true } )
+        
+  
+        streamRef.current = videostream
+        inputRef.current.srcObject = videostream
+  
+      } catch (error) {
+        console.error(error);
+      }
+
+
     }
   };
 
@@ -56,6 +69,7 @@ const Input = () => {
     <div className="bg-green-500">
       <p>Current Peer ID: {peerId}</p>
       <video autoPlay={true} ref={inputRef}></video>
+      <button onClick={shareVideo}></button>
     </div>
     </DefaultLayout>
   );

@@ -21,7 +21,7 @@ const visionPage = () => {
   const [demo, setDemo] = useState(false);
 
 
-  const [active, setActivate] = useState(true);
+  const [active, setActivate] = useState(false);
 
   const [loadedCoco, setLoadedCoco] = useState(false);
 
@@ -51,12 +51,6 @@ const visionPage = () => {
     setIsModalOpen(false);
   };
 
-  const initPeerJS = async () => {
-    const { default: Peer } = await import("peerjs");
-    const newPeer = new Peer();
-    peerRef.current = newPeer
-    console.log(peerRef.current);
-  };
 
 
 

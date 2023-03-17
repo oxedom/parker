@@ -72,7 +72,6 @@ const ClientRender = ({
 
 
 
-
   const handleDemoLoaded = (e) => {
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
@@ -108,11 +107,6 @@ const ClientRender = ({
   }, [allowWebcam]);
 
 
-  useEffect(() => {
-    if(WebRTCMode && !WebRTCLoaded) {
-   
-    }
-  }, [WebRTCMode])
 
   useEffect(() => {
     // Need to do this for canvas2d to work
@@ -122,18 +116,19 @@ const ClientRender = ({
   }, [loadedCoco]);
 
   const detectFrame = async (model) => {
-    if (!webcamRunning && !demo && !webcamPlaying) {
-      return false;
+
+    if (!webcamRunning && !demo && !webcamPlaying && !WebRTCLoaded) {
+      return false
     }
 
     let video;
     let videoWidth;
     let videoHeight;
-    if(webcamLoaded && rtcOutputRef.current != null && WebRTCLoaded) 
+    if(rtcOutputRef.current != null && WebRTCLoaded) 
     {
-      video = rtcOutputRef.current.video;
-      videoWidth = rtcOutputRef.current.video.videoWidth;
-      videoHeight = rtcOutputRef.current.video.videoHeight;
+      video = rtcOutputRef.current;
+      videoWidth = rtcOutputRef.current.videoWidth;
+      videoHeight = rtcOutputRef.current.videoHeight;
     }
     else if (!demo && webcamRef.current != null) {
       video = webcamRef.current.video;
@@ -149,6 +144,9 @@ const ClientRender = ({
       videoWidth = demoRef.current.videoWidth;
       videoHeight = demoRef.current.videoHeight;
     } else {
+      console.log('RETURNING');
+      console.log(WebRTCLoaded);
+      console.log(rtcOutputRef.current != null);
       return;
     }
 
@@ -253,7 +251,7 @@ const ClientRender = ({
 
       // setLoadedCoco(false);
     };
-  }, [processing, imageHeight, imageWidth]);
+  }, [processing, imageHeight, imageWidth, WebRTCLoaded]);
 
   return loadingYolo.loaded ? (
     <>
@@ -273,12 +271,12 @@ const ClientRender = ({
        <video
        id="webRTC"
        ref={rtcOutputRef}
-       width={imageWidth}
+      
        muted={true}
        onPlay={((e) => { 
         
-        alert('webrtc output loaded')
         setWebRTCLoaded(true)
+
       
       })}
        autoPlay={true}
