@@ -37,13 +37,13 @@ const Navbar = () => {
               text={"About"}
             />
 
-            <Navlink
+            {/* <Navlink
               className="  
 
 "
               url={"/docs"}
               text={"Docs"}
-            />
+            /> */}
 
 <Navlink
 
