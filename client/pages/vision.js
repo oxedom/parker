@@ -63,10 +63,10 @@ const visionPage = () => {
         <title> Vison</title>
       </Head>
 
-        <div className={`flex flex-col  p-16    `}>
-          <div className="flex flex-col justify-center items-center">
-            <div className="bg-filler grid relative text-2xl   text-white my-4 gap-2 h-20 rounded-lg font-bold bg-orange-600  ">
-              <VisionHeader  WebRTCMode={WebRTCMode} webcamEnabled={webcamEnabled} demo={demo} handleDisableDemo={handleDisableDemo} setWebRTCMode={setWebRTCMode} setAllowWebcam={setAllowWebcam}/>
+        <div className={`flex flex-col  p-16   `}>
+          <div className="flex flex-col justify-center items-center gap-4">
+            <div className=" grid relative text-2xl w-full  text-white gap-2 h-20 rounded-xl font-bold bg-orange-500  ">
+              <VisionHeader  WebRTCMode={WebRTCMode} webcamEnabled={webcamEnabled} demo={demo} handleDisableDemo={handleDisableDemo}/>
               {/* {WebRTCMode ?
               
               
@@ -89,7 +89,7 @@ const visionPage = () => {
             </div>
 
             <div
-              className={`hidden md:flex    flex-col md:flex-row  md:justify-between rounded outline-1 outline  outline-black shadow-lg
+              className={`hidden md:flex gap-4  flex-col md:flex-row  md:justify-between 
             `}
             >
               <Toolbar
@@ -104,7 +104,7 @@ const visionPage = () => {
               >
                 {" "}
               </Toolbar>
-              <div className="bg-orange-500 outline-2 outline-black">
+              <div className="bg-orange-500 outline-2 outline-black rounded-b-2xl">
                 <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                 <ClientRender
                   demo={demo}
@@ -115,6 +115,7 @@ const visionPage = () => {
                   setHasWebcam={setHasWebcam}
                   WebRTCMode={WebRTCMode}
                   setWebRTCMode={setWebRTCMode}
+                  setAllowWebcam={setAllowWebcam}
                   setDemoLoaded={setDemoLoaded}
                   rtcOutputRef={rtcOutputRef}
                   demoLoaded={demoLoaded}

@@ -12,7 +12,7 @@ const ToogleSwitch = ({ boolean, callback, text }) => {
         onChange={(e) => {
           handleToogle();
         }}
-        className="flex items-center relative w-max cursor-pointer select-none"
+        className="flex items-around relative w-max cursor-pointer select-none"
       >
         <input
           value={boolean}

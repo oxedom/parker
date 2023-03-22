@@ -39,6 +39,7 @@ const Toolbar = ({
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
 
+  let sliderStyle = "flex mx-2 flex-col text-white justify-center  items-center"
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
     "Advanced setting: Non-maximum Suppression threshold, recommended to between 50-75 ";
@@ -104,14 +105,14 @@ const Toolbar = ({
 
   return (
     <div
-      className={`md:w-[200px]  flex justify-between flex-col min-h-[${imageHeight}px]  bg-orange-500  `}
+      className={`md:w-[200px]  flex justify-between rounded-xl p-2  flex-col min-h-[${imageHeight}px]  bg-orange-500  `}
     >
 
 
       <div className="flex justify-center flex-col items-center gap-2  ">
 
 
-        <div className="flex flex-col text-white justify-center items-center grow">
+        <div className={sliderStyle}>
           <label> Detection Threshold</label>
           <div className="grid grid-cols-2  ">
             <span> {localDetectionThreshold}% </span>
@@ -129,9 +130,9 @@ const Toolbar = ({
           </div>
         </div>
 
-        <div className="flex   flex-col text-white justify-center items-center grow ">
+        <div className={sliderStyle}>
           <label> IOU Threshold</label>
-          <div className="grid grid-cols-2  ">
+          <div className="grid grid-cols-2 items-center  ">
             <span> {localIouThreshold}% </span>
             <input
               type="range"
@@ -148,9 +149,9 @@ const Toolbar = ({
           </div>
         </div>
 
-        <div className="flex   flex-col text-white justify-center items-center grow ">
+        <div className={sliderStyle}>
         <label> Render Rate</label>
-          <div className="grid grid-cols-2  ">
+          <div className="grid grid-cols-2 items-center    ">
           <span> {Math.floor(localFps * 100) / 100} FPS </span>
           <input
                     type="range"

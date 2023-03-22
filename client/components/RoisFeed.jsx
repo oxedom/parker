@@ -64,7 +64,7 @@ const RoisFeed = ({}) => {
 
   return (
     <div
-      className={`w-[200px]  bg-filler flex flex-col justify-between  min-h-[${imageHeight}px]`}
+      className={`w-[200px]  bg-orange-500 rounded-xl   flex flex-col justify-between  min-h-[${imageHeight}px]`}
     >
       <div>
         <h4

@@ -37,6 +37,7 @@ const ClientRender = ({
   loadedCoco,
   setDemoLoaded,
   webcamPlaying,
+  setAllowWebcam,
   setWebcamPlaying,
   demoLoaded,
   allowWebcam,
@@ -144,9 +145,7 @@ const ClientRender = ({
       videoWidth = demoRef.current.videoWidth;
       videoHeight = demoRef.current.videoHeight;
     } else {
-      console.log('RETURNING');
-      console.log(WebRTCLoaded);
-      console.log(rtcOutputRef.current != null);
+
       return;
     }
 
@@ -301,7 +300,7 @@ const ClientRender = ({
         />
       ) : null}
 
-      {!demo && !webcamLoaded && !WebRTCMode ? <LoadingScreen /> : ""}
+      {!demo && !webcamLoaded && !WebRTCMode ? <LoadingScreen setAllowWebcam={setAllowWebcam} setWebRTCLoaded={setWebRTCLoaded} /> : ""}
 
     
       {demo ? (

@@ -1,15 +1,22 @@
 import DisplayInfo from "./DisplayInfo";
 
+import {
+    imageWidthState,
+
+  } from "./states";
+  import { useRecoilValue } from "recoil";
+
+
 
 
 const VisionHeader = ({setWebRTCMode, setAllowWebcam, demo, handleDisableDemo, WebRTCMode, webcamEnable}) => {
 
-        const btnStyle = "p-3 bg-orange-500 rounded-lg mx-2 "
+    const imageWidth= useRecoilValue(imageWidthState)
 
-    return ( <nav className="flex justify-around">
+    return ( <nav className={`flex justify-around `}>
                  {demo ? (
                 <div onClick={handleDisableDemo}>
-                  <h5 className="font-bold p-4  rounded-lg text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl  duration-300  ">
+                  <h5 className="font-bold p-4   text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl  duration-300  ">
                     {" "}
                     Exit{" "}
                   </h5>
@@ -19,35 +26,11 @@ const VisionHeader = ({setWebRTCMode, setAllowWebcam, demo, handleDisableDemo, W
            
                 <>
          
-                <div className="grid grid-cols-3 gap-2 items-center content-center mx-2   justify-center   duration-600  transition ease-in   rounded-lg ">
-                  <button
-                           className={btnStyle}
-                    onClick={(e) => {
-                        setWebRTCMode(false);
-                      setAllowWebcam(true);
-                    }}
-                  >
-                    {" "}
-                    <span className=""> Webcam </span>
-                  </button>
-
-                  <button
-                    className={btnStyle}
-                    onClick={(e) => {
-                        setAllowWebcam(false);
-                      setWebRTCMode(true);
-                    }}
-                  >
-                    {" "}
-                    <span className="">RTC  </span>
-                  </button>
 
                 
               <DisplayInfo></DisplayInfo> 
   
          
-                </div>
-       
              
                 </>)}
     </nav>  );
