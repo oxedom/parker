@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { imageHeightState, imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
 
-const LoadingScreen = ({ setWebRTCLoaded, setAllowWebcam }) => {
+const LoadingScreen = ({ setWebRTCMode, setAllowWebcam }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [offsetX, setOffsetX] = useState(undefined);
@@ -18,10 +18,10 @@ const LoadingScreen = ({ setWebRTCLoaded, setAllowWebcam }) => {
 
   const handleClick = () => {
     if (direction == "left") {
-      setWebRTCLoaded(false);
+      setWebRTCMode(false);
       setAllowWebcam(true);
     } else {
-      setWebRTCLoaded(true);
+      setWebRTCMode(true);
       setAllowWebcam(false);
     }
   };

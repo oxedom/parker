@@ -8,19 +8,16 @@ import {
   vehicleOnlyState,
 } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
-import Modal from "./Modal";
+
 import { useEffect, useState } from "react";
-import Button from "./Button";
+
 import ToogleSwitch from "./ToogleSwitch";
 import Accordion from '../components/Accordion'
 
 const Toolbar = ({
   processing,
   setProcessing,
-
   isModalOpen,
-  allowWebcam,
-  setAllowWebcam,
   loadedCoco,
 }) => {
   const imageHeight = useRecoilValue(imageHeightState);
@@ -40,16 +37,18 @@ const Toolbar = ({
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
 
-  let sliderStyle =
-    "flex mx-2 flex-col text-white justify-center  items-center";
+
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
     "Advanced setting: Non-maximum Suppression threshold, recommended to between 50-75 ";
   let fpsInfo = `Render in N many secounds (The lower the faster and more compute demanding) 
   recommended to be 1 render per secound. 
   `;
-  const labelStyle = "font-bold drop-shadow-sm"
 
+  
+  const labelStyle = "font-bold drop-shadow-sm"
+  const  sliderStyle =
+    "flex mx-2 flex-col text-white justify-center  items-center";
   useEffect(() => {
     setSettingsChange(false);
     setLocalFps(fps);

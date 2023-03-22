@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Head from "next/head";
-import DisplayInfo from "../components/DisplayInfo";
+
 import Call from "../components/Call";
 import { useRouter } from "next/router";
 import VisionHeader from "../components/VisionHeader";
-import StreamSettings from "../components/WebRTC/StreamSettings";
-
+import VisionFooter from "../components/VisionFooter";
+import { createEmptyStream } from "../libs/webRTC_utility";
 
 
 const visionPage = () => {
@@ -26,6 +26,12 @@ const visionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const { mode } = router.query;
+  const [WebRTCMode, setWebRTCMode] = useState(false);
+  const [peerId, setPeerID] = useState("");
+  const peerRef = useRef(null);
+  const rtcOutputRef = useRef(null);
+
+  const [WebRTCLoaded, setWebRTCLoaded] = useState(false);
 
   useEffect(() => {
     if (mode === "demo") {
@@ -33,10 +39,46 @@ const visionPage = () => {
     }
   }, []);
 
-  const [WebRTCMode, setWebRTCMode] = useState(false);
-  const [peerId, setPeerID] = useState("");
-  const peerRef = useRef(null);
-  const rtcOutputRef = useRef(null);
+
+  useEffect(() => 
+  {
+ 
+    if(WebRTCMode) 
+    {
+      //Init peerJS
+      const initPeerJS = async () => {
+      const { default: Peer } = await import("peerjs");
+      const newPeer = new Peer();
+      peerRef.current = newPeer;
+      newPeer.on("open", (id) => {
+        alert(id)
+        setPeerID(id);
+      });
+
+      newPeer.on("call", (call) => {
+        let fakeStream = createEmptyStream()
+        call.answer(fakeStream);
+        console.log("im getting a call ");
+        call.on('stream', (remoteStream) => 
+        {
+          console.log(remoteStream.getVideoTracks()[0].getSettings());
+          
+          rtcOutputRef.current.srcObject = remoteStream;
+          rtcOutputRef.current.play();
+        })
+      });
+
+
+    
+
+    };
+
+    initPeerJS();
+    }
+
+  }, [WebRTCMode])
+
+
 
   const handleDisableDemo = () => {
     setDemo(false);
@@ -93,27 +135,31 @@ const visionPage = () => {
               {" "}
             </Toolbar>
             <div className="bg-orange-500 outline-2 outline-black rounded-b-2xl">
-              <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
+              {demo || webcamPlaying || WebRTCLoaded ? <DrawingCanvas ></DrawingCanvas> : null}
+ 
               <ClientRender
                 demo={demo}
                 hasWebcam={hasWebcam}
                 loadedCoco={loadedCoco}
                 allowWebcam={allowWebcam}
                 webcamEnabled={webcamEnabled}
-                setHasWebcam={setHasWebcam}
+                processing={processing}
                 WebRTCMode={WebRTCMode}
-                setWebRTCMode={setWebRTCMode}
-                setAllowWebcam={setAllowWebcam}
-                setDemoLoaded={setDemoLoaded}
+                WebRTCLoaded={WebRTCLoaded}
                 rtcOutputRef={rtcOutputRef}
                 demoLoaded={demoLoaded}
                 webcamPlaying={webcamPlaying}
+                setHasWebcam={setHasWebcam}
+                setWebRTCMode={setWebRTCMode}
+                setAllowWebcam={setAllowWebcam}
+                setDemoLoaded={setDemoLoaded}
                 setWebcamPlaying={setWebcamPlaying}
                 setLoadedCoco={setLoadedCoco}
                 setProcessing={setProcessing}
-                processing={processing}
+                setWebRTCLoaded={setWebRTCLoaded}
               ></ClientRender>
-              <StreamSettings> </StreamSettings>
+               <VisionFooter  WebRTCMode={WebRTCMode} peerId={peerId} > </VisionFooter> 
+              
             </div>
             <RoisFeed></RoisFeed>
           </div>

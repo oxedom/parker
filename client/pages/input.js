@@ -1,27 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
+import { useRouter } from "next/router";
 
 const Input = () => {
-  const [peer, setPeer] = useState(null);
-  const [remotePeerIdValue, setRemotePeerIdValue] = useState("");
-  const [peerId, setPeerId] = useState("");
-  const inputRef = useRef(null);
+
+  const [remoteID, setRemoteID] = useState("")
+  const inputRef = useRef(null)
+  const peerRef = useRef(null);
   const streamRef = useRef(null);
+  const router = useRouter()
+
+
 
   useEffect(() => {
+
+
+
     const initPeerJS = async () => {
+      
       const { default: Peer } = await import("peerjs");
       const peer = new Peer();
-
-      peer.on("open", () => {
-        console.log(`Input Peer connection open with ID: ${peer.id}`);
-        setPeerId(peer.id);
-      });
-
-      peer.on("call", (call) => {
-        call.answer(streamRef.current);
-        console.log("im getting a call ");
-      });
+      peerRef.current = peer
     };
 
     initPeerJS();
@@ -35,6 +34,7 @@ const Input = () => {
 
       streamRef.current = videostream;
       inputRef.current.srcObject = videostream;
+      return videostream
     } catch (error) {
       try {
         const videostream = await navigator.mediaDevices.getUserMedia({
@@ -43,20 +43,34 @@ const Input = () => {
 
         streamRef.current = videostream;
         inputRef.current.srcObject = videostream;
+        return videostream
       } catch (error) {
         console.error(error);
       }
     }
   };
 
+  const call = async () => 
+  {
+    const videoStream = await shareVideo();
+    console.log(videoStream);
+    console.log(videoStream.getVideoTracks()[0].getSettings());
+    const call = peerRef.current.call(router.query.remoteID, videoStream);
+
+    call.on("stream", async (remoteStream) => {
+      console.log(remoteStream);
+    });
+
+  }
+
   return (
     <DefaultLayout>
       <div className="bg-green-500 w-[250px]">
-        <p>Current Peer ID: {peerId}</p>
+        <p>Current Peer ID: {remoteID}</p>
         <video autoPlay={true} ref={inputRef}></video>
-        <button className="bg-yellow-500 p-5" onClick={shareVideo}>
+        <button className="bg-yellow-500 p-5" onClick={call}>
           {" "}
-          click me
+          Call
         </button>
       </div>
     </DefaultLayout>

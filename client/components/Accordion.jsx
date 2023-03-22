@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function Accordion({children, title, imageHeight}) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   function toggleAccordion() {
     setIsOpen(!isOpen);

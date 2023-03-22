@@ -37,9 +37,12 @@ const ClientRender = ({
   loadedCoco,
   setDemoLoaded,
   webcamPlaying,
+  setWebRTCMode,
   setAllowWebcam,
   setWebcamPlaying,
   demoLoaded,
+  WebRTCLoaded,
+  setWebRTCLoaded,
   allowWebcam,
   rtcOutputRef,
 }) => {
@@ -53,7 +56,7 @@ const ClientRender = ({
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
-  const [WebRTCLoaded, setWebRTCLoaded] = useState(false);
+
   let overlayXRef = useRef(null);
 
   const webcamRef = useRef(null);
@@ -245,7 +248,7 @@ const ClientRender = ({
 
   return loadingYolo.loaded ? (
     <>
-      {loadedCoco ? (
+      {loadedCoco  ? (
         <canvas
           id="overlap-overlay"
           ref={overlayXRef}
@@ -264,6 +267,7 @@ const ClientRender = ({
             setWebRTCLoaded(true);
           }}
           autoPlay={true}
+          width={imageWidth}
           height={imageHeight}
         ></video>
       ) : null}
@@ -288,7 +292,7 @@ const ClientRender = ({
       {!demo && !webcamLoaded && !WebRTCMode ? (
         <LoadingScreen
           setAllowWebcam={setAllowWebcam}
-          setWebRTCLoaded={setWebRTCLoaded}
+          setWebRTCMode={setWebRTCMode}
         />
       ) : (
         ""
