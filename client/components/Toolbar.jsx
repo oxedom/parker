@@ -12,11 +12,12 @@ import Modal from "./Modal";
 import { useEffect, useState } from "react";
 import Button from "./Button";
 import ToogleSwitch from "./ToogleSwitch";
+import Accordion from '../components/Accordion'
 
 const Toolbar = ({
   processing,
   setProcessing,
-  
+
   isModalOpen,
   allowWebcam,
   setAllowWebcam,
@@ -39,13 +40,15 @@ const Toolbar = ({
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
 
-  let sliderStyle = "flex mx-2 flex-col text-white justify-center  items-center"
+  let sliderStyle =
+    "flex mx-2 flex-col text-white justify-center  items-center";
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
     "Advanced setting: Non-maximum Suppression threshold, recommended to between 50-75 ";
   let fpsInfo = `Render in N many secounds (The lower the faster and more compute demanding) 
   recommended to be 1 render per secound. 
   `;
+  const labelStyle = "font-bold drop-shadow-sm"
 
   useEffect(() => {
     setSettingsChange(false);
@@ -64,7 +67,6 @@ const Toolbar = ({
   };
 
   const handleSaveSettings = () => {
-
     if (!settingChange) {
       return;
     }
@@ -82,13 +84,11 @@ const Toolbar = ({
   };
 
   function handleProcessing() {
-    if (showDetections) {
-      setShowDetections(false);
-    }
+
     processing ? setProcessing(false) : setProcessing(true);
   }
   function handleWebcamToogle() {
-    allowWebcam ? setAllowWebcam(false) : setAllowWebcam(true);
+    // allowWebcam ? setAllowWebcam(false) : setAllowWebcam(true);
   }
 
   function handleDetectionsEnable() {
@@ -108,12 +108,38 @@ const Toolbar = ({
       className={`md:w-[200px]  flex justify-between rounded-xl p-2  flex-col min-h-[${imageHeight}px]  bg-orange-500  `}
     >
 
-
       <div className="flex justify-center flex-col items-center gap-2  ">
 
+        <Accordion imageHeight={imageHeight} title={'Settings'}>
+        <div className="flex flex-col p-2 gap-5">
 
+
+        <ToogleSwitch
+          text={"Processing"}
+          boolean={processing}
+          callback={handleProcessing}
+        />
+
+
+<ToogleSwitch
+          text={"Show Boxes "}
+          boolean={showDetections}
+          callback={handleDetectionsEnable}
+        />
+
+        <ToogleSwitch
+          text={"Vehicle Only "}
+          boolean={localVehicleOnly}
+          callback={handleVehicleOnly}
+        />
+
+
+        </div>
+
+
+      
         <div className={sliderStyle}>
-          <label> Detection Threshold</label>
+          <label className={labelStyle}> Detection Threshold</label>
           <div className="grid grid-cols-2  ">
             <span> {localDetectionThreshold}% </span>
             <input
@@ -131,7 +157,7 @@ const Toolbar = ({
         </div>
 
         <div className={sliderStyle}>
-          <label> IOU Threshold</label>
+          <label  className={labelStyle}> IOU Threshold</label>
           <div className="grid grid-cols-2 items-center  ">
             <span> {localIouThreshold}% </span>
             <input
@@ -150,61 +176,47 @@ const Toolbar = ({
         </div>
 
         <div className={sliderStyle}>
-        <label> Render Rate</label>
+          <label  className={labelStyle}> Render Rate</label>
           <div className="grid grid-cols-2 items-center    ">
-          <span> {Math.floor(localFps * 100) / 100} FPS </span>
-          <input
-                    type="range"
-                    min={0.0001}
-                    step={0.1}
-                    max={2}
-                    className="mr-4"
-                    label="Render rate"
-                    value={localFps}
-                    onChange={(e) => {
-                      setLocalFps(e.target.value);
-                      setSettingsChange(true);
-                    }}
-                  />
+            <span> {Math.floor(localFps * 100) / 100} FPS </span>
+            <input
+              type="range"
+              min={0.01}
+              step={0.1}
+              max={2}
+              className="mr-4"
+              label="Render rate"
+              value={localFps}
+              onChange={(e) => {
+                setLocalFps(e.target.value);
+                setSettingsChange(true);
+              }}
+            />
           </div>
         </div>
 
 
-        <button    className={`text-white rounded-lg shadow outline outline-slate-700   ${settingChange ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-blue-400 text-slate-800 cursor-default " } bg-blue-500 outline-2 outline-black p-3`}       onClick={handleSaveSettings}> Save Settings</button>
+     
+        <button
+          className={`text-white rounded-lg shadow outline outline-slate-700   ${
+            settingChange
+              ? "bg-orange-600 hover:bg-orange-700 text-white"
+              : "bg-orange-300 text-gray-600 font-medium cursor-default "
+          } outline-2 outline-black p-3`}
+          onClick={handleSaveSettings}
+        >
+          {" "}
+          Apply Settings
+        </button>
+    
 
- 
-
-
-        <ToogleSwitch
-                text={"Webcam"}
-                boolean={allowWebcam}
-                callback={handleWebcamToogle}
-              />
-
-              <ToogleSwitch
-                text={"Processing "}
-                boolean={processing}
-                callback={handleProcessing}
-              />
-
-              <ToogleSwitch
-                text={"Vehicle Only "}
-                boolean={localVehicleOnly}
-                callback={handleVehicleOnly}
-              />
-
-            <ToogleSwitch
-                text={"Draw Detections "}
-                boolean={showDetections}
-                callback={handleDetectionsEnable}
-              />
+        </Accordion>
 
 
       </div>
 
-      <Button callback={handleAutoDetect} text="Auto detect" />
-
-
+      {/* <Button callback={handleAutoDetect} text="Auto detect" /> */}
+      
     </div>
   );
 };

@@ -5,9 +5,7 @@ const ToogleSwitch = ({ boolean, callback, text }) => {
 
   return (
     <div className="flex  flex-col items-center">
-      <span className="text-lg font-bold mr-3 text-white ">
-        {text} 
-      </span>
+      <span className=" font-bold mr-3   drop-shadow-sm text-white ">{text}</span>
       <label
         onChange={(e) => {
           handleToogle();

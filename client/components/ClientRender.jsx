@@ -41,7 +41,7 @@ const ClientRender = ({
   setWebcamPlaying,
   demoLoaded,
   allowWebcam,
-  rtcOutputRef
+  rtcOutputRef,
 }) => {
   const model_dim = [640, 640];
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
@@ -53,7 +53,7 @@ const ClientRender = ({
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
-  const [WebRTCLoaded, setWebRTCLoaded] = useState(false)
+  const [WebRTCLoaded, setWebRTCLoaded] = useState(false);
   let overlayXRef = useRef(null);
 
   const webcamRef = useRef(null);
@@ -69,9 +69,6 @@ const ClientRender = ({
     maxHeight: 720,
   };
   const modelName = "yolov7";
-
-
-
 
   const handleDemoLoaded = (e) => {
     setImageWidth(e.target.videoWidth);
@@ -107,8 +104,6 @@ const ClientRender = ({
     };
   }, [allowWebcam]);
 
-
-
   useEffect(() => {
     // Need to do this for canvas2d to work
     if (overlayXRef.current != null && loadedCoco) {
@@ -117,21 +112,18 @@ const ClientRender = ({
   }, [loadedCoco]);
 
   const detectFrame = async (model) => {
-
     if (!webcamRunning && !demo && !webcamPlaying && !WebRTCLoaded) {
-      return false
+      return false;
     }
 
     let video;
     let videoWidth;
     let videoHeight;
-    if(rtcOutputRef.current != null && WebRTCLoaded) 
-    {
+    if (rtcOutputRef.current != null && WebRTCLoaded) {
       video = rtcOutputRef.current;
       videoWidth = rtcOutputRef.current.videoWidth;
       videoHeight = rtcOutputRef.current.videoHeight;
-    }
-    else if (!demo && webcamRef.current != null) {
+    } else if (!demo && webcamRef.current != null) {
       video = webcamRef.current.video;
       videoWidth = webcamRef.current.video.videoWidth;
       videoHeight = webcamRef.current.video.videoHeight;
@@ -145,7 +137,6 @@ const ClientRender = ({
       videoWidth = demoRef.current.videoWidth;
       videoHeight = demoRef.current.videoHeight;
     } else {
-
       return;
     }
 
@@ -264,24 +255,18 @@ const ClientRender = ({
         ></canvas>
       ) : null}
 
-       {(!demo && !webcamLoaded && WebRTCMode) ? 
-       
-       
-       <video
-       id="webRTC"
-       ref={rtcOutputRef}
-      
-       muted={true}
-       onPlay={((e) => { 
-        
-        setWebRTCLoaded(true)
-
-      
-      })}
-       autoPlay={true}
-       height={imageHeight}
-       ></video> : null} 
-
+      {!demo && !webcamLoaded && WebRTCMode ? (
+        <video
+          id="webRTC"
+          ref={rtcOutputRef}
+          muted={true}
+          onPlay={(e) => {
+            setWebRTCLoaded(true);
+          }}
+          autoPlay={true}
+          height={imageHeight}
+        ></video>
+      ) : null}
 
       {/* Webcam */}
       {!demo && webcamLoaded ? (
@@ -300,9 +285,15 @@ const ClientRender = ({
         />
       ) : null}
 
-      {!demo && !webcamLoaded && !WebRTCMode ? <LoadingScreen setAllowWebcam={setAllowWebcam} setWebRTCLoaded={setWebRTCLoaded} /> : ""}
+      {!demo && !webcamLoaded && !WebRTCMode ? (
+        <LoadingScreen
+          setAllowWebcam={setAllowWebcam}
+          setWebRTCLoaded={setWebRTCLoaded}
+        />
+      ) : (
+        ""
+      )}
 
-    
       {demo ? (
         <video
           ref={demoRef}

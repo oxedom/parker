@@ -17,7 +17,8 @@ const Home = () => {
             <header
               className="flex text-clip grid-rows-none  items-center text-white
              place-items-center 
-               md:m-auto md:py-20 px-10 md:px-20 "  >
+               md:m-auto md:py-20 px-10 md:px-20 "
+            >
               <h2 className=" text-6xl mt-10 font-bold ">
                 <div className="grid grid-temp-col-2">
                   <span className="animate-fade">

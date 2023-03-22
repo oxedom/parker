@@ -45,11 +45,7 @@ const Navbar = () => {
               text={"Docs"}
             /> */}
 
-<Navlink
-
-url={"/vision?mode=demo"}
-              text={"Demo"}
-            />
+            <Navlink url={"/vision?mode=demo"} text={"Demo"} />
           </div>
         </div>
       </nav>
