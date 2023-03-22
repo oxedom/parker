@@ -44,7 +44,7 @@ const Call = ({peerId, remoteVideoRef}) => {
 
     return ( <div onClick={handleConnect} className="bg-green-500 p-1 rounded">
 
-        <button> Call </button>
+        <button className="bg-yellow-500 p-5"> Call </button>
     </div>  );
 }
  

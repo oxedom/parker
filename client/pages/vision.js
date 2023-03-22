@@ -8,9 +8,13 @@ import Head from "next/head";
 import PreMenu from "../components/PreMenu";
 import DisplayInfo from "../components/DisplayInfo";
 import Call from "../components/Call";
+import { useRouter } from "next/router";
+import { Log } from "@tensorflow/tfjs";
 
 
 const visionPage = () => {
+
+
 
   const [allowWebcam, setAllowWebcam] = useState(false);
   const [hasWebcam, setHasWebcam] = useState(false);
@@ -27,10 +31,16 @@ const visionPage = () => {
 
   const [processing, setProcessing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter()
+  const {mode }=  router.query
 
-
-
-
+  useEffect(() => 
+  {
+    if(mode === "demo") 
+    {
+      setDemo(true)
+    }
+  }, [])
 
   const [WebRTCMode, setWebRTCMode] = useState(false)
   const [peerId, setPeerID] = useState("")

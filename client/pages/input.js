@@ -66,10 +66,10 @@ const Input = () => {
 
   return (
     <DefaultLayout>
-    <div className="bg-green-500">
+    <div className="bg-green-500 w-[250px]">
       <p>Current Peer ID: {peerId}</p>
       <video autoPlay={true} ref={inputRef}></video>
-      <button onClick={shareVideo}></button>
+      <button className="bg-yellow-500 p-5" onClick={shareVideo}> click me</button>
     </div>
     </DefaultLayout>
   );

@@ -14,12 +14,6 @@ const PreMenu = ({ setActivate, setDemo }) => {
 
   const handleClick = (value) => {
     switch (value) {
-      case "demo": {
-        setTimeout(() => {
-          setDemo(true);
-        }, 200);
-        break;
-      }
       case "webcam": {
         setTimeout(() => {
           setActivate(true);
@@ -34,19 +28,8 @@ const PreMenu = ({ setActivate, setDemo }) => {
   };
 
   return (
-    <main className="text-white m-1 text-2xl sm:text-6xl gap-5 grid lg:grid-cols-3 grid-rows-3 md:grid-rows-none">
-      <button
-        value={"demo"}
-        onClick={(e) => {
-          handleClick(e.target.value);
-        }}
-        onTouchStart={(e) => {
-          handleClick(e.target.value);
-        }}
-        className="bg-orange-600 p-5 rounded-lg hover:scale-105 duration-300"
-      >
-        Demo{" "}
-      </button>
+    <main className="text-white m-1 text-2xl sm:text-6xl gap-5 grid lg:grid-cols-2 grid-rows-2 md:grid-rows-none">
+
       <button
         value={"webcam"}
         onClick={(e) => {
