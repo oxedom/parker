@@ -6,13 +6,17 @@ import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Head from "next/head";
 
-import Call from "../components/Call";
+
 import { useRouter } from "next/router";
 import VisionHeader from "../components/VisionHeader";
 import VisionFooter from "../components/VisionFooter";
 import { createEmptyStream } from "../libs/webRTC_utility";
+import { useRecoilState } from "recoil";
+import {
+  imageWidthState,
+  imageHeightState,
 
-
+} from "../components/states"
 const visionPage = () => {
   const [allowWebcam, setAllowWebcam] = useState(false);
   const [hasWebcam, setHasWebcam] = useState(false);
@@ -32,6 +36,9 @@ const visionPage = () => {
   const rtcOutputRef = useRef(null);
 
   const [WebRTCLoaded, setWebRTCLoaded] = useState(false);
+
+  const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
+  const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
 
   useEffect(() => {
     if (mode === "demo") {
@@ -61,7 +68,7 @@ const visionPage = () => {
         console.log("im getting a call ");
         call.on('stream', (remoteStream) => 
         {
-          console.log(remoteStream.getVideoTracks()[0].getSettings());
+
           
           rtcOutputRef.current.srcObject = remoteStream;
           rtcOutputRef.current.play();
@@ -82,6 +89,9 @@ const visionPage = () => {
 
   const handleDisableDemo = () => {
     setDemo(false);
+    setImageWidth(640)
+    setImageHeight(480)
+   
   };
 
   return (

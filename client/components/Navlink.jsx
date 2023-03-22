@@ -19,7 +19,7 @@ const Navlink = ({ url, text }) => {
         className={`text-bold   
           
 
-        text-xl
+        text-2xl  
 
          text-white font-bold ${selectedPathname()}`}
         href={url}
