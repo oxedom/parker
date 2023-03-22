@@ -6,7 +6,7 @@ const ToogleSwitch = ({ boolean, callback, text }) => {
   return (
     <div className="flex  flex-col items-center">
       <span className="text-lg font-bold mr-3 text-white ">
-        {text} {boolean ? "Enabled" : "Disabled"}{" "}
+        {text} 
       </span>
       <label
         onChange={(e) => {

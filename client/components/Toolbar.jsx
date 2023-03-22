@@ -16,7 +16,7 @@ import ToogleSwitch from "./ToogleSwitch";
 const Toolbar = ({
   processing,
   setProcessing,
-  closeModal,
+  
   isModalOpen,
   allowWebcam,
   setAllowWebcam,
@@ -63,7 +63,7 @@ const Toolbar = ({
   };
 
   const handleSaveSettings = () => {
-    // closeModal
+
     if (!settingChange) {
       return;
     }
@@ -75,8 +75,6 @@ const Toolbar = ({
     setProcessing(false);
     setSettingsChange(false);
 
-    // setProcessing(true)
-    closeModal();
     setTimeout(() => {
       setProcessing(true);
     }, 10);
@@ -106,95 +104,13 @@ const Toolbar = ({
 
   return (
     <div
-      className={`md:w-[200px]  flex justify-between flex-col min-h-[${imageHeight}px]  bg-filler  `}
+      className={`md:w-[200px]  flex justify-between flex-col min-h-[${imageHeight}px]  bg-orange-500  `}
     >
-      <Modal isOpen={isModalOpen} closeModal={closeModal}>
-        <div
-          className="flex flex-col justify-between m-auto w-5/12 xl:w-6/12 bg-blue-800 -50 p-8 z-30 rounded-lg  "
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <h1 className="text-center text-4xl text-white font-bold p-5 bg-orange-600 border-b-1 rounded-full">
-            {" "}
-            Settings
-          </h1>
-          <div className="grid grid-cols-2">
-            <div className="grid grid-rows-2 gap-10 m-4">
-              <ToogleSwitch
-                text={"Webcam"}
-                boolean={allowWebcam}
-                callback={handleWebcamToogle}
-              />
 
-              <ToogleSwitch
-                text={"Processing "}
-                boolean={processing}
-                callback={handleProcessing}
-              />
-
-              <ToogleSwitch
-                text={"Vehicle Only "}
-                boolean={localVehicleOnly}
-                callback={handleVehicleOnly}
-              />
-
-              <div></div>
-            </div>
-
-            <div className="flex justify-center flex-col items-center ">
-              <div className="flex   flex-col text-white justify-center grow">
-                <label> Render Rate</label>
-                <div className="grid grid-cols-2  ">
-                  <input
-                    type="range"
-                    min={0.0001}
-                    step={0.1}
-                    max={2}
-                    className="mr-4"
-                    label="Render rate"
-                    value={localFps}
-                    onChange={(e) => {
-                      setLocalFps(e.target.value);
-                      setSettingsChange(true);
-                    }}
-                  />
-
-                  <span> {Math.floor(localFps * 100) / 100} FPS </span>
-                </div>
-              </div>
-            </div>
-
-            <div></div>
-            <Button
-              colors={{
-                color: `${
-                  settingChange
-                    ? "bg-blue-500 p-5"
-                    : "bg-blue-300 hover:cursor-not-allowed"
-                }`,
-                textColor: "text-white",
-              }}
-              callback={handleSaveSettings}
-              text={"Save settings"}
-            >
-              {" "}
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-2 justify-items-center border-t-2  border-black ">
-            <Button
-              colors={{ color: ", " }}
-              callback={closeModal}
-              text={"Exit "}
-            >
-              {" "}
-            </Button>
-          </div>
-        </div>
-      </Modal>
 
       <div className="flex justify-center flex-col items-center gap-2  ">
+
+
         <div className="flex flex-col text-white justify-center items-center grow">
           <label> Detection Threshold</label>
           <div className="grid grid-cols-2  ">
@@ -232,39 +148,62 @@ const Toolbar = ({
           </div>
         </div>
 
-        <Button
-          colors={{
-            color: `${
-              settingChange
-                ? "bg-blue-500 p-5"
-                : "bg-blue-300 hover:cursor-not-allowed"
-            }`,
-            textColor: "text-white",
-          }}
-          callback={handleSaveSettings}
-          text={"Save settings"}
-        >
-          {" "}
-        </Button>
+        <div className="flex   flex-col text-white justify-center items-center grow ">
+        <label> Render Rate</label>
+          <div className="grid grid-cols-2  ">
+          <span> {Math.floor(localFps * 100) / 100} FPS </span>
+          <input
+                    type="range"
+                    min={0.0001}
+                    step={0.1}
+                    max={2}
+                    className="mr-4"
+                    label="Render rate"
+                    value={localFps}
+                    onChange={(e) => {
+                      setLocalFps(e.target.value);
+                      setSettingsChange(true);
+                    }}
+                  />
+          </div>
+        </div>
+
+
+        <button    className={`text-white rounded-lg shadow outline outline-slate-700   ${settingChange ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-blue-400 text-slate-800 cursor-default " } bg-blue-500 outline-2 outline-black p-3`}       onClick={handleSaveSettings}> Save Settings</button>
+
+ 
+
+
+        <ToogleSwitch
+                text={"Webcam"}
+                boolean={allowWebcam}
+                callback={handleWebcamToogle}
+              />
+
+              <ToogleSwitch
+                text={"Processing "}
+                boolean={processing}
+                callback={handleProcessing}
+              />
+
+              <ToogleSwitch
+                text={"Vehicle Only "}
+                boolean={localVehicleOnly}
+                callback={handleVehicleOnly}
+              />
+
+            <ToogleSwitch
+                text={"Draw Detections "}
+                boolean={showDetections}
+                callback={handleDetectionsEnable}
+              />
+
+
       </div>
 
       <Button callback={handleAutoDetect} text="Auto detect" />
 
-      <Button
-        text={` ${showDetections ? "View Detections" : " Hide detections "}`}
-        callback={handleDetectionsEnable}
-        colors={{
-          color: `
 
-        ${
-          showDetections
-            ? `${processing ? "bg-green-500" : "bg-gray-500"}`
-            : `${processing ? "bg-red-500" : "bg-gray-500"}`
-        }
-
-        `,
-        }}
-      />
     </div>
   );
 };

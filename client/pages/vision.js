@@ -104,7 +104,7 @@ const visionPage = () => {
               >
                 {" "}
               </Toolbar>
-              <div className="">
+              <div className="bg-orange-500 outline-2 outline-black">
                 <DrawingCanvas setProcessing={setProcessing}></DrawingCanvas>
                 <ClientRender
                   demo={demo}

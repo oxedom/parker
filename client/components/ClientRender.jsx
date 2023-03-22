@@ -261,7 +261,7 @@ const ClientRender = ({
           ref={overlayXRef}
           width={imageWidth}
           height={imageHeight}
-          className="fixed"
+          className="fixed "
         ></canvas>
       ) : null}
 
