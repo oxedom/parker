@@ -83,7 +83,7 @@ const Input = () => {
       <div className="bg-filler h-full flex gap-5 flex-col justify-center items-center">
         {   inputRef.current === null ? <p className="text-2xl text-white py-2">  Please call </p> : null}
         <video autoPlay={true} className="rounded-xl" ref={inputRef}></video>
-
+        
         <div className="flex flex-col md:flex-row gap-4">
         <button className="bg-green-400 py-2 rounded-lg shadow-sm active:bg-green-500 hover:bg-green-500 text-white  font-bold text-4xl p-5 w-[250px]" onClick={call}>
           {" "}

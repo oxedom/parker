@@ -144,7 +144,7 @@ const visionPage = () => {
             >
               {" "}
             </Toolbar>
-            <div className="bg-orange-500 outline-2 outline-black rounded-b-2xl">
+            <div className="bg-orange-500 outline-2   outline-black rounded-b-2xl">
               {demo || webcamPlaying || WebRTCLoaded ? <DrawingCanvas ></DrawingCanvas> : null}
  
               <ClientRender
@@ -168,7 +168,7 @@ const visionPage = () => {
                 setProcessing={setProcessing}
                 setWebRTCLoaded={setWebRTCLoaded}
               ></ClientRender>
-               <VisionFooter  WebRTCMode={WebRTCMode} peerId={peerId} > </VisionFooter> 
+               <VisionFooter  WebRTCMode={WebRTCMode} WebRTCLoaded={WebRTCLoaded} peerId={peerId} > </VisionFooter> 
               
             </div>
             <RoisFeed></RoisFeed>
