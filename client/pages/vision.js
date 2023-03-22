@@ -58,7 +58,7 @@ const visionPage = () => {
       const newPeer = new Peer();
       peerRef.current = newPeer;
       newPeer.on("open", (id) => {
-        alert(id)
+  
         setPeerID(id);
       });
 

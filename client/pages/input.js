@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
 import { useRouter } from "next/router";
-
+import NoSleep from 'nosleep.js';
 
 const Input = () => {
 
@@ -10,11 +10,8 @@ const Input = () => {
   const streamRef = useRef(null);
   const callRef = useRef(null)
   const router = useRouter()
-
-  function updateScreen() {
-    // update screen here
-    window.requestAnimationFrame(updateScreen);
-  }
+  const noSleepRef = useRef(null)
+  const [connection, setConnection] = useState(false)
   
 
   
@@ -22,17 +19,28 @@ const Input = () => {
 
   useEffect(() => {
 
-
-    let keepAwakeID = setInterval(updateScreen, 1000);
+    const initNoSleep = async () => 
+    {
+      const { default: NoSleep } = await import("nosleep.js");
+      const noSleep = new NoSleep();  
+      try {
+        noSleep.enable()
+      } catch (error) {
+        console.log(error);
+      }
+    
+    }
+    
     const initPeerJS = async () => {
       
       const { default: Peer } = await import("peerjs");
       const peer = new Peer();
       peerRef.current = peer
     };
-
+    initNoSleep()
     initPeerJS();
-    return () => { clearInterval(keepAwakeID)}
+
+
   }, []);
 
   const shareVideo = async () => {
@@ -74,6 +82,7 @@ const Input = () => {
     const call = peerRef.current.call(router.query.remoteID, videoStream);
     callRef.current = call
     call.on("stream", async (remoteStream) => {
+      setConnection(true)
     });
 
   }
@@ -82,7 +91,8 @@ const Input = () => {
     <DefaultLayout>
       <div className="bg-filler h-full flex gap-5 flex-col justify-center items-center">
         {   inputRef.current === null ? <p className="text-2xl text-white py-2">  Please call </p> : null}
-        <video autoPlay={true} className="rounded-xl" ref={inputRef}></video>
+        <video autoPlay={true} className="hidden sm:block rounded-xl" ref={inputRef}></video>
+        <p className="text-5xl py-2 text-white ">  Connection: {connection ? "Established" : "Pending"} </p>
         
         <div className="flex flex-col md:flex-row gap-4">
         <button className="bg-green-400 py-2 rounded-lg shadow-sm active:bg-green-500 hover:bg-green-500 text-white  font-bold text-4xl p-5 w-[250px]" onClick={call}>
