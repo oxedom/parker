@@ -47,8 +47,8 @@ const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam, WebRTCMode 
         context.fillStyle = "white";
         context.fillText(
           "Waiting for remote connection" + dotSring,
-          imageWidth * 0.5,
-          imageHeight * 0.4
+          imageWidth /2, 
+          imageHeight/2
         );
       }
       else 
@@ -56,9 +56,9 @@ const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam, WebRTCMode 
         context.fillRect(0, 0, imageWidth, imageHeight);
         context.fillStyle = "white";
         context.fillText(
-          "Please Choose a  video source" + dotSring,
-          imageWidth * 0.5,
-          imageHeight * 0.4
+          "  Please Choose a  video source" + dotSring,
+          imageWidth/2,
+          imageHeight/2 
         );
       }
 

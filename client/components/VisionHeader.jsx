@@ -12,6 +12,7 @@ const VisionHeader = ({
   WebRTCMode,
   allowWebcam,
   setWebcamLoaded,
+  handleDisableDemo,
   webcamLoaded,
   setDemo,
 }) => {
@@ -54,7 +55,7 @@ const VisionHeader = ({
     setAllowWebcam(false)
     setWebRTCMode(false)
     setWebcamLoaded(false)
-    setDemo(false)
+    handleDisableDemo()
   }
 
   const handleDemoSource = () => {
@@ -62,17 +63,17 @@ const VisionHeader = ({
     setWebcamLoaded(false)
     setAllowWebcam(false)
     setWebRTCMode(false)
-   
+  
   }
 
 
   const handleCopy = () => 
   {
-    navigator.clipboard.writeText(`http://localhost:3000/reroute?remoteID=${peerId}`);
+    navigator.clipboard.writeText(`https://www.sam-brink.com/reroute?remoteID=${peerId}`);
   }
 
   return (
-    <nav className={`flex justify-around items-center  `}>
+    <nav className={`flex justify-around items-center animate-fade  `}>
    
       {!WebRTCMode && !allowWebcam && !demo ? <div className="flex gap-2 items-center ">
 

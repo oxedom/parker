@@ -8,7 +8,7 @@ import { totalOccupied } from "../libs/utillity";
 const view = () => {
 
     const router = useRouter()
-    const [counts, setCounts] = useState({OccupiedCount: 0, availableCount:0})
+    const [counts, setCounts] = useState({OccupiedCount: "...", availableCount:"..."})
     const peerRef = useRef(null)
 
     const handleData = (data) => {

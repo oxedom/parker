@@ -33,7 +33,7 @@ const Home = () => {
                 </p>
 
                 <Link href={"/vision"}>
-                  <button className="hidden sm:block text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105">
+                  <button className="hidden sm:block my-5 text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105">
                     {" "}
                     Use parker{" "}
                   </button>

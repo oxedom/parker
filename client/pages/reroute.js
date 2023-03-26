@@ -6,8 +6,8 @@ const reroute = () => {
     const router = useRouter()
     const handleReroute = (val) => 
     {
-        if(val === 'input') { router.push(`http://localhost:3000/input?remoteID=${router.query.remoteID}`) }
-        if(val === 'view')  { router.push(`http://localhost:3000/view?remoteID=${router.query.remoteID}`)}
+        if(val === 'input') { router.push(`https://www.sam-brink.com//input?remoteID=${router.query.remoteID}`) }
+        if(val === 'view')  { router.push(`https://www.sam-brink.com//view?remoteID=${router.query.remoteID}`)}
     }
 
     return ( <div className="h-screen gap-2 pt-10 flex flex-col   min-h-screen  bg-fixed bg-no-repeat bg-cover  bg-filler w-full grow items-center">
