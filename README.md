@@ -1,8 +1,9 @@
 # Parker 
-Parker is a free smart parking tool that lets you monitor parking spots using a webcam, cellphone camera, or virtual camera. The tool uses computer vision object detection to process all the footage in the browser, utilizing TensorFlow.js. Communication between a remote cellphone and the browser is enabled through WebRTC, while PeerJS uses PeerServer for session metadata and candidate signaling.
+Parker is a free smart parking tool that enables you monitor parking spots using a webcam, cellphone camera, or any virtual camera. The tool uses computer vision object detection to process all the footage in the browser, utilizing TensorFlow.js. Communication between a remote cellphone and the browser is enabled through WebRTC (PeerJS uses PeerServer for session metadata and candidate signaling. as well as Google Stun servers)
 
 # Built With
 * TensorFlow.js
+* Tailwind
 * NextJS
 * PeerJS (WebRTC)
 * YOLO7 (Original Model)
@@ -15,11 +16,20 @@ Parker is a free smart parking tool that lets you monitor parking spots using a 
 After entering the vision page and pressing the remote stream button, you can simply scan QR code and after the page loads press on the call button to allow acesss to your phones camera, two imporant notes that the phone should be in landscape mode and change your settings that your phone screen doesn't turn off after a mintue. 
 
 
-# How to Connect CCTV/IP Cameras
-As IP/CCTV cameras are not directly connected to your computer, you can stream their video footage using [OBS](https://obsproject.com/) Window Capture feature and create a virtual webcam on your PC.
+# How to Connect CCTV/IP Cameras that are not directly connected to Parker
+As  
+If your iP/CCTV cameras not are usally not directly connected to your computer, you can stream their video footage using [OBS](https://obsproject.com/) Window Capture feature and create a virtual webcam on your PC. 
+
+# How to Connect CCTV/IP Cameras that are on the local netork.
+If your iP/CCTV camera is on your local network, you can set your OBS settings to an ip address.
+
+Quite simple.
+https://www.youtube.com/watch?v=0z9Te51rh-4
 
 
-# Webcam Instructions
+
+
+# webcam Instructions
 Open the vision page, press the webcam button, allow webcam access, and point it wherever you desire.
 
 # Settings Documentation
@@ -36,5 +46,9 @@ Yes, it can be processed on a server! Before refactoring the architecture of the
 # What else can parker detect?
 [Here's a list](https://github.com/oxedom/parker/blob/main/client/libs/labels.json)
 
+* Fun Idea 
+Create a script that goes over a dir renders all those images in a browswer
+
+
 # Can I Contribute?
-Yes, you can! Submit a PR.
+Yes, you can! Submit a PR and I'll review it.
