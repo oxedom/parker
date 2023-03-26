@@ -30,7 +30,7 @@ Open the vision page, press the webcam button, allow webcam access, and point it
 1. Processing: Toggle controls if the TFJS engine will process the video input
 2. Show Boxes: Toggle the bounding boxes
 3. Vehicle Only: Detect only vehicles; when switched off, bounding boxes can be occupied by any kind of detections
-
+4. Detection Threshold: The lower 
 
 # Can Parker be processed the on a server? 
 Yes, it can be processed on a server! Before refactoring the architecture of the entire project, a flask API was built using OpenCV and Yolo7, which worked fine. However, without a very good VPS with a GPU, the CPU can't handle many rendering requests. Functions were created in previous versions of Parker that encode the images into blobs to the server. The JSON response might need a bit of tweaking to be compatible, but just switch the process function with an API request. If you do, please make a PR and send a message!
