@@ -44,7 +44,7 @@ const VisionHeader = ({
 
 
   useEffect(()=> {
-   generateQR(`https://www.sam-brink.com/input?remoteID=${peerId}`)
+   generateQR(`https://www.sam-brink.com/reroute?remoteID=${peerId}`)
 
   }, [peerId])
 
@@ -68,7 +68,7 @@ const VisionHeader = ({
 
   const handleCopy = () => 
   {
-    navigator.clipboard.writeText(`https://www.sam-brink.com/input?remoteID=${peerId}`);
+    navigator.clipboard.writeText(`http://localhost:3000/reroute?remoteID=${peerId}`);
   }
 
   return (
@@ -88,11 +88,11 @@ const VisionHeader = ({
           <div onClick={handleBack} > Back  </div>
           <DisplayInfo></DisplayInfo>
           <div className="flex gap-2 items-center">
-            {WebRTCMode ?   <>
+ 
               <button alt="streaming Link"  className={btnStyle}  onClick={handleCopy}> Copy Link </button> 
               <p className="text center "> OR </p>
             <Image  width={75} alt="qr" quality={100}   className="hover:scale-[2] duration-200"  height={75} src={qrCodeURL} />
-            </>: ""}
+       
       
           </div>
           </div>

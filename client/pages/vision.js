@@ -7,7 +7,6 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Head from "next/head";
 
 
-import { useRouter } from "next/router";
 import VisionHeader from "../components/VisionHeader";
 import VisionFooter from "../components/VisionFooter";
 import { createEmptyStream } from "../libs/webRTC_utility";
@@ -28,8 +27,6 @@ const visionPage = () => {
   const [loadedCoco, setLoadedCoco] = useState(false);
   const [processing, setProcessing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter();
-  // const { mode } = router.query;
   const [webcamLoaded, setWebcamLoaded] = useState(false)
 
   const [peerId, setPeerID] = useState("");
@@ -47,8 +44,7 @@ const visionPage = () => {
   useEffect(() => 
   {
  
-    if(WebRTCMode) 
-    {
+   
       //Init peerJS
       const initPeerJS = async () => {
       const { default: Peer } = await import("peerjs");
@@ -59,6 +55,11 @@ const visionPage = () => {
         setPeerID(id);
       });
 
+      newPeer.on('connection',  function(conn) {
+        console.log('new connection', conn.peer);
+        conn.send('Hello!');
+      })
+
       newPeer.on("call", (call) => {
         let fakeStream = createEmptyStream()
         call.answer(fakeStream);
@@ -67,9 +68,7 @@ const visionPage = () => {
         {
 
 
-          console.log(remoteStream.getVideoTracks()[0].getConstraints());
-
-          console.log(remoteStream.getVideoTracks()[0].getSettings());
+    
           rtcOutputRef.current.srcObject = remoteStream;
           rtcOutputRef.current.play();
         })
@@ -78,12 +77,12 @@ const visionPage = () => {
 
     
 
-    };
+    
 
-    initPeerJS();
+  
     }
-
-  }, [WebRTCMode])
+    initPeerJS();
+  }, [])
 
 
 
@@ -116,22 +115,6 @@ const visionPage = () => {
               setAllowWebcam={setAllowWebcam}  
               handleDisableDemo={handleDisableDemo}
             />
-            {/* {WebRTCMode ?
-              
-              
-                <div>
-                  <Call peerId={peerId} remoteVideoRef={rtcOutputRef}></Call>
-                             <input className="w-[150px] text-black" value={peerId}  alt="connectID" placeholder="connectID" onChange={(e) => { 
-                e.preventDefault()
-                setPeerID(e.target.value)}} type="text"/>
-                  </div>
-
-   
-   
-             
-
-    
-               : null} */}
 
             {!demo && allowWebcam ? <div></div> : ""}
           </div>
