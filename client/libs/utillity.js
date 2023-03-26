@@ -1,11 +1,11 @@
 import uniqid from "uniqid";
-import labels from "../utils/labels.json";
-import { xywh2xyxy } from "../utils/renderBox.js";
+import labels from "./labels.json";
+import { xywh2xyxy } from "./renderBox.js";
 
 //The getOverlap function takes two rectangles as input and
 // returns a new rectangle that represents the overlapping area between the two rectangles.
 // If there is no overlap, the function returns null.
-function getOverlap(rectangle1, rectangle2) {
+export function getOverlap(rectangle1, rectangle2) {
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x);
   const intersectionX2 = Math.min(
     rectangle1.right_x + rectangle1.width,
@@ -104,7 +104,7 @@ export function checkRectOverlap(rect, detectionsArr, overlapThreshold) {
       let percentDiff = overlapArea_rounded / rectArea_rounded;
 
       //If it overlaps more than 40% of the square return true, else false
-      if (percentDiff > 0.4) {
+      if (percentDiff > overlapThreshold) {
         answer = true;
       } else {
         return;
@@ -245,3 +245,15 @@ export function detectionsToROIArr(
 
   return _predictionsArr;
 }
+
+export function filterArrayByScore(array, scores, threshold) {
+  let answer = [];
+  for (let i = 0; i < array.length; i++) {
+    if (scores[i] > threshold) {
+      answer.push(array[i]);
+    }
+  }
+  return answer;
+}
+
+

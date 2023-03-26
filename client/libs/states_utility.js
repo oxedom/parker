@@ -1,4 +1,4 @@
-import { selectedFactory } from "./utillity";
+import { selectedFactory, getOverlap, filterArrayByScore} from "./utillity";
 
 export function roiEvaluating(currentTime, firstCreated, differnce) {
   return currentTime - firstCreated < differnce ? true : false;
@@ -21,11 +21,44 @@ export function calculateTimeDiff(selectedRois, index) {
 }
 
 export function supressedRoisProcess(roiMatrix) {
-  console.log(roiMatrix);
-  let candidates = getShortestArray(roiMatrix);
-  console.log(candidates);
+  let longestArrPos = getLongestArray(roiMatrix)
+  let longestArr = roiMatrix[longestArrPos]
 
-  return candidates;
+  let scores = []
+  for (let index = 0; index < longestArr.length; index++) {
+        scores[index] = 0
+  }
+
+  for (let i = 0; i < longestArr.length; i++) {
+
+    const currentPotential  = longestArr[i];
+    
+    roiMatrix.forEach(dect => 
+      {
+        dect.forEach(d => 
+          {
+            let overlapCords = getOverlap(currentPotential.cords, d.cords)
+            if(overlapCords != null) 
+            {
+              let overlapArea_rounded = Math.round(overlapCords.area);
+              let currentPotential_rounded = Math.round(currentPotential.area);
+              let percentDiff = overlapArea_rounded / currentPotential_rounded
+              if (percentDiff > 0.8 || (overlapArea_rounded == currentPotential_rounded)) {
+                scores[i] = scores[i] + 1
+            } }
+          })
+
+      })
+
+    
+  }
+  
+  let threshold = Math.ceil(roiMatrix.length * 0.8)
+  let filtered = filterArrayByScore(longestArr, scores, threshold)
+
+ 
+
+  return filtered;
 }
 
 export function convertRoisSelected(arr) {
@@ -47,3 +80,19 @@ function getShortestArray(arr) {
   }
   return shortest;
 }
+
+
+function getLongestArray(arr) {
+  let maxLength = 0;
+  let longestArrayPos = null;
+  
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].length > maxLength) {
+      maxLength = arr[i].length;
+      longestArrayPos = i;
+    }
+  }
+  return longestArrayPos
+}
+
+
