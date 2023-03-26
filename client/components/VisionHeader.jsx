@@ -15,7 +15,7 @@ const VisionHeader = ({
 }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const [qrCodeURL, setQRcodeURL] = useState("")
-  const btnStyle = "bg-orange-600 border-2 rounded-xl m-2 text-xl p-4 shadow  shadow-black"
+  const btnStyle = "bg-orange-600 border-2 rounded-xl m-2 text-xl p-2 shadow  shadow-black text-center"
   const handleWebcamSource = () => {
     setWebRTCMode(false)
     setAllowWebcam(true)
@@ -41,6 +41,12 @@ const VisionHeader = ({
 
   }, [peerId])
 
+
+  const handleBack = () => 
+  {
+    setAllowWebcam(false)
+    setWebRTCMode(false)
+  }
 
 
   const handleCopy = () => 
@@ -68,12 +74,15 @@ const VisionHeader = ({
       ) : (
         <>
           <div className="grid grid-cols-3  items-center gap-10"  >
-          <div></div>
+          <div onClick={handleBack} > Back  </div>
           <DisplayInfo></DisplayInfo>
           <div className="flex gap-2 items-center">
-            {WebRTCMode ?   <button alt="streaming Link"  className={btnStyle}  onClick={handleCopy}> Copy Link </button> : ""}
-            <p className="text center "> OR </p>
-            <Image  width={75} alt="qr" quality={100}   height={75} src={qrCodeURL} />
+            {WebRTCMode ?   <>
+              <button alt="streaming Link"  className={btnStyle}  onClick={handleCopy}> Copy Link </button> 
+              <p className="text center "> OR </p>
+            <Image  width={75} alt="qr" quality={100}   className="hover:scale-[2] duration-200"  height={75} src={qrCodeURL} />
+            </>: ""}
+      
           </div>
           </div>
 

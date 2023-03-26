@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { imageHeightState, imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
 
-const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam }) => {
+const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam, WebRTCMode }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [offsetX, setOffsetX] = useState(undefined);
   const [offsetY, setOffsetY] = useState(undefined);
   const [direction, setDirection] = useState("");
   const enableWebcamRef = useRef(null);
+
+  
 
   function updateBounding(canvasEl) {
     let canvasOffset = canvasEl.getBoundingClientRect();
@@ -59,6 +61,16 @@ const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam }) => {
           imageHeight * 0.4
         );
       }
+      else if(WebRTCMode) 
+      {
+        context.fillRect(0, 0, imageWidth, imageHeight);
+        context.fillStyle = "white";
+        context.fillText(
+          "Waiting for remote connection" + dotSring,
+          imageWidth * 0.5,
+          imageHeight * 0.4
+        );
+      }
       else 
       {
         context.fillRect(0, 0, imageWidth, imageHeight);
@@ -77,7 +89,7 @@ const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam }) => {
 
 
 
-  }, [allowWebcam]);
+  }, [allowWebcam, WebRTCMode]);
 
   return (
     <>

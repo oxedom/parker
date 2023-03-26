@@ -262,6 +262,7 @@ const ClientRender = ({
         <video
           id="webRTC"
           ref={rtcOutputRef}
+          className={`${WebRTCLoaded ? "block" : "hidden"} `}
           muted={true}
           onPlay={(e) => {
             setWebRTCLoaded(true);
@@ -289,11 +290,12 @@ const ClientRender = ({
         />
       ) : null}
 
-      {!demo && !webcamLoaded && !WebRTCMode ? (
+      {!demo && !webcamLoaded && !WebRTCLoaded ? (
         <LoadingScreen
           setAllowWebcam={setAllowWebcam}
           setWebRTCMode={setWebRTCMode}
           allowWebcam={allowWebcam}
+          WebRTCMode={WebRTCMode}
         />
       ) : (
         ""
