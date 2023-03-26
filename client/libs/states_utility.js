@@ -20,7 +20,7 @@ export function calculateTimeDiff(selectedRois, index) {
   return timeDiff;
 }
 
-export function supressedRoisProcess(roiMatrix) {
+export function supressedRoisProcess(roiMatrix, threshold) {
   let longestArrPos = getLongestArray(roiMatrix)
   let longestArr = roiMatrix[longestArrPos]
 
@@ -53,8 +53,8 @@ export function supressedRoisProcess(roiMatrix) {
     
   }
   
-  let threshold = Math.ceil(roiMatrix.length * 0.8)
-  let filtered = filterArrayByScore(longestArr, scores, threshold)
+  let filterThreshold = Math.ceil(roiMatrix.length * threshold)
+  let filtered = filterArrayByScore(longestArr, scores, filterThreshold)
 
  
 

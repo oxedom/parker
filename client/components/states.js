@@ -206,7 +206,7 @@ const selectedRoiState = selector({
         } else {
           const autoDetectArr = get(autoDetectArrState);
 
-          const suppresedRois = supressedRoisProcess(autoDetectArr);
+          const suppresedRois = supressedRoisProcess(autoDetectArr, 0.8);
 
           const convertedToSelected = convertRoisSelected(suppresedRois);
 

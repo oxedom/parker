@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { imageHeightState, imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
 
-const LoadingScreen = ({ setWebRTCMode, setAllowWebcam }) => {
+const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
   const [offsetX, setOffsetX] = useState(undefined);
@@ -36,7 +36,7 @@ const LoadingScreen = ({ setWebRTCMode, setAllowWebcam }) => {
   };
   useEffect(() => {
     updateBounding(enableWebcamRef.current);
-    let loadingIntervalID;
+
     if (enableWebcamRef.current !== null) {
       let dotSring = "   ";
       let context = enableWebcamRef.current.getContext("2d");
@@ -50,32 +50,34 @@ const LoadingScreen = ({ setWebRTCMode, setAllowWebcam }) => {
       context.clearRect(0, 0, imageWidth, imageHeight);
       context.fillStyle = "black";
 
-      context.fillRect(0, 0, imageWidth, imageHeight);
-      context.fillStyle = "white";
-      context.fillText(
-        "Choose a input mode" + dotSring,
-        imageWidth * 0.5,
-        imageHeight * 0.3
-      );
-      context.font = "bold 28px Arial";
-      context.fillStyle = "green";
+      if(allowWebcam) {
+        context.fillRect(0, 0, imageWidth, imageHeight);
+        context.fillStyle = "white";
+        context.fillText(
+          "Trying to detect webcam" + dotSring,
+          imageWidth * 0.5,
+          imageHeight * 0.4
+        );
+      }
+      else 
+      {
+        context.fillRect(0, 0, imageWidth, imageHeight);
+        context.fillStyle = "white";
+        context.fillText(
+          "Please Choose a  video source" + dotSring,
+          imageWidth * 0.5,
+          imageHeight * 0.4
+        );
+      }
 
-      context.fillRect(imageWidth / 6, 200, 150, 70);
-      context.fillStyle = "red";
-      context.fillRect(imageWidth / 2, 200, 150, 70);
-      context.fillStyle = "white";
 
-      context.fillText("Webcam", imageWidth * 0.29, imageHeight * 0.3 + 100);
 
-      context.fillText(`Stream`, imageWidth * 0.6, imageHeight * 0.3 + 100);
-
-      context.font = "bold 40px Arial";
     }
 
-    return () => {
-      clearInterval(loadingIntervalID);
-    };
-  }, []);
+
+
+
+  }, [allowWebcam]);
 
   return (
     <>

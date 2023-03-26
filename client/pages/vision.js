@@ -30,11 +30,12 @@ const visionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const { mode } = router.query;
-  const [WebRTCMode, setWebRTCMode] = useState(false);
+
+
   const [peerId, setPeerID] = useState("");
   const peerRef = useRef(null);
   const rtcOutputRef = useRef(null);
-
+  const [WebRTCMode, setWebRTCMode] = useState(false);
   const [WebRTCLoaded, setWebRTCLoaded] = useState(false);
 
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
@@ -107,6 +108,8 @@ const visionPage = () => {
               WebRTCMode={WebRTCMode}
               webcamEnabled={webcamEnabled}
               demo={demo}
+              setWebRTCMode={setWebRTCMode}
+              setAllowWebcam={setAllowWebcam}  
               handleDisableDemo={handleDisableDemo}
             />
             {/* {WebRTCMode ?
@@ -137,6 +140,8 @@ const visionPage = () => {
               setProcessing={setProcessing}
               isModalOpen={isModalOpen}
               allowWebcam={allowWebcam}
+  
+          
               setAllowWebcam={setAllowWebcam}
               processing={processing}
               hasWebcam={hasWebcam}

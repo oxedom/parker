@@ -293,6 +293,7 @@ const ClientRender = ({
         <LoadingScreen
           setAllowWebcam={setAllowWebcam}
           setWebRTCMode={setWebRTCMode}
+          allowWebcam={allowWebcam}
         />
       ) : (
         ""
