@@ -10,8 +10,9 @@ import Head from "next/head";
 import VisionHeader from "../components/VisionHeader";
 import VisionFooter from "../components/VisionFooter";
 import { createEmptyStream } from "../libs/webRTC_utility";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  selectedRoiState,
   imageWidthState,
   imageHeightState,
 
@@ -31,35 +32,58 @@ const visionPage = () => {
 
   const [peerId, setPeerID] = useState("");
   const peerRef = useRef(null);
+  const remoteRef = useRef(null)
   const rtcOutputRef = useRef(null);
   const [WebRTCMode, setWebRTCMode] = useState(false);
   const [WebRTCLoaded, setWebRTCLoaded] = useState(false);
-
+  const selectedRois = useRecoilValue(selectedRoiState)
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
 
+  const dataToView = (conn) => 
+  {
+    let id;
 
+    id = setInterval(() => {
+      conn.send(selectedRois)
+    }, 1000);
 
+  }
+
+  useEffect(()=> {
+    if(remoteRef.current != null) 
+    {
+      if(selectedRois.length > 0) 
+      {
+        remoteRef.current.send(selectedRois)
+      }
+
+    }
+  }, [selectedRois])
 
   useEffect(() => 
   {
- 
-   
       //Init peerJS
       const initPeerJS = async () => {
       const { default: Peer } = await import("peerjs");
       const newPeer = new Peer();
       peerRef.current = newPeer;
       newPeer.on("open", (id) => {
-  
         setPeerID(id);
       });
-
       newPeer.on('connection',  function(conn) {
         console.log('new connection', conn.peer);
-        conn.send('Hello!');
-      })
+        remoteRef.current = conn
+        // conn.send('Hello!');
+        conn.on('open', (con) => 
+        { 
+          
+          // conn.send(Date.now())
+        
+          dataToView(conn)
 
+        })
+      })
       newPeer.on("call", (call) => {
         let fakeStream = createEmptyStream()
         call.answer(fakeStream);
@@ -82,6 +106,8 @@ const visionPage = () => {
   
     }
     initPeerJS();
+
+
   }, [])
 
 

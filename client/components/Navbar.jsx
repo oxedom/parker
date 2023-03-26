@@ -40,16 +40,6 @@ const Navbar = () => {
               text={"About"}
             />
 
-            {/* <Navlink
-              className="  
-
-"
-              url={"/docs"}
-              text={"Docs"}
-            /> */}
-            <div className="hidden sm:block">
-            <Navlink url={"/vision?mode=demo"} text={"Demo"} />
-            </div>
 
         
       

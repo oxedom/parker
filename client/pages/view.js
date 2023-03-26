@@ -1,4 +1,5 @@
 
+import { data } from "autoprefixer";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
@@ -14,17 +15,31 @@ const view = () => {
       
         const { default: Peer } = await import("peerjs");
         const peer = new Peer();
+ 
 
         peer.on('open', (id) => 
         {
-        var conn = peer.connect(router.query.remoteID);
-        conn.on('data', (d) => 
-        {
-            console.log(d);
+            let conn = peer.connect(router.query.remoteID);
+            console.log(conn)
+            conn.send('a')
+
+            conn.on('data', (data) => 
+            {
+                console.log(data);
+            })
         })
 
-        })
+        // peer.on('connection', (conn) => 
+        // {
+        //     conn.on('open', () => {
+        //         console.log('open on view')
+        //     })
 
+        //     conn.on('data', (d) => {
+        //         console.log(data)
+        //     })
+
+        // })
 
       
         peerRef.current = peer

@@ -17,7 +17,7 @@ const VisionHeader = ({
 }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const [qrCodeURL, setQRcodeURL] = useState("")
-  const btnStyle = "bg-orange-600 border-2 rounded-xl m-2 text-xl p-2 shadow  shadow-black text-center"
+  const btnStyle = "bg-orange-600 border-2 rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200  hover:shadow-none"
   const handleWebcamSource = () => {
     setWebRTCMode(false)
     setDemo(false)
@@ -85,7 +85,7 @@ const VisionHeader = ({
    
         
           <div className="grid grid-cols-3  items-center gap-10"  >
-          <div onClick={handleBack} > Back  </div>
+          <div onClick={handleBack} className="border border-white text-center text-gray-700 w-32   hover:scale-105 duration-200 rounded bg-gray-200" > Back  </div>
           <DisplayInfo></DisplayInfo>
           <div className="flex gap-2 items-center">
  
