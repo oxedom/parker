@@ -9,12 +9,9 @@ const Navbar = () => {
     }
   };
   return (
-    <div className="my-5 sm:my-0 block w-full text-center w-max-[1028px]    ">
-      <nav className="z-[100]  h-[100px] absolute   ">
+    <div className="my-5 sm:my-0 block w-full text-center w-max-[1028px]  h-[50px] sm:h-16   ">
+      <nav className="z-[100]  absolute   ">
         <div className="flex gap-2 justify-center items-center">
-
-
-
           <Link href={"/"}>
             <h1 className=" text-bold text-3xl      justify-center items-center text-center  font-bold  text-white    hover:cursor-pointer">
               <p className=" p-2 ml-5 uppercase flex justify-items-center items-center gap-5 ">
@@ -39,10 +36,6 @@ const Navbar = () => {
               url={"/about"}
               text={"About"}
             />
-
-
-        
-      
           </div>
         </div>
       </nav>

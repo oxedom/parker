@@ -6,7 +6,7 @@ import { selectedRoiState } from "./states";
 import { renderRoi } from "../libs/canvas_utility";
 import { useWindowSize } from "./hooks/useWindowSize";
 
-const DrawingCanvas = ({  }) => {
+const DrawingCanvas = ({}) => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
   const size = useWindowSize();
   const selectedColor = "f52222";

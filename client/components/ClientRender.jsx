@@ -40,7 +40,7 @@ const ClientRender = ({
   setWebRTCMode,
   setAllowWebcam,
   setWebcamPlaying,
-  webcamLoaded, 
+  webcamLoaded,
   setWebcamLoaded,
   demoLoaded,
   WebRTCLoaded,
@@ -57,7 +57,6 @@ const ClientRender = ({
   const vehicleOnly = useRecoilValue(vehicleOnlyState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
-
 
   let overlayXRef = useRef(null);
 
@@ -84,10 +83,14 @@ const ClientRender = ({
   };
 
   async function setUserSettings() {
-    let { width, height } = await getSetting();
+    try {
+      let { width, height } = await getSetting();
 
-    setImageWidth(width);
-    setImageHeight(height);
+      setImageWidth(width);
+      setImageHeight(height);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {
@@ -250,7 +253,7 @@ const ClientRender = ({
 
   return loadingYolo.loaded ? (
     <>
-      {loadedCoco  ? (
+      {loadedCoco ? (
         <canvas
           id="overlap-overlay"
           ref={overlayXRef}

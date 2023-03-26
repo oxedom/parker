@@ -2,9 +2,14 @@ import Image from "next/image";
 import DefaultLayout from "../layouts/DefaultLayout";
 import tensorflowIcon from "../public/static/tesnorflow.png";
 import nextjsIcon from "../public/static/nextjs.png";
+import webRTC from "../public/static/webRTC.png";
+import Head from "next/head";
 const About = () => {
   return (
     <DefaultLayout>
+      <Head>
+      <title> About Parker</title>
+      </Head>
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[800px] gap-5 mt-5items-stretch  ">
         <main className="">
           <div className="text-lg  ">
@@ -18,8 +23,8 @@ const About = () => {
                 <span className="text-2xl text-gray-700 font-bold">
                   Parker{" "}
                 </span>{" "}
-                is a open source smart parking tool that to enable users to
-                mointor parking spaces using their Webcam/CCTV cameras.
+                is a free online smart parking tool that to enable users to privately (P2P )
+                mointor parking spaces using their phones or webcams as cameras.  
               </p>
 
               <p className="text-3xl mt-10 text-gray-700 ">Built with</p>
@@ -45,6 +50,11 @@ const About = () => {
                   <span>NextJS </span>
                 </li>
 
+                <li className="flex gap-2">
+                  <Image width={30} alt="nextjs" src={webRTC}></Image>
+                  <span>WebRTC (PeerJS) </span>
+                </li>
+
                 <li>
                   {" "}
                   <a
@@ -62,7 +72,7 @@ const About = () => {
                     href="https://github.com/hugozanini/yolov7-tfjs"
                   >
                     {" "}
-                    YOLO7-tfjs ( YOLO7 Model for TFJS Thanks Hugo!){" "}
+                    YOLO7-tfjs Ported Model  (Thanks Hugo!){" "}
                   </a>{" "}
                 </li>
               </ul>

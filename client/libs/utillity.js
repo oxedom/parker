@@ -255,5 +255,3 @@ export function filterArrayByScore(array, scores, threshold) {
   }
   return answer;
 }
-
-

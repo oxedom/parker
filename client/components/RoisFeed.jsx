@@ -12,15 +12,15 @@ const RoisFeed = ({}) => {
   const evaluateTime = useRecoilValue(evaluateTimeState);
 
   function handleDeleteAll() {
-    let answer = confirm("Are you sure you want to delete all selected regions?")
-    if(answer) 
-    {
+    let answer = confirm(
+      "Are you sure you want to delete all selected regions?"
+    );
+    if (answer) {
       let action = {
         event: "deleteAllRois",
       };
       setSelectedRois(action);
     }
-
   }
 
   function handleSave() {}
@@ -49,10 +49,11 @@ const RoisFeed = ({}) => {
     setSelectedRois(action);
   }
 
-  const handleAutoDetect = () => 
-  {
-    setAutoDetect(true)
-  }
+  const handleAutoDetect = () => {
+    if (!autoDetect) {
+      setAutoDetect(true);
+    }
+  };
 
   function printDate(time, evaluateTime) {
     //MS MILAsecoudns
@@ -79,43 +80,45 @@ const RoisFeed = ({}) => {
       className={`w-[200px]  bg-orangeFadeSides rounded-xl    justify-between  min-h-[${imageHeight}px]`}
     >
       <div>
-      <Accordion title={'Controls'}>
-          <div className="flex flex-col my-2 gap-5"> 
-          <button
-        className={`${
-          selectedRegions.length > 0
-            ? "bg-white text-black  "
+        <Accordion title={"Controls"}>
+          <div className="flex flex-col my-2 gap-5">
+            <button
+              className={`${
+                selectedRegions.length > 0
+                  ? "bg-white text-slate-800  "
+                  : "bg-gray-300   cursor-default text-gray-700 "
+              }  font-bold p-2 rounded mx-2  `}
+              onClick={handleDeleteAll}
+            >
+              {" "}
+              Delete regions{" "}
+            </button>
 
-            : "bg-gray-300   cursor-default text-gray-700 " }  font-bold p-2 rounded mx-2  `}
-        onClick={handleDeleteAll}
-      >
-        {" "}
-        Delete regions{" "}
-      </button>
-
-      <button
-        className={`
+            <button
+              className={`
             mx-2
-             bg-white text-slate-800
+            
              hover:cursor-pointer
             font-bold border-white border rounded p-2  shadow-black
             cursor-default
+            ${
+              autoDetect
+                ? "bg-gray-300 text-gray-700 hover:cursor-default"
+                : "bg-white cursor-pointer text-slate-800"
+            }
         `}
-        onClick={handleAutoDetect}
-      >
-        {" "}
-        Auto Detect{" "}
-      </button>
+              onClick={handleAutoDetect}
+            >
+              {" "}
+              Auto Detect{" "}
+            </button>
           </div>
           <div></div>
-
         </Accordion>
-
-
 
         <h4
           className="text-xl text-center font-semibold  
-      text-white
+      text-white hover:cursor-default
       border-b-2 border-orange-600
 
 
@@ -162,13 +165,7 @@ const RoisFeed = ({}) => {
             </div>
           ))}
         </div>
-
-
       </div>
-
-
-
-
     </div>
   );
 };

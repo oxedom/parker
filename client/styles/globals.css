@@ -41,27 +41,11 @@
 @import "tailwindcss/utilities";
 
 body {
-  /* overflow-y: hidden; */
-  /* cursor: url('../public/cursor-png-1127.png'), auto; */
   font-family: Montserrat;
 }
 
 video {
   object-fit: none;
-  /* height:  720px; */
   max-width: none;
 }
 
-.react-tooltip {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: white;
-  z-index: 999;
-}
-
-.react-tooltip .tooltip-inner {
-  top: 100%;
-  left: 0;
-  z-index: 999;
-}

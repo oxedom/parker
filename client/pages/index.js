@@ -1,5 +1,3 @@
-import Image from "next/image";
-import eye from "../public/static/eye.png";
 
 import Head from "next/head";
 import Link from "next/link";
@@ -22,9 +20,8 @@ const Home = () => {
               <h2 className=" text-5xl md:mt-10 font-bold ">
                 <div className="md:grid md:grid-temp-col-2">
                   <span className="animate-fade">
-                    Turning any camera into a parking mointor.{" "}
+                    Turning any camera into a parking monitor .{" "}
                   </span>
-   
                 </div>
 
                 <p className="text-xl  md:text-2xl font-normal">
@@ -33,14 +30,14 @@ const Home = () => {
                 </p>
 
                 <Link href={"/vision"}>
-                  <button className="hidden sm:block my-5 text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105">
+                  <button className="hidden sm:block my-5 text-2xl duration-300  rounded-lg  bg-orange-600 p-4 hover:scale-105">
                     {" "}
                     Use parker{" "}
                   </button>
                 </Link>
 
                 <Link href={"/about"}>
-                  <button className="block sm:hidden my-5 text-2xl duration-300  rounded-2xl  bg-orange-600 p-4 hover:scale-105">
+                  <button className="block sm:hidden my-5 text-2xl duration-300  rounded-lg  bg-orange-600 p-4 hover:scale-105">
                     {" "}
                     About parker{" "}
                   </button>
@@ -61,8 +58,6 @@ const Home = () => {
                 </video>
               </div>
             </header>
-
-      
           </main>
         </div>
       </DashboardLayout>

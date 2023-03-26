@@ -35,13 +35,12 @@ export async function imageCapturedToCanvas(capturedImage, inputCanvasRef) {
   }
 }
 
-export function drawTextOnCanvas(canvas, width, height, text) 
-{
+export function drawTextOnCanvas(canvas, width, height, text) {
   const font = "bold 72px Courier ";
   canvas.current.textAlign = "center";
   canvas.current.fillStyle = "#FF0000";
   canvas.current.font = font;
-  canvas.current.fillText(text, width/2, height/4);
+  canvas.current.fillText(text, width / 2, height / 4);
   canvas.current.fillStyle = "#000000";
 }
 

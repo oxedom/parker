@@ -1,5 +1,5 @@
 import DisplayInfo from "./DisplayInfo";
-import QRCode from 'qrcode'
+import QRCode from "qrcode";
 import { imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
@@ -17,95 +17,102 @@ const VisionHeader = ({
   setDemo,
 }) => {
   const imageWidth = useRecoilValue(imageWidthState);
-  const [qrCodeURL, setQRcodeURL] = useState("")
-  const btnStyle = "bg-orange-600 border-2 rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200  hover:shadow-none"
+  const [qrCodeURL, setQRcodeURL] = useState("");
+  const btnStyle =
+    "border-2 rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200  hover:shadow-none";
   const handleWebcamSource = () => {
-    setWebRTCMode(false)
-    setDemo(false)
-    setAllowWebcam(true)
-
-  }
+    setWebRTCMode(false);
+    setDemo(false);
+    setAllowWebcam(true);
+  };
   const handleRTCSource = () => {
-    setAllowWebcam(false)
-    setDemo(false)
-    setAllowWebcam(false)
-    setWebRTCMode(true)
+    setAllowWebcam(false);
+    setDemo(false);
+    setAllowWebcam(false);
+    setWebRTCMode(true);
+  };
 
-
-  }
-
-  const generateQR = async text => {
+  const generateQR = async (text) => {
     try {
-     let qrString = await QRCode.toDataURL(text)
-      setQRcodeURL(qrString)
+      let qrString = await QRCode.toDataURL(text);
+      setQRcodeURL(qrString);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
+  useEffect(() => {
+    generateQR(`https://www.sam-brink.com/reroute?remoteID=${peerId}`);
+  }, [peerId]);
 
-  useEffect(()=> {
-   generateQR(`https://www.sam-brink.com/reroute?remoteID=${peerId}`)
-
-  }, [peerId])
-
-
-  const handleBack = () => 
-  {
-    setAllowWebcam(false)
-    setWebRTCMode(false)
-    setWebcamLoaded(false)
-    handleDisableDemo()
-  }
+  const handleBack = () => {
+    setAllowWebcam(false);
+    setWebRTCMode(false);
+    setWebcamLoaded(false);
+    handleDisableDemo();
+  };
 
   const handleDemoSource = () => {
-    setDemo(true)
-    setWebcamLoaded(false)
-    setAllowWebcam(false)
-    setWebRTCMode(false)
-  
-  }
+    setDemo(true);
+    setWebcamLoaded(false);
+    setAllowWebcam(false);
+    setWebRTCMode(false);
+  };
 
-
-  const handleCopy = () => 
-  {
-    navigator.clipboard.writeText(`https://www.sam-brink.com/reroute?remoteID=${peerId}`);
-  }
+  const handleCopy = () => {
+    navigator.clipboard.writeText(
+      `https://www.sam-brink.com/reroute?remoteID=${peerId}`
+    );
+  };
 
   return (
     <nav className={`flex justify-around items-center animate-fade  `}>
-   
-      {!WebRTCMode && !allowWebcam && !demo ? <div className="flex gap-2 items-center ">
-
-      <button  onClick={handleDemoSource} className={btnStyle}> Demo  </button>
-        <button onClick={handleWebcamSource} className={btnStyle}> Webcam Video Source</button>
-        <button  onClick={handleRTCSource} className={btnStyle}> Remote Video Source </button>
-
-      </div> : 
-      
-   
-        
-          <div className="grid grid-cols-3  items-center gap-10"  >
-          <div onClick={handleBack} className="border border-white text-center text-gray-700 w-32   hover:scale-105 duration-200 rounded bg-gray-200" > Back  </div>
+      {!WebRTCMode && !allowWebcam && !demo ? (
+        <div className="flex gap-2 items-center ">
+          <button onClick={handleDemoSource} className={`bg-orange-500 ${btnStyle} `}>
+            {" "}
+            Demo{" "}
+          </button>
+          <button onClick={handleWebcamSource} className={`bg-orange-600 ${btnStyle} `}>
+            {" "}
+            Webcam Video Source
+          </button>
+          <button onClick={handleRTCSource} className={`bg-orange-600 ${btnStyle} `}>
+            {" "}
+            Remote Video Source{" "}
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-3  items-center gap-10">
+          <div
+            onClick={handleBack}
+            className="border border-white text-center text-gray-700 w-32   hover:scale-105 duration-200 rounded bg-gray-200"
+          >
+            {" "}
+            Back{" "}
+          </div>
           <DisplayInfo></DisplayInfo>
-          <div className="flex gap-2 items-center">
- 
-              <button alt="streaming Link"  className={btnStyle}  onClick={handleCopy}> Copy Link </button> 
-              <p className="text center "> OR </p>
-            <Image  width={75} alt="qr" quality={100}   className="hover:scale-[2] duration-200"  height={75} src={qrCodeURL} />
-       
-      
+          <div className="flex gap-2 items-center justify-center">
+            <button
+              alt="streaming Link"
+              className={`bg-orange-600 ${btnStyle} `}
+              onClick={handleCopy}
+            >
+              {" "}
+              Copy Link{" "}
+            </button>
+            <p className="text center "> OR </p>
+            <Image
+              width={80}
+              alt="qr"
+              quality={100}
+              className="hover:scale-[2] duration-200"
+              height={75}
+              src={qrCodeURL}
+            />
           </div>
-          </div>
-
-        
-      
-      
-      }
-
-
-
-
+        </div>
+      )}
     </nav>
   );
 };

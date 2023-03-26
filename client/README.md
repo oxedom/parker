@@ -1,34 +1,26 @@
-Things to do
 
-Set up a sleek homepage that gives a short introduction to what this webapp is
-Add a feature that let's a user peform CRUD actions to the localstorage to save, update, delete, sessions.
-Add a resize event to happen when the browswer size changes, should fire after 1s and should debounce
-Decorate the parking count
-Fix sound for button clicks nextjs buf
-Add a mute button in the settings
-Auto parking function
-Work on docs
-Make UI clean
-Cleanup old code and make everything tider
-Fix bug with displaying green ROI after evulating
-Clean up occupation algo
-Fix plus detection thershold button in settings
-And fix floats in iou Threshold and maybe detections thershold
-Add PM2 Yaml to repo
-SOrted
-Sort out public and static folder
-Sort out CD/CI with docker
-Make save button change color when a setting has changed.
-Add a reset settings
-//Not that good currently. Needs implementation
-Check out mobile responsive
-Still need to see if I can use them a lot.
-Check out touch event for dragging squares
 
-Fixed with bug fix of adding width to the element video.
-Prevent tensorflow trying to render a non browswer images
 
-Add localstorage system for parking lots
-Sort out WebRTC
-Add a hover over square option to delete it
-Clean up states occupation with functions
+
+# Parker - Smart Parking Tool
+Parker is an open-source smart parking tool that enables users to monitor parking spaces using their phones or webcams as cameras. The tool is built using TensorFlow.js, NextJS, WebRTC, and YOLO7.
+
+# Built With
+TensorFlow.js
+NextJS
+WebRTC (PeerJS)
+YOLO7 (Original Model)
+YOLO7-tfjs (Ported Model)
+
+# About Parker
+Parker is designed to make parking easier for everyone. With its smart parking feature, you can monitor parking spaces remotely using your phone or webcam. This tool uses YOLO7 object detection algorithm to identify empty or occupied parking spots. It's easy to use, convenient and user-friendly.
+
+
+# Usage through the website
+To use Parker, simply go to the website and
+# Usage locally
+To use Parker, simply run the code and follow the instructions provided. Parker is easy to set up and use, and the tool is completely free. However, it is important to note that the tool is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. This means that you are free to use and modify the code for personal use, but commercial use is prohibited.
+
+
+License
+Parker is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. Please see the LICENSE file for more information.

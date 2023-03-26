@@ -14,7 +14,6 @@
     "@tensorflow/tfjs": "^3.21.0",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
-    "firebase": "^9.17.2",
     "lodash": "^4.17.21",
     "next": "13.1.1",
     "nosleep.js": "^0.12.0",
@@ -23,7 +22,6 @@
     "qrcode": "^1.5.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-tooltip": "^5.8.3",
     "react-webcam": "^7.0.1",
     "recoil": "^0.7.6",
     "uniqid": "^5.4.0"
