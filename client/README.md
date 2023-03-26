@@ -19,8 +19,8 @@ Parker is a free smart parking tool that lets you monitor parking spots using a 
 After entering the vision page and pressing the remote stream button, you can simply scan QR code and after the page loads press on the call button to allow acesss to your phones camera, two imporant notes that the phone should be in landscape mode and change your settings that your phone screen doesn't turn off after a mintue. 
 
 
-# How to Connect CCTV/IP Cameras
-As IP/CCTV cameras are not directly connected to your computer, you can stream their video footage using [OBS](https://obsproject.com/) Window Capture feature and create a virtual webcam on your PC.
+# How to Connect CCTV/IP Cameras with OBS
+ IP/CCTV cameras are not directly connected to your computer, you can stream their video footage using [OBS](https://obsproject.com/) Window Capture feature and create a virtual webcam on your PC.
 
 
 # Webcam Instructions
