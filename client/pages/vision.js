@@ -106,7 +106,8 @@ const visionPage = () => {
           <div className=" grid relative text-2xl w-full  text-white gap-2 h-20 rounded-xl font-bold bg-orange-500  ">
             <VisionHeader
               WebRTCMode={WebRTCMode}
-              webcamEnabled={webcamEnabled}
+              peerId={peerId}
+              allowWebcam={allowWebcam}
               demo={demo}
               setWebRTCMode={setWebRTCMode}
               setAllowWebcam={setAllowWebcam}  
