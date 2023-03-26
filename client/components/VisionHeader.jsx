@@ -1,8 +1,9 @@
 import DisplayInfo from "./DisplayInfo";
-
+import QRCode from 'qrcode'
 import { imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
-
+import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 const VisionHeader = ({
   setAllowWebcam,
   peerId,
@@ -13,6 +14,7 @@ const VisionHeader = ({
   allowWebcam,
 }) => {
   const imageWidth = useRecoilValue(imageWidthState);
+  const [qrCodeURL, setQRcodeURL] = useState("")
   const btnStyle = "bg-orange-600 border-2 rounded-xl m-2 text-xl p-4 shadow  shadow-black"
   const handleWebcamSource = () => {
     setWebRTCMode(false)
@@ -23,6 +25,23 @@ const VisionHeader = ({
     setWebRTCMode(true)
 
   }
+
+  const generateQR = async text => {
+    try {
+     let qrString = await QRCode.toDataURL(text)
+      setQRcodeURL(qrString)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+
+  useEffect(()=> {
+   generateQR(`https://www.sam-brink.com/input?remoteID=${peerId}`)
+
+  }, [peerId])
+
+
 
   const handleCopy = () => 
   {
@@ -48,11 +67,13 @@ const VisionHeader = ({
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-3  gap-10"  >
+          <div className="grid grid-cols-3  items-center gap-10"  >
           <div></div>
           <DisplayInfo></DisplayInfo>
-          <div>
+          <div className="flex gap-2 items-center">
             {WebRTCMode ?   <button alt="streaming Link"  className={btnStyle}  onClick={handleCopy}> Copy Link </button> : ""}
+            <p className="text center "> OR </p>
+            <Image  width={75} alt="qr" quality={100}   height={75} src={qrCodeURL} />
           </div>
           </div>
 
