@@ -55,7 +55,7 @@ const VisionHeader = ({
   }
 
   return (
-    <nav className={`flex justify-around `}>
+    <nav className={`flex justify-around  `}>
    
       {!WebRTCMode && !allowWebcam ? <div className="flex gap-2 items-center ">
         <button onClick={handleWebcamSource} className={btnStyle}> Webcam Video Source</button>
@@ -65,7 +65,7 @@ const VisionHeader = ({
       
       demo ? (
         <div onClick={handleDisableDemo}>
-          <h5 className="font-bold p-4   text-gray-200 justify-self-start hover:text-white bg-orange-600   text-2xl  duration-300  ">
+          <h5 className="font-bold p-4   text-gray-200 justify-self-start hover:text-white text-2xl  duration-300  ">
             {" "}
             Exit{" "}
           </h5>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
 import { useRouter } from "next/router";
-import NoSleep from 'nosleep.js';
+
 
 const Input = () => {
 
@@ -46,7 +46,7 @@ const Input = () => {
   const shareVideo = async () => {
     try {
       const videostream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { exact: "environment" } },
+        video: { facingMode: { exact: "environment" }  },
       });
 
       streamRef.current = videostream;
@@ -68,9 +68,16 @@ const Input = () => {
   };
 
 
+
+
   const hangup = () => 
   {
-    //  callRef.current.close()
+    if (callRef.current) {
+      callRef.current.close();
+      setConnection(false);
+      streamRef.current = null;
+      inputRef.current.srcObject = null;
+    }
   }
 
   const call = async () => 
@@ -88,25 +95,24 @@ const Input = () => {
   }
 
   return (
-    <DefaultLayout>
-      <div className="bg-filler h-full flex gap-5 flex-col justify-center items-center">
-        {   inputRef.current === null ? <p className="text-2xl text-white py-2">  Please call </p> : null}
-        <video autoPlay={true} className="hidden sm:block rounded-xl" ref={inputRef}></video>
+
+      <div className="h-screen gap-2 pt-10 flex flex-col  min-h-screen  bg-fixed bg-no-repeat bg-cover  bg-filler w-full grow items-center">
+      
         <p className="text-5xl py-2 text-white ">  Connection: {connection ? "Established" : "Pending"} </p>
-        
+        <video autoPlay={true} className=" rounded-xl" ref={inputRef}></video>
         <div className="flex flex-col md:flex-row gap-4">
-        <button className="bg-green-400 py-2 rounded-lg shadow-sm active:bg-green-500 hover:bg-green-500 text-white  font-bold text-4xl p-5 w-[250px]" onClick={call}>
+        <button className="bg-green-400 py-2 rounded-lg shadow-sm active:bg-green-600 hover:bg-green-500 text-white  font-bold text-4xl p-5 w-[250px]" onClick={call}>
           {" "}
           Call
         </button>
-        <button className="bg-red-400 py-2 rounded-lg shadow-sm active:bg-green-500 hover:bg-red-500 text-white  font-bold text-4xl p-5 w-[250px]" onClick={hangup}>
+        <button className="bg-red-400 py-2 rounded-lg shadow-sm active:bg-red-600 hover:bg-red-500 text-white  font-bold text-4xl p-5 w-[250px]" onClick={hangup}>
           {" "}
           Hang up
         </button>
         </div>
 
       </div>
-    </DefaultLayout>
+
   );
 };
 

@@ -103,7 +103,7 @@ const visionPage = () => {
 
       <div className={`flex flex-col  p-16   `}>
         <div className="flex flex-col justify-center items-center gap-4">
-          <div className=" grid relative text-2xl w-full  text-white gap-2 h-20 rounded-xl font-bold bg-orange-500  ">
+          <div className=" grid relative text-2xl w-full  text-white gap-2 h-20 rounded-xl font-bold bg-orangeFade ">
             <VisionHeader
               WebRTCMode={WebRTCMode}
               peerId={peerId}
@@ -150,7 +150,7 @@ const visionPage = () => {
             >
               {" "}
             </Toolbar>
-            <div className="bg-orange-500 outline-2   outline-black rounded-b-2xl">
+            <div className="bg-orangeFade outline-2   outline-black rounded-b-2xl">
               {demo || webcamPlaying || WebRTCLoaded ? <DrawingCanvas ></DrawingCanvas> : null}
  
               <ClientRender

@@ -104,7 +104,7 @@ const Toolbar = ({
 
   return (
     <div
-      className={`md:w-[200px]  flex justify-between rounded-xl p-2  flex-col min-h-[${imageHeight}px]  bg-orange-500  `}
+      className={`md:w-[200px]  flex justify-between rounded-xl p-2  flex-col min-h-[${imageHeight}px]  bg-orangeFadeSides  `}
     >
 
       <div className="flex justify-center flex-col items-center gap-2  ">
