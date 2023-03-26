@@ -23,7 +23,7 @@ const Home = () => {
                     Turning any camera into a parking monitor .{" "}
                   </span>
                 </div>
-
+                
                 <p className="text-xl  md:text-2xl font-normal">
                   Using computer vision and client side processing <br />
                   to turn your parking situation into a smart one.{" "}
