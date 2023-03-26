@@ -40,17 +40,9 @@ const visionPage = () => {
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
 
-  const dataToView = (conn) => 
-  {
-    let id;
-
-    id = setInterval(() => {
-      conn.send(selectedRois)
-    }, 1000);
-
-  }
 
   useEffect(()=> {
+    
     if(remoteRef.current != null) 
     {
       if(selectedRois.length > 0) 
@@ -74,15 +66,7 @@ const visionPage = () => {
       newPeer.on('connection',  function(conn) {
         console.log('new connection', conn.peer);
         remoteRef.current = conn
-        // conn.send('Hello!');
-        conn.on('open', (con) => 
-        { 
-          
-          // conn.send(Date.now())
-        
-          dataToView(conn)
 
-        })
       })
       newPeer.on("call", (call) => {
         let fakeStream = createEmptyStream()
@@ -107,6 +91,7 @@ const visionPage = () => {
     }
     initPeerJS();
 
+    return () => { remoteRef.current.close() }
 
   }, [])
 
