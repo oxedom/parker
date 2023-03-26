@@ -36,6 +36,8 @@ const Navbar = () => {
               url={"/about"}
               text={"About"}
             />
+
+ 
           </div>
         </div>
       </nav>

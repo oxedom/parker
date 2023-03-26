@@ -32,6 +32,7 @@ Open the vision page, press the webcam button, allow webcam access, and point it
 # Can Parker be processed the on a server? 
 Yes, it can be processed on a server! Before refactoring the architecture of the entire project, a flask API was built using OpenCV and Yolo7, which worked fine. However, without a very good VPS with a GPU, the CPU can't handle many rendering requests. Functions were created in previous versions of Parker that encode the images into blobs to the server. The JSON response might need a bit of tweaking to be compatible, but just switch the process function with an API request. If you do, please make a PR and send a message!
 
+
 # What else can parker detect?
 [Here's a list](https://github.com/oxedom/parker/blob/main/client/libs/labels.json)
 

@@ -3,6 +3,7 @@ import DefaultLayout from "../layouts/DefaultLayout";
 import tensorflowIcon from "../public/static/tesnorflow.png";
 import nextjsIcon from "../public/static/nextjs.png";
 import webRTC from "../public/static/webRTC.png";
+import github from "../public/static/icons/github-mark.png"
 import Head from "next/head";
 const About = () => {
   return (
@@ -13,12 +14,19 @@ const About = () => {
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[800px] gap-5 mt-5items-stretch  ">
         <main className="">
           <div className="text-lg  ">
-            <h2 className="text-5xl text-center font-bold  rounded-lg  mb-10    text-orange-600">
+            <h2 className="text-5xl text-center flex  justify-center items-center gap-10 font-bold  rounded-lg  mb-10    text-orange-600">
               {" "}
               About parker
+              <div>
+
+                <a href="https://github.com/oxedom/parker" className="  ">               <Image width={50} src={github}></Image>    </a>
+              </div>
             </h2>
+            
             <section className="p-5  rounded-md mt-2 flex gap-2 flex-col text-xl  ">
-              <p className="">
+         
+
+              <p className="b-t border-black">
                 {" "}
                 <span className="text-2xl text-gray-700 font-bold">
                   Parker{" "}
@@ -74,7 +82,10 @@ const About = () => {
                     {" "}
                     YOLO7-tfjs Ported Model  (Thanks Hugo!){" "}
                   </a>{" "}
+                  
                 </li>
+
+         
               </ul>
             </section>
           </div>
