@@ -2,27 +2,34 @@ import DisplayInfo from "./DisplayInfo";
 import QRCode from 'qrcode'
 import { imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 const VisionHeader = ({
   setAllowWebcam,
   peerId,
   setWebRTCMode,
   demo,
-  handleDisableDemo,
   WebRTCMode,
   allowWebcam,
+  setWebcamLoaded,
+  webcamLoaded,
+  setDemo,
 }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const [qrCodeURL, setQRcodeURL] = useState("")
   const btnStyle = "bg-orange-600 border-2 rounded-xl m-2 text-xl p-2 shadow  shadow-black text-center"
   const handleWebcamSource = () => {
     setWebRTCMode(false)
+    setDemo(false)
     setAllowWebcam(true)
+
   }
   const handleRTCSource = () => {
     setAllowWebcam(false)
+    setDemo(false)
+    setAllowWebcam(false)
     setWebRTCMode(true)
+
 
   }
 
@@ -46,6 +53,16 @@ const VisionHeader = ({
   {
     setAllowWebcam(false)
     setWebRTCMode(false)
+    setWebcamLoaded(false)
+    setDemo(false)
+  }
+
+  const handleDemoSource = () => {
+    setDemo(true)
+    setWebcamLoaded(false)
+    setAllowWebcam(false)
+    setWebRTCMode(false)
+   
   }
 
 
@@ -55,24 +72,18 @@ const VisionHeader = ({
   }
 
   return (
-    <nav className={`flex justify-around  `}>
+    <nav className={`flex justify-around items-center  `}>
    
-      {!WebRTCMode && !allowWebcam ? <div className="flex gap-2 items-center ">
+      {!WebRTCMode && !allowWebcam && !demo ? <div className="flex gap-2 items-center ">
+
+      <button  onClick={handleDemoSource} className={btnStyle}> Demo  </button>
         <button onClick={handleWebcamSource} className={btnStyle}> Webcam Video Source</button>
-         <strong className="text-center text-3xl ">   </strong>
         <button  onClick={handleRTCSource} className={btnStyle}> Remote Video Source </button>
+
       </div> : 
       
-      demo ? (
-        <div onClick={handleDisableDemo}>
-          <h5 className="font-bold p-4   text-gray-200 justify-self-start hover:text-white text-2xl  duration-300  ">
-            {" "}
-            Exit{" "}
-          </h5>
-          <span className=""> </span>
-        </div>
-      ) : (
-        <>
+   
+        
           <div className="grid grid-cols-3  items-center gap-10"  >
           <div onClick={handleBack} > Back  </div>
           <DisplayInfo></DisplayInfo>
@@ -87,8 +98,8 @@ const VisionHeader = ({
           </div>
 
         
-        </>
-      )
+      
+      
       }
 
 

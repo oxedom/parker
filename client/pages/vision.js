@@ -29,8 +29,8 @@ const visionPage = () => {
   const [processing, setProcessing] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-  const { mode } = router.query;
-
+  // const { mode } = router.query;
+  const [webcamLoaded, setWebcamLoaded] = useState(false)
 
   const [peerId, setPeerID] = useState("");
   const peerRef = useRef(null);
@@ -41,11 +41,7 @@ const visionPage = () => {
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
 
-  useEffect(() => {
-    if (mode === "demo") {
-      setDemo(true);
-    }
-  }, []);
+
 
 
   useEffect(() => 
@@ -70,7 +66,10 @@ const visionPage = () => {
         call.on('stream', (remoteStream) => 
         {
 
-          
+
+          console.log(remoteStream.getVideoTracks()[0].getConstraints());
+
+          console.log(remoteStream.getVideoTracks()[0].getSettings());
           rtcOutputRef.current.srcObject = remoteStream;
           rtcOutputRef.current.play();
         })
@@ -109,6 +108,10 @@ const visionPage = () => {
               peerId={peerId}
               allowWebcam={allowWebcam}
               demo={demo}
+              setWebcamL
+              webcamLoaded={webcamLoaded}
+              setWebcamLoaded={setWebcamLoaded}
+              setDemo={setDemo}
               setWebRTCMode={setWebRTCMode}
               setAllowWebcam={setAllowWebcam}  
               handleDisableDemo={handleDisableDemo}
@@ -164,6 +167,7 @@ const visionPage = () => {
                 WebRTCLoaded={WebRTCLoaded}
                 rtcOutputRef={rtcOutputRef}
                 demoLoaded={demoLoaded}
+                webcamLoaded={webcamLoaded}
                 webcamPlaying={webcamPlaying}
                 setHasWebcam={setHasWebcam}
                 setWebRTCMode={setWebRTCMode}
@@ -171,6 +175,7 @@ const visionPage = () => {
                 setDemoLoaded={setDemoLoaded}
                 setWebcamPlaying={setWebcamPlaying}
                 setLoadedCoco={setLoadedCoco}
+                setWebcamLoaded={setWebcamLoaded}
                 setProcessing={setProcessing}
                 setWebRTCLoaded={setWebRTCLoaded}
               ></ClientRender>

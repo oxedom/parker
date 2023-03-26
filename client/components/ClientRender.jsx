@@ -40,6 +40,8 @@ const ClientRender = ({
   setWebRTCMode,
   setAllowWebcam,
   setWebcamPlaying,
+  webcamLoaded, 
+  setWebcamLoaded,
   demoLoaded,
   WebRTCLoaded,
   setWebRTCLoaded,
@@ -62,7 +64,7 @@ const ClientRender = ({
   const webcamRef = useRef(null);
   const demoRef = useRef(null);
   const modelRef = useRef(null);
-  const [webcamLoaded, setWebcamLoaded] = useState(false);
+
   const [loadingYolo, setYoloLoading] = useState({
     loaded: false,
     progress: 0,

@@ -5,12 +5,9 @@ import { useRecoilValue } from "recoil";
 const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam, WebRTCMode }) => {
   const imageWidth = useRecoilValue(imageWidthState);
   const imageHeight = useRecoilValue(imageHeightState);
-  const [offsetX, setOffsetX] = useState(undefined);
-  const [offsetY, setOffsetY] = useState(undefined);
-  const [direction, setDirection] = useState("");
   const enableWebcamRef = useRef(null);
-
-  
+  const [offsetX, setOffsetX] = useState(null)
+  const [offsetY, setOffsetY] = useState(null)
 
   function updateBounding(canvasEl) {
     let canvasOffset = canvasEl.getBoundingClientRect();
@@ -18,24 +15,7 @@ const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam, WebRTCMode 
     setOffsetY(canvasOffset.top);
   }
 
-  const handleClick = () => {
-    if (direction == "left") {
-      setWebRTCMode(false);
-      setAllowWebcam(true);
-    } else {
-      setWebRTCMode(true);
-      setAllowWebcam(false);
-    }
-  };
-  const handleMouseOver = (e) => {
-    let x = parseInt(e.clientX - offsetX);
-    let y = parseInt(e.clientY - offsetY);
-    if (x > 0 && x < imageWidth / 2) {
-      setDirection("left");
-    } else if (x > 0 && x > imageWidth / 2 && x < imageWidth + 1) {
-      setDirection("right");
-    }
-  };
+
   useEffect(() => {
     updateBounding(enableWebcamRef.current);
 
@@ -94,8 +74,7 @@ const LoadingScreen = ({ setWebRTCMode, setAllowWebcam, allowWebcam, WebRTCMode 
   return (
     <>
       <canvas
-        onClick={handleClick}
-        onMouseMove={handleMouseOver}
+   
         className="z-10 relative"
         ref={enableWebcamRef}
         height={imageHeight}

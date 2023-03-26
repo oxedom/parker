@@ -42,8 +42,11 @@ export function supressedRoisProcess(roiMatrix, threshold) {
             {
               let overlapArea_rounded = Math.round(overlapCords.area);
               let currentPotential_rounded = Math.round(currentPotential.area);
+  
               let percentDiff = overlapArea_rounded / currentPotential_rounded
-              if (percentDiff > 0.8 || (overlapArea_rounded == currentPotential_rounded)) {
+    
+              if (percentDiff > 0.8 || (overlapArea_rounded === currentPotential_rounded)) {
+         
                 scores[i] = scores[i] + 1
             } }
           })

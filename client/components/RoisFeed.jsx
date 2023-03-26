@@ -1,19 +1,26 @@
 import { selectedRoiState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageHeightState, evaluateTimeState } from "./states";
+import { imageHeightState, evaluateTimeState, autoDetectState } from "./states";
 import deleteIcon from "../public/static/icons/delete_bin_black.png";
 import Image from "next/image";
+import Accordion from "./Accordion";
 
 const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
+  const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const imageHeight = useRecoilValue(imageHeightState);
   const evaluateTime = useRecoilValue(evaluateTimeState);
 
   function handleDeleteAll() {
-    let action = {
-      event: "deleteAllRois",
-    };
-    setSelectedRois(action);
+    let answer = confirm("Are you sure you want to delete all selected regions?")
+    if(answer) 
+    {
+      let action = {
+        event: "deleteAllRois",
+      };
+      setSelectedRois(action);
+    }
+
   }
 
   function handleSave() {}
@@ -42,6 +49,11 @@ const RoisFeed = ({}) => {
     setSelectedRois(action);
   }
 
+  const handleAutoDetect = () => 
+  {
+    setAutoDetect(true)
+  }
+
   function printDate(time, evaluateTime) {
     //MS MILAsecoudns
     //S secounds
@@ -64,9 +76,43 @@ const RoisFeed = ({}) => {
 
   return (
     <div
-      className={`w-[200px]  bg-orangeFadeSides rounded-xl   flex flex-col justify-between  min-h-[${imageHeight}px]`}
+      className={`w-[200px]  bg-orangeFadeSides rounded-xl    justify-between  min-h-[${imageHeight}px]`}
     >
       <div>
+      <Accordion title={'Controls'}>
+          <div className="flex flex-col my-2 gap-5"> 
+          <button
+        className={`${
+          selectedRegions.length > 0
+            ? "bg-white text-black  "
+
+            : "bg-gray-300   cursor-default text-gray-700 " }  font-bold p-2 rounded mx-2  `}
+        onClick={handleDeleteAll}
+      >
+        {" "}
+        Delete regions{" "}
+      </button>
+
+      <button
+        className={`
+            mx-2
+             bg-white text-slate-800
+             hover:cursor-pointer
+            font-bold border-white border rounded p-2  shadow-black
+            cursor-default
+        `}
+        onClick={handleAutoDetect}
+      >
+        {" "}
+        Auto Detect{" "}
+      </button>
+          </div>
+          <div></div>
+
+        </Accordion>
+
+
+
         <h4
           className="text-xl text-center font-semibold  
       text-white
@@ -79,7 +125,7 @@ const RoisFeed = ({}) => {
           Marked regions
         </h4>
 
-        <div className="flex flex-wrap gap-2 m-2">
+        <div className="flex flex-wrap   gap-2 m-2">
           {selectedRegions.map((s) => (
             <div
               key={s.uid}
@@ -94,7 +140,7 @@ const RoisFeed = ({}) => {
                 handleRoiDelete(s.uid);
               }}
               className={`  h-10 w-10
-            btn  font-semibold  hover:bg-yellow-600 transition-colors rounded   border  
+            btn  font-semibold  hover:bg-yellow-500 transition-colors rounded   border  
                 drop-shadow
                 border-gray-500
               ${s.evaluating ? "bg-gray-400 animate-pulse duration-1000" : ""}
@@ -116,21 +162,13 @@ const RoisFeed = ({}) => {
             </div>
           ))}
         </div>
+
+
       </div>
 
-      <button
-        className={`${
-          selectedRegions.length > 0
-            ? "bg-gray-200"
-            : "bg-gray-400 cursor-not-allowed"
-        } border-t border-l p-1  border-black `}
-        onClick={handleDeleteAll}
-      >
-        {" "}
-        Clear{" "}
-      </button>
 
-      {/* <button onClick={handleSave}> Save Selections </button> */}
+
+
     </div>
   );
 };

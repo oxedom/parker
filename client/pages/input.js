@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import DefaultLayout from "../layouts/DefaultLayout";
+
 import { useRouter } from "next/router";
+
 
 
 const Input = () => {
@@ -48,7 +49,6 @@ const Input = () => {
       const videostream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: { exact: "environment" }  },
       });
-
       streamRef.current = videostream;
       inputRef.current.srcObject = videostream;
       return videostream
@@ -56,6 +56,7 @@ const Input = () => {
       try {
         const videostream = await navigator.mediaDevices.getUserMedia({
           video: true,
+          aspectRatio: { ideal: 16/9 }
         });
 
         streamRef.current = videostream;
@@ -96,10 +97,10 @@ const Input = () => {
 
   return (
 
-      <div className="h-screen gap-2 pt-10 flex flex-col  min-h-screen  bg-fixed bg-no-repeat bg-cover  bg-filler w-full grow items-center">
+      <div className="h-screen gap-2 pt-10 flex flex-col   min-h-screen  bg-fixed bg-no-repeat bg-cover  bg-filler w-full grow items-center">
       
         <p className="text-5xl py-2 text-white ">  Connection: {connection ? "Established" : "Pending"} </p>
-        <video autoPlay={true} className=" rounded-xl" ref={inputRef}></video>
+        <video autoPlay={true}  width={imageWidth}  className=" rounded-xl " ref={inputRef}></video>
         <div className="flex flex-col md:flex-row gap-4">
         <button className="bg-green-400 py-2 rounded-lg shadow-sm active:bg-green-600 hover:bg-green-500 text-white  font-bold text-4xl p-5 w-[250px]" onClick={call}>
           {" "}

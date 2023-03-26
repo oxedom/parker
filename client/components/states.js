@@ -8,7 +8,7 @@ import {
   supressedRoisProcess,
   convertRoisSelected,
 } from "../libs/states_utility";
-import { renderAllOverlaps } from "../libs/canvas_utility";
+import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
 
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
@@ -196,9 +196,12 @@ const selectedRoiState = selector({
       }
 
       if (_autoDetect) {
+
         const autoChecked = get(autoCheckedState);
+        drawTextOnCanvas(canvas, _width, _height, "Auto Detcting");
         let adding = Date.now() - autoChecked;
         if (autoChecked === 0) {
+
           set(autoCheckedState, Date.now());
         } else if (adding <= evaluateTime) {
           const autoDetectArr = get(autoDetectArrState);
