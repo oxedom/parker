@@ -86,7 +86,7 @@ const VisionHeader = ({
         <div className="grid grid-cols-3  items-center gap-10">
           <div
             onClick={handleBack}
-            className="border border-white text-center text-gray-700 w-32   hover:scale-105 duration-200 rounded bg-gray-200"
+            className="border  border-white text-center place-self-center text-gray-700 w-32   hover:scale-105 duration-200 rounded bg-gray-200"
           >
             {" "}
             Back{" "}

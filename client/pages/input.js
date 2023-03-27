@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import Head from "next/head";
 import { useRouter } from "next/router";
 
 const Input = () => {
@@ -66,7 +66,7 @@ const Input = () => {
 
   const call = async () => {
     const videoStream = await shareVideo();
-
+    inputRef.current.srcObject = videoStream;
     const call = peerRef.current.call(router.query.remoteID, videoStream);
     callRef.current = call;
     call.on("stream", async (remoteStream) => {
@@ -75,12 +75,18 @@ const Input = () => {
   };
 
   return (
+    <> 
+    <Head>
+    <title> Parker: Input </title>
+    </Head>
+    
+
     <div className="h-screen gap-2 pt-10 flex flex-col   min-h-screen  bg-fixed bg-no-repeat bg-cover  bg-filler w-full grow items-center">
       <p className="text-5xl py-2 text-white ">
         {" "}
         Connection: {connection ? "Established" : "Pending"}{" "}
       </p>
-      <video autoPlay={true} className=" rounded-xl " ref={inputRef}></video>
+   
       <div className="flex flex-col md:flex-row gap-4">
         <button
           className="bg-green-400 py-2 rounded-lg shadow-sm active:bg-green-600 hover:bg-green-500 text-white  font-bold text-4xl p-5 w-[250px]"
@@ -96,8 +102,10 @@ const Input = () => {
           {" "}
           Hang up
         </button>
+        <video autoPlay={true} className=" rounded-xl " ref={inputRef}></video>
       </div>
     </div>
+    </>
   );
 };
 

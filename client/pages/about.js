@@ -5,6 +5,10 @@ import nextjsIcon from "../public/static/nextjs.png";
 import webRTC from "../public/static/webRTC.png";
 import github from "../public/static/icons/github-mark.png"
 import Head from "next/head";
+import yoloLogo from "../public/static/yolo.png"
+import tailwindLogo from "../public/static/Tailwind.png"
+import recoilLogo from "../public/static/Recoil.png"
+
 const About = () => {
   return (
     <DefaultLayout>
@@ -35,9 +39,9 @@ const About = () => {
                 mointor parking spaces using their phones or webcams as cameras.  
               </p>
 
-              <p className="text-3xl mt-10 text-gray-700 ">Built with</p>
+              <p className="text-4xl my-5   text-gray-700 ">Built with</p>
 
-              <ul className="flex flex-col gap-2">
+              <ul className="grid grid-cols-2 gap-2">
                 <li className="flex gap-2">
                   <Image
                     alt="tensorflow"
@@ -59,32 +63,52 @@ const About = () => {
                 </li>
 
                 <li className="flex gap-2">
-                  <Image width={30} alt="nextjs" src={webRTC}></Image>
+                  <Image width={30} alt="webrtc" src={webRTC}></Image>
                   <span>WebRTC (PeerJS) </span>
                 </li>
 
-                <li>
+                
+        
+
+         
+                <li className="flex gap-2 text-center items-center">
                   {" "}
-                  <a
-                    className="text-blue-500"
-                    href="https://github.com/WongKinYiu/yolov7"
-                  >
-                    {" "}
-                    YOLO7{" "}
-                  </a>{" "}
-                </li>
-                <li>
-                  {" "}
+                  <Image width={60} src={yoloLogo}></Image>
                   <a
                     className="text-blue-500"
                     href="https://github.com/hugozanini/yolov7-tfjs"
                   >
                     {" "}
-                    YOLO7-tfjs Ported Model  (Thanks Hugo!){" "}
+                     YOLO7-tfjs  (Thanks Hugo){" "}
+                  </a>{" "}
+                  
+                </li>
+    
+                <li className="flex gap-2 text-center items-center">
+                  {" "}
+                  <Image width={30} src={tailwindLogo}></Image>
+                  <a
+                    className="text-blue-500"
+                    href="https://github.com/hugozanini/yolov7-tfjs"
+                  >
+                    {" "}
+                   tailwindcss
                   </a>{" "}
                   
                 </li>
 
+                <li className="flex gap-2 text-center items-center">
+                  {" "}
+                  <Image width={60} src={recoilLogo}></Image>
+                  <a
+                    className="text-blue-500"
+                    href="https://github.com/hugozanini/yolov7-tfjs"
+                  >
+                    {" "}
+                    Recoil 
+                  </a>{" "}
+                  
+                </li>
          
               </ul>
             </section>
