@@ -8,12 +8,12 @@ import Head from "next/head";
 import yoloLogo from "../public/static/yolo.png"
 import tailwindLogo from "../public/static/Tailwind.png"
 import recoilLogo from "../public/static/Recoil.png"
-import Accoridan from '../components/Accordion'
+
 const About = () => {
   return (
     <DefaultLayout>
       <Head>
-      <title> About Parker</title>
+      <title> Parker: About</title>
       </Head>
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[800px] gap-5 mt-5items-stretch  ">
         <main className="">

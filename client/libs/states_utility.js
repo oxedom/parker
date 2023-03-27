@@ -19,7 +19,13 @@ export function calculateTimeDiff(selectedRois, index) {
     selectedRois[index]["lastSeen"] - selectedRois[index]["firstSeen"];
   return timeDiff;
 }
-
+//The supressedRoisProcess function takes in a matrix of rectangular regions of interest (ROIs) and a 
+//threshold value, and returns a filtered array of ROIs that meet the threshold criteria. 
+//It does this by first finding the longest array of ROIs in the matrix and creating an array of scores for each ROI 
+//in that array. It then loops through each ROI in the longest array and checks for overlaps with all 
+//other ROIs in the matrix. If there is a significant overlap (determined by a percentage difference threshold),
+// the score for that ROI is incremented. Finally, the function filters the longest array by the score and threshold 
+// criteria, and returns the filtered array of ROIs.
 export function supressedRoisProcess(roiMatrix, threshold) {
   let longestArrPos = getLongestArray(roiMatrix);
   let longestArr = roiMatrix[longestArrPos];
@@ -62,6 +68,9 @@ export function convertRoisSelected(arr) {
   let updatedArr = [];
   arr.forEach((pred) => {
     let roiObj = selectedFactory(pred.cords);
+    roiObj.evaluating = false
+    roiObj.occupied = true
+
     updatedArr.push(roiObj);
   });
 

@@ -15,6 +15,11 @@ const evaluateTimeState = atom({
   default: 5000,
 });
 
+const autoEvaluateTimeState = atom({
+  key: "autoEvaluateTimeState",
+  default: 10000,
+});
+
 const detectionThresholdState = atom({
   key: "detectionThresholdState",
   default: 0.6,
@@ -197,11 +202,12 @@ const selectedRoiState = selector({
 
       if (_autoDetect) {
         const autoChecked = get(autoCheckedState);
+        const autoEvaluateTime = get(autoEvaluateTimeState)
         drawTextOnCanvas(canvas, _width, _height, "Auto Detcting");
         let adding = Date.now() - autoChecked;
         if (autoChecked === 0) {
           set(autoCheckedState, Date.now());
-        } else if (adding <= evaluateTime) {
+        } else if (adding <= autoEvaluateTime) {
           const autoDetectArr = get(autoDetectArrState);
           set(autoDetectArrState, [...autoDetectArr, predictionsArr]);
         } else {
