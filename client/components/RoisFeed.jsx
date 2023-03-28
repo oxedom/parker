@@ -12,6 +12,7 @@ const RoisFeed = ({}) => {
   const evaluateTime = useRecoilValue(evaluateTimeState);
 
   function handleDeleteAll() {
+    if(selectedRegions.length === 0) { return;}
     let answer = confirm(
       "Are you sure you want to delete all selected regions?"
     );
@@ -23,7 +24,7 @@ const RoisFeed = ({}) => {
     }
   }
 
-  function handleSave() {}
+
 
   function handleSelect(uid) {
     let action = {
@@ -54,6 +55,23 @@ const RoisFeed = ({}) => {
       setAutoDetect(true);
     }
   };
+
+  const handleImport = () => {
+
+    let action = {
+      event: "importSelected",
+      payload: null
+    };
+    setSelectedRois(action);
+  }
+
+  const handleSave = () => 
+  {
+
+    let selections = JSON.stringify(selectedRegions)
+    localStorage.setItem('selections', selections)
+    
+  }
 
   function printDate(time, evaluateTime) {
     //MS MILAsecoudns
@@ -96,7 +114,7 @@ const RoisFeed = ({}) => {
 
             <button
               className={`
-            mx-2
+            
             
              hover:cursor-pointer
             font-bold border-white border rounded p-2  shadow-black
@@ -112,6 +130,48 @@ const RoisFeed = ({}) => {
               {" "}
               Auto Detect{" "}
             </button>
+
+            <div className="grid grid-cols-2 gap-2 mx-1 place-content-between  ">
+            <button
+              className={`
+            
+            
+             hover:cursor-pointer
+            font-bold border-white border rounded   shadow-black
+            cursor-default
+            ${
+              autoDetect
+                ? "bg-gray-300 text-gray-700 hover:cursor-default"
+                : "bg-white cursor-pointer text-slate-800"
+            }
+        `}
+              onClick={handleSave}
+            >
+              {" "}
+              Save  {" "}
+            </button>
+
+            <button
+              className={`
+            
+            
+             hover:cursor-pointer
+            font-bold border-white border rounded  shadow-black
+            cursor-default
+            ${
+              autoDetect
+                ? "bg-gray-300 text-gray-700 hover:cursor-default"
+                : "bg-white cursor-pointer text-slate-800"
+            }
+        `}
+              onClick={handleImport}
+            >
+              {" "}
+              Import  {" "}
+            </button>
+            </div>
+
+
           </div>
           <div></div>
         </Accordion>

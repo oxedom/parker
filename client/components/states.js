@@ -247,6 +247,16 @@ const selectedRoiState = selector({
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
     }
+    if(action.event === 'importSelected') 
+    {
+      let selectionData = localStorage.getItem('selections')
+      let parsed = JSON.parse(selectionData)
+      set(selectedRoi, parsed);
+
+
+    }
+
+
     if (action.event === "unSelectRoi") {
       let uid = action.payload;
       //Array of ROI objects
