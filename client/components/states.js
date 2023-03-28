@@ -22,7 +22,7 @@ const autoEvaluateTimeState = atom({
 
 const detectionThresholdState = atom({
   key: "detectionThresholdState",
-  default: 0.6,
+  default: 0.5,
 });
 
 const overlapThresholdState = atom({
@@ -37,7 +37,7 @@ const vehicleOnlyState = atom({
 
 const thresholdIouState = atom({
   key: "thresholdIouState",
-  default: 0.65,
+  default: 0.20,
 });
 
 const showDetectionsState = atom({

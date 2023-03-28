@@ -20,12 +20,14 @@ import {
   processInputImage,
   processDetectionResults,
   nmsDetectionProcess,
+  non_max_suppression,
 } from "../libs/tensorflow_utility";
 import {
   detectWebcam,
   getSetting,
   webcamRunning,
   detectionsToROIArr,
+  detectionsToROIArrVanilla,
 } from "../libs/utillity";
 import LoadingScreen from "./LoadingScreen";
 
@@ -64,6 +66,9 @@ const ClientRender = ({
   const demoRef = useRef(null);
   const modelRef = useRef(null);
 
+
+
+
   const [loadingYolo, setYoloLoading] = useState({
     loaded: false,
     progress: 0,
@@ -81,6 +86,8 @@ const ClientRender = ({
     setWebcamPlaying(false);
     setAutoDetect(true);
   };
+
+
 
   async function setUserSettings() {
     try {
@@ -154,35 +161,39 @@ const ClientRender = ({
 
     let res = model.execute(input);
 
-    const { boxes, class_detect, scores } = processDetectionResults(
-      res,
-      detectionThreshold
-    );
+    // const { boxes, class_detect, scores } = processDetectionResults(
+    //   res,
+    //   detectionThreshold
+    // );
 
-    const { detectionIndices } = await nmsDetectionProcess(
-      boxes,
-      scores,
-      thresholdIou
-    );
+    const detections2 = non_max_suppression(res.arraySync()[0], detectionThreshold, thresholdIou, 50 )
+    // console.log(detections2);
 
-    const predictionsArr = detectionsToROIArr(
-      detectionIndices,
-      boxes,
-      class_detect,
-      scores,
-      imageWidth,
-      imageHeight,
-      vehicleOnly,
-      boxes,
-      class_detect,
-      scores
-    );
+    // const { detectionIndices } = await nmsDetectionProcess(
+    //   boxes,
+    //   scores,
+    //   thresholdIou
+    // );
+
+    //
+    const predictionsRois = detectionsToROIArrVanilla(detections2, imageWidth, imageHeight,vehicleOnly)
+
+
+    // const predictionsArr = detectionsToROIArr(
+    //   detectionIndices,
+    //   boxes,
+    //   class_detect,
+    //   scores,
+    //   imageWidth,
+    //   imageHeight,
+    //   vehicleOnly,
+    // );
 
     //Sends action request with a payload, the event is handled
     //inside the state event.
     let action = {
       event: "occupation",
-      payload: { predictionsArr: predictionsArr, canvas: overlayXRef },
+      payload: { predictionsArr: predictionsRois, canvas: overlayXRef },
     };
 
     //Disposing tensors
