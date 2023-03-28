@@ -1,3 +1,7 @@
+
+
+
+
 # Parker 
 Parker is a free smart parking tool that enables you monitor parking spots using a webcam, cellphone camera, or any virtual camera. The tool uses computer vision object detection to process all the footage in the browser, utilizing TensorFlow.js. Communication between a remote cellphone and the browser is enabled through WebRTC (PeerJS uses PeerServer for session metadata and candidate signaling. as well as Google Stun servers)
 
@@ -28,8 +32,7 @@ https://www.youtube.com/watch?v=0z9Te51rh-4
 
 
 
-
-# webcam Instructions
+# Webcam Instructions
 Open the vision page, press the webcam button, allow webcam access, and point it wherever you desire.
 
 # Settings Documentation
@@ -38,17 +41,28 @@ Open the vision page, press the webcam button, allow webcam access, and point it
 3. Vehicle Only: Detect only vehicles; when switched off, bounding boxes can be occupied by any kind of detections
 4. Detection Threshold: The detection score threshold
 5. IOU Threshold: Non maximum suppression/Jaccard/IntersectionOverUnion threshold, the higher the more tolerant it is for colliding bboxes 
-6. FPS: Render Rate, the lower the faster the model detects image, fastest is 10 frames per secound, default is 1 frame per secound, max is 1 frame every 2 secounds
+6. FPS: Render Rate, the lower the faster the model detects image, fastest is 10 frames per secound, default is 1 frame per secound, max is 1 frame every 2 secound# Can Parker be processed the on a server? 
+Yes, it can be processed on a server! 
+There is even a docker image for it that runs YOLO4 with openCV
+
 # Can Parker be processed the on a server? 
+
+`docker pull oxedom/flask_api`
+`docker run -p 5000:5000 flask_api`
+[Dockerhub Image](https://hub.docker.com/repository/docker/oxedom/flask_api/)
+
 Yes, it can be processed on a server! Before refactoring the architecture of the entire project, a flask API was built using OpenCV and Yolo7, which worked fine. However, without a very good VPS with a GPU, the CPU can't handle many rendering requests. Functions were created in previous versions of Parker that encode the images into blobs to the server. The JSON response might need a bit of tweaking to be compatible, but just switch the process function with an API request. If you do, please make a PR and send a message!
+
+
+
+
+Before refactoring the architecture of the entire project, a flask API was built using OpenCV and Yolo7, which worked fine. However, without the right Infrastructure on the server (GPU and autoscaling) a CPU won't be able to handle many POST requests. Client side Functions were created in previous versions of Clients Parker that encode the webcam images into blobs int arrays to be posted server, code will need a refactroring to make it work with the modern version of parker. 
+If someone is truly interested create an issue and I'll try and help out.
+
 
 
 # What else can parker detect?
 [Here's a list](https://github.com/oxedom/parker/blob/main/client/libs/labels.json)
 
-* Fun Idea 
-Create a script that goes over a dir renders all those images in a browswer
-
-
-# Can I Contribute?
-Yes, you can! Submit a PR and I'll review it.
+Can I Contribute?
+Yes, you can! Submit a PR.
