@@ -73,7 +73,7 @@ const About = () => {
 
                 <li className="flex gap-2 text-center items-center">
                   {" "}
-                  <Image width={60} src={yoloLogo}></Image>
+                  <Image width={50} src={yoloLogo}></Image>
                   <a
                     className="text-blue-500"
                     href="https://github.com/hugozanini/yolov7-tfjs"
@@ -116,14 +116,21 @@ const About = () => {
             <section className="flex flex-col gap-5">
               <h3 className="font-bold border-b border-black text-center text-3xl text-gray-800"> Useful information  </h3>
                 
-      
+              <div className="mt-1 ">
+            <h4 className="text-xl font-bold text-center ">
+              <a className="text-blue-500 text-center border-b p-1 border-black " href="https://github.com/oxedom/parker"> More information in the repo</a>
+            </h4>
+            </div>
 
             <div className="mt-1 ">
             <h4 className="text-2xl font-bold ">
             Mobile Phone Camera Instructions
             </h4>
             <p>
-            After entering the vision page and pressing the remote stream button, you can scan QR code with your mobile device and after the page loads press on the call button to allow acesss to your phones camera, two imporant notes that the phone should be in landscape mode and change your settings that your phone screen doesn't turn off after a mintue. 
+            After entering the vision page and pressing the remote stream button, you can scan QR code with your mobile device and when loaded,press on the call button to allow acesss to your phones camera. <br></br>
+            * two imporant notes:
+            Phone should stream video in landscape mode 
+            Change your settings that your phone screen doesn't autolock to enable a continutes video stream. 
 
             </p>
 
@@ -169,14 +176,20 @@ const About = () => {
             </div>
 
             
-            <div className="mt-1 ">
-            <h4 className="text-2xl font-bold ">
-              <a className="text-blue-500" href="https://github.com/oxedom/parker"> More information in the repostiry </a>
-            </h4>
-     
+   
 
+            <div className="mt-1 ">
+            <h4 className="text-xl font-bold ">
+           Special Thanks
+            </h4>
+            <ul>
+              <li>Hugo zanini, for porting YOLO7 to tfjs and for sharing his code</li>
+              <li> Jason Mayes, for  advice and gudience </li>
+              <li> The tensorflow Community! </li>
+              <li> <a href="https://www.reddit.com/r/computervision/" className="text-blue-500"> /r/computervision </a></li>
+              <li> Everyone who believed in me 😊 🚗  </li>
+            </ul>
             </div>
-    
             </section>
           </div>
         </main>
