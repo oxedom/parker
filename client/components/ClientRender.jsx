@@ -244,7 +244,9 @@ const ClientRender = ({
     let id;
 
     if (processing) {
+  
       runYolo().then((res) => {
+
         id = res;
       });
     }
@@ -260,7 +262,7 @@ const ClientRender = ({
 
       // setLoadedCoco(false);
     };
-  }, [processing, imageHeight, imageWidth, WebRTCLoaded]);
+  }, [processing, imageHeight, imageWidth, WebRTCLoaded, demoLoaded, webcamLoaded]);
 
   return loadingYolo.loaded ? (
     <>
