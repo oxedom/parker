@@ -63,5 +63,5 @@ If someone is truly interested create an issue and I'll try and help out.
 # What else can parker detect?
 [Here's a list](https://github.com/oxedom/parker/blob/main/client/libs/labels.json)
 
-Can I Contribute?
-Yes, you can! Submit a PR.
+# Can I Contribute?
+Yes sure, submit a PR!

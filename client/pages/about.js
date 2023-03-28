@@ -73,7 +73,7 @@ const About = () => {
 
                 <li className="flex gap-2 text-center items-center">
                   {" "}
-                  <Image width={50} src={yoloLogo}></Image>
+                  <Image width={50} alt="yolo" src={yoloLogo}></Image>
                   <a
                     className="text-blue-500"
                     href="https://github.com/hugozanini/yolov7-tfjs"
@@ -86,7 +86,7 @@ const About = () => {
     
                 <li className="flex gap-2 text-center items-center">
                   {" "}
-                  <Image width={30} src={tailwindLogo}></Image>
+                  <Image width={30} alt="tailwind" src={tailwindLogo}></Image>
                   <a
                     className="text-blue-500"
                     href="https://github.com/hugozanini/yolov7-tfjs"
@@ -99,7 +99,7 @@ const About = () => {
 
                 <li className="flex gap-2 text-center items-center">
                   {" "}
-                  <Image width={60} src={recoilLogo}></Image>
+                  <Image width={60} alt="recoil" src={recoilLogo}></Image>
                   <a
                     className="text-blue-500"
                     href="https://github.com/hugozanini/yolov7-tfjs"

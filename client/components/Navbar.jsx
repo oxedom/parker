@@ -41,7 +41,7 @@ const Navbar = () => {
  
           </div>
 
-          <a  href="https://github.com/oxedom/parker" className="   ">               <Image width={30} height={30} className="invert saturate-0" src={github}></Image>     </a>
+          <a  href="https://github.com/oxedom/parker"  target={"_blank"} className="   ">               <Image width={30} height={30} className="invert saturate-0" src={github}></Image>     </a>
         </div>
       </nav>
     </div>
