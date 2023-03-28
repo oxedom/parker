@@ -35,9 +35,10 @@ const About = () => {
                 <span className="text-2xl text-gray-700 font-bold">
                   Parker{" "}
                 </span>{" "}
-                is a free online smart parking tool that to enable users to privately (P2P )
-                mointor parking spaces using their phones or webcams as cameras.  
+                is a free to use smart parking webapp that to enable users to privately
+                mointor parking spaces using computer vision.  
               </p>
+
 
               <p className="text-4xl my-5   text-gray-700 ">Built with</p>
 

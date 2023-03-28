@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Navlink from "./Navlink.jsx";
 import Router from "next/router";
-
+import github from '../public/static/icons/github-mark.png'
+import Image from "next/image.js";
 const Navbar = () => {
   const handleVision = () => {
     if (Router.route == "/vision") {
@@ -39,6 +40,8 @@ const Navbar = () => {
 
  
           </div>
+
+          <a  href="https://github.com/oxedom/parker" className="   ">               <Image width={30} className="invert saturate-0" src={github}></Image>     </a>
         </div>
       </nav>
     </div>

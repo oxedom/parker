@@ -4,6 +4,8 @@ import { imageWidthState } from "./states";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+
+
 const VisionHeader = ({
   setAllowWebcam,
   peerId,

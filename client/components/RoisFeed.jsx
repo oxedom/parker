@@ -58,15 +58,24 @@ const RoisFeed = ({}) => {
   };
 
   const handleImport = () => {
+    let condition = true
+    if(selectedRegions.length > 0) 
+    {
+      condition =  confirm("Are you sure you want to overright marked regions?")
+    }
+    if(condition)
+    {
+      let action = {
+        event: "importSelected",
+        payload: null
+      };
+      setSelectedRois(action);
+    }
 
   
 
     
-    let action = {
-      event: "importSelected",
-      payload: null
-    };
-    setSelectedRois(action);
+
   }
 
   const handleSave = () => 
@@ -159,12 +168,12 @@ const RoisFeed = ({}) => {
             
              hover:cursor-pointer
             font-bold border-white border rounded   shadow-black
-            cursor-default
-            ${
-              autoDetect
-                ? "bg-gray-300 text-gray-700 hover:cursor-default"
-                : "bg-white cursor-pointer text-slate-800"
-            }
+ 
+   
+  
+            
+              bg-white cursor-pointer text-slate-800"
+      
         `}
               onClick={handleSave}
             >
@@ -178,12 +187,8 @@ const RoisFeed = ({}) => {
             
              hover:cursor-pointer
             font-bold border-white border rounded  shadow-black
-            cursor-default
-            ${
-              autoDetect
-                ? "bg-gray-300 text-gray-700 hover:cursor-default"
-                : "bg-white cursor-pointer text-slate-800"
-            }
+            
+            bg-white cursor-pointer text-slate-800"
         `}
               onClick={handleImport}
             >

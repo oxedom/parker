@@ -7,13 +7,6 @@ const Home = () => {
     <>
       <Head>
         <title> Parker: Empower your parking </title>
-        <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png"/>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png"/>
-<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png"/>
-<link rel="manifest" href="/site.webmanifest"/>
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"/>
-<meta name="msapplication-TileColor" content="#da532c"/>
-
       </Head>
       <DashboardLayout>
         {/* Free SVG Background by <a target="_blank" href="https://bgjar.com">BGJar</a> */}
@@ -27,7 +20,7 @@ const Home = () => {
               <h2 className=" text-5xl md:mt-10 font-bold ">
                 <div className="md:grid md:grid-temp-col-2">
                   <span className="animate-fade">
-                    Turning any camera into a parking monitor .{" "}
+                    Turning any camera into a parking monitor.{" "}
                   </span>
                 </div>
                 
@@ -39,14 +32,14 @@ const Home = () => {
                 <Link href={"/vision"}>
                   <button className="hidden sm:block my-5 text-2xl duration-300  rounded-lg  bg-orange-600 p-4 hover:scale-105">
                     {" "}
-                    Use parker{" "}
+                    Try parker{" "}
                   </button>
                 </Link>
 
                 <Link href={"/about"}>
                   <button className="block sm:hidden my-5 text-2xl duration-300  rounded-lg  bg-orange-600 p-4 hover:scale-105">
                     {" "}
-                    About parker{" "}
+                    About{" "}
                   </button>
                 </Link>
               </h2>
