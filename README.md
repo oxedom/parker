@@ -21,7 +21,6 @@ After entering the vision page and pressing the remote stream button, you can si
 
 
 # How to Connect CCTV/IP Cameras that are not directly connected to Parker
-As  
 If your iP/CCTV cameras not are usally not directly connected to your computer, you can stream their video footage using [OBS](https://obsproject.com/) Window Capture feature and create a virtual webcam on your PC. 
 
 # How to Connect CCTV/IP Cameras that are on the local netork.
