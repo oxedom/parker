@@ -213,7 +213,9 @@ const selectedRoiState = selector({
         } else {
           const autoDetectArr = get(autoDetectArrState);
 
-          const suppresedRois = supressedRoisProcess(autoDetectArr, 0.8);
+          //Const percent that it need to be in the detectionsArr
+          const minimumAttendance = 0.6
+          const suppresedRois = supressedRoisProcess(autoDetectArr, minimumAttendance);
 
           const convertedToSelected = convertRoisSelected(suppresedRois);
 
