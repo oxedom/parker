@@ -17,7 +17,7 @@ Parker is a free smart parking tool that enables you monitor parking spots using
 
 
 # Mobile Phone Camera Instructions
-After entering the vision page and pressing the remote stream button, you can simply scan QR code and after the page loads press on the call button to allow acesss to your phones camera, two imporant notes that the phone should be in landscape mode and change your settings that your phone screen doesn't turn off after a mintue. 
+After entering the vision page and pressing the remote stream button, you can simply scan QR code and after the page loads press on the call button to allow acesss to your phones camera, two imporant notes that the phone should be in landscape mode and change your auto-lock settings that your phone screen doesn't turn off after a mintue (Should be on never if you are inteended to use it for a long period of time). 
 
 
 # How to Connect CCTV/IP Cameras that are not directly connected to Parker
