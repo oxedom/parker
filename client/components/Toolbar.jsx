@@ -91,7 +91,7 @@ const Toolbar = ({ processing, setProcessing, isModalOpen, loadedCoco }) => {
   function handleVehicleOnly() {
     setSettingsChange(true);
 
-    vehicleOnly ? setLocalVehicleOnly(false) : setLocalVehicleOnly(true);
+    localVehicleOnly ? setLocalVehicleOnly(false) : setLocalVehicleOnly(true);
   }
 
   return (
@@ -178,11 +178,11 @@ const Toolbar = ({ processing, setProcessing, isModalOpen, loadedCoco }) => {
           </div>
 
           <button
-            className={`text-white rounded-lg shadow outline outline-slate-700   ${
+            className={`text-white rounded-lg shadow outline drop-shadow outline-slate-700   ${
               settingChange
-                ? "bg-orange-600 hover:bg-orange-700 text-white"
-                : "bg-orange-300 text-gray-600 font-medium cursor-default "
-            } outline-2 outline-black p-3`}
+                ? "bg-blue-500 outline-gray-800  animate-pulse font-bold duration-75 hover:bg-blue-700 text-white"
+                : "bg-orange-300 outline-gray-600  text-gray-600 font-medium cursor-default " 
+            } outline-2 p-3`}
             onClick={handleSaveSettings}
           >
             {" "}

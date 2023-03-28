@@ -133,7 +133,7 @@ const RoisFeed = ({}) => {
             <button
               className={`${
                 selectedRegions.length > 0
-                  ? "bg-white text-slate-800  "
+                  ? "bg-white text-slate-800 drop-shadow  "
                   : "bg-gray-300   cursor-default text-gray-700 "
               }  font-bold p-2 rounded mx-2  `}
               onClick={handleDeleteAll}
@@ -148,11 +148,11 @@ const RoisFeed = ({}) => {
             mx-2
              hover:cursor-pointer
             font-bold border-white border rounded p-2  shadow-black
-            cursor-default
+            cursor-default 
             ${
               autoDetect
-                ? "bg-gray-300 text-gray-700 hover:cursor-default"
-                : "bg-white cursor-pointer text-slate-800"
+                ? "bg-gray-300 text-gray-700 hover:cursor-default "
+                : "bg-white cursor-pointer text-slate-800 drop-shadow"
             }
         `}
               onClick={handleAutoDetect}
@@ -166,7 +166,7 @@ const RoisFeed = ({}) => {
               className={`
             
             
-             hover:cursor-pointer
+             hover:cursor-pointer drop-shadow
             font-bold border-white border rounded   shadow-black
  
    
@@ -185,7 +185,7 @@ const RoisFeed = ({}) => {
               className={`
             
             
-             hover:cursor-pointer
+             hover:cursor-pointer drop-shadow
             font-bold border-white border rounded  shadow-black
             
             bg-white cursor-pointer text-slate-800"

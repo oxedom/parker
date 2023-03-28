@@ -167,6 +167,15 @@ const About = () => {
             </p>
 
             </div>
+
+            
+            <div className="mt-1 ">
+            <h4 className="text-2xl font-bold ">
+              <a className="text-blue-500" href="https://github.com/oxedom/parker"> More information in the repostiry </a>
+            </h4>
+     
+
+            </div>
     
             </section>
           </div>
