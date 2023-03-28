@@ -33,7 +33,17 @@ Open the vision page, press the webcam button, allow webcam access, and point it
 4. Detection Threshold: The lower 
 
 # Can Parker be processed the on a server? 
-Yes, it can be processed on a server! Before refactoring the architecture of the entire project, a flask API was built using OpenCV and Yolo7, which worked fine. However, without a very good VPS with a GPU, the CPU can't handle many rendering requests. Functions were created in previous versions of Parker that encode the images into blobs to the server. The JSON response might need a bit of tweaking to be compatible, but just switch the process function with an API request. If you do, please make a PR and send a message!
+Yes, it can be processed on a server! 
+There is even a docker image for it that runs YOLO4 with openCV
+
+`docker pull oxedom/flask_api`
+`docker run -p 5000:5000 flask_api`
+[Dockerhub Image](https://hub.docker.com/repository/docker/oxedom/flask_api/)
+
+
+
+Before refactoring the architecture of the entire project, a flask API was built using OpenCV and Yolo7, which worked fine. However, without the right Infrastructure on the server (GPU and autoscaling) a CPU won't be able to handle many POST requests. Client side Functions were created in previous versions of Clients Parker that encode the webcam images into blobs int arrays to be posted server, code will need a refactroring to make it work with the modern version of parker. 
+If someone is truly interested create an issue and I'll try and help out.
 
 # What else can parker detect?
 [Here's a list](https://github.com/oxedom/parker/blob/main/client/libs/labels.json)
