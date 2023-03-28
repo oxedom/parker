@@ -251,7 +251,7 @@ const selectedRoiState = selector({
     {
       let selectionData = localStorage.getItem('selections')
       let parsed = JSON.parse(selectionData)
-      set(selectedRoi, parsed);
+      set(selectedRoi, parsed.selectedRegions);
 
 
     }

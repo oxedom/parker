@@ -3,7 +3,8 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { imageHeightState, evaluateTimeState, autoDetectState } from "./states";
 import deleteIcon from "../public/static/icons/delete_bin_black.png";
 import Image from "next/image";
-import Accordion from "./Accordion";
+import Accordion from "./Accordion"
+import { formatDistanceToNow } from 'date-fns';;
 
 const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
@@ -58,6 +59,9 @@ const RoisFeed = ({}) => {
 
   const handleImport = () => {
 
+  
+
+    
     let action = {
       event: "importSelected",
       payload: null
@@ -67,10 +71,27 @@ const RoisFeed = ({}) => {
 
   const handleSave = () => 
   {
+    let parsed = JSON.parse(localStorage.getItem('selections'))
+    console.log(parsed);
+    let condition = true
+    if(parsed.selectedRegions.length > 0) 
+    {
+      condition = confirm(`Are you sure you want to overwrite selected regions? Last save was ${formatDistanceToNow(parsed.savedDate)}`  )
 
-    let selections = JSON.stringify(selectedRegions)
-    localStorage.setItem('selections', selections)
-    
+     } 
+
+     if(condition) 
+     {
+      let saveObj = 
+      {
+        selectedRegions,
+        savedDate: Date.now()
+      }
+      let selections = JSON.stringify(saveObj)
+      localStorage.setItem('selections', selections)
+      
+    }
+
   }
 
   function printDate(time, evaluateTime) {
@@ -115,7 +136,7 @@ const RoisFeed = ({}) => {
             <button
               className={`
             
-            
+            mx-2
              hover:cursor-pointer
             font-bold border-white border rounded p-2  shadow-black
             cursor-default
@@ -131,7 +152,7 @@ const RoisFeed = ({}) => {
               Auto Detect{" "}
             </button>
 
-            <div className="grid grid-cols-2 gap-2 mx-1 place-content-between  ">
+            <div className="grid grid-cols-2 gap-2 mx-2 place-content-between  ">
             <button
               className={`
             
