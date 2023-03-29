@@ -4,11 +4,9 @@ server_flask/image.jpg
 server_node
 old_node
 client/public/demo_encode.mp4
-# client/public/demo.mp4
 .gitignore
 client/static/demo_encode.mp4
 client/test.mp4
 client/public/test.mp4
 client/config.js
 client/.env
-client/libs/webRTC_utility.js

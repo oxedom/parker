@@ -203,7 +203,7 @@ const selectedRoiState = selector({
       if (_autoDetect) {
         const autoChecked = get(autoCheckedState);
         const autoEvaluateTime = get(autoEvaluateTimeState)
-        drawTextOnCanvas(canvas, _width, _height, "Auto Detcting");
+        drawTextOnCanvas(canvas, _width, _height, "Auto detecting");
         let adding = Date.now() - autoChecked;
         if (autoChecked === 0) {
           set(autoCheckedState, Date.now());
