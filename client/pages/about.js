@@ -13,27 +13,27 @@ const About = () => {
   return (
     <DefaultLayout>
       <Head>
-      <title> Parker: About</title>
+      <title> Parkerr: About</title>
       </Head>
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[800px] gap-5 mt-5items-stretch  ">
         <main className="">
           <div className="text-lg  ">
-            <h2 className="text-5xl text-center flex  justify-center items-center gap-10 font-bold  rounded-lg  mb-10    text-orange-600">
+            <h2 className="text-5xl text-center flex  justify-center items-center gap-5 font-bold  rounded-lg  mb-10    text-orange-600">
               {" "}
-              About parker
+              About Parkerr
               <div>
 
                 <a href="https://github.com/oxedom/parker" className="  ">               <Image width={50} src={github}></Image>    </a>
               </div>
             </h2>
             
-            <section className="p-5  rounded-md mt-2 flex gap-2 flex-col text-xl  ">
+            <section className="p-5  rounded-md flex gap-2 flex-col text-xl  ">
          
 
               <p className="b-t border-black">
                 {" "}
                 <span className="text-2xl text-gray-700 font-bold">
-                  Parker{" "}
+                  Parkerr{" "}
                 </span>{" "}
                 is a free to use smart parking webapp that to enable users to privately
                 mointor parking spaces using computer vision.  
@@ -178,19 +178,19 @@ const About = () => {
             
    
 
-            <div className="mt-1 ">
-            <h4 className="text-xl font-bold ">
+            <div className="mb-10 mt-2 ">
+            <h4 className="text-2xl font-bold ">
            Special Thanks
             </h4>
-            <ul>
+            <ul className="flex flex-col gap-2">
               <li>Hugo zanini, for porting YOLO7 to tfjs and for sharing his code</li>
               <li> Jason Mayes, for  advice and gudience </li>
               <li> The tensorflow Community! </li>
-              <li> <a href="https://www.reddit.com/r/computervision/" className="text-blue-500"> /r/computervision </a></li>
               <li> Everyone who believed in me 😊 🚗  </li>
             </ul>
             </div>
             </section>
+
           </div>
         </main>
       </div>

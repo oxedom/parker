@@ -38,7 +38,7 @@ const view = () => {
       <nav className="flex  border-b-2 border-black justify-around items-center h-[80px] bg-filler text-white">
         <h4
           onClick={(e) => {
-            router.push("https://www.sam-brink.com/");
+            router.push("https://www.parkerr.org/");
           }}
           className="text-center uppercase  hover:cursor-pointer font-bold text-4xl"
         >
@@ -47,7 +47,7 @@ const view = () => {
         </h4>
         <span
           onClick={(e) => {
-            router.push("https://www.sam-brink.com/about");
+            router.push("https://www.parkerr.org/about");
           }}
           className="text-center hover:cursor-pointer font-bold text-xl"
         >

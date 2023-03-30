@@ -41,9 +41,6 @@ echo "Pushing to Dockerhub"
 
 sudo docker push oxedom/parker 
 
-ssh root@$SERVER_IP << EOF
-echo "success VPS Parker LOG N"
-sudo docker pull "oxedom/parker:latest"
-sudo docker run -p 3000:3000 oxedom/parker
+
 
 EOF

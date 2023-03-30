@@ -30,14 +30,14 @@ const Home = () => {
                 </p>
 
                 <Link href={"/vision"}>
-                  <button className="hidden sm:block my-5 text-2xl duration-300  rounded-lg  bg-orange-600 p-4 hover:scale-105">
+                  <button className="hidden sm:block my-5 text-2xl duration-300  rounded-lg bg-orangeFadeSides p-4 hover:scale-105">
                     {" "}
-                    Try parker{" "}
+                    Try Parkerr{" "}
                   </button>
                 </Link>
 
                 <Link href={"/about"}>
-                  <button className="block sm:hidden my-5 text-2xl duration-300  rounded-lg  bg-orange-600 p-4 hover:scale-105">
+                  <button className="block sm:hidden my-5 text-2xl duration-300  rounded-lg bg-orangeFadeSides p-4 hover:scale-105">
                     {" "}
                     About{" "}
                   </button>

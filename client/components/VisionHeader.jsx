@@ -21,7 +21,7 @@ const VisionHeader = ({
   const imageWidth = useRecoilValue(imageWidthState);
   const [qrCodeURL, setQRcodeURL] = useState("");
   const btnStyle =
-    "border-2 rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200  hover:shadow-none";
+    "border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200  hover:shadow-none";
   const handleWebcamSource = () => {
     setWebRTCMode(false);
     setDemo(false);
@@ -44,7 +44,7 @@ const VisionHeader = ({
   };
 
   useEffect(() => {
-    generateQR(`https://www.sam-brink.com/reroute?remoteID=${peerId}`);
+    generateQR(`https://www.parkerr.org/reroute?remoteID=${peerId}`);
   }, [peerId]);
 
   const handleBack = () => {
@@ -63,15 +63,15 @@ const VisionHeader = ({
 
   const handleCopy = () => {
     navigator.clipboard.writeText(
-      `https://www.sam-brink.com/reroute?remoteID=${peerId}`
+      `https://www.parkerr.org/reroute?remoteID=${peerId}`
     );
   };
 
   return (
-    <nav className={`flex justify-around items-center animate-fade  `}>
+    <nav className={`flex justify-around items-center animate-fade bg-orangeFadeSides rounded-md  `}>
       {!WebRTCMode && !allowWebcam && !demo ? (
         <div className="flex gap-2 items-center ">
-          <button onClick={handleDemoSource} className={`bg-orange-500 ${btnStyle} `}>
+          <button onClick={handleDemoSource} className={`bg-orange-600 ${btnStyle} `}>
             {" "}
             Demo{" "}
           </button>

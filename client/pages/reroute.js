@@ -5,12 +5,12 @@ const reroute = () => {
   const handleReroute = (val) => {
     if (val === "input") {
       router.push(
-        `https://www.sam-brink.com//input?remoteID=${router.query.remoteID}`
+        `https://www.parkerr.org/input?remoteID=${router.query.remoteID}`
       );
     }
     if (val === "view") {
       router.push(
-        `https://www.sam-brink.com//view?remoteID=${router.query.remoteID}`
+        `https:/www.parkerr.orgview?remoteID=${router.query.remoteID}`
       );
     }
   };

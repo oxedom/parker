@@ -17,7 +17,7 @@ const Navbar = () => {
             <h1 className=" text-bold text-3xl      justify-center items-center text-center  font-bold  text-white    hover:cursor-pointer">
               <p className=" p-2 ml-5 uppercase flex justify-items-center items-center gap-5 ">
                 {" "}
-                Parker
+                Parkerr
               </p>
             </h1>
           </Link>
@@ -41,7 +41,6 @@ const Navbar = () => {
  
           </div>
 
-          <a  href="https://github.com/oxedom/parker"  target={"_blank"} className="   ">               <Image width={30} height={30} className="invert saturate-0" src={github}></Image>     </a>
         </div>
       </nav>
     </div>
