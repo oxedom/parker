@@ -128,9 +128,18 @@ const About = () => {
             </h4>
             <p>
             After entering the vision page and pressing the remote stream button, you can scan QR code with your mobile device and when loaded,press on the call button to allow acesss to your phones camera. <br></br>
-            * two imporant notes:
-            Phone should stream video in landscape mode 
-            Change your settings that your phone screen doesn't autolock to enable a continutes video stream. 
+            <br></br>
+            <div className="">
+              <h4> </h4>
+              <p>     1. Make sure phone should stream video in landscape mode</p>
+              <p>
+              2. Change your settings that your phone screen doesn't autolock to enable a continutes video stream. 
+              </p>
+              <p> 3.You might need to press the call button a few times 
+              </p>
+            </div>
+     
+       
 
             </p>
 
@@ -184,7 +193,7 @@ const About = () => {
             </h4>
             <ul className="flex flex-col gap-2">
               <li>Hugo zanini, for porting YOLO7 to tfjs and for sharing his code</li>
-              <li> Jason Mayes, for  advice and gudience </li>
+              <li> Jason Mayes, for  advice and guidance </li>
               <li> The tensorflow Community! </li>
               <li> Everyone who believed in me 😊 🚗  </li>
             </ul>
