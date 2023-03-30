@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Navlink from "./Navlink.jsx";
 import Router from "next/router";
-import github from '/public/static/icons/github-mark.png'
-import Image from "next/image.js";
+
 const Navbar = () => {
   const handleVision = () => {
     if (Router.route == "/vision") {

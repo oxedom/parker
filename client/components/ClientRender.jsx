@@ -331,6 +331,8 @@ const ClientRender = ({
             handleDemoLoaded(e);
           }}
           autoPlay
+          controls={false}
+          start="10"
           type="video/mp4"
           src="./demo.mp4"
         />
