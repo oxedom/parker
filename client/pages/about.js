@@ -131,11 +131,11 @@ const About = () => {
             <br></br>
             <div className="">
               <h4> </h4>
-              <p>     1. Make sure phone should stream video in landscape mode</p>
+              <p>     1. Make sure phone is streaming video in landscape mode</p>
               <p>
               2. Change your settings that your phone screen doesn't autolock to enable a continutes video stream. 
               </p>
-              <p> 3.You might need to press the call button a few times 
+              <p> 3.You might need to press the call button a few times to establish the connection 
               </p>
             </div>
      
