@@ -73,7 +73,7 @@ const About = () => {
 
                 <li className="flex gap-2 text-center items-center">
                   {" "}
-                  <Image width={50} alt="yolo" src={yoloLogo}></Image>
+                  {/* <Image width={50} alt="yolo" src={yoloLogo}></Image> */}
                   <a
                     className="text-blue-500"
                     href="https://github.com/hugozanini/yolov7-tfjs"
