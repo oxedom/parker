@@ -35,14 +35,14 @@ const About = () => {
                 <span className="text-2xl text-gray-700 font-bold">
                   Parkerr{" "}
                 </span>{" "}
-                is a free to use smart parking webapp that to enable users to privately
+                is a free to use smart parking desktop webapp that to enable users to privately
                 mointor parking spaces using computer vision.  
               </p>
 
 
               <p className="text-4xl my-5   text-gray-700 ">Built with</p>
 
-              <ul className="grid grid-cols-2 gap-2">
+              <ul className="grid grid-cols-none  sm:grid-cols-2 gap-2">
                 <li className="flex gap-2">
                   <Image
                     alt="tensorflow"
