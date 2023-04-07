@@ -5,7 +5,7 @@ Parker is a free smart parking tool that enables you monitor parking spots using
 # LIVE LINK
 [Live link](https://www.parkerr.org/)
 
-![Parker Demo](https://i.imgur.com/XCDlxNg.gif)
+![Parker Demo](https://i.imgur.com/JSEIqFD.png)
 
 # Built With
 * TensorFlow.js
