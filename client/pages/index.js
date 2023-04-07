@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title> Parker: Empower your parking </title>
+        <title> Parkerr: Empower your parking </title>
       </Head>
       <DashboardLayout>
         {/* Free SVG Background by <a target="_blank" href="https://bgjar.com">BGJar</a> */}
