@@ -25,8 +25,9 @@ const Home = () => {
                 </div>
                 
                 <p className="text-xl  md:text-2xl font-normal">
-                  Using computer vision and client side processing <br />
-                  to turn your parking situation into a smart one.{" "}
+                a browser application that allows you to <br/> turn your parking situation into a smart one.
+                 <br />
+                 {" "}
                 </p>
 
                 <Link href={"/vision"}>
