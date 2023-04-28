@@ -12,8 +12,7 @@ const view = () => {
   const peerRef = useRef(null);
 
   const handleData = (data) => {
-    console.log(data);
-    console.log("1");
+
     let updatedCounts = totalOccupied(data);
     setCounts(updatedCounts);
   };
@@ -43,7 +42,7 @@ const view = () => {
           className="text-center uppercase  hover:cursor-pointer font-bold text-4xl"
         >
           {" "}
-          Parker{" "}
+          Parkerr{" "}
         </h4>
         <span
           onClick={(e) => {

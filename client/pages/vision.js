@@ -81,7 +81,7 @@ const visionPage = () => {
   return (
     <DashboardLayout>
       <Head>
-        <title> Parker: Vision</title>
+        <title> Parkerr: Vision</title>
       </Head>
 
       <div className={`flex flex-col  p-16   `}>

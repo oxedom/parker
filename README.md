@@ -1,11 +1,11 @@
 
-# Parker 
-Parker is a free smart parking tool that enables you monitor parking spots using a webcam, cellphone camera, or any virtual camera. The tool uses computer vision object detection to process all the footage in the browser, utilizing TensorFlow.js. Communication between a remote cellphone and the browser is enabled through WebRTC (PeerJS uses PeerServer for session metadata and candidate signaling. as well as Google Stun servers)
+# Parkerr 
+Parkerr is a free smart parking tool that enables you monitor parking spots using a webcam, cellphone camera, or any virtual camera. The tool uses computer vision object detection to process all the footage in the browser, utilizing TensorFlow.js. Communication between a remote cellphone and the browser is enabled through WebRTC (PeerJS uses PeerServer for session metadata and candidate signaling. as well as Google Stun servers)
 
 # LIVE LINK
 [Live link](https://www.parkerr.org/)
 
-![Parker Demo](https://i.imgur.com/JSEIqFD.png)
+![Parkerr Demo](https://i.imgur.com/JSEIqFD.png)
 
 # Built With
 * TensorFlow.js

@@ -77,7 +77,7 @@ const Input = () => {
   return (
     <> 
     <Head>
-    <title> Parker: Input </title>
+    <title> Parkerr: Input </title>
     </Head>
     
 

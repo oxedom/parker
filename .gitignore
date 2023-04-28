@@ -10,3 +10,5 @@ client/test.mp4
 client/public/test.mp4
 client/config.js
 client/.env
+/node_modules
+node_modules

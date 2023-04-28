@@ -175,7 +175,7 @@ const About = () => {
 
             <div className="mt-1 ">
             <h4 className="text-2xl font-bold ">
-            What else can parker detect?
+            What else can parkerr detect?
             </h4>
             <p>
               <a href="https://github.com/oxedom/parker/blob/main/client/libs/labels.json" className="text-blue-500"> Here is a list </a>
