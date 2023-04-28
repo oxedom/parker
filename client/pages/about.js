@@ -53,7 +53,7 @@ const About = () => {
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[800px] gap-5 mt-5items-stretch  ">
         <main className="">
           <div className="text-lg  ">
-            <h2 className="text-5xl text-center flex  justify-center items-center gap-5 font-bold  rounded-lg  mb-10    text-orange-600">
+            <h2 className="text-5xl text-center flex  justify-center items-center gap-5 font-bold  rounded-lg  mb-10    text-orange-500">
               {" "}
               About Parkerr
               <div>
@@ -148,7 +148,7 @@ const About = () => {
               </ul>
             </section>
 
-          <section className="border-b-8 border-orange-300">
+          <section className="border-b-8 border-orange-500">
           <h3 className="   text-gray-700 text-3xl  my-5 p-2"> F.A.Q  </h3>
            
 

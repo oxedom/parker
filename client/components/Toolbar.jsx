@@ -78,9 +78,7 @@ const Toolbar = ({ processing, setProcessing, isModalOpen, loadedCoco }) => {
   function handleProcessing() {
     processing ? setProcessing(false) : setProcessing(true);
   }
-  function handleWebcamToogle() {
-    // allowWebcam ? setAllowWebcam(false) : setAllowWebcam(true);
-  }
+
 
   function handleDetectionsEnable() {
     if (processing && loadedCoco) {

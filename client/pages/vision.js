@@ -84,7 +84,7 @@ const visionPage = () => {
         <title> Parkerr: Vision</title>
       </Head>
 
-      <div className={`flex flex-col  p-16   `}>
+      <div className={`flex flex-col     `}>
         <div className="flex flex-col justify-center items-center gap-4  rounded-lg">
           <div className=" grid relative text-2xl w-full  text-white gap-2 h-20 rounded-xl font-bold bg-orangeFade ">
             <VisionHeader

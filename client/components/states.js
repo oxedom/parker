@@ -10,16 +10,19 @@ import {
 } from "../libs/states_utility";
 import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
 
+//The evaluation time is used to have a minimum time a square needs to be occupied/unoccupied to change it's state.
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
   default: 5000,
 });
 
+//Automatic Evaluate time is 10 secounds
 const autoEvaluateTimeState = atom({
   key: "autoEvaluateTimeState",
   default: 10000,
 });
 
+//Default thershold for a detection
 const detectionThresholdState = atom({
   key: "detectionThresholdState",
   default: 0.5,
@@ -29,6 +32,7 @@ const overlapThresholdState = atom({
   key: "overlapThresholdState",
   default: 0.4,
 });
+
 
 const vehicleOnlyState = atom({
   key: "vehicleOnlyState",
@@ -91,6 +95,7 @@ const selectedRoiState = selector({
   },
 
   set: ({ set, get }, action) => {
+    //Adds Roi to array
     if (action.event === "addRoi") {
       let { cords } = action.payload;
       const roiObj = selectedFactory(cords);
@@ -101,12 +106,14 @@ const selectedRoiState = selector({
 
       set(selectedRoi, updatedArr);
     }
+    //Removes ROI from array
     if (action.event === "deleteRoi") {
       let uid = action.payload;
       const oldRois = get(selectedRoi);
       const updatedArr = oldRois.filter((roi) => roi.uid !== uid);
       set(selectedRoi, updatedArr);
     }
+
     if (action.event === "occupation") {
       let { predictionsArr, canvas } = action.payload;
 
@@ -200,6 +207,7 @@ const selectedRoiState = selector({
         }
       }
 
+      //Fires while autoDetect is true
       if (_autoDetect) {
         const autoChecked = get(autoCheckedState);
         const autoEvaluateTime = get(autoEvaluateTimeState)
@@ -230,7 +238,8 @@ const selectedRoiState = selector({
 
       //How long it takes to evaluate if a object is there or not
     }
-
+    //When a ROI is hovered over it updates that state that it's hover property is true, which in turn effects it's what color it is renderered
+    //in the ROI FEED and on the canvas
     if (action.event === "selectRoi") {
       let uid = action.payload;
       //Array of ROI objects
@@ -256,7 +265,7 @@ const selectedRoiState = selector({
 
     }
 
-
+    //When a ROI is unhovered over it updates that state that it's hover property is no longer true
     if (action.event === "unSelectRoi") {
       let uid = action.payload;
       //Array of ROI objects
@@ -280,6 +289,7 @@ const selectedRoiState = selector({
   },
 });
 
+//Default Width and Heights
 const imageHeightState = atom({
   key: "imageHeight",
   default: 480,

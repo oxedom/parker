@@ -1,7 +1,5 @@
 import DisplayInfo from "./DisplayInfo";
 import QRCode from "qrcode";
-import { imageWidthState } from "./states";
-import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -15,10 +13,9 @@ const VisionHeader = ({
   allowWebcam,
   setWebcamLoaded,
   handleDisableDemo,
-  webcamLoaded,
   setDemo,
 }) => {
-  const imageWidth = useRecoilValue(imageWidthState);
+
   const [qrCodeURL, setQRcodeURL] = useState("");
   const btnStyle =
     "border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200  hover:shadow-none";
