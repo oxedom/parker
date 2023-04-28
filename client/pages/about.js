@@ -17,7 +17,7 @@ const About = () => {
   [
     { 
       question: "How does it Parkerr work?" , 
-      answer: "Under the hood, Parkerr uses tensorflow.js a javascript library to deploy machine learning models entirely in the browser. Parkerr is running YOLO7 (You Only Look Once v7) a real-time object detection computer vision model. YOLO is one of the fastest, most accurate models and simplest to train models available publicly to the world. My implementation of Parkerr involves mapping the model's output to a custom data structure and integrating it into the application's data pipeline and state.",
+      answer: "Under the hood, Parkerr uses tensorflow.js a javascript library to deploy machine learning models entirely in the browser. Parkerr is running YOLO7 (You Only Look Once v7) a real-time object detection computer vision model. YOLO is fast, accurate models and simple to train. My implementation with Parkerr involves mapping the model's output to a custom data structure and integrating it into the application's data pipeline and state to be suitable for a parking app.",
     },
     
     { 
@@ -72,7 +72,7 @@ const About = () => {
                 <span className="text-2xl text-gray-700 font-bold">
                   Parkerr{" "}
                 </span>{" "}
-                is browser application that allows you to detect and monitor parking spaces to using computer vision.
+                is browser application that allows you to detect and monitor parking spaces using computer vision.
                 
               </p>
 
