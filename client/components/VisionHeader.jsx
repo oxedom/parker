@@ -18,7 +18,7 @@ const VisionHeader = ({
 
   const [qrCodeURL, setQRcodeURL] = useState("");
   const btnStyle =
-    "border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200  hover:shadow-none";
+    `border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200 ${(!allowWebcam &&  !WebRTCMode  && !demo) ? "animate-pulse" : "" } hover:shadow-none`;
   const handleWebcamSource = () => {
     setWebRTCMode(false);
     setDemo(false);
@@ -67,18 +67,18 @@ const VisionHeader = ({
   return (
     <nav className={`flex justify-around items-center animate-fade bg-orangeFadeSides rounded-md  `}>
       {!WebRTCMode && !allowWebcam && !demo ? (
-        <div className="flex gap-2 items-center ">
-          <button onClick={handleDemoSource} className={`bg-orange-600 ${btnStyle} `}>
+        <div className="grid grid-cols-3  items-center ">
+          <button onClick={handleDemoSource} className={`bg-purple-600 ${btnStyle} `}>
             {" "}
             Demo{" "}
           </button>
-          <button onClick={handleWebcamSource} className={`bg-orange-600 ${btnStyle} `}>
+          <button onClick={handleWebcamSource} className={`bg-purple-600 ${btnStyle} `}>
             {" "}
-            Webcam Video Source
+            Webcam 
           </button>
-          <button onClick={handleRTCSource} className={`bg-orange-600 ${btnStyle} `}>
+          <button onClick={handleRTCSource} className={`bg-purple-600 ${btnStyle} `}>
             {" "}
-            Remote Video Source{" "}
+            Remote {" "}
           </button>
         </div>
       ) : (

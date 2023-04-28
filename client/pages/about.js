@@ -19,6 +19,7 @@ const About = () => {
       question: "How does it Parkerr work?" , 
       answer: "Under the hood, Parkerr uses tensorflow.js a javascript library to deploy machine learning models entirely in the browser. Parkerr is running YOLO7 (You Only Look Once v7) a real-time object detection computer vision model. YOLO is one of the fastest, most accurate models and simplest to train models available publicly to the world. My implementation of Parkerr involves mapping the model's output to a custom data structure and integrating it into the application's data pipeline and state.",
     },
+    
     { 
       question: "How does remote communication work?" , 
       answer: "Parkerr currently implements remote communication through a P2P solution using PeerJS, a javascript library that implements correct WebRTC configuration using PeerServer Cloud services and Google stuns servers.",
@@ -43,6 +44,7 @@ const About = () => {
       question: "What objects can the model detect?" , 
       answer: "human, bicycle, car, motorcycle, airplane, bus, train, truck, boat, traffic light, fire hydrant, stop sign, parking meter, bench, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra, giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard, sports ball, kite, baseball bat, baseball glove, skateboard, surfboard, tennis racket, bottle, wine glass, cup, fork, knife, spoon, bowl, banana, apple, sandwich, orange, broccoli, carrot, hot dog, pizza, donut, cake, chair, couch, potted plant, bed, dining table, toilet, tv, laptop, mouse, remote, keyboard, cell phone, microwave, oven, toaster, sink, refrigerator, book, clock, vase, scissors, teddy bear, hair drier, toothbrush.",
     },
+
   ]
 
   return (
@@ -62,7 +64,7 @@ const About = () => {
               </div>
             </h2>
             
-            <section className="p-5  rounded-md flex gap-2 flex-col text-xl  ">
+            <section className="p-5  border-b-8 border-orange-500 rounded-md flex gap-2 flex-col text-xl  ">
          
 
               <p className="b-t border-black">
@@ -74,7 +76,7 @@ const About = () => {
                 
               </p>
 
-
+     
               <p className="text-4xl my-5   text-gray-700 ">Built with</p>
 
               <ul className="grid grid-cols-none  sm:grid-cols-2 gap-2">
@@ -168,15 +170,15 @@ const About = () => {
 
             <Instruction title={'Mobile Phone Instructions'}> 
             <p>
-            After entering the vision page and pressing the remote stream button, you can scan QR code with your mobile device and when loaded,press on the call button to allow acesss to your phones camera. <br></br>
+            Navigate to the "Vision" page, press the designated remote button, use your mobile device to scan the QR code. Once the page is loaded, locate and press the "Call" button and allow access to your phone's camera when prompted.<br></br>
             <br></br>
             <div className="">
               <h4> </h4>
               <p>     1. Make sure phone is streaming video in landscape mode</p>
               <p>
-              2. Change your settings that your phone screen doesn't autolock to enable a continutes video stream. 
+              2. Change your phone settings that your phone screen doesn't autolock to ensure a continutes video stream. 
               </p>
-              <p> 3.You might need to press the call button a few times to establish the connection 
+              <p> 3. You may need to press the call button a few times to establish the connection. 
               </p>
             </div>
      
@@ -210,9 +212,20 @@ const About = () => {
             Open the vision page, press the webcam button, allow webcam access, and point it wherever you desire.
             </p>
             </Instruction>
-    
+      
 
+            <Instruction title={"Settings explanation"}>
+              <section className="flex gap-2 flex-col">
 
+        
+            <p> Processing: Run the TFJS object detection model toogler </p>
+            <p> Show Boxes: Visually render the bbox on the detected items toogler</p>
+            <p> Vehicle Only: Only detect vehicles toogler) </p>
+            <p> Detection Threshold: The minimum score for a detection to be  valid</p>
+            <p> IOU Threshold: The threshold for the Intersection over Union\Jaccard index between bboxes</p>
+            <p> Render Rate:  Render a frame X many secounds, 2 being the slowest and 0.01 is the fastest</p>
+            </section>
+            </Instruction>
 
 
             
