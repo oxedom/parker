@@ -9,6 +9,7 @@ import yoloLogo from "../public/static/yolo.png"
 import tailwindLogo from "../public/static/Tailwind.png"
 import recoilLogo from "../public/static/Recoil.png"
 import Question from "../components/Question";
+import Instruction from "../components/Instruction";
 
 const About = () => {
 
@@ -147,30 +148,25 @@ const About = () => {
               </ul>
             </section>
 
-          <section>
-          <h3 className="font-bold border-b border-gray-700 text-center text-3xl  p-2"> F.A.Q  </h3>
+          <section className="border-b-8 border-orange-300">
+          <h3 className="   text-gray-700 text-3xl  my-5 p-2"> F.A.Q  </h3>
            
 
             {questions.map(q => <Question key={q.question} answer={q.answer}  question={q.question}> </Question>)}
    
+            <Instruction title={'Where can I find the source code?'}>
+            <a className="text-blue-500 text-center border-b p-1 border-black " href="https://github.com/oxedom/parker"> In this Repository</a>
 
+            </Instruction>
 
           </section>
 
 
             <section className="flex flex-col gap-5">
-              <h3 className="font-bold border-b border-gray-700 text-center text-3xl text-gray-800"> Instructions  </h3>
-                
-              <div className="mt-1 ">
-            <h4 className="text-xl font-bold text-center ">
-              <a className="text-blue-500 text-center border-b p-1 border-black " href="https://github.com/oxedom/parker"> More information in the repo</a>
-            </h4>
-            </div>
+              <h3 className="  text-3xl  text-gray-800 my-5 p-2"> Instructions  </h3>
 
-            <div className="mt-1 ">
-            <h4 className="text-2xl font-bold ">
-            Mobile Phone Camera Instructions
-            </h4>
+
+            <Instruction title={'Mobile Phone Instructions'}> 
             <p>
             After entering the vision page and pressing the remote stream button, you can scan QR code with your mobile device and when loaded,press on the call button to allow acesss to your phones camera. <br></br>
             <br></br>
@@ -187,13 +183,15 @@ const About = () => {
        
 
             </p>
+            </Instruction>
 
-            </div>
 
-            <div className="flex gap-2 flex-col">
-            <h4 className="text-2xl font-bold   ">
-            Connect CCTV/IP Cameras with OBS 
-            </h4>
+
+
+     
+
+       
+            <Instruction title={"Connect CCTV/IP Cameras with OBS"}>
             <p>
             <strong> If your IP/CCTV cameras not are  not directly connected to your computer </strong>Stream their video footage using
             <a  className="text-blue-500 " href="https://obsproject.com/"> OBS </a>
@@ -205,32 +203,29 @@ const About = () => {
             <p>
 
             </p>
+            </Instruction>
 
-            </div>
-
-            <div className="mt-1 ">
-            <h4 className="text-2xl font-bold ">
-            Webcam Instructions
-            </h4>
+            <Instruction title={"Webcam Instructions"}>
             <p>
             Open the vision page, press the webcam button, allow webcam access, and point it wherever you desire.
             </p>
+            </Instruction>
+    
 
-            </div>
+
 
 
             
    
 
-            <div className="mb-10 mt-2 ">
-            <h4 className="text-2xl font-bold ">
+            <div className="my-10 ">
+            <h4 className="text-3xl mb-5  ">
            Special Thanks
             </h4>
             <ul className="flex flex-col gap-2">
-              <li>Hugo zanini, for porting YOLO7 to tfjs and for sharing his code</li>
-              <li> Jason Mayes, for  advice and guidance </li>
-              <li> The tensorflow Community! </li>
-              <li> Everyone who believed in me 😊 🚗  </li>
+              <li>Hugo zanini, for porting YOLO7 to tfjs and for sharing his code.</li>
+              <li> Jason Mayes, for advice and guidance. </li>
+              <li> The tensorflow Community. </li>
             </ul>
             </div>
             </section>
