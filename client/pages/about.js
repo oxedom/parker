@@ -8,8 +8,42 @@ import Head from "next/head";
 import yoloLogo from "../public/static/yolo.png"
 import tailwindLogo from "../public/static/Tailwind.png"
 import recoilLogo from "../public/static/Recoil.png"
+import Question from "../components/Question";
 
 const About = () => {
+
+  const questions  = 
+  [
+    { 
+      question: "How does it Parkerr work?" , 
+      answer: "Under the hood, Parkerr uses tensorflow.js a javascript library to deploy machine learning models entirely in the browser. Parkerr is running YOLO7 (You Only Look Once v7) a real-time object detection computer vision model. YOLO is one of the fastest, most accurate models and simplest to train models available publicly to the world. My implementation of Parkerr involves mapping the model's output to a custom data structure and integrating it into the application's data pipeline and state.",
+    },
+    { 
+      question: "How does remote communication work?" , 
+      answer: "Parkerr currently implements remote communication through a P2P solution using PeerJS, a javascript library that implements correct WebRTC configuration using PeerServer Cloud services and Google stuns servers.",
+    },
+    { 
+      question: "What kind of video input does the application take?" , 
+      answer: "Parkerr can take webcam footage by allowing access through your browser or remote video communication through another device that has a built-in camera and modern browser.",
+    },
+    { 
+      question: "What data is collected from the application?" , 
+      answer: "Other than site website analytics, none. Parkerr processes all of the video footage on the client side and all remote communication is p2p and private.",
+    },
+    { 
+      question: "How was the auto detect parking implemented?" , 
+      answer: "The auto-detect feature works by collecting a snapshot of all of the detected vehicles for a few seconds and then suppresses all of the vehicles that have not been in a consistent position. If you were to try and use the auto-detect feature on an empty parking lot no selections will be made, if attempted on a full parking lot then all the parking spaces will be marked.",
+    },
+    { 
+      question: "Could the procesing be moved to a backend server?" , 
+      answer: "Yes! That is possible and was implemented, Originally the architecture of this project, I created a flask server that receives base64/blobs from the client and processes the input using yolo3 model with OpenCV, works fine on a small scale but needs additional configuration and refactoring for larger scales. Such as a server with a powerful GPU and autoscaling.",
+    },
+    { 
+      question: "What objects can the model detect?" , 
+      answer: "human, bicycle, car, motorcycle, airplane, bus, train, truck, boat, traffic light, fire hydrant, stop sign, parking meter, bench, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra, giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard, sports ball, kite, baseball bat, baseball glove, skateboard, surfboard, tennis racket, bottle, wine glass, cup, fork, knife, spoon, bowl, banana, apple, sandwich, orange, broccoli, carrot, hot dog, pizza, donut, cake, chair, couch, potted plant, bed, dining table, toilet, tv, laptop, mouse, remote, keyboard, cell phone, microwave, oven, toaster, sink, refrigerator, book, clock, vase, scissors, teddy bear, hair drier, toothbrush.",
+    },
+  ]
+
   return (
     <DefaultLayout>
       <Head>
@@ -79,7 +113,7 @@ const About = () => {
                     href="https://github.com/hugozanini/yolov7-tfjs"
                   >
                     {" "}
-                     YOLO7-tfjs  (Thanks Hugo){" "}
+                     YOLO7-tfjs 
                   </a>{" "}
                   
                 </li>
@@ -99,13 +133,13 @@ const About = () => {
 
                 <li className="flex gap-2 text-center items-center">
                   {" "}
-                  <Image width={60} alt="recoil" src={recoilLogo}></Image>
+                  {/* <Image width={60} alt="recoil" src={recoilLogo}></Image> */}
                   <a
                     className="text-blue-500"
                     href="https://github.com/hugozanini/yolov7-tfjs"
                   >
                     {" "}
-                    Recoil 
+                    React Recoil 
                   </a>{" "}
                   
                 </li>
@@ -114,177 +148,18 @@ const About = () => {
             </section>
 
           <section>
-          <h3 className="font-bold border-b border-black text-center text-3xl text-gray-800"> F.A.Q  </h3>
+          <h3 className="font-bold border-b border-gray-700 text-center text-3xl  p-2"> F.A.Q  </h3>
            
-          <div className="mt-1 ">
-            
-            <h4 className="text-2xl font-bold ">
-            How does it Parkerr work?
-            </h4>
-            <p>
-            Under the hood, Parkerr uses tensorflow.js a javascript library to deploy machine learning models entirely in the browser. Parkerr is running YOLO7 (You Only Look Once v7) a real-time object detection computer vision model.
-            YOLO is one of the fastest, most accurate models and simplest to train models available publicly to the world. My implementation of Parkerr involves mapping the model's output to a custom data structure and integrating it into the application's data pipeline and state.  
-            </p>
 
-            </div>
-
-            <div className="mt-1 ">
-            
-            <h4 className="text-2xl font-bold ">
-            How does remote communication work?
-            </h4>
-            <p>
-            Parkerr currently implements remote communication through a <a className="text-blue-500" href="https://en.wikipedia.org/wiki/Peer-to-peer" target="_blank">P2P </a> solution using 
-            PeerJS, a javascript library  that implements correct WebRTC configuration using PeerServer Cloud services and Google stuns servers.
-            </p>
-
-            </div>
-
-            <div className="mt-1 ">
-            
-            <h4 className="text-2xl font-bold ">
-            What kind of video input does the application take?
-            </h4>
-            <p>
-            Parkerr can take webcam footage by allowing access through your browser or remote video communication through another device that has a built-in camera and modern browser.          
-            </p>
-
-            </div>
-
-            <div className="mt-1 ">
-            
-            <h4 className="text-2xl font-bold ">
-            What kind of data is collected from the application?
-            </h4>
-            <p>
-            Other than site Analytics, none. Parkerr processes all of the video footage on the client side and all remote communication is p2p and private.
-         
-            </p>
-
-            </div>
-
-            <div className="mt-1 ">
-            
-            <h4 className="text-2xl font-bold ">
-            How was the auto detect parking implemented? 
-            </h4>
-            <p>
-            The auto-detect feature works by collecting a snapshot of all of the detected vehicles for a few seconds and then suppresses all of the vehicles that 
-            have not been in a consistent position. If you were to try and use the auto-detect feature on an empty parking lot no selections will be made, if attempted on a full parking lot then all the parking spaces will be marked.  
-         
-            </p>
-
-            </div>
-
-            <div className="mt-1 ">
-            
-            <h4 className="text-2xl font-bold ">
-            Could the procesing be moved to a backend server?
-            </h4>
-            <p>
-            Yes! That is possible and was implemented, Originally the architecture of this project, I created a flask server that receives base64/blobs from the client and processes the input using yolo3 model with OpenCV, works fine on a small scale but needs additional configuration and refactoring for larger scales. 
-            Such as a server with a powerful GPU and autoscaling. 
-            </p>
-
-            </div>
-
-          <div className="mt-1 ">
-
-            <h4 className="text-2xl font-bold ">
-            What objects can the model detect?
-            </h4>
-            <p>
-            human,
-bicycle,
-car,
-motorcycle,
-airplane,
-bus,
-train,
-truck,
-boat,
-traffic light,
-fire hydrant,
-stop sign,
-parking meter,
-bench,
-bird,
-cat,
-dog,
-horse,
-sheep,
-cow,
-elephant,
-bear,
-zebra,
-giraffe,
-backpack,
-umbrella,
-handbag,
-tie,
-suitcase,
-frisbee,
-skis,
-snowboard,
-sports ball,
-kite,
-baseball bat,
-baseball glove,
-skateboard,
-surfboard,
-tennis racket,
-bottle,
-wine glass,
-cup,
-fork,
-knife,
-spoon,
-bowl,
-banana,
-apple,
-sandwich,
-orange,
-broccoli,
-carrot,
-hot dog,
-pizza,
-donut,
-cake,
-chair,
-couch,
-potted plant,
-bed,
-dining table,
-toilet,
-tv,
-laptop,
-mouse,
-remote,
-keyboard,
-cell phone,
-microwave,
-oven,
-toaster,
-sink,
-refrigerator,
-book,
-clock,
-vase,
-scissors,
-teddy bear,
-hair drier,
-toothbrush
-
-            </p>
-
-            </div>
+            {questions.map(q => <Question key={q.question} answer={q.answer}  question={q.question}> </Question>)}
+   
 
 
           </section>
 
 
             <section className="flex flex-col gap-5">
-              <h3 className="font-bold border-b border-black text-center text-3xl text-gray-800"> Instructions  </h3>
+              <h3 className="font-bold border-b border-gray-700 text-center text-3xl text-gray-800"> Instructions  </h3>
                 
               <div className="mt-1 ">
             <h4 className="text-xl font-bold text-center ">
