@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const Instruction = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,19 +11,14 @@ const Instruction = ({ title, children }) => {
         className="w-full text-left font-medium  mb-2 focus:outline-none"
         onClick={toggleOpen}
       >
-        <span className='text-black text-2xl'>
-        {title}
-        </span>
-     
+        <span className="text-black text-2xl">{title}</span>
       </button>
       <div
         className={`overflow-hidden transition-height duration-300 ${
-          isOpen ? 'h-auto' : 'h-0'
+          isOpen ? "h-auto" : "h-0"
         }`}
       >
-        <div >
-            {children}
-        </div>
+        <div>{children}</div>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-
 import Head from "next/head";
 import Link from "next/link";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -23,11 +22,11 @@ const Home = () => {
                     Turning any camera into a parking monitor.{" "}
                   </span>
                 </div>
-                
+
                 <p className="text-xl  md:text-2xl font-normal">
-                a browser application that allows you to <br/> turn your parking situation into a smart one.
-                 <br />
-                 {" "}
+                  a browser application that allows you to <br /> turn your
+                  parking situation into a smart one.
+                  <br />{" "}
                 </p>
 
                 <Link href={"/vision"}>

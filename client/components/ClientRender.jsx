@@ -66,9 +66,6 @@ const ClientRender = ({
   const demoRef = useRef(null);
   const modelRef = useRef(null);
 
-
-
-
   const [loadingYolo, setYoloLoading] = useState({
     loaded: false,
     progress: 0,
@@ -86,8 +83,6 @@ const ClientRender = ({
     setWebcamPlaying(false);
     setAutoDetect(true);
   };
-
-
 
   async function setUserSettings() {
     try {
@@ -166,8 +161,13 @@ const ClientRender = ({
     //   detectionThreshold
     // );
 
-    const detections = non_max_suppression(res.arraySync()[0], detectionThreshold, thresholdIou, 50 )
-    // console.log(detections2);
+    const detections = non_max_suppression(
+      res.arraySync()[0],
+      detectionThreshold,
+      thresholdIou,
+      50
+    );
+
 
     // const { detectionIndices } = await nmsDetectionProcess(
     //   boxes,
@@ -176,8 +176,12 @@ const ClientRender = ({
     // );
 
     //
-    const predictionsRois = detectionsToROIArrVanilla(detections, imageWidth, imageHeight,vehicleOnly)
-
+    const predictionsRois = detectionsToROIArrVanilla(
+      detections,
+      imageWidth,
+      imageHeight,
+      vehicleOnly
+    );
 
     // const predictionsArr = detectionsToROIArr(
     //   detectionIndices,
@@ -244,9 +248,7 @@ const ClientRender = ({
     let id;
 
     if (processing) {
-  
       runYolo().then((res) => {
-
         id = res;
       });
     }
@@ -255,14 +257,15 @@ const ClientRender = ({
     return function () {
       clearInterval(id);
       clearCanvas(overlayXRef, imageWidth, imageHeight);
-
-      if (modelRef.current) {
-        // modelRef.current.dispose();
-      }
-
-      // setLoadedCoco(false);
     };
-  }, [processing, imageHeight, imageWidth, WebRTCLoaded, demoLoaded, webcamLoaded]);
+  }, [
+    processing,
+    imageHeight,
+    imageWidth,
+    WebRTCLoaded,
+    demoLoaded,
+    webcamLoaded,
+  ]);
 
   return loadingYolo.loaded ? (
     <>

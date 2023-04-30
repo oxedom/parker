@@ -3,8 +3,8 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { imageHeightState, evaluateTimeState, autoDetectState } from "./states";
 import deleteIcon from "../public/static/icons/delete_bin_black.png";
 import Image from "next/image";
-import Accordion from "./Accordion"
-import { formatDistanceToNow } from 'date-fns';;
+import Accordion from "./Accordion";
+import { formatDistanceToNow } from "date-fns";
 
 const RoisFeed = ({}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
@@ -13,7 +13,9 @@ const RoisFeed = ({}) => {
   const evaluateTime = useRecoilValue(evaluateTimeState);
 
   function handleDeleteAll() {
-    if(selectedRegions.length === 0) { return;}
+    if (selectedRegions.length === 0) {
+      return;
+    }
     let answer = confirm(
       "Are you sure you want to delete all selected regions?"
     );
@@ -24,8 +26,6 @@ const RoisFeed = ({}) => {
       setSelectedRois(action);
     }
   }
-
-
 
   function handleSelect(uid) {
     let action = {
@@ -58,50 +58,40 @@ const RoisFeed = ({}) => {
   };
 
   const handleImport = () => {
-    let condition = true
-    if(selectedRegions.length > 0) 
-    {
-      condition =  confirm("Are you sure you want to overright marked regions?")
+    let condition = true;
+    if (selectedRegions.length > 0) {
+      condition = confirm("Are you sure you want to overright marked regions?");
     }
-    if(condition)
-    {
+    if (condition) {
       let action = {
         event: "importSelected",
-        payload: null
+        payload: null,
       };
       setSelectedRois(action);
     }
+  };
 
-  
-
-    
-
-  }
-
-  const handleSave = () => 
-  {
-    let parsed = JSON.parse(localStorage.getItem('selections'))
+  const handleSave = () => {
+    let parsed = JSON.parse(localStorage.getItem("selections"));
     console.log(parsed);
-    let condition = true
-    if(parsed.selectedRegions.length > 0) 
-    {
-      condition = confirm(`Are you sure you want to overwrite selected regions? Last save was ${formatDistanceToNow(parsed.savedDate)}`  )
-
-     } 
-
-     if(condition) 
-     {
-      let saveObj = 
-      {
-        selectedRegions,
-        savedDate: Date.now()
-      }
-      let selections = JSON.stringify(saveObj)
-      localStorage.setItem('selections', selections)
-      
+    let condition = true;
+    if (parsed.selectedRegions.length > 0) {
+      condition = confirm(
+        `Are you sure you want to overwrite selected regions? Last save was ${formatDistanceToNow(
+          parsed.savedDate
+        )}`
+      );
     }
 
-  }
+    if (condition) {
+      let saveObj = {
+        selectedRegions,
+        savedDate: Date.now(),
+      };
+      let selections = JSON.stringify(saveObj);
+      localStorage.setItem("selections", selections);
+    }
+  };
 
   function printDate(time, evaluateTime) {
     //MS MILAsecoudns
@@ -162,8 +152,8 @@ const RoisFeed = ({}) => {
             </button>
 
             <div className="grid grid-cols-2 gap-2 mx-2 place-content-between  ">
-            <button
-              className={`
+              <button
+                className={`
             
             
              hover:cursor-pointer drop-shadow
@@ -175,14 +165,14 @@ const RoisFeed = ({}) => {
               bg-white cursor-pointer text-slate-800"
       
         `}
-              onClick={handleSave}
-            >
-              {" "}
-              Save  {" "}
-            </button>
+                onClick={handleSave}
+              >
+                {" "}
+                Save{" "}
+              </button>
 
-            <button
-              className={`
+              <button
+                className={`
             
             
              hover:cursor-pointer drop-shadow
@@ -190,14 +180,12 @@ const RoisFeed = ({}) => {
             
             bg-white cursor-pointer text-slate-800"
         `}
-              onClick={handleImport}
-            >
-              {" "}
-              Import  {" "}
-            </button>
+                onClick={handleImport}
+              >
+                {" "}
+                Import{" "}
+              </button>
             </div>
-
-
           </div>
           <div></div>
         </Accordion>

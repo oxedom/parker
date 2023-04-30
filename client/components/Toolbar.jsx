@@ -79,7 +79,6 @@ const Toolbar = ({ processing, setProcessing, isModalOpen, loadedCoco }) => {
     processing ? setProcessing(false) : setProcessing(true);
   }
 
-
   function handleDetectionsEnable() {
     if (processing && loadedCoco) {
       showDetections ? setShowDetections(false) : setShowDetections(true);
@@ -179,7 +178,7 @@ const Toolbar = ({ processing, setProcessing, isModalOpen, loadedCoco }) => {
             className={`text-white rounded-lg shadow outline drop-shadow outline-slate-700   ${
               settingChange
                 ? "bg-blue-500 outline-gray-800  animate-pulse font-bold duration-75 hover:bg-blue-700 text-white"
-                : "bg-orange-300 outline-gray-600  text-gray-600 font-medium cursor-default " 
+                : "bg-orange-300 outline-gray-600  text-gray-600 font-medium cursor-default "
             } outline-2 p-3`}
             onClick={handleSaveSettings}
           >

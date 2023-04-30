@@ -3,7 +3,6 @@ import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-
 const VisionHeader = ({
   setAllowWebcam,
   peerId,
@@ -15,10 +14,10 @@ const VisionHeader = ({
   handleDisableDemo,
   setDemo,
 }) => {
-
   const [qrCodeURL, setQRcodeURL] = useState("");
-  const btnStyle =
-    `border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200 ${(!allowWebcam &&  !WebRTCMode  && !demo) ? " animate-pulse" : "" } hover:shadow-none`;
+  const btnStyle = `border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200 ${
+    !allowWebcam && !WebRTCMode && !demo ? " animate-pulse" : ""
+  } hover:shadow-none`;
   const handleWebcamSource = () => {
     setWebRTCMode(false);
     setDemo(false);
@@ -65,20 +64,31 @@ const VisionHeader = ({
   };
 
   return (
-    <nav className={`flex justify-around items-center animate-fade bg-orangeFadeSides rounded-md  `}>
+    <nav
+      className={`flex justify-around items-center animate-fade bg-orangeFadeSides rounded-md  `}
+    >
       {!WebRTCMode && !allowWebcam && !demo ? (
         <div className="grid grid-cols-3  items-center ">
-          <button onClick={handleDemoSource} className={`bg-purple-600 ${btnStyle} `}>
+          <button
+            onClick={handleDemoSource}
+            className={`bg-purple-600 ${btnStyle} `}
+          >
             {" "}
             Demo{" "}
           </button>
-          <button onClick={handleWebcamSource} className={`bg-purple-600 ${btnStyle} `}>
+          <button
+            onClick={handleWebcamSource}
+            className={`bg-purple-600 ${btnStyle} `}
+          >
             {" "}
-            Webcam 
+            Webcam
           </button>
-          <button onClick={handleRTCSource} className={`bg-purple-600 ${btnStyle} `}>
+          <button
+            onClick={handleRTCSource}
+            className={`bg-purple-600 ${btnStyle} `}
+          >
             {" "}
-            Remote {" "}
+            Remote{" "}
           </button>
         </div>
       ) : (

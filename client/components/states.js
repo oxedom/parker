@@ -33,7 +33,6 @@ const overlapThresholdState = atom({
   default: 0.4,
 });
 
-
 const vehicleOnlyState = atom({
   key: "vehicleOnlyState",
   default: true,
@@ -41,7 +40,7 @@ const vehicleOnlyState = atom({
 
 const thresholdIouState = atom({
   key: "thresholdIouState",
-  default: 0.20,
+  default: 0.2,
 });
 
 const showDetectionsState = atom({
@@ -210,7 +209,7 @@ const selectedRoiState = selector({
       //Fires while autoDetect is true
       if (_autoDetect) {
         const autoChecked = get(autoCheckedState);
-        const autoEvaluateTime = get(autoEvaluateTimeState)
+        const autoEvaluateTime = get(autoEvaluateTimeState);
         drawTextOnCanvas(canvas, _width, _height, "Auto detecting");
         let adding = Date.now() - autoChecked;
         if (autoChecked === 0) {
@@ -222,8 +221,11 @@ const selectedRoiState = selector({
           const autoDetectArr = get(autoDetectArrState);
 
           //Const percent that it need to be in the detectionsArr
-          const minimumAttendance = 0.6
-          const suppresedRois = supressedRoisProcess(autoDetectArr, minimumAttendance);
+          const minimumAttendance = 0.6;
+          const suppresedRois = supressedRoisProcess(
+            autoDetectArr,
+            minimumAttendance
+          );
 
           const convertedToSelected = convertRoisSelected(suppresedRois);
 
@@ -256,13 +258,10 @@ const selectedRoiState = selector({
       selectedRoisClone[targetRoiIndex] = roiClone;
       set(selectedRoi, selectedRoisClone);
     }
-    if(action.event === 'importSelected') 
-    {
-      let selectionData = localStorage.getItem('selections')
-      let parsed = JSON.parse(selectionData)
+    if (action.event === "importSelected") {
+      let selectionData = localStorage.getItem("selections");
+      let parsed = JSON.parse(selectionData);
       set(selectedRoi, parsed.selectedRegions);
-
-
     }
 
     //When a ROI is unhovered over it updates that state that it's hover property is no longer true

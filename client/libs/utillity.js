@@ -247,21 +247,22 @@ export function detectionsToROIArr(
 }
 
 export function detectionsToROIArrVanilla(
-  detections, 
+  detections,
   imageWidth,
   imageHeight,
-  vehicleOnly) 
-{
+  vehicleOnly
+) {
   let condition = false;
- 
+
   let _predictionsArr = [];
-  const boxes =  shortenedCol(detections, [0,1,2,3]);
+  const boxes = shortenedCol(detections, [0, 1, 2, 3]);
   const scores = shortenedCol(detections, [4]);
   const class_detect = shortenedCol(detections, [5]);
-  if(detections === undefined || detections.length <= 0) { return []}
+  if (detections === undefined || detections.length <= 0) {
+    return [];
+  }
 
   for (let index = 0; index < detections.length; index++) {
-
     const detectionScore = scores[index];
     const detectionClass = class_detect[index];
     let dect_label = labels[detectionClass];
@@ -270,8 +271,7 @@ export function detectionsToROIArrVanilla(
     } else {
       condition = isVehicle(dect_label);
     }
-    if(condition) 
-    {
+    if (condition) {
       const roiObj = { cords: {} };
       let [x1, y1, x2, y2] = xywh2xyxy(boxes[index]);
       // Extract the bounding box coordinates from the 'boxes' tensor
@@ -292,15 +292,12 @@ export function detectionsToROIArrVanilla(
       roiObj.label = dect_label;
       roiObj.area = dect_width * dect_weight;
       // Add the bbox object to the bboxes array
- 
+
       _predictionsArr.push(roiObj);
     }
-
-    
   }
 
-  return _predictionsArr
-
+  return _predictionsArr;
 }
 
 export function filterArrayByScore(array, scores, threshold) {
@@ -315,8 +312,8 @@ export function filterArrayByScore(array, scores, threshold) {
 
 function shortenedCol(arrayofarray, indexlist) {
   return arrayofarray.map(function (array) {
-      return indexlist.map(function (idx) {
-          return array[idx];
-      });
+    return indexlist.map(function (idx) {
+      return array[idx];
+    });
   });
 }

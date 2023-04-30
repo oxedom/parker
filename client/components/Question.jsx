@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const Question = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,14 +11,11 @@ const Question = ({ question, answer }) => {
         className="w-full text-left font-medium  mb-2 focus:outline-none"
         onClick={toggleOpen}
       >
-        <span className='text-black text-2xl'>
-        {question}
-        </span>
-     
+        <span className="text-black text-2xl">{question}</span>
       </button>
       <div
         className={`overflow-hidden transition-height duration-300 ${
-          isOpen ? 'h-auto' : 'h-0'
+          isOpen ? "h-auto" : "h-0"
         }`}
       >
         <div className="text-gray-900">

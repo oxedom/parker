@@ -48,25 +48,29 @@ const LoadingScreen = ({
         context.fillRect(0, 0, imageWidth, imageHeight);
         context.fillStyle = "white";
 
-        const txt = `Scan the QR Code to \n make a remote \n video connection`
-        const lines = txt.split('\n');
-        const  lineheight = 40;
+        const txt = `Scan the QR Code to \n make a remote \n video connection`;
+        const lines = txt.split("\n");
+        const lineheight = 40;
 
-
-        for (var i = 0; i<lines.length; i++)
-        context.fillText(lines[i], imageWidth/2, imageHeight/2.5 + (i*lineheight) );
-
-
+        for (var i = 0; i < lines.length; i++)
+          context.fillText(
+            lines[i],
+            imageWidth / 2,
+            imageHeight / 2.5 + i * lineheight
+          );
       } else {
         context.fillRect(0, 0, imageWidth, imageHeight);
         context.fillStyle = "white";
-        const txt = "  Choose a video source from the \n navigation bar  \n  \n Demo/Webcam/Remote  "
-        const lines = txt.split('\n');
-        const  lineheight = 40;
-        for (var i = 0; i<lines.length; i++)
-        context.fillText(lines[i], imageWidth/2, imageHeight/2.5 + (i*lineheight) );
-
-
+        const txt =
+          "  Choose a video source from the \n navigation bar  \n  \n Demo/Webcam/Remote  ";
+        const lines = txt.split("\n");
+        const lineheight = 40;
+        for (var i = 0; i < lines.length; i++)
+          context.fillText(
+            lines[i],
+            imageWidth / 2,
+            imageHeight / 2.5 + i * lineheight
+          );
       }
     }
   }, [allowWebcam, WebRTCMode]);

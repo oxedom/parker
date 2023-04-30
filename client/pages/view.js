@@ -12,7 +12,6 @@ const view = () => {
   const peerRef = useRef(null);
 
   const handleData = (data) => {
-
     let updatedCounts = totalOccupied(data);
     setCounts(updatedCounts);
   };
