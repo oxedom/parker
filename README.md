@@ -31,9 +31,10 @@ Navigate to the "Vision" page, press the designated remote button, use your mobi
 3. Choose the camera software window from the list of windows available for capture.
 4. Click "OK" to confirm your selection.
 5. Click Start Virtual Camera
+
 You can adjust output resolution in the settings, recommended between 640x480 till 1280x720.  
 
-# How to Connect CCTV/IP Cameras that are on the local netork.
+# How to Connect CCTV/IP Cameras that are on the local network.
 If your iP/CCTV camera is on your local network, you can set your OBS settings to an ip address.
 
 Youtube Guide:
