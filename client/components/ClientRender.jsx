@@ -166,7 +166,7 @@ const ClientRender = ({
     //   detectionThreshold
     // );
 
-    const detections2 = non_max_suppression(res.arraySync()[0], detectionThreshold, thresholdIou, 50 )
+    const detections = non_max_suppression(res.arraySync()[0], detectionThreshold, thresholdIou, 50 )
     // console.log(detections2);
 
     // const { detectionIndices } = await nmsDetectionProcess(
@@ -176,7 +176,7 @@ const ClientRender = ({
     // );
 
     //
-    const predictionsRois = detectionsToROIArrVanilla(detections2, imageWidth, imageHeight,vehicleOnly)
+    const predictionsRois = detectionsToROIArrVanilla(detections, imageWidth, imageHeight,vehicleOnly)
 
 
     // const predictionsArr = detectionsToROIArr(
