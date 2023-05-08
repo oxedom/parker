@@ -65,7 +65,7 @@ const About = () => {
               <div>
                 <a href="https://github.com/oxedom/parker" className="  ">
                   {" "}
-                  <Image width={50} src={github}></Image>{" "}
+                  <Image alt="github" width={50} src={github}></Image>{" "}
                 </a>
               </div>
             </h2>

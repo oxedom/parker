@@ -35,8 +35,8 @@ function Accordion({ children, title, imageHeight }) {
       {isOpen && (
         <div className="animate-fade duration-75 ">
           <ul className="flex flex-col text-center gap-2">
-            {children.map((setting) => {
-              return <li> {setting} </li>;
+            {children.map((setting, index) => {
+              return <li key={index}> {setting} </li>;
             })}
           </ul>
         </div>

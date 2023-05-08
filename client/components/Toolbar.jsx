@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import ToogleSwitch from "./ToogleSwitch";
 import Accordion from "../components/Accordion";
 
-const Toolbar = ({ processing, setProcessing, isModalOpen, loadedCoco }) => {
+const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
   const imageHeight = useRecoilValue(imageHeightState);
   const [vehicleOnly, setVehicleOnly] = useRecoilState(vehicleOnlyState);
   const [detectionThreshold, setDetectonThreshold] = useRecoilState(
@@ -48,7 +48,7 @@ const Toolbar = ({ processing, setProcessing, isModalOpen, loadedCoco }) => {
     setLocalIouThreshold(iouThreshold * 100);
     setLocalDetectionThreshold(detectionThreshold * 100);
     setLocalVehicleOnly(vehicleOnly);
-  }, [isModalOpen]);
+  }, []);
 
   const handleAutoDetect = () => {
     if (autoDetect) {

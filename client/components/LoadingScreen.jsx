@@ -73,7 +73,7 @@ const LoadingScreen = ({
           );
       }
     }
-  }, [allowWebcam, WebRTCMode]);
+  }, [allowWebcam, WebRTCMode, imageHeight, imageWidth]);
 
   return (
     <>

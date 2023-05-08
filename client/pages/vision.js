@@ -15,7 +15,7 @@ import {
   imageWidthState,
   imageHeightState,
 } from "../components/states";
-const visionPage = () => {
+const VisionPage = () => {
   const [allowWebcam, setAllowWebcam] = useState(false);
   const [hasWebcam, setHasWebcam] = useState(false);
   const [webcamEnabled, setWebcamEnable] = useState(false);
@@ -25,7 +25,7 @@ const visionPage = () => {
   const [demo, setDemo] = useState(false);
   const [loadedCoco, setLoadedCoco] = useState(false);
   const [processing, setProcessing] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [webcamLoaded, setWebcamLoaded] = useState(false);
 
   const [peerId, setPeerID] = useState("");
@@ -110,7 +110,7 @@ const visionPage = () => {
           >
             <Toolbar
               setProcessing={setProcessing}
-              isModalOpen={isModalOpen}
+
               allowWebcam={allowWebcam}
               setAllowWebcam={setAllowWebcam}
               processing={processing}
@@ -157,4 +157,4 @@ const visionPage = () => {
   );
 };
 
-export default visionPage;
+export default VisionPage;
