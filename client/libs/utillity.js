@@ -300,15 +300,13 @@ export function detectionsToROIArrVanilla(
   return _predictionsArr;
 }
 
+
 export function filterArrayByScore(array, scores, threshold) {
-  let answer = [];
-  for (let i = 0; i < array.length; i++) {
-    if (scores[i] > threshold) {
-      answer.push(array[i]);
-    }
-  }
-  return answer;
+
+  return array.filter((_, i) => scores[i] > threshold);
 }
+
+
 
 function shortenedCol(arrayofarray, indexlist) {
   return arrayofarray.map(function (array) {
