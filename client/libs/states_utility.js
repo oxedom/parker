@@ -66,24 +66,10 @@ export function supressedRoisProcess(roiMatrix, threshold) {
 
 
 export function convertRoisSelected(arr) {return arr.map((a) => { return { ...selectedFactory(a.cords), evaluating: false, occupied:true }})
-
-
 }
 
 
-// export function convertRoisSelected(arr) {
-//   let updatedArr = [];
-//   arr.forEach((pred) => {
-//     let roiObj = selectedFactory(pred.cords);
-//     roiObj.evaluating = false;
-//     roiObj.occupied = true;
 
-//     updatedArr.push(roiObj);
-//   });
-
-//   console.log(updatedArr);
-//   return updatedArr;
-// }
 
 function getShortestArray(arr) {
   let shortest = arr[0];

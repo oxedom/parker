@@ -10,6 +10,7 @@ import {
 } from "../libs/states_utility";
 import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
 
+
 //The evaluation time is used to have a minimum time a square needs to be occupied/unoccupied to change it's state.
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
@@ -127,11 +128,14 @@ const selectedRoiState = selector({
       }
 
       // This if statement prevents excessive calls to checkOverlap with ROIS.
-      let excessiveCheck = Date.now() - _lastChecked > 900 && !_autoDetect;
+      let excessiveCheck = ((Date.now() - _lastChecked > 900) && !_autoDetect)
 
       if (excessiveCheck) {
+      
+
         set(lastCheckedState, Date.now());
       } else if (!_autoDetect) {
+     ;
         return;
       }
 
