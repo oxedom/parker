@@ -11,10 +11,16 @@ import {
 import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
 
 
+
 //The evaluation time is used to have a minimum time a square needs to be occupied/unoccupied to change it's state.
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
   default: 5000,
+});
+
+const parkingSnapshotsState = atom({
+  key: "parkingSnapshotsState",
+  default: [],
 });
 
 //Automatic Evaluate time is 10 secounds
@@ -198,12 +204,16 @@ const selectedRoiState = selector({
           let timeDiff = calculateTimeDiff(selectedRois, index);
           if (timeDiff > evaluateTime) {
             selectedRoisClone[index].occupied = true;
+            selectedRoisClone[index].parkingDuration = selectedRoisClone[index].lastSeen - selectedRoisClone[index].firstSeen
+          
           }
         } else if (
           currentUnixTime - selectedRois[index]["lastSeen"] >
           evaluateTime
         ) {
           //Reset
+          selectedRoisClone[index].cycleCount =  selectedRoisClone[index].cycleCount+1
+          selectedRoisClone[index].parkingDuration = 0
           selectedRoisClone[index]["firstSeen"] = null;
           selectedRoisClone[index]["lastSeen"] = null;
           selectedRoisClone[index]["occupied"] = false;
@@ -239,6 +249,23 @@ const selectedRoiState = selector({
           set(autoCheckedState, 0);
         }
       } else {
+
+      function handleAnalytics() 
+      {
+        let oldValue = get(parkingSnapshotsState)
+        if(oldValue.length === 10) 
+        {
+        set(parkingSnapshotsState, [])
+        }
+        else 
+        {
+        console.log(oldValue);
+        set(parkingSnapshotsState, [...oldValue, {...selectedRoisClone}])
+        } 
+      }
+
+
+        handleAnalytics()
         set(selectedRoi, selectedRoisClone);
       }
 

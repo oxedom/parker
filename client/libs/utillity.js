@@ -153,6 +153,7 @@ export function selectedFactory(cords) {
     firstSeen: null,
     lastSeen: null,
     occupied: null,
+    cycleCount: 0,
     hover: false,
     evaluating: true,
   };

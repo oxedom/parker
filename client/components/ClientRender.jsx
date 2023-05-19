@@ -117,7 +117,12 @@ const ClientRender = ({
   useEffect(() => {
     // Need to do this for canvas2d to work
     if (overlayXRef.current != null && loadedCoco) {
-      overlayXRef.current = overlayXRef.current.getContext("2d");
+      try {
+        overlayXRef.current = overlayXRef.current.getContext("2d");
+      } catch (error) {
+      console.log(error); 
+      }
+   
     }
   }, [loadedCoco]);
 
