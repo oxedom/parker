@@ -18,17 +18,17 @@ import {
 } from "./states";
 import {
   processInputImage,
-  processDetectionResults,
-  nmsDetectionProcess,
   non_max_suppression,
 } from "../libs/tensorflow_utility";
 import {
-  detectWebcam,
-  getSetting,
-  webcamRunning,
+
   detectionsToROIArr,
-  detectionsToROIArrVanilla,
 } from "../libs/utillity";
+
+import {   detectWebcam,
+  getSetting,
+  webcamRunning,} from '../libs/settings_utility'
+
 import LoadingScreen from "./LoadingScreen";
 
 const ClientRender = ({
@@ -177,15 +177,12 @@ const ClientRender = ({
 
 
     let video = null
-    // let videoWidth = null
-    // let videoHeight = null
     let mode = getModeString()
     if(mode === null) { return}
 
     const dims = getVideoDims(mode)
     video = dims.video
-    // videoWidth = dims.videoWidth
-    // videoHeight = dims.videoHeight
+
 
     tf.engine().startScope();
 
@@ -203,7 +200,7 @@ const ClientRender = ({
 
 
     
-    const predictionsRois = detectionsToROIArrVanilla(
+    const predictionsRois = detectionsToROIArr(
       detections,
       imageWidth,
       imageHeight,

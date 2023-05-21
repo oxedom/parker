@@ -129,6 +129,7 @@ const selectedRoiState = selector({
       let _height = get(imageHeightState);
       const currentUnixTime = Date.now();
 
+      //
       if (get(showDetectionsState) && predictionsArr.length > 0) {
         renderAllOverlaps(predictionsArr, canvas, _width, _height);
       }

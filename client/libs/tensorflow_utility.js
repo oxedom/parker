@@ -1,5 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
-import { xywh2xyxy } from "./renderBox";
+import { xywh2xyxy } from "./canvas_utility";
 
 export function processInputImage(video, model_dim) {
   let input = tf.tidy(() => {

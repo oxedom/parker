@@ -1,6 +1,6 @@
 import uniqid from "uniqid";
 import labels from "./labels.json";
-import { xywh2xyxy } from "./renderBox.js";
+import { xywh2xyxy } from "./canvas_utility";
 
 //The getOverlap function takes two rectangles as input and
 // returns a new rectangle that represents the overlapping area between the two rectangles.
@@ -32,29 +32,7 @@ export function getOverlap(rectangle1, rectangle2) {
   };
 }
 
-async function capturedImageToBuffer(capturedImage) {
-  const imagePhoto = await capturedImage.takePhoto();
 
-  let imageBuffer = await imagePhoto.arrayBuffer();
-
-  imageBuffer = new Uint8Array(imageBuffer);
-
-  return imageBuffer;
-}
-
-export async function capturedImageServer(capturedImage) {
-  const imageBuffer = await capturedImageToBuffer(capturedImage);
-
-  const res = await fetch(flask_url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ buffer: [...imageBuffer] }),
-  });
-
-  const data = await res.json();
-
-  return data;
-}
 
 export function checkOverlapArrays(detectionsArr, selectedArr) {
   let overlaps = [];
@@ -127,19 +105,7 @@ export function isVehicle(label) {
   }
 }
 
-export const getSetting = async () => {
-  let stream = await navigator.mediaDevices.getUserMedia({ video: true });
-  let { width, height } = stream.getTracks()[0].getSettings();
-  return { width, height };
-};
 
-export function detectWebcam(callback) {
-  let md = navigator.mediaDevices;
-  if (!md || !md.enumerateDevices) return callback(false);
-  md.enumerateDevices().then((devices) => {
-    callback(devices.some((device) => "videoinput" === device.kind));
-  });
-}
 
 export function selectedFactory(cords) {
   let date = new Date();
@@ -176,79 +142,11 @@ export function totalOccupied(roiArr) {
   return { OccupiedCount, availableCount };
 }
 
-export function webcamRunning() {
-  if (
-    typeof webcamRef.current !== "undefined" &&
-    webcamRef.current !== null &&
-    webcamRef.current.video.readyState === 4
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
+
+
+
 
 export function detectionsToROIArr(
-  detectionIndices,
-  boxes,
-  class_detect,
-  scores,
-  imageWidth,
-  imageHeight,
-  vehicleOnly
-) {
-  let _predictionsArr = [];
-
-  if (detectionIndices === undefined || detectionIndices.length <= 0) {
-    return [];
-  }
-
-  for (let i = 0; i < detectionIndices.length; i++) {
-    const detectionIndex = detectionIndices[i];
-    const detectionScore = scores[detectionIndex];
-    const detectionClass = class_detect[detectionIndex];
-    let dect_label = labels[detectionClass];
-
-    let condition = false;
-
-    if (vehicleOnly === false) {
-      condition = true;
-    } else {
-      condition = isVehicle(dect_label);
-    }
-
-    if (condition) {
-      const roiObj = { cords: {} };
-      let [x1, y1, x2, y2] = xywh2xyxy(boxes[detectionIndex]);
-
-      // Extract the bounding box coordinates from the 'boxes' tensor
-      y1 = y1 * (imageHeight / 640);
-      y2 = y2 * (imageHeight / 640);
-      x1 = x1 * (imageWidth / 640);
-      x2 = x2 * (imageWidth / 640);
-
-      let dect_width = x2 - x1;
-      let dect_weight = y2 - y1;
-      roiObj.cords.bottom_y = y2;
-      roiObj.cords.left_x = x2;
-      roiObj.cords.top_y = y1;
-      roiObj.cords.right_x = x1;
-      roiObj.cords.width = dect_width;
-      roiObj.cords.height = dect_weight;
-      // Add the detection score to the bbox object
-      roiObj.confidenceLevel = detectionScore;
-      roiObj.label = dect_label;
-      roiObj.area = dect_width * dect_weight;
-      // Add the bbox object to the bboxes array
-
-      _predictionsArr.push(roiObj);
-    }
-  }
-
-  return _predictionsArr;
-}
-
-export function detectionsToROIArrVanilla(
   detections,
   imageWidth,
   imageHeight,
