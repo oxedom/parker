@@ -77,11 +77,13 @@ const ClientRender = ({
   const modelName = "yolov7";
 
   const handleDemoLoaded = (e) => {
+    //P
+    if(selectedRois.length === 0) {   setAutoDetect(true)}
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
     setDemoLoaded(true);
     setWebcamPlaying(false);
-    setAutoDetect(true);
+
   };
 
   async function setUserSettings() {
@@ -333,9 +335,10 @@ const ClientRender = ({
           muted={true}
           width={imageWidth}
           height={imageHeight}
-          onLoad={(e) => {}}
+          onLoad={(e) => {      ;}}
           loop={true}
           onPlay={(e) => {
+
             handleDemoLoaded(e);
           }}
           autoPlay

@@ -255,12 +255,12 @@ const selectedRoiState = selector({
         let oldValue = get(parkingSnapshotsState)
         if(oldValue.length === 10) 
         {
+        console.log(oldValue);
         set(parkingSnapshotsState, [])
         }
         else 
         {
-        console.log(oldValue);
-        set(parkingSnapshotsState, [...oldValue, {...selectedRoisClone}])
+        set(parkingSnapshotsState, [...oldValue, [...selectedRoisClone]])
         } 
       }
 

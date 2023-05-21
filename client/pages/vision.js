@@ -110,7 +110,6 @@ const VisionPage = () => {
           >
             <Toolbar
               setProcessing={setProcessing}
-
               allowWebcam={allowWebcam}
               setAllowWebcam={setAllowWebcam}
               processing={processing}
