@@ -68,8 +68,7 @@ const ClientRender = ({
 
   const [loadingYolo, setYoloLoading] = useState({
     loaded: false,
-    progress: 0,
-  });
+    progress: 0, });
   const videoConstraints = {
     maxWidth: 1280,
     maxHeight: 720,
@@ -77,7 +76,7 @@ const ClientRender = ({
   const modelName = "yolov7";
 
   const handleDemoLoaded = (e) => {
-    //P
+    
     if(selectedRois.length === 0) {   setAutoDetect(true)}
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
@@ -128,34 +127,65 @@ const ClientRender = ({
     }
   }, [loadedCoco]);
 
+  function getVideoDims(type) 
+  {
+    let video = null
+    let videoWidth = null
+    let videoHeight = null
+
+    if(type === 'demo') 
+    {
+      video = demoRef.current;
+      videoWidth = demoRef.current.videoWidth;
+      videoHeight = demoRef.current.videoHeight;
+    }
+    else if (type === 'webcam') 
+    {
+      video = webcamRef.current.video;
+      videoWidth = webcamRef.current.video.videoWidth;
+      videoHeight = webcamRef.current.video.videoHeight;
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+    }
+    else if(type === 'rtc') 
+    {
+      video = rtcOutputRef.current;
+      videoWidth = rtcOutputRef.current.videoWidth;
+      videoHeight = rtcOutputRef.current.videoHeight;
+    }
+    return {video, videoHeight, videoWidth}
+  }
+
+  function getModeString() {
+    if (rtcOutputRef.current != null && WebRTCLoaded) {
+      return 'rtc';
+    } else if (!demo && webcamRef.current != null) {
+      return 'webcam';
+    } else if (demo && demoLoaded && demoRef.current != null) {
+      return 'demo';
+    } else {
+      return null;
+    }
+  }
+  
+
+
   const detectFrame = async (model) => {
     if (!webcamRunning && !demo && !webcamPlaying && !WebRTCLoaded) {
       return false;
     }
 
-    let video;
-    let videoWidth;
-    let videoHeight;
-    if (rtcOutputRef.current != null && WebRTCLoaded) {
-      video = rtcOutputRef.current;
-      videoWidth = rtcOutputRef.current.videoWidth;
-      videoHeight = rtcOutputRef.current.videoHeight;
-    } else if (!demo && webcamRef.current != null) {
-      video = webcamRef.current.video;
-      videoWidth = webcamRef.current.video.videoWidth;
-      videoHeight = webcamRef.current.video.videoHeight;
-      // Set video width
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
-      //If demo
-    } else if (demo && demoLoaded && demoRef.current != null) {
-      video = demoRef.current;
 
-      videoWidth = demoRef.current.videoWidth;
-      videoHeight = demoRef.current.videoHeight;
-    } else {
-      return;
-    }
+    let video = null
+    // let videoWidth = null
+    // let videoHeight = null
+    let mode = getModeString()
+    if(mode === null) { return}
+
+    const dims = getVideoDims(mode)
+    video = dims.video
+    // videoWidth = dims.videoWidth
+    // videoHeight = dims.videoHeight
 
     tf.engine().startScope();
 
@@ -163,10 +193,6 @@ const ClientRender = ({
 
     let res = model.execute(input);
 
-    // const { boxes, class_detect, scores } = processDetectionResults(
-    //   res,
-    //   detectionThreshold
-    // );
 
     const detections = non_max_suppression(
       res.arraySync()[0],
@@ -176,13 +202,7 @@ const ClientRender = ({
     );
 
 
-    // const { detectionIndices } = await nmsDetectionProcess(
-    //   boxes,
-    //   scores,
-    //   thresholdIou
-    // );
-
-    //
+    
     const predictionsRois = detectionsToROIArrVanilla(
       detections,
       imageWidth,
@@ -190,15 +210,6 @@ const ClientRender = ({
       vehicleOnly
     );
 
-    // const predictionsArr = detectionsToROIArr(
-    //   detectionIndices,
-    //   boxes,
-    //   class_detect,
-    //   scores,
-    //   imageWidth,
-    //   imageHeight,
-    //   vehicleOnly,
-    // );
 
     //Sends action request with a payload, the event is handled
     //inside the state event.
@@ -300,7 +311,6 @@ const ClientRender = ({
           height={imageHeight}
         ></video>
       ) : null}
-
       {/* Webcam */}
       {!demo && webcamLoaded ? (
         <Webcam
@@ -310,14 +320,12 @@ const ClientRender = ({
             setDemoLoaded(false);
             setWebcamPlaying(true);
           }}
-          // style={{ height: imageHeight }}
           videoConstraints={videoConstraints}
           ref={webcamRef}
           muted={true}
           className=""
         />
       ) : null}
-
       {!demo && !webcamLoaded && !WebRTCLoaded ? (
         <LoadingScreen
           setAllowWebcam={setAllowWebcam}
@@ -328,7 +336,6 @@ const ClientRender = ({
       ) : (
         ""
       )}
-
       {demo ? (
         <video
           ref={demoRef}
