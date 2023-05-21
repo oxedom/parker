@@ -65,7 +65,7 @@ export function supressedRoisProcess(roiMatrix, threshold) {
 }
 
 
-export function convertRoisSelected(arr) {return arr.map((a) => { return { ...selectedFactory(a.cords), evaluating: false, occupied:true }})
+export function convertRoisSelected(arr) {return arr.map((a) => { return { ...selectedFactory(a.cords), evaluating: false, occupied:true, cycleCount: 1}})
 }
 
 export function SnapshotFactory(selectedRois)

@@ -205,6 +205,7 @@ const selectedRoiState = selector({
           //Calculate timeDIffernce
           let timeDiff = calculateTimeDiff(selectedRois, index);
           if (timeDiff > evaluateTime) {
+            if( selectedRoisClone[index].cycleCount === 0) { selectedRoisClone[index].cycleCount += 1 }
             selectedRoisClone[index].occupied = true;
             selectedRoisClone[index].parkingDuration = selectedRoisClone[index].lastSeen - selectedRoisClone[index].firstSeen
           
@@ -214,11 +215,15 @@ const selectedRoiState = selector({
           evaluateTime
         ) {
           //Reset
-          selectedRoisClone[index].cycleCount =  selectedRoisClone[index].cycleCount+1
-          selectedRoisClone[index].parkingDuration = 0
-          selectedRoisClone[index]["firstSeen"] = null;
-          selectedRoisClone[index]["lastSeen"] = null
-          selectedRoisClone[index]["occupied"] = false;
+          if(selectedRoisClone[index]["occupied"]) 
+          {
+            selectedRoisClone[index].cycleCount += 1
+            selectedRoisClone[index].parkingDuration = 0
+            selectedRoisClone[index]["firstSeen"] = null;
+            selectedRoisClone[index]["lastSeen"] = null
+            selectedRoisClone[index]["occupied"] = false;
+          }
+ 
         }
       }
 
@@ -258,6 +263,8 @@ const selectedRoiState = selector({
         if(oldValue.length === 10) 
         {
         console.log(oldValue);
+        console.table(oldValue[0][0]['cycleCount']);
+        console.table(oldValue[oldValue.length-1][0][['cycleCount']]);
         set(parkingSnapshotsState, [])
         }
         else 
