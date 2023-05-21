@@ -7,6 +7,7 @@ import {
   calculateTimeDiff,
   supressedRoisProcess,
   convertRoisSelected,
+  SnapshotFactory
 } from "../libs/states_utility";
 import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
 
@@ -216,7 +217,7 @@ const selectedRoiState = selector({
           selectedRoisClone[index].cycleCount =  selectedRoisClone[index].cycleCount+1
           selectedRoisClone[index].parkingDuration = 0
           selectedRoisClone[index]["firstSeen"] = null;
-          selectedRoisClone[index]["lastSeen"] = null;
+          selectedRoisClone[index]["lastSeen"] = null
           selectedRoisClone[index]["occupied"] = false;
         }
       }
@@ -261,7 +262,9 @@ const selectedRoiState = selector({
         }
         else 
         {
-        set(parkingSnapshotsState, [...oldValue, [...selectedRoisClone]])
+     
+          
+        set(parkingSnapshotsState, [...oldValue  , [...SnapshotFactory(selectedRoisClone)]])
         } 
       }
 

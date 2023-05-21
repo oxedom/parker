@@ -68,7 +68,15 @@ export function supressedRoisProcess(roiMatrix, threshold) {
 export function convertRoisSelected(arr) {return arr.map((a) => { return { ...selectedFactory(a.cords), evaluating: false, occupied:true }})
 }
 
+export function SnapshotFactory(selectedRois)
+{
+  return selectedRois.map((s) => {
+    const {evaluating, hover, label, cords, area, ...rest} = s 
+    return rest
 
+  })
+ 
+}
 
 
 function getShortestArray(arr) {
