@@ -113,7 +113,7 @@ export function selectedFactory(cords) {
   const roiObj = {
     label: "vehicle",
     cords: { ...cords },
-    time: date.getTime(),
+    timeMarked: date.getTime(),
     uid: uniqid()+"DATE"+(Date.now().toString()),
     area: Math.round(cords.width * cords.height),
     firstSeen: null,

@@ -188,7 +188,7 @@ const selectedRoiState = selector({
 
         let roiNotEvaluating = !roiEvaluating(
           currentUnixTime,
-          selectedRois[index]["time"],
+          selectedRois[index]["timeMarked"],
           evaluateTime
         );
 
@@ -263,15 +263,11 @@ const selectedRoiState = selector({
         if(oldValue.length === 10) 
         {
         console.log(oldValue);
-        console.table(oldValue[0][0]['cycleCount']);
-        console.table(oldValue[oldValue.length-1][0][['cycleCount']]);
         set(parkingSnapshotsState, [])
         }
         else 
         {
-     
-          
-        set(parkingSnapshotsState, [...oldValue  , [...SnapshotFactory(selectedRoisClone)]])
+        set(parkingSnapshotsState, [...oldValue  , [...SnapshotFactory(selectedRoisClone), Date.now()] ])
         } 
       }
 
