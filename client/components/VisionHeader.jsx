@@ -1,7 +1,8 @@
 import DisplayInfo from "./DisplayInfo";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+
+import Button from "./Button";
 
 const VisionHeader = ({
   setAllowWebcam,
@@ -65,7 +66,7 @@ const VisionHeader = ({
 
   return (
     <nav
-      className={`flex justify-around items-center animate-fade bg-orangeFadeSides rounded-md  `}
+      className={`flex justify-between items-center animate-fade bg-black/60 backdrop-blur-sm rounded-md  `}
     >
       {!WebRTCMode && !allowWebcam && !demo ? (
         <div className="grid items-center grid-cols-3 ">
@@ -89,32 +90,14 @@ const VisionHeader = ({
           </button>
         </div>
       ) : (
-        <div className="grid items-center grid-cols-3 gap-10">
-          <div
-            onClick={handleBack}
-            className="w-32 text-center text-gray-700 duration-200 bg-gray-200 border border-white rounded place-self-center hover:scale-105"
-          >
+        <div className="flex items-center justify-between w-full grid-cols-3 gap-10 px-3">
+          <Button intent="destructive" onClick={handleBack}>
             Back
-          </div>
+          </Button>
           <DisplayInfo></DisplayInfo>
-          <div className="flex items-center justify-center gap-2">
-            <button
-              alt="streaming Link"
-              className={`bg-orange-600 ${btnStyle} `}
-              onClick={handleCopy}
-            >
-              Copy Link
-            </button>
-            <p className="text center "> OR </p>
-            <Image
-              width={80}
-              alt="qr"
-              quality={100}
-              className="hover:scale-[2] duration-200"
-              height={75}
-              src={qrCodeURL}
-            />
-          </div>
+          <Button alt="streaming Link" onClick={handleCopy}>
+            Copy Link
+          </Button>
         </div>
       )}
     </nav>

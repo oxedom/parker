@@ -87,7 +87,7 @@ export default function VisionPage() {
 
       <div className="flex flex-col">
         <div className="flex flex-col items-center justify-center gap-4 rounded-lg">
-          <div className="relative grid w-full h-20 gap-2 text-2xl font-bold text-white rounded-xl bg-orangeFade">
+          <div className="relative grid w-full h-20 gap-2 text-2xl font-bold text-white rounded-md">
             <VisionHeader
               WebRTCMode={WebRTCMode}
               peerId={peerId}
@@ -105,7 +105,7 @@ export default function VisionPage() {
             {!demo && allowWebcam ? <div /> : ""}
           </div>
 
-          <div className="flex-col hidden gap-4 p-2 md:flex md:flex-row md:justify-between">
+          <div className="flex-col hidden gap-4 md:flex md:flex-row md:justify-between">
             <Toolbar
               setProcessing={setProcessing}
               allowWebcam={allowWebcam}
