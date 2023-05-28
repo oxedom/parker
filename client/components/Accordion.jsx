@@ -8,7 +8,7 @@ function Accordion({ children, title, imageHeight }) {
   }
 
   return (
-    <div className={`w-full px-3 max-h-[${imageHeight}px] mx-auto`}>
+    <div className="w-full px-3 mx-auto">
       <div
         className={`flex duration-200 justify-between py-2 mb-2 items-center ${
           isOpen ? "border-b  border-gray-200" : ""
