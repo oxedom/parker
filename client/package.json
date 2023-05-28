@@ -12,6 +12,7 @@
     "@next/font": "13.1.1",
     "@tensorflow-models/coco-ssd": "^2.2.2",
     "@tensorflow/tfjs": "^3.21.0",
+    "class-variance-authority": "^0.6.0",
     "date-fns": "^2.29.3",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
