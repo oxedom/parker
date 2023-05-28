@@ -96,7 +96,7 @@ export function isVehicle(label) {
   if (
     label === "car" ||
     label === "truck" ||
-    "label" == "motorcycle" ||
+    label == "motorcycle" ||
     label === "bus"
   ) {
     return true;
