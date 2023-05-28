@@ -9,6 +9,8 @@ import {
 } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 
+import Slider from "./Slider";
+
 import { useEffect, useState } from "react";
 
 import ToogleSwitch from "./ToogleSwitch";
@@ -39,9 +41,8 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
   recommended to be 1 render per secound. 
   `;
 
-  const labelStyle = "font-bold drop-shadow-sm";
-  const sliderStyle =
-    "flex mx-2 flex-col text-white justify-center  items-center";
+  const labelStyle = "font-bold drop-shadow-sm text-left";
+  const sliderStyle = "flex mx-2 flex-col text-white justify-center";
   useEffect(() => {
     setSettingsChange(false);
     setLocalFps(fps);
@@ -93,86 +94,51 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
 
   return (
     <div
-      className={`md:w-[200px]  flex justify-between rounded-xl p-2  flex-col min-h-[${imageHeight}px]  bg-orangeFadeSides  `}
+      className={`md:w-[200px] flex justify-between rounded-xl flex-col min-h-[${imageHeight}px]  bg-orangeFadeSides  `}
     >
-      <div className="flex justify-center flex-col items-center gap-2  ">
+      <div className="flex flex-col justify-center gap-2 ">
         <Accordion imageHeight={imageHeight} title={"Settings"}>
-          <div className="flex flex-col p-2 gap-5">
+          <div className="flex flex-col gap-3">
             <ToogleSwitch
-              text={"Processing"}
+              text="Processing"
               boolean={processing}
               callback={handleProcessing}
             />
 
             <ToogleSwitch
-              text={"Show Boxes "}
+              text="Show Boxes"
               boolean={showDetections}
               callback={handleDetectionsEnable}
             />
 
             <ToogleSwitch
-              text={"Vehicle Only "}
+              text="Vehicle Only"
               boolean={localVehicleOnly}
               callback={handleVehicleOnly}
             />
           </div>
 
-          <div className={sliderStyle}>
-            <label className={labelStyle}> Detection Threshold</label>
-            <div className="grid grid-cols-2  ">
-              <span> {localDetectionThreshold}% </span>
-              <input
-                type="range"
-                min="10"
-                max="100"
-                className="mr-4"
-                value={localDetectionThreshold}
-                onChange={(e) => {
-                  setLocalDetectionThreshold(e.target.value);
-                  setSettingsChange(true);
-                }}
-              />
-            </div>
-          </div>
+          <Slider
+            state={[localDetectionThreshold, setLocalDetectionThreshold]}
+            setSettingsChange={setSettingsChange}
+            label="Detection Threshold"
+          />
 
-          <div className={sliderStyle}>
-            <label className={labelStyle}> IOU Threshold</label>
-            <div className="grid grid-cols-2 items-center  ">
-              <span> {localIouThreshold}% </span>
-              <input
-                type="range"
-                min="10"
-                max="100"
-                className="mr-4"
-                label="NMS IOU Threshold"
-                value={localIouThreshold}
-                onChange={(e) => {
-                  setLocalIouThreshold(e.target.value);
-                  setSettingsChange(true);
-                }}
-              />
-            </div>
-          </div>
+          <Slider
+            state={[localIouThreshold, setLocalIouThreshold]}
+            setSettingsChange={setSettingsChange}
+            label="IOU Threshold"
+          />
 
-          <div className={sliderStyle}>
-            <label className={labelStyle}> Render Rate</label>
-            <div className="grid grid-cols-2 items-center    ">
-              <span> {Math.floor(localFps * 100) / 100} FPS </span>
-              <input
-                type="range"
-                min={0.01}
-                step={0.1}
-                max={2}
-                className="mr-4"
-                label="Render rate"
-                value={localFps}
-                onChange={(e) => {
-                  setLocalFps(e.target.value);
-                  setSettingsChange(true);
-                }}
-              />
-            </div>
-          </div>
+          <Slider
+            state={[localFps, setLocalFps]}
+            setSettingsChange={setSettingsChange}
+            label="Render Rate"
+            max={2}
+            min={0.01}
+            step={0.1}
+            unit=" FPS"
+          />
 
           <button
             className={`text-white rounded-lg shadow outline drop-shadow outline-slate-700   ${
