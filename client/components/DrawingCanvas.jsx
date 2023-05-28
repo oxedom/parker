@@ -237,18 +237,10 @@ const DrawingCanvas = ({}) => {
         ref={overlayRef}
         width={imageWidth}
         height={imageHeight}
-        onMouseDown={(e) => {
-          handleMouseDown(e);
-        }}
-        onMouseMove={(e) => {
-          handleMouseMove(e);
-        }}
-        onMouseOut={(e) => {
-          handleMouseOut(e);
-        }}
-        onMouseUp={(e) => {
-          handleMouseUp(e);
-        }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseOut={handleMouseOut}
+        onMouseUp={handleMouseUp}
         className="fixed"
         style={{ zIndex: 3 }}
         id="draw_canvas"
