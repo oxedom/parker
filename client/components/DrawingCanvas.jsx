@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
 import { selectedRoiState } from "./states";
 import { renderRoi } from "../libs/canvas_utility";
-import { useWindowSize } from "./hooks/useWindowSize";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 const DrawingCanvas = ({}) => {
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
