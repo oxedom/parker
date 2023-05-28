@@ -9,10 +9,10 @@ import {
 } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 
-import Slider from "./Slider";
-
 import { useEffect, useState } from "react";
 
+import Slider from "./Slider";
+import Button from "./Button";
 import ToogleSwitch from "./ToogleSwitch";
 import Accordion from "../components/Accordion";
 
@@ -94,7 +94,10 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
 
   return (
     <div
-      className={`md:w-[200px] flex justify-between rounded-xl flex-col min-h-[${imageHeight}px]  bg-orangeFadeSides  `}
+      className="md:w-[200px] flex justify-between rounded-xl flex-col bg-black/60 backdrop-blur-sm"
+      style={{
+        minHeight: imageHeight + "px",
+      }}
     >
       <div className="flex flex-col justify-center gap-2 ">
         <Accordion imageHeight={imageHeight} title={"Settings"}>
@@ -140,17 +143,14 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
             unit=" FPS"
           />
 
-          <button
-            className={`text-white rounded-lg shadow outline drop-shadow outline-slate-700   ${
-              settingChange
-                ? "bg-blue-500 outline-gray-800  animate-pulse font-bold duration-75 hover:bg-blue-700 text-white"
-                : "bg-orange-300 outline-gray-600  text-gray-600 font-medium cursor-default "
-            } outline-2 p-3`}
+          <Button
+            className="mb-2"
+            intent="primary"
+            fullWidth
             onClick={handleSaveSettings}
           >
-            {" "}
-            Apply Settings
-          </button>
+            Apply settings
+          </Button>
         </Accordion>
       </div>
 

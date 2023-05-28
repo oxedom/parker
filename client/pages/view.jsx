@@ -68,7 +68,7 @@ export default function View() {
             <span className="text-5xl text-white ">{counts.OccupiedCount}</span>
           </div>
         </div>
-      </div>{" "}
+      </div>
     </>
   );
 }

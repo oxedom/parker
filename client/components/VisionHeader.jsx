@@ -68,47 +68,42 @@ const VisionHeader = ({
       className={`flex justify-around items-center animate-fade bg-orangeFadeSides rounded-md  `}
     >
       {!WebRTCMode && !allowWebcam && !demo ? (
-        <div className="grid grid-cols-3  items-center ">
+        <div className="grid items-center grid-cols-3 ">
           <button
             onClick={handleDemoSource}
             className={`bg-purple-600 ${btnStyle} `}
           >
-            {" "}
-            Demo{" "}
+            Demo
           </button>
           <button
             onClick={handleWebcamSource}
             className={`bg-purple-600 ${btnStyle} `}
           >
-            {" "}
             Webcam
           </button>
           <button
             onClick={handleRTCSource}
             className={`bg-purple-600 ${btnStyle} `}
           >
-            {" "}
-            Remote{" "}
+            Remote
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-3  items-center gap-10">
+        <div className="grid items-center grid-cols-3 gap-10">
           <div
             onClick={handleBack}
-            className="border  border-white text-center place-self-center text-gray-700 w-32   hover:scale-105 duration-200 rounded bg-gray-200"
+            className="w-32 text-center text-gray-700 duration-200 bg-gray-200 border border-white rounded place-self-center hover:scale-105"
           >
-            {" "}
-            Back{" "}
+            Back
           </div>
           <DisplayInfo></DisplayInfo>
-          <div className="flex gap-2 items-center justify-center">
+          <div className="flex items-center justify-center gap-2">
             <button
               alt="streaming Link"
               className={`bg-orange-600 ${btnStyle} `}
               onClick={handleCopy}
             >
-              {" "}
-              Copy Link{" "}
+              Copy Link
             </button>
             <p className="text center "> OR </p>
             <Image
