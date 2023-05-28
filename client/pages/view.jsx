@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { totalOccupied } from "../libs/utillity";
 
-const view = () => {
+export default function View() {
   const router = useRouter();
   const [counts, setCounts] = useState({
     OccupiedCount: "...",
@@ -38,42 +38,37 @@ const view = () => {
           onClick={(e) => {
             router.push("https://www.parkerr.org/");
           }}
-          className="text-center uppercase  hover:cursor-pointer font-bold text-4xl"
+          className="text-4xl font-bold text-center uppercase hover:cursor-pointer"
         >
-          {" "}
-          Parkerr{" "}
+          Parkerr
         </h4>
+
         <span
           onClick={(e) => {
             router.push("https://www.parkerr.org/about");
           }}
-          className="text-center hover:cursor-pointer font-bold text-xl"
+          className="text-xl font-bold text-center hover:cursor-pointer"
         >
-          {" "}
-          About{" "}
+          About
         </span>
       </nav>
-      <div className="h-screen   flex flex-col  min-h-screen  bg-fixed bg-no-repeat bg-cover  bg-filler w-full grow items-center">
-        <div className="grid grid-rows-2 md:grid-rows-none md:grid-cols-2   w-full h-full">
-          <div className="flex items-center w-full  justify-center flex-col gap-2 bg-green-700 ">
-            <p className="font-bold text-6xl  rounded text-white">Available</p>
+      <div className="flex flex-col items-center w-full h-screen min-h-screen bg-fixed bg-no-repeat bg-cover bg-filler grow">
+        <div className="grid w-full h-full grid-rows-2 md:grid-rows-none md:grid-cols-2">
+          <div className="flex flex-col items-center justify-center w-full gap-2 bg-green-700 ">
+            <p className="text-6xl font-bold text-white rounded">Available</p>
             <span className="text-5xl text-white ">
               {counts.availableCount}
             </span>
           </div>
 
-          <div className="flex bg-red-700  justify-center w-full items-center flex-col gap-2">
-            <p className="font-bold  text-6xl border-red-700 rounded text-white ">
+          <div className="flex flex-col items-center justify-center w-full gap-2 bg-red-700">
+            <p className="text-6xl font-bold text-white border-red-700 rounded ">
               Occupied
             </p>
-            <span className="  text-5xl text-white ">
-              {counts.OccupiedCount}
-            </span>
+            <span className="text-5xl text-white ">{counts.OccupiedCount}</span>
           </div>
         </div>
       </div>{" "}
     </>
   );
-};
-
-export default view;
+}
