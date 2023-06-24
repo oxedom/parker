@@ -1,26 +1,14 @@
-import { cva } from "class-variance-authority";
+const colors = {
+  primary: "bg-blue-500 hover:bg-blue-400 text-white",
+  secondary: "bg-white hover:bg-gray-200 text-slate-800",
+  destructive: "bg-red-500 hover:bg-red-400 text-white",
+};
 
-const styles = cva("py-1.5 px-3 font-medium rounded-md transition-colors", {
-  variants: {
-    size: {
-      sm: "text-sm",
-      md: "text-base",
-      lg: "text-lg",
-    },
-    intent: {
-      primary: "bg-blue-500 hover:bg-blue-400 text-white",
-      secondary: "bg-white hover:bg-gray-200 text-slate-800",
-      destructive: "bg-red-500 hover:bg-red-400 text-white",
-    },
-    fullWidth: {
-      true: "w-full",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-    intent: "secondary",
-  },
-});
+const sizes = {
+  sm: "text-sm",
+  md: "text-base",
+  lg: "text-lg",
+};
 
 /**
  * **Example usage:**
@@ -33,11 +21,24 @@ const styles = cva("py-1.5 px-3 font-medium rounded-md transition-colors", {
  * @param intent - primary, secondary, destructive (determines color of button)
  * @param fullWidth - true, false (self explanatory)
  */
-export default function Button({ children, ...buttonProps }) {
+export default function Button({
+  children,
+  size = "md",
+  intent = "primary",
+  fullWidth = false,
+  ...buttonProps
+}) {
+  const isValidColor = Object.keys(colors).includes(intent);
+  const isValidSize = Object.keys(sizes).includes(size);
+
+  const className = `py-1.5 px-3 font-medium rounded-md transition-colors ${
+    colors[intent]
+  } ${sizes[size]} ${fullWidth ? "w-full" : ""}`;
+
   return (
     <button
       {...buttonProps}
-      className={styles(buttonProps) + " " + (buttonProps.className || "")}
+      className={className + " " + (buttonProps.className || "")}
     >
       {children}
     </button>
