@@ -24,7 +24,7 @@ const sizes = {
 export default function Button({
   children,
   size = "md",
-  intent = "primary",
+  intent = "secondary",
   fullWidth = false,
   ...buttonProps
 }) {
