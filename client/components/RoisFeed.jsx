@@ -126,18 +126,7 @@ const RoisFeed = ({}) => {
               Delete regions
             </Button>
 
-            <Button
-              className={`
-            ${
-              autoDetect
-                ? "bg-gray-300 text-gray-700 hover:cursor-default "
-                : "bg-white cursor-pointer text-slate-800 drop-shadow"
-            }
-        `}
-              onClick={handleAutoDetect}
-            >
-              Auto Detect
-            </Button>
+            <Button onClick={handleAutoDetect}>Auto Detect</Button>
 
             <div className="grid grid-cols-2 gap-2 place-content-between ">
               <Button
