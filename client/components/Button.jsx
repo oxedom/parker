@@ -30,6 +30,8 @@ export default function Button({
 }) {
   const isValidColor = Object.keys(colors).includes(intent);
   const isValidSize = Object.keys(sizes).includes(size);
+  if (!isValidColor || !isValidSize)
+    throw new Error("Invalid props passed to button component, refer to JSdoc");
 
   const className = `py-1.5 px-3 font-medium rounded-md transition-colors ${
     colors[intent]
