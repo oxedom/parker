@@ -3,6 +3,7 @@ import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 
 import Button from "./Button";
+import Image from "next/image";
 
 const VisionHeader = ({
   setAllowWebcam,
@@ -42,6 +43,7 @@ const VisionHeader = ({
 
   useEffect(() => {
     generateQR(`https://www.parkerr.org/reroute?remoteID=${peerId}`);
+    console.log("peerId", peerId);
   }, [peerId]);
 
   const handleBack = () => {
@@ -69,25 +71,27 @@ const VisionHeader = ({
       className={`flex justify-between items-center animate-fade bg-black/60 backdrop-blur-sm rounded-md  `}
     >
       {!WebRTCMode && !allowWebcam && !demo ? (
-        <div className="grid items-center grid-cols-3 ">
-          <button
-            onClick={handleDemoSource}
-            className={`bg-purple-600 ${btnStyle} `}
-          >
-            Demo
-          </button>
-          <button
-            onClick={handleWebcamSource}
-            className={`bg-purple-600 ${btnStyle} `}
-          >
-            Webcam
-          </button>
-          <button
-            onClick={handleRTCSource}
-            className={`bg-purple-600 ${btnStyle} `}
-          >
-            Remote
-          </button>
+        <div className="flex flex-row items-center justify-between w-full ml-3 mr-6">
+          <section>
+            <button
+              onClick={handleDemoSource}
+              className={`bg-purple-600 ${btnStyle} `}
+            >
+              Demo
+            </button>
+            <button
+              onClick={handleWebcamSource}
+              className={`bg-purple-600 ${btnStyle} `}
+            >
+              Webcam
+            </button>
+            <button
+              onClick={handleRTCSource}
+              className={`bg-purple-600 ${btnStyle} `}
+            >
+              Remote
+            </button>
+          </section>
         </div>
       ) : (
         <div className="flex items-center justify-between w-full grid-cols-3 gap-10 px-3">
@@ -95,9 +99,19 @@ const VisionHeader = ({
             Back
           </Button>
           <DisplayInfo></DisplayInfo>
-          <Button alt="streaming Link" onClick={handleCopy}>
-            Copy Link
-          </Button>
+          <section className="relative group">
+            <Button alt="streaming Link" onClick={handleCopy}>
+              Copy Link
+            </Button>
+            <Image
+              width={80}
+              alt="qr"
+              quality={100}
+              className="scale-[2] hidden group-hover:block duration-200 absolute bottom-[5rem] left-1/2 translate-x-[-50%]"
+              height={75}
+              src={qrCodeURL}
+            />
+          </section>
         </div>
       )}
     </nav>
