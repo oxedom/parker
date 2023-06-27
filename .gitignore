@@ -1,3 +1,5 @@
 
 .vscode
 client/libs/analytics.js
+client/pages/app_prod.js
+client/pages/_app.js

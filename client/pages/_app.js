@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import { RecoilRoot } from "recoil";
 import Head from "next/head";
 
+//APP DEV
 export default function App({ Component, pageProps }) {
   return (
     <>
