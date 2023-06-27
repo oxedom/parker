@@ -4,6 +4,8 @@ import { imageHeightState, evaluateTimeState, autoDetectState } from "./states";
 import deleteIcon from "../public/static/icons/delete_bin_black.png";
 import Image from "next/image";
 import Accordion from "./Accordion";
+import Button from "./Button";
+
 import { formatDistanceToNow } from "date-fns";
 
 const RoisFeed = ({}) => {
@@ -115,94 +117,49 @@ const RoisFeed = ({}) => {
 
   return (
     <div
-      className={`w-[200px]  bg-orangeFadeSides rounded-xl    justify-between  min-h-[${imageHeight}px]`}
+      className={`w-[200px] bg-black/60 backdrop-blur-sm rounded-xl justify-between min-h-[${imageHeight}px]`}
     >
       <div>
         <Accordion title={"Controls"}>
-          <div className="flex flex-col my-2 gap-5">
-            <button
-              className={`${
-                selectedRegions.length > 0
-                  ? "bg-white text-slate-800 drop-shadow  "
-                  : "bg-gray-300   cursor-default text-gray-700 "
-              }  font-bold p-2 rounded mx-2  `}
-              onClick={handleDeleteAll}
-            >
-              {" "}
-              Delete regions{" "}
-            </button>
+          <div className="flex flex-col gap-2 my-2">
+            <Button intent="destructive" onClick={handleDeleteAll}>
+              Delete regions
+            </Button>
 
-            <button
-              className={`
-            
-            mx-2
-             hover:cursor-pointer
-            font-bold border-white border rounded p-2  shadow-black
-            cursor-default 
-            ${
-              autoDetect
-                ? "bg-gray-300 text-gray-700 hover:cursor-default "
-                : "bg-white cursor-pointer text-slate-800 drop-shadow"
-            }
-        `}
-              onClick={handleAutoDetect}
-            >
-              {" "}
-              Auto Detect{" "}
-            </button>
+            <Button onClick={handleAutoDetect}>Auto Detect</Button>
 
-            <div className="grid grid-cols-2 gap-2 mx-2 place-content-between  ">
-              <button
+            <div className="grid grid-cols-2 gap-2 place-content-between ">
+              <Button
                 className={`
-            
-            
              hover:cursor-pointer drop-shadow
             font-bold border-white border rounded   shadow-black
- 
-   
-  
-            
               bg-white cursor-pointer text-slate-800"
-      
         `}
                 onClick={handleSave}
               >
-                {" "}
-                Save{" "}
-              </button>
+                Save
+              </Button>
 
-              <button
+              <Button
                 className={`
-            
-            
              hover:cursor-pointer drop-shadow
             font-bold border-white border rounded  shadow-black
-            
             bg-white cursor-pointer text-slate-800"
         `}
                 onClick={handleImport}
               >
-                {" "}
-                Import{" "}
-              </button>
+                Import
+              </Button>
             </div>
           </div>
           <div></div>
         </Accordion>
 
-        <h4
-          className="text-xl text-center font-semibold  
-      text-white hover:cursor-default
-      border-b-2 border-orange-600
-
-
-       "
-        >
-          {" "}
+        <h4 className="text-xl font-semibold text-center text-white border-b-2 border-orange-600 hover:cursor-default ">
           Marked regions
         </h4>
 
-        <div className="flex flex-wrap   gap-2 m-2">
+        <div className="flex flex-wrap gap-2 m-2">
           {selectedRegions.map((s) => (
             <div
               key={s.uid}
@@ -230,7 +187,7 @@ const RoisFeed = ({}) => {
                   width={50}
                   height={50}
                   alt="Delete"
-                  className="invert  opacity-0 hover:opacity-90 "
+                  className="opacity-0 invert hover:opacity-90 "
                   src={deleteIcon.src}
                 />
               ) : (
