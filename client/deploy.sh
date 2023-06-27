@@ -1,5 +1,5 @@
 #!/bin/bash
-source .env
+# source .env
 
 while true; do
   read -p "Do you want build NEXTJS? [y/n]: " yn
