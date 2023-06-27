@@ -20,14 +20,13 @@ import {
   processInputImage,
   non_max_suppression,
 } from "../libs/tensorflow_utility";
+import { detectionsToROIArr } from "../libs/utillity";
+
 import {
-
-  detectionsToROIArr,
-} from "../libs/utillity";
-
-import {   detectWebcam,
+  detectWebcam,
   getSetting,
-  webcamRunning,} from '../libs/settings_utility'
+  webcamRunning,
+} from "../libs/settings_utility";
 
 import LoadingScreen from "./LoadingScreen";
 
@@ -68,7 +67,8 @@ const ClientRender = ({
 
   const [loadingYolo, setYoloLoading] = useState({
     loaded: false,
-    progress: 0, });
+    progress: 0,
+  });
   const videoConstraints = {
     maxWidth: 1280,
     maxHeight: 720,
@@ -76,13 +76,12 @@ const ClientRender = ({
   const modelName = "yolov7";
 
   const handleDemoLoaded = (e) => {
-    
-    if(selectedRois.length === 0) {   setAutoDetect(true)}
+    if (selectedRois.length === 0) setAutoDetect(true);
+
     setImageWidth(e.target.videoWidth);
     setImageHeight(e.target.videoHeight);
     setDemoLoaded(true);
     setWebcamPlaying(false);
-
   };
 
   async function setUserSettings() {
@@ -121,75 +120,65 @@ const ClientRender = ({
       try {
         overlayXRef.current = overlayXRef.current.getContext("2d");
       } catch (error) {
-      console.log(error); 
+        console.log(error);
       }
-   
     }
   }, [loadedCoco]);
 
-  function getVideoDims(type) 
-  {
-    let video = null
-    let videoWidth = null
-    let videoHeight = null
+  function getVideoDims(type) {
+    let video = null;
+    let videoWidth = null;
+    let videoHeight = null;
 
-    if(type === 'demo') 
-    {
+    if (type === "demo") {
       video = demoRef.current;
       videoWidth = demoRef.current.videoWidth;
       videoHeight = demoRef.current.videoHeight;
-    }
-    else if (type === 'webcam') 
-    {
+    } else if (type === "webcam") {
       video = webcamRef.current.video;
       videoWidth = webcamRef.current.video.videoWidth;
       videoHeight = webcamRef.current.video.videoHeight;
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
-    }
-    else if(type === 'rtc') 
-    {
+    } else if (type === "rtc") {
       video = rtcOutputRef.current;
       videoWidth = rtcOutputRef.current.videoWidth;
       videoHeight = rtcOutputRef.current.videoHeight;
     }
-    return {video, videoHeight, videoWidth}
+    return { video, videoHeight, videoWidth };
   }
 
   function getModeString() {
     if (rtcOutputRef.current != null && WebRTCLoaded) {
-      return 'rtc';
+      return "rtc";
     } else if (!demo && webcamRef.current != null) {
-      return 'webcam';
+      return "webcam";
     } else if (demo && demoLoaded && demoRef.current != null) {
-      return 'demo';
+      return "demo";
     } else {
       return null;
     }
   }
-  
-
 
   const detectFrame = async (model) => {
     if (!webcamRunning && !demo && !webcamPlaying && !WebRTCLoaded) {
       return false;
     }
 
+    let video = null;
+    let mode = getModeString();
+    if (mode === null) {
+      return;
+    }
 
-    let video = null
-    let mode = getModeString()
-    if(mode === null) { return}
-
-    const dims = getVideoDims(mode)
-    video = dims.video
-
+    const dims = getVideoDims(mode);
+    video = dims.video;
 
     tf.engine().startScope();
 
     let input = processInputImage(video, model_dim);
 
     let res = model.execute(input);
-
 
     const detections = non_max_suppression(
       res.arraySync()[0],
@@ -198,15 +187,12 @@ const ClientRender = ({
       50
     );
 
-
-    
     const predictionsRois = detectionsToROIArr(
       detections,
       imageWidth,
       imageHeight,
       vehicleOnly
     );
-
 
     //Sends action request with a payload, the event is handled
     //inside the state event.
@@ -283,7 +269,7 @@ const ClientRender = ({
   ]);
 
   return loadingYolo.loaded ? (
-    <>
+    <section className="overflow-hidden rounded-md">
       {loadedCoco ? (
         <canvas
           id="overlap-overlay"
@@ -339,12 +325,8 @@ const ClientRender = ({
           muted={true}
           width={imageWidth}
           height={imageHeight}
-          onLoad={(e) => {      ;}}
           loop={true}
-          onPlay={(e) => {
-
-            handleDemoLoaded(e);
-          }}
+          onPlay={handleDemoLoaded}
           autoPlay
           controls={false}
           start="10"
@@ -352,7 +334,7 @@ const ClientRender = ({
           src="./demo.mp4"
         />
       ) : null}
-    </>
+    </section>
   ) : (
     <Loader progress={loadingYolo.progress} />
   );

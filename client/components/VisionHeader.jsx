@@ -1,6 +1,8 @@
 import DisplayInfo from "./DisplayInfo";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
+
+import Button from "./Button";
 import Image from "next/image";
 
 const VisionHeader = ({
@@ -41,6 +43,7 @@ const VisionHeader = ({
 
   useEffect(() => {
     generateQR(`https://www.parkerr.org/reroute?remoteID=${peerId}`);
+    console.log("peerId", peerId);
   }, [peerId]);
 
   const handleBack = () => {
@@ -65,61 +68,50 @@ const VisionHeader = ({
 
   return (
     <nav
-      className={`flex justify-around items-center animate-fade bg-orangeFadeSides rounded-md  `}
+      className={`flex justify-between items-center animate-fade bg-black/60 backdrop-blur-sm rounded-md  `}
     >
       {!WebRTCMode && !allowWebcam && !demo ? (
-        <div className="grid grid-cols-3  items-center ">
-          <button
-            onClick={handleDemoSource}
-            className={`bg-purple-600 ${btnStyle} `}
-          >
-            {" "}
-            Demo{" "}
-          </button>
-          <button
-            onClick={handleWebcamSource}
-            className={`bg-purple-600 ${btnStyle} `}
-          >
-            {" "}
-            Webcam
-          </button>
-          <button
-            onClick={handleRTCSource}
-            className={`bg-purple-600 ${btnStyle} `}
-          >
-            {" "}
-            Remote{" "}
-          </button>
+        <div className="flex flex-row items-center justify-between w-full ml-3 mr-6">
+          <section>
+            <button
+              onClick={handleDemoSource}
+              className={`bg-purple-600 ${btnStyle} `}
+            >
+              Demo
+            </button>
+            <button
+              onClick={handleWebcamSource}
+              className={`bg-purple-600 ${btnStyle} `}
+            >
+              Webcam
+            </button>
+            <button
+              onClick={handleRTCSource}
+              className={`bg-purple-600 ${btnStyle} `}
+            >
+              Remote
+            </button>
+          </section>
         </div>
       ) : (
-        <div className="grid grid-cols-3  items-center gap-10">
-          <div
-            onClick={handleBack}
-            className="border  border-white text-center place-self-center text-gray-700 w-32   hover:scale-105 duration-200 rounded bg-gray-200"
-          >
-            {" "}
-            Back{" "}
-          </div>
+        <div className="flex items-center justify-between w-full grid-cols-3 gap-10 px-3">
+          <Button intent="destructive" onClick={handleBack}>
+            Back
+          </Button>
           <DisplayInfo></DisplayInfo>
-          <div className="flex gap-2 items-center justify-center">
-            <button
-              alt="streaming Link"
-              className={`bg-orange-600 ${btnStyle} `}
-              onClick={handleCopy}
-            >
-              {" "}
-              Copy Link{" "}
-            </button>
-            <p className="text center "> OR </p>
+          <section className="relative group">
+            <Button alt="streaming Link" onClick={handleCopy}>
+              Copy Link
+            </Button>
             <Image
               width={80}
               alt="qr"
               quality={100}
-              className="hover:scale-[2] duration-200"
+              className="scale-[2] hidden group-hover:block duration-200 absolute bottom-[5rem] left-1/2 translate-x-[-50%]"
               height={75}
               src={qrCodeURL}
             />
-          </div>
+          </section>
         </div>
       )}
     </nav>

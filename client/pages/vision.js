@@ -15,7 +15,8 @@ import {
   imageWidthState,
   imageHeightState,
 } from "../components/states";
-const VisionPage = () => {
+
+export default function VisionPage() {
   const [allowWebcam, setAllowWebcam] = useState(false);
   const [hasWebcam, setHasWebcam] = useState(false);
   const [webcamEnabled, setWebcamEnable] = useState(false);
@@ -81,12 +82,12 @@ const VisionPage = () => {
   return (
     <DashboardLayout>
       <Head>
-        <title> Parkerr: Vision</title>
+        <title>Parkerr: Vision</title>
       </Head>
 
-      <div className={`flex flex-col     `}>
-        <div className="flex flex-col justify-center items-center gap-4  rounded-lg">
-          <div className=" grid relative text-2xl w-full  text-white gap-2 h-20 rounded-xl font-bold bg-orangeFade ">
+      <div className="flex flex-col">
+        <div className="flex flex-col items-center justify-center gap-4 rounded-lg">
+          <div className="relative grid w-full h-20 gap-2 text-2xl font-bold text-white rounded-md">
             <VisionHeader
               WebRTCMode={WebRTCMode}
               peerId={peerId}
@@ -101,13 +102,10 @@ const VisionPage = () => {
               handleDisableDemo={handleDisableDemo}
             />
 
-            {!demo && allowWebcam ? <div></div> : ""}
+            {!demo && allowWebcam ? <div /> : ""}
           </div>
 
-          <div
-            className={`hidden md:flex gap-4 p-2  flex-col md:flex-row  md:justify-between 
-            `}
-          >
+          <div className="flex-col hidden gap-4 md:flex md:flex-row md:justify-between">
             <Toolbar
               setProcessing={setProcessing}
               allowWebcam={allowWebcam}
@@ -115,13 +113,9 @@ const VisionPage = () => {
               processing={processing}
               hasWebcam={hasWebcam}
               loadedCoco={loadedCoco}
-            >
-              {" "}
-            </Toolbar>
-            <div className="bg-orangeFade outline-2   outline-black rounded-b-2xl">
-              {demo || webcamPlaying || WebRTCLoaded ? (
-                <DrawingCanvas></DrawingCanvas>
-              ) : null}
+            ></Toolbar>
+            <div>
+              {demo || webcamPlaying || WebRTCLoaded ? <DrawingCanvas /> : null}
 
               <ClientRender
                 demo={demo}
@@ -148,12 +142,10 @@ const VisionPage = () => {
               ></ClientRender>
               <VisionFooter />
             </div>
-            <RoisFeed></RoisFeed>
+            <RoisFeed />
           </div>
         </div>
       </div>
     </DashboardLayout>
   );
-};
-
-export default VisionPage;
+}
