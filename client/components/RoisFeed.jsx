@@ -1,31 +1,20 @@
 import { selectedRoiState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageHeightState, evaluateTimeState, autoDetectState } from "./states";
+import { imageHeightState, autoDetectState } from "./states";
 import deleteIcon from "../public/static/icons/delete_bin_black.png";
 import Image from "next/image";
 import Accordion from "./Accordion";
 import Button from "./Button";
-import Modal from "./Modal";
-import { useState } from "react";
-import DataManger from "./DataManager";
 
-const RoisFeed = ({}) => {
+
+
+const RoisFeed = ({openModal}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const imageHeight = useRecoilValue(imageHeightState);
 
 
-  const [isOpen, setIsOpen] = useState(false)
-  
-  function closeModal() 
-  {
-    setIsOpen(false)
-  }
 
-  function openModal() 
-  {
-    setIsOpen(true)
-  }
 
   
 
@@ -83,9 +72,7 @@ const RoisFeed = ({}) => {
  
   return (
     <>
-    <Modal isOpen={isOpen} closeModal={closeModal}>
-    <DataManger/>
-    </Modal>
+
     <div
       className={`w-[200px] bg-black/60 backdrop-blur-sm rounded-xl justify-between min-h-[${imageHeight}px]`}
     >

@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import Toolbar from "../components/Toolbar";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Head from "next/head";
-
+import DataManger from "../components/DataManager";
+import Modal from "../components/Modal";
 import VisionHeader from "../components/VisionHeader";
 import VisionFooter from "../components/VisionFooter";
 import { createEmptyStream } from "../libs/webRTC_utility";
@@ -38,6 +39,18 @@ export default function VisionPage() {
   const selectedRois = useRecoilValue(selectedRoiState);
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
+  const [isOpen, setIsOpen] = useState(false)
+  
+  function closeModal() 
+  {
+    setIsOpen(false)
+  }
+
+  function openModal() 
+  {
+    setIsOpen(true)
+  }
+
 
   useEffect(() => {
     if (remoteRef.current != null) {
@@ -84,6 +97,11 @@ export default function VisionPage() {
       <Head>
         <title>Parkerr: Vision</title>
       </Head>
+      <Modal isOpen={isOpen} closeModal={closeModal}>
+    <DataManger/>
+    </Modal>
+
+
 
       <div className="flex flex-col">
         <div className="flex flex-col items-center justify-center gap-4 rounded-lg">
@@ -142,7 +160,7 @@ export default function VisionPage() {
               ></ClientRender>
               <VisionFooter />
             </div>
-            <RoisFeed />
+            <RoisFeed openModal={openModal} />
           </div>
         </div>
       </div>
