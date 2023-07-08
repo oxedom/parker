@@ -6,7 +6,7 @@ import {
   firstDetect,
   calculateTimeDiff,
   supressedRoisProcess,
-  convertRoisSelected,
+  convertSuppressedRoisToSelected,
   SnapshotFactory,
 } from "../libs/states_utility";
 import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
@@ -264,7 +264,7 @@ const selectedRoiState = selector({
             minimumAttendance
           );
 
-          const convertedToSelected = convertRoisSelected(suppresedRois);
+          const convertedToSelected = convertSuppressedRoisToSelected(suppresedRois);
 
           set(selectedRoi, convertedToSelected);
           set(autoDetectState, false);

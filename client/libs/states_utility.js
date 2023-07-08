@@ -64,13 +64,13 @@ export function supressedRoisProcess(roiMatrix, threshold) {
   return filtered;
 }
 
-export function convertRoisSelected(arr) {
+export function convertSuppressedRoisToSelected(arr) {
   return arr.map((a) => {
     return {
       ...selectedFactory(a.cords),
-      evaluating: false,
-      occupied: true,
-      cycleCount: 1,
+      evaluating: true,
+      occupied: false,
+      cycleCount: 0,
     };
   });
 }
