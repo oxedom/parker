@@ -217,26 +217,27 @@ const selectedRoiState = selector({
           //threshold update that state of the region to be occupied 
           if (timeDiff > evaluateTime) {
 
-            
-
-            if(selectedRoisClone[index]['cycleCount'] === 0) { 
-              selectedRoisClone[index].cycleCount += 1 }
-            
-              if(selectedRoisClone[index]['events'].length-1 < selectedRoisClone[index].cycleCount) 
-              {
-                let occupiedEvent =  {
-                  cycle: selectedRoisClone[index]['cycleCount'],
-                  eventName: 'occupied',
-                  timeMarked: currentUnixTime,
-                  duration: null
-                }
-                selectedRoisClone[index]['events'].push(occupiedEvent)
+            if(!selectedRoisClone[index]['occupied'])   {
+              selectedRoisClone[index].occupied = true;
+              selectedRoisClone[index].cycleCount += 1
+              let occupiedEvent =  {
+                cycle: selectedRoisClone[index]['cycleCount'],
+                eventName: 'occupied',
+                timeMarked: currentUnixTime,
+                duration: null
               }
+              selectedRoisClone[index]['events'].push(occupiedEvent)
 
-            //Keep track of the of the event duration and keeping occupied true
-            selectedRoisClone[index].occupied = true;
+            }
             let currentCycleCount = selectedRoisClone[index]['cycleCount']
             selectedRoisClone[index]['events'][currentCycleCount]['duration'] =  selectedRoisClone[index].lastSeen - selectedRoisClone[index].firstSeen
+
+
+     
+          
+
+            //Keep track of the of the event duration and keeping occupied true
+        
 
               
           }
@@ -246,10 +247,9 @@ const selectedRoiState = selector({
           currentUnixTime - selectedRois[index]["lastSeen"] >
           evaluateTime
         ) {
-          //Reset 
+          //Reset tracking
           if(selectedRoisClone[index]["occupied"]) 
           {
-            selectedRoisClone[index].cycleCount += 1
             selectedRoisClone[index]["firstSeen"] = null;
             selectedRoisClone[index]["lastSeen"] = null
             selectedRoisClone[index]["occupied"] = false;
@@ -289,11 +289,12 @@ const selectedRoiState = selector({
       } else {
 
 
-        selectedRoisClone.forEach(clone => 
-          {
-            console.table(clone['events'])
-          })
-        console.log(selectedRoisClone);
+        // selectedRoisClone.forEach(clone => 
+        //   {
+        //     console.table(clone['events'])
+        //   })
+        // console.log(selectedRoisClone[0]);
+        // console.table(selectedRoisClone[0]['events']);
         set(selectedRoi, selectedRoisClone);
       }
       let stop = performance.now();
