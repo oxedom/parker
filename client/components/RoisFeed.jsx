@@ -1,18 +1,22 @@
 import { selectedRoiState } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { imageHeightState, evaluateTimeState, autoDetectState } from "./states";
+import { imageHeightState, autoDetectState } from "./states";
 import deleteIcon from "../public/static/icons/delete_bin_black.png";
 import Image from "next/image";
 import Accordion from "./Accordion";
 import Button from "./Button";
 
-import { formatDistanceToNow } from "date-fns";
 
-const RoisFeed = ({}) => {
+
+const RoisFeed = ({openModal}) => {
   const [selectedRegions, setSelectedRois] = useRecoilState(selectedRoiState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const imageHeight = useRecoilValue(imageHeightState);
-  const evaluateTime = useRecoilValue(evaluateTimeState);
+
+
+
+
+  
 
   function handleDeleteAll() {
     if (selectedRegions.length === 0) {
@@ -59,63 +63,16 @@ const RoisFeed = ({}) => {
     }
   };
 
-  const handleImport = () => {
-    let condition = true;
-    if (selectedRegions.length > 0) {
-      condition = confirm("Are you sure you want to overright marked regions?");
-    }
-    if (condition) {
-      let action = {
-        event: "importSelected",
-        payload: null,
-      };
-      setSelectedRois(action);
-    }
-  };
 
-  const handleSave = () => {
-    let parsed = JSON.parse(localStorage.getItem("selections"));
-    console.log(parsed);
-    let condition = true;
-    if (parsed.selectedRegions.length > 0) {
-      condition = confirm(
-        `Are you sure you want to overwrite selected regions? Last save was ${formatDistanceToNow(
-          parsed.savedDate
-        )}`
-      );
-    }
-
-    if (condition) {
-      let saveObj = {
-        selectedRegions,
-        savedDate: Date.now(),
-      };
-      let selections = JSON.stringify(saveObj);
-      localStorage.setItem("selections", selections);
-    }
-  };
-
-  function printDate(time, evaluateTime) {
-    //MS MILAsecoudns
-    //S secounds
-    //M Minutes
-
-    let diff_ms = Math.floor(Date.now() - time);
-    let diff_s = Math.floor(diff_ms / 1000);
-    let diff_m = Math.floor(diff_s / 60);
-    let diff_h = Math.floor(diff_ms / 60);
-    if (diff_s < 60) {
-      return `${diff_s} secounds`;
-    }
-    if (diff_s < 3600) {
-      return `${diff_m} mintues`;
-    }
-    if (diff_s > 3600) {
-      return `${diff_h} hours`;
-    }
+  function handleMangeData() {
+    openModal()
   }
 
+
+ 
   return (
+    <>
+
     <div
       className={`w-[200px] bg-black/60 backdrop-blur-sm rounded-xl justify-between min-h-[${imageHeight}px]`}
     >
@@ -128,29 +85,18 @@ const RoisFeed = ({}) => {
 
             <Button onClick={handleAutoDetect}>Auto Detect</Button>
 
-            <div className="grid grid-cols-2 gap-2 place-content-between ">
-              <Button
-                className={`
-             hover:cursor-pointer drop-shadow
-            font-bold border-white border rounded   shadow-black
-              bg-white cursor-pointer text-slate-800"
-        `}
-                onClick={handleSave}
-              >
-                Save
-              </Button>
-
+    
               <Button
                 className={`
              hover:cursor-pointer drop-shadow
             font-bold border-white border rounded  shadow-black
             bg-white cursor-pointer text-slate-800"
         `}
-                onClick={handleImport}
+                onClick={handleMangeData}
               >
-                Import
+                Manage Data
               </Button>
-            </div>
+      
           </div>
           <div></div>
         </Accordion>
@@ -198,6 +144,7 @@ const RoisFeed = ({}) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
