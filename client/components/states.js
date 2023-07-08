@@ -6,7 +6,7 @@ import {
   firstDetect,
   calculateTimeDiff,
   supressedRoisProcess,
-  convertRoisSelected,
+  convertSuppressedRoisToSelected,
   SnapshotFactory,
 } from "../libs/states_utility";
 import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
@@ -264,7 +264,7 @@ const selectedRoiState = selector({
             minimumAttendance
           );
 
-          const convertedToSelected = convertRoisSelected(suppresedRois);
+          const convertedToSelected =   convertSuppressedRoisToSelected(suppresedRois);
 
           set(selectedRoi, convertedToSelected);
           set(autoDetectState, false);
@@ -272,12 +272,7 @@ const selectedRoiState = selector({
           set(autoCheckedState, 0);
         }
       } else {
-        // selectedRoisClone.forEach(clone =>
-        //   {
-        //     console.table(clone['events'])
-        //   })
-        // console.log(selectedRoisClone[0]);
-        // console.table(selectedRoisClone[0]['events']);
+
         set(selectedRoi, selectedRoisClone);
       }
       let stop = performance.now();
