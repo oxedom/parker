@@ -1,9 +1,9 @@
 import { atom, selector } from "recoil";
 import { checkRectOverlap, selectedFactory } from "../libs/utillity";
 import {
-  roiEvaluating,
+  checkRoiEvaluating,
   overlapsAndKnown,
-  overlapsFirstDetect,
+  firstDetect,
   calculateTimeDiff,
   supressedRoisProcess,
   convertRoisSelected,
@@ -17,11 +17,6 @@ import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
 const evaluateTimeState = atom({
   key: "evaluateTimeState",
   default: 5000,
-});
-
-const parkingSnapshotsState = atom({
-  key: "parkingSnapshotsState",
-  default: [],
 });
 
 //Automatic Evaluate time is 10 secounds
@@ -122,6 +117,8 @@ const selectedRoiState = selector({
     }
 
     if (action.event === "occupation") {
+      // console.time('occupation');
+      // let start = performance.now();
       let { predictionsArr, canvas } = action.payload;
 
       let _lastChecked = get(lastCheckedState);
@@ -136,21 +133,21 @@ const selectedRoiState = selector({
       }
 
       // This if statement prevents excessive calls to checkOverlap with ROIS.
-      let excessiveCheck = ((Date.now() - _lastChecked > 900) && !_autoDetect)
+    //   let excessiveCheck = ((Date.now() - _lastChecked > 900) && !_autoDetect)
 
-      if (excessiveCheck) {
+    //   if (excessiveCheck) {
       
 
-        set(lastCheckedState, Date.now());
-      } else if (!_autoDetect) {
-     ;
-        return;
-      }
+    //     set(lastCheckedState, Date.now());
+    //   } else if (!_autoDetect) {
+    //  ;
+    //     return ;
+    //   }
 
       //If there are ROI to check objects the function returns
       const selectedRois = get(selectedRoi);
       if (selectedRois.length === 0 && !_autoDetect) {
-        return;
+        return ;
       }
 
       //If no predections have happen, then a dummy predection is sent
@@ -185,40 +182,74 @@ const selectedRoiState = selector({
           predictionsArr,
           overlapThreshold
         );
-
-        let roiNotEvaluating = !roiEvaluating(
-          currentUnixTime,
-          selectedRois[index]["timeMarked"],
-          evaluateTime
-        );
-
-        if (roiNotEvaluating) {
-          selectedRoisClone[index]["evaluating"] = false;
+        
+        //If true check if still evaluting 
+        if( selectedRoisClone[index]["evaluating"]) 
+        {
+          let roiStillEvaluating = checkRoiEvaluating(
+            currentUnixTime,
+            selectedRois[index]['events'][0]['timeMarked'],
+            evaluateTime
+          );
+  
+          if (!roiStillEvaluating) {
+            selectedRoisClone[index]["evaluating"] = false;
+          }
         }
 
-        if (overlapsFirstDetect(isOverlap, selectedRois, index)) {
-          //Update lastSeen and First Seen to current time
+
+      //Runs if there is no overlap and it's the firt time it's been seen (Null first seen and overlap)
+      //Set the time trackings to the same time
+        if (firstDetect(isOverlap, selectedRois, index)) {
+      
           selectedRoisClone[index]["firstSeen"] = currentUnixTime;
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
+
+          //Runs if there is an overlap (Thats passed the threshold) and it's been seen
         } else if (overlapsAndKnown(isOverlap, selectedRois, index)) {
+          //Setting last seen to unix time to start/continue tracking the state of the parking lot
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
-          //Calculate timeDIffernce
-          let timeDiff = calculateTimeDiff(selectedRois, index);
-          if (timeDiff > evaluateTime) {
-            if( selectedRoisClone[index].cycleCount === 0) { selectedRoisClone[index].cycleCount += 1 }
-            selectedRoisClone[index].occupied = true;
-            selectedRoisClone[index].parkingDuration = selectedRoisClone[index].lastSeen - selectedRoisClone[index].firstSeen
           
+          //Calculate how long the item has been tracked for
+          let timeDiff = calculateTimeDiff(selectedRois, index);
+
+          //If the amount of time (timeDiff) the region has been tracked passes the evalute time
+          //threshold update that state of the region to be occupied 
+          if (timeDiff > evaluateTime) {
+
+            
+
+            if(selectedRoisClone[index]['cycleCount'] === 0) { 
+              selectedRoisClone[index].cycleCount += 1 }
+            
+              if(selectedRoisClone[index]['events'].length-1 < selectedRoisClone[index].cycleCount) 
+              {
+                let occupiedEvent =  {
+                  cycle: selectedRoisClone[index]['cycleCount'],
+                  eventName: 'occupied',
+                  timeMarked: currentUnixTime,
+                  duration: null
+                }
+                selectedRoisClone[index]['events'].push(occupiedEvent)
+              }
+
+            //Keep track of the of the event duration and keeping occupied true
+            selectedRoisClone[index].occupied = true;
+            let currentCycleCount = selectedRoisClone[index]['cycleCount']
+            selectedRoisClone[index]['events'][currentCycleCount]['duration'] =  selectedRoisClone[index].lastSeen - selectedRoisClone[index].firstSeen
+
+              
           }
+          //Runs if there is no overlap and checks if the region hasn't been seen for evaluate time.
+          //If so it peforms a reset of the tracking
         } else if (
           currentUnixTime - selectedRois[index]["lastSeen"] >
           evaluateTime
         ) {
-          //Reset
+          //Reset 
           if(selectedRoisClone[index]["occupied"]) 
           {
             selectedRoisClone[index].cycleCount += 1
-            selectedRoisClone[index].parkingDuration = 0
             selectedRoisClone[index]["firstSeen"] = null;
             selectedRoisClone[index]["lastSeen"] = null
             selectedRoisClone[index]["occupied"] = false;
@@ -227,7 +258,7 @@ const selectedRoiState = selector({
         }
       }
 
-      //Fires while autoDetect is true
+      //Fires while auto Detectection mode is processing
       if (_autoDetect) {
         const autoChecked = get(autoCheckedState);
         const autoEvaluateTime = get(autoEvaluateTimeState);
@@ -257,26 +288,17 @@ const selectedRoiState = selector({
         }
       } else {
 
-      function handleAnalytics() 
-      {
-        let oldValue = get(parkingSnapshotsState)
-        if(oldValue.length === 10) 
-        {
-        console.log(oldValue);
-        set(parkingSnapshotsState, [])
-        }
-        else 
-        {
-        set(parkingSnapshotsState, [...oldValue  , [...SnapshotFactory(selectedRoisClone), Date.now()] ])
-        } 
-      }
 
-
-        handleAnalytics()
+        selectedRoisClone.forEach(clone => 
+          {
+            console.table(clone['events'])
+          })
+        console.log(selectedRoisClone);
         set(selectedRoi, selectedRoisClone);
       }
-
-      //How long it takes to evaluate if a object is there or not
+      let stop = performance.now();
+      // console.log("someFunc took " + (stop - start) + " milliseconds");
+      // console.timeEnd('occupation');
     }
     //When a ROI is hovered over it updates that state that it's hover property is true, which in turn effects it's what color it is renderered
     //in the ROI FEED and on the canvas
@@ -301,7 +323,6 @@ const selectedRoiState = selector({
       let parsed = JSON.parse(selectionData);
       set(selectedRoi, parsed.selectedRegions);
     }
-
     //When a ROI is unhovered over it updates that state that it's hover property is no longer true
     if (action.event === "unSelectRoi") {
       let uid = action.payload;

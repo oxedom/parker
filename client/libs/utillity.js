@@ -113,13 +113,19 @@ export function selectedFactory(cords) {
   const roiObj = {
     label: "vehicle",
     cords: { ...cords },
-    timeMarked: date.getTime(),
     uid: uniqid()+"DATE"+(Date.now().toString()),
     area: Math.round(cords.width * cords.height),
     firstSeen: null,
     lastSeen: null,
     occupied: null,
-    parkingDuration: null,
+    events: [
+      {
+        eventName: 'initialized',
+        timeMarked: date.getTime(),
+      }
+
+    ],
+    // parkingDuration: null,
     cycleCount: 0,
     hover: false,
     evaluating: true,

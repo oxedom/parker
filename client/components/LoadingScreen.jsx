@@ -48,7 +48,7 @@ const LoadingScreen = ({
         context.fillRect(0, 0, imageWidth, imageHeight);
         context.fillStyle = "white";
 
-        const txt = `Scan the QR Code to \n make a remote \n video connection`;
+        const txt = `Invite with link \n to make a remote \n video connection`;
         const lines = txt.split("\n");
         const lineheight = 40;
 

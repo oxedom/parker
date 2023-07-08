@@ -1,10 +1,10 @@
 import { selectedFactory, getOverlap, filterArrayByScore } from "./utillity";
 
-export function roiEvaluating(currentTime, firstCreated, differnce) {
+export function checkRoiEvaluating(currentTime, firstCreated, differnce) {
   return currentTime - firstCreated < differnce ? true : false;
 }
 
-export function overlapsFirstDetect(isOverlap, selectedRois, index) {
+export function firstDetect(isOverlap, selectedRois, index) {
   let firstSeen = selectedRois[index]["firstSeen"];
   return isOverlap && firstSeen === null;
 }
