@@ -64,20 +64,23 @@ export function supressedRoisProcess(roiMatrix, threshold) {
   return filtered;
 }
 
-
-export function convertRoisSelected(arr) {return arr.map((a) => { return { ...selectedFactory(a.cords), evaluating: false, occupied:true, cycleCount: 1}})
+export function convertRoisSelected(arr) {
+  return arr.map((a) => {
+    return {
+      ...selectedFactory(a.cords),
+      evaluating: false,
+      occupied: true,
+      cycleCount: 1,
+    };
+  });
 }
 
-export function SnapshotFactory(selectedRois)
-{
+export function SnapshotFactory(selectedRois) {
   return selectedRois.map((s) => {
-    const {evaluating, hover, label, cords, area, ...rest} = s 
-    return rest
-
-  })
- 
+    const { evaluating, hover, label, cords, area, ...rest } = s;
+    return rest;
+  });
 }
-
 
 function getShortestArray(arr) {
   let shortest = arr[0];

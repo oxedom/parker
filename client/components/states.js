@@ -7,11 +7,9 @@ import {
   calculateTimeDiff,
   supressedRoisProcess,
   convertRoisSelected,
-  SnapshotFactory
+  SnapshotFactory,
 } from "../libs/states_utility";
 import { renderAllOverlaps, drawTextOnCanvas } from "../libs/canvas_utility";
-
-
 
 //The evaluation time is used to have a minimum time a square needs to be occupied/unoccupied to change it's state.
 const evaluateTimeState = atom({
@@ -133,21 +131,20 @@ const selectedRoiState = selector({
       }
 
       // This if statement prevents excessive calls to checkOverlap with ROIS.
-    //   let excessiveCheck = ((Date.now() - _lastChecked > 900) && !_autoDetect)
+      //   let excessiveCheck = ((Date.now() - _lastChecked > 900) && !_autoDetect)
 
-    //   if (excessiveCheck) {
-      
+      //   if (excessiveCheck) {
 
-    //     set(lastCheckedState, Date.now());
-    //   } else if (!_autoDetect) {
-    //  ;
-    //     return ;
-    //   }
+      //     set(lastCheckedState, Date.now());
+      //   } else if (!_autoDetect) {
+      //  ;
+      //     return ;
+      //   }
 
       //If there are ROI to check objects the function returns
       const selectedRois = get(selectedRoi);
       if (selectedRois.length === 0 && !_autoDetect) {
-        return ;
+        return;
       }
 
       //If no predections have happen, then a dummy predection is sent
@@ -182,26 +179,23 @@ const selectedRoiState = selector({
           predictionsArr,
           overlapThreshold
         );
-        
-        //If true check if still evaluting 
-        if( selectedRoisClone[index]["evaluating"]) 
-        {
+
+        //If true check if still evaluting
+        if (selectedRoisClone[index]["evaluating"]) {
           let roiStillEvaluating = checkRoiEvaluating(
             currentUnixTime,
-            selectedRois[index]['events'][0]['timeMarked'],
+            selectedRois[index]["events"][0]["timeMarked"],
             evaluateTime
           );
-  
+
           if (!roiStillEvaluating) {
             selectedRoisClone[index]["evaluating"] = false;
           }
         }
 
-
-      //Runs if there is no overlap and it's the firt time it's been seen (Null first seen and overlap)
-      //Set the time trackings to the same time
+        //Runs if there is no overlap and it's the firt time it's been seen (Null first seen and overlap)
+        //Set the time trackings to the same time
         if (firstDetect(isOverlap, selectedRois, index)) {
-      
           selectedRoisClone[index]["firstSeen"] = currentUnixTime;
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
 
@@ -209,37 +203,30 @@ const selectedRoiState = selector({
         } else if (overlapsAndKnown(isOverlap, selectedRois, index)) {
           //Setting last seen to unix time to start/continue tracking the state of the parking lot
           selectedRoisClone[index]["lastSeen"] = currentUnixTime;
-          
+
           //Calculate how long the item has been tracked for
           let timeDiff = calculateTimeDiff(selectedRois, index);
 
           //If the amount of time (timeDiff) the region has been tracked passes the evalute time
-          //threshold update that state of the region to be occupied 
+          //threshold update that state of the region to be occupied
           if (timeDiff > evaluateTime) {
-
-            if(!selectedRoisClone[index]['occupied'])   {
+            if (!selectedRoisClone[index]["occupied"]) {
               selectedRoisClone[index].occupied = true;
-              selectedRoisClone[index].cycleCount += 1
-              let occupiedEvent =  {
-                cycle: selectedRoisClone[index]['cycleCount'],
-                eventName: 'occupied',
+              selectedRoisClone[index].cycleCount += 1;
+              let occupiedEvent = {
+                cycle: selectedRoisClone[index]["cycleCount"],
+                eventName: "occupied",
                 timeMarked: currentUnixTime,
-                duration: null
-              }
-              selectedRoisClone[index]['events'].push(occupiedEvent)
-
+                duration: null,
+              };
+              selectedRoisClone[index]["events"].push(occupiedEvent);
             }
-            let currentCycleCount = selectedRoisClone[index]['cycleCount']
-            selectedRoisClone[index]['events'][currentCycleCount]['duration'] =  selectedRoisClone[index].lastSeen - selectedRoisClone[index].firstSeen
-
-
-     
-          
+            let currentCycleCount = selectedRoisClone[index]["cycleCount"];
+            selectedRoisClone[index]["events"][currentCycleCount]["duration"] =
+              selectedRoisClone[index].lastSeen -
+              selectedRoisClone[index].firstSeen;
 
             //Keep track of the of the event duration and keeping occupied true
-        
-
-              
           }
           //Runs if there is no overlap and checks if the region hasn't been seen for evaluate time.
           //If so it peforms a reset of the tracking
@@ -248,13 +235,11 @@ const selectedRoiState = selector({
           evaluateTime
         ) {
           //Reset tracking
-          if(selectedRoisClone[index]["occupied"]) 
-          {
+          if (selectedRoisClone[index]["occupied"]) {
             selectedRoisClone[index]["firstSeen"] = null;
-            selectedRoisClone[index]["lastSeen"] = null
+            selectedRoisClone[index]["lastSeen"] = null;
             selectedRoisClone[index]["occupied"] = false;
           }
- 
         }
       }
 
@@ -287,9 +272,7 @@ const selectedRoiState = selector({
           set(autoCheckedState, 0);
         }
       } else {
-
-
-        // selectedRoisClone.forEach(clone => 
+        // selectedRoisClone.forEach(clone =>
         //   {
         //     console.table(clone['events'])
         //   })
