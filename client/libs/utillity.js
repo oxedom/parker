@@ -32,8 +32,6 @@ export function getOverlap(rectangle1, rectangle2) {
   };
 }
 
-
-
 export function checkOverlapArrays(detectionsArr, selectedArr) {
   let overlaps = [];
   detectionsArr.forEach((d) => {
@@ -105,21 +103,24 @@ export function isVehicle(label) {
   }
 }
 
-
-
 export function selectedFactory(cords) {
   let date = new Date();
 
   const roiObj = {
     label: "vehicle",
     cords: { ...cords },
-    timeMarked: date.getTime(),
-    uid: uniqid()+"DATE"+(Date.now().toString()),
+    uid: uniqid() + "DATE" + Date.now().toString(),
     area: Math.round(cords.width * cords.height),
     firstSeen: null,
     lastSeen: null,
     occupied: null,
-    parkingDuration: null,
+    events: [
+      {
+        eventName: "initialized",
+        timeMarked: date.getTime(),
+      },
+    ],
+    // parkingDuration: null,
     cycleCount: 0,
     hover: false,
     evaluating: true,
@@ -141,10 +142,6 @@ export function totalOccupied(roiArr) {
   });
   return { OccupiedCount, availableCount };
 }
-
-
-
-
 
 export function detectionsToROIArr(
   detections,
@@ -200,13 +197,9 @@ export function detectionsToROIArr(
   return _predictionsArr;
 }
 
-
 export function filterArrayByScore(array, scores, threshold) {
-
   return array.filter((_, i) => scores[i] > threshold);
 }
-
-
 
 function shortenedCol(arrayofarray, indexlist) {
   return arrayofarray.map(function (array) {

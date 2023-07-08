@@ -5,14 +5,13 @@ export function processInputImage(video, model_dim) {
   let input = tf.tidy(() => {
     try {
       return tf.image
-      .resizeBilinear(tf.browser.fromPixels(video), model_dim)
-      .div(255.0)
-      .transpose([2, 0, 1])
-      .expandDims(0);
+        .resizeBilinear(tf.browser.fromPixels(video), model_dim)
+        .div(255.0)
+        .transpose([2, 0, 1])
+        .expandDims(0);
     } catch (error) {
       console.error(error);
     }
-
   });
 
   return input;

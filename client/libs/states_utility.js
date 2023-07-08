@@ -1,10 +1,10 @@
 import { selectedFactory, getOverlap, filterArrayByScore } from "./utillity";
 
-export function roiEvaluating(currentTime, firstCreated, differnce) {
+export function checkRoiEvaluating(currentTime, firstCreated, differnce) {
   return currentTime - firstCreated < differnce ? true : false;
 }
 
-export function overlapsFirstDetect(isOverlap, selectedRois, index) {
+export function firstDetect(isOverlap, selectedRois, index) {
   let firstSeen = selectedRois[index]["firstSeen"];
   return isOverlap && firstSeen === null;
 }
@@ -64,20 +64,23 @@ export function supressedRoisProcess(roiMatrix, threshold) {
   return filtered;
 }
 
-
-export function convertRoisSelected(arr) {return arr.map((a) => { return { ...selectedFactory(a.cords), evaluating: false, occupied:true, cycleCount: 1}})
+export function convertRoisSelected(arr) {
+  return arr.map((a) => {
+    return {
+      ...selectedFactory(a.cords),
+      evaluating: false,
+      occupied: true,
+      cycleCount: 1,
+    };
+  });
 }
 
-export function SnapshotFactory(selectedRois)
-{
+export function SnapshotFactory(selectedRois) {
   return selectedRois.map((s) => {
-    const {evaluating, hover, label, cords, area, ...rest} = s 
-    return rest
-
-  })
- 
+    const { evaluating, hover, label, cords, area, ...rest } = s;
+    return rest;
+  });
 }
-
 
 function getShortestArray(arr) {
   let shortest = arr[0];
