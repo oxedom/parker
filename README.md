@@ -8,7 +8,7 @@ Under the MIT License.
 
 # LIVE LINK
 
-[Live link](https://www.parkerr.org/)
+[Live link](https://parker-oxedom.vercel.app/)
 
 ![Parkerr Demo](https://i.imgur.com/JSEIqFD.png)
 

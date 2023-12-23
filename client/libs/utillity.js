@@ -118,9 +118,9 @@ export function selectedFactory(cords) {
       {
         eventName: "initialized",
         timeMarked: date.getTime(),
+        duration: null,
       },
     ],
-    // parkingDuration: null,
     cycleCount: 0,
     hover: false,
     evaluating: true,
