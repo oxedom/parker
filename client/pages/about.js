@@ -76,8 +76,14 @@ const About = () => {
                 <span className="text-2xl text-gray-700 font-bold">
                   Parkerr{" "}
                 </span>{" "}
-                is browser application that allows you to detect and monitor
-                parking spaces using computer vision.
+                is a open source parking browser application that enables you
+                monitor parking spots using a webcam, cellphone camera, or any
+                virtual webcam. The tool uses computer vision object detection
+                to operate and all the computation is processed inside browser
+                utilizing TensorFlow.js. Communication between a remote
+                cellphone and the browser is enabled through WebRTC (PeerJS uses
+                PeerServer for session metadata and candidate signaling. as well
+                as Google Stun servers)
               </p>
 
               <p className="text-4xl my-5   text-gray-700 ">Built with</p>
