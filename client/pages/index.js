@@ -1,7 +1,16 @@
 import Head from "next/head";
 import Link from "next/link";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { useEffect } from "react";
+
 const Home = () => {
+  useEffect(() => {
+    alert(
+      "Parkerr domain will be expiring soon and not renewed. The new URL will be on the github page"
+    );
+    alert("https://parker-oxedom.vercel.app/");
+  }, []);
+
   return (
     <>
       <Head>
