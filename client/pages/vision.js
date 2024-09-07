@@ -39,18 +39,15 @@ export default function VisionPage() {
   const selectedRois = useRecoilValue(selectedRoiState);
   const [imageWidth, setImageWidth] = useRecoilState(imageWidthState);
   const [imageHeight, setImageHeight] = useRecoilState(imageHeightState);
-  const [isOpen, setIsOpen] = useState(false)
-  
-  function closeModal() 
-  {
-    setIsOpen(false)
+  const [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
   }
 
-  function openModal() 
-  {
-    setIsOpen(true)
+  function openModal() {
+    setIsOpen(true);
   }
-
 
   useEffect(() => {
     if (remoteRef.current != null) {
@@ -70,13 +67,11 @@ export default function VisionPage() {
         setPeerID(id);
       });
       newPeer.on("connection", function (conn) {
-        console.log("new connection", conn.peer);
         remoteRef.current = conn;
       });
       newPeer.on("call", (call) => {
         let fakeStream = createEmptyStream();
         call.answer(fakeStream);
-        console.log("im getting a call ");
         call.on("stream", (remoteStream) => {
           rtcOutputRef.current.srcObject = remoteStream;
           rtcOutputRef.current.play();
@@ -98,10 +93,8 @@ export default function VisionPage() {
         <title>Parkerr: Vision</title>
       </Head>
       <Modal isOpen={isOpen} closeModal={closeModal}>
-    <DataManger/>
-    </Modal>
-
-
+        <DataManger />
+      </Modal>
 
       <div className="flex flex-col">
         <div className="flex flex-col items-center justify-center gap-4 rounded-lg">

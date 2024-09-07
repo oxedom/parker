@@ -29,7 +29,6 @@ const ReceiverRTC = ({ theID }) => {
       const { default: Peer } = await import("peerjs");
       const newPeer = new Peer();
       peerRef.current = newPeer;
-      console.log(peerRef.current);
     };
 
     initPeerJS();

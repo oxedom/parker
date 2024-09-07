@@ -42,8 +42,11 @@ const VisionHeader = ({
   };
 
   useEffect(() => {
-    generateQR(`https://www.parkerr.org/reroute?remoteID=${peerId}`);
-    console.log("peerId", peerId);
+    const currentDomain = new URL(window.location.href);
+    currentDomain.pathname = "reroute";
+    currentDomain.searchParams.set("remoteID", peerId);
+
+    generateQR(currentDomain.href);
   }, [peerId]);
 
   const handleBack = () => {
@@ -61,9 +64,10 @@ const VisionHeader = ({
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(
-      `https://www.parkerr.org/reroute?remoteID=${peerId}`
-    );
+    const currentDomain = new URL(window.location.href);
+    currentDomain.pathname = "reroute";
+    currentDomain.searchParams.set("remoteID", peerId);
+    navigator.clipboard.writeText(currentDomain.href);
   };
 
   return (

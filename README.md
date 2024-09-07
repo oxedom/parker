@@ -10,7 +10,6 @@ Under the MIT License.
 
 [Live link](https://parker-oxedom.vercel.app/)
 
-![Parkerr Demo](https://i.imgur.com/JSEIqFD.png)
 
 # Built With
 
