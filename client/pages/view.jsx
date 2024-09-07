@@ -36,7 +36,7 @@ export default function View() {
       <nav className="flex  border-b-2 border-black justify-around items-center h-[80px] bg-filler text-white">
         <h4
           onClick={(e) => {
-            router.push("https://www.parkerr.org/");
+            router.push("/");
           }}
           className="text-4xl font-bold text-center uppercase hover:cursor-pointer"
         >
@@ -45,7 +45,7 @@ export default function View() {
 
         <span
           onClick={(e) => {
-            router.push("https://www.parkerr.org/about");
+            router.push("/about");
           }}
           className="text-xl font-bold text-center hover:cursor-pointer"
         >

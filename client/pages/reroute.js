@@ -3,15 +3,19 @@ import { useRouter } from "next/router";
 const reroute = () => {
   const router = useRouter();
   const handleReroute = (val) => {
+    const currentDomain = new URL(window.location.href);
+
     if (val === "input") {
-      router.push(
-        `https://www.parkerr.org/input?remoteID=${router.query.remoteID}`
-      );
+      currentDomain.pathname = "input";
+      currentDomain.searchParams.set("remoteID", router.query.remoteID);
+
+      router.push(currentDomain.href);
     }
     if (val === "view") {
-      router.push(
-        `https:/www.parkerr.orgview?remoteID=${router.query.remoteID}`
-      );
+      currentDomain.searchParams.set("remoteID", router.query.remoteID);
+
+      currentDomain.pathname = "input";
+      router.push(currentDomain.href);
     }
   };
 
