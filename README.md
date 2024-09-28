@@ -1,6 +1,6 @@
 # Parkerr
 
-Parkerr is a open source parking browser application that enables you monitor parking spots using a webcam, cellphone camera, or any virtual webcam. The tool uses computer vision object detection to operate and all the computation is processed inside browser utilizing TensorFlow.js. Communication between a remote cellphone and the browser is enabled through WebRTC (PeerJS uses PeerServer for session metadata and candidate signaling. as well as Google Stun servers)
+Parker is an open-source parking browser application that enables you to monitor parking spots using a webcam, cellphone camera, or any virtual webcam. The tool uses computer vision object detection to operate, and all computation is processed inside the browser using TensorFlow.js. Communication between a remote cellphone and the browser is enabled through WebRTC (PeerJS uses PeerServer for session metadata and candidate signaling, as well as Google STUN servers).
 
 # licensing
 
