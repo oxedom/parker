@@ -10,21 +10,16 @@
       height="500"
       autoplay
     />
-
-    <button @click="runEngine">Run Yolo</button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useEngineStore } from '../stores/engine'
 const video = ref<HTMLVideoElement | null>(null)
-
 const engine = useEngineStore()
 
-console.log(video)
-
-const runEngine = () => engine.runYolo()
+onMounted(() => {})
 </script>
 
 <style></style>
