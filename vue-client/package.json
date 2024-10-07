@@ -14,7 +14,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@tensorflow/tfjs": "^4.21.0",
+    "@tensorflow/tfjs": "^3.21.0",
     "@vueuse/core": "^11.1.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",

@@ -1,21 +1,48 @@
 import { defineStore } from 'pinia'
 import * as tf from '@tensorflow/tfjs'
 import { ref } from 'vue'
+import { processInputImage, non_max_suppression } from '@/utils/tfjs'
+import '@tensorflow/tfjs-backend-webgl' //TODO Check that this is required
 export const useEngineStore = defineStore('engine', () => {
   const model = ref<any>(null)
 
   const initYoloModel = async () => {
-    let yolov7 = await tf.loadGraphModel(`${window.location.origin}/yolov7_web_model/model.json`, {
+    let yolov7 = await tf.loadGraphModel('/yolov7_web_model/model.json', {
       onProgress: (fractions) => {
         //Loading
         console.log(`Yolo7 model loaded: ${fractions * 100}%`)
       }
     })
 
-    model.value = yolov7
-
-    console.log('Yolo7 model loaded', yolov7)
+    model.value = Object.freeze(yolov7)
+    const tensor = yolov7?.inputs?.[0]?.shape
+    if (tensor) {
+      const dummyInput = tf.ones(tensor)
+      const warmupResult = await yolov7.executeAsync(dummyInput)
+      tf.dispose(warmupResult)
+      tf.dispose(dummyInput)
+    }
   }
 
-  return { initYoloModel, model }
+  const processFrame = async (videoElement: HTMLVideoElement) => {
+    if (!model.value || !videoElement) return
+
+    tf.engine().startScope()
+    let input = processInputImage(videoElement, [640, 640])
+
+    let res = model.value.execute(input)
+    const detections = non_max_suppression(res.arraySync()[0], 0.5, 0.2, 50)
+
+    console.log(detections)
+
+    try {
+      await Promise.all([tf.dispose(input), tf.dispose(res)])
+    } catch (err) {
+      console.warn('🚀 ~ processFrame - Memory LEAK ~ err:', err)
+    }
+
+    tf.engine().endScope()
+  }
+
+  return { initYoloModel, model, processFrame }
 })
