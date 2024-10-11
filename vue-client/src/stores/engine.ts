@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import * as tf from '@tensorflow/tfjs'
 import { ref } from 'vue'
-import { processInputImage, non_max_suppression } from '@/utils/tfjs'
+import { processInputImage, non_max_suppression } from '@/utils/tfjs.js'
+import { detectionsToROIArr } from '@/utils/overlap.js'
 import '@tensorflow/tfjs-backend-webgl' //TODO Check that this is required
+
 export const useEngineStore = defineStore('engine', () => {
   const model = ref<any>(null)
 
@@ -33,7 +35,16 @@ export const useEngineStore = defineStore('engine', () => {
     let res = model.value.execute(input)
     const detections = non_max_suppression(res.arraySync()[0], 0.5, 0.2, 50)
 
-    console.log(detections)
+    const vehicleOnly = true
+
+    const predictionsRois = detectionsToROIArr(
+      detections,
+      videoElement.videoWidth,
+      videoElement.videoHeight,
+      vehicleOnly
+    )
+
+    console.log(predictionsRois)
 
     try {
       await Promise.all([tf.dispose(input), tf.dispose(res)])

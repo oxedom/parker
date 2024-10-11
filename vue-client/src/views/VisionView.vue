@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useEngineStore } from '../stores/engine'
 
 const id = ref(0)
@@ -20,7 +20,9 @@ onMounted(() => {
   }, 2000)
 })
 
-onMounted(() => {})
+onBeforeUnmount(() => {
+  clearInterval(id.value)
+})
 </script>
 
 <style></style>
