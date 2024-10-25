@@ -44,8 +44,6 @@ export const useEngineStore = defineStore('engine', () => {
       vehicleOnly
     )
 
-    console.log(predictionsRois)
-
     try {
       await Promise.all([tf.dispose(input), tf.dispose(res)])
     } catch (err) {
@@ -53,6 +51,7 @@ export const useEngineStore = defineStore('engine', () => {
     }
 
     tf.engine().endScope()
+    return { predictionsRois }
   }
 
   return { initYoloModel, model, processFrame }
