@@ -143,59 +143,6 @@ export function totalOccupied(roiArr) {
   return { OccupiedCount, availableCount };
 }
 
-export function detectionsToROIArr(
-  detections,
-  imageWidth,
-  imageHeight,
-  vehicleOnly
-) {
-  let condition = false;
-
-  let _predictionsArr = [];
-  const boxes = shortenedCol(detections, [0, 1, 2, 3]);
-  const scores = shortenedCol(detections, [4]);
-  const class_detect = shortenedCol(detections, [5]);
-  if (detections === undefined || detections.length <= 0) {
-    return [];
-  }
-
-  for (let index = 0; index < detections.length; index++) {
-    const detectionScore = scores[index];
-    const detectionClass = class_detect[index];
-    let dect_label = labels[detectionClass];
-    if (vehicleOnly === false) {
-      condition = true;
-    } else {
-      condition = isVehicle(dect_label);
-    }
-    if (condition) {
-      const roiObj = { cords: {} };
-      let [x1, y1, x2, y2] = xywh2xyxy(boxes[index]);
-      // Extract the bounding box coordinates from the 'boxes' tensor
-      y1 = y1 * (imageHeight / 640);
-      y2 = y2 * (imageHeight / 640);
-      x1 = x1 * (imageWidth / 640);
-      x2 = x2 * (imageWidth / 640);
-      let dect_width = x2 - x1;
-      let dect_weight = y2 - y1;
-      roiObj.cords.bottom_y = y2;
-      roiObj.cords.left_x = x2;
-      roiObj.cords.top_y = y1;
-      roiObj.cords.right_x = x1;
-      roiObj.cords.width = dect_width;
-      roiObj.cords.height = dect_weight;
-      // Add the detection score to the bbox object
-      roiObj.confidenceLevel = detectionScore;
-      roiObj.label = dect_label;
-      roiObj.area = dect_width * dect_weight;
-      // Add the bbox object to the bboxes array
-
-      _predictionsArr.push(roiObj);
-    }
-  }
-
-  return _predictionsArr;
-}
 
 export function filterArrayByScore(array, scores, threshold) {
   return array.filter((_, i) => scores[i] > threshold);
