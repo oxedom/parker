@@ -81,13 +81,14 @@ const labels = [
   'hair drier',
   'toothbrush'
 ]
-import { xywh2xyxy } from './canvas.js'
+import { xywh2xyxy } from './canvas'
+import type { RoiObject, Rectangle } from '../types'
 
 export function detectionsToROIArr(
-  detections,
-  imageWidth,
-  imageHeight,
-  vehicleOnly
+  detections: Array<RoiObject>,
+  imageWidth: number,
+  imageHeight: number,
+  vehicleOnly: boolean
 ) {
   let condition = false;
 
@@ -109,7 +110,19 @@ export function detectionsToROIArr(
       condition = isVehicle(dect_label);
     }
     if (condition) {
-      const roiObj = { cords: {} };
+      const roiObj: RoiObject = {
+        cords: {
+          bottom_y: null,
+          left_x: null,
+          top_y: null,
+          right_x: null,
+          width: null,
+          height: null,
+        },
+        confidenceLevel: null,
+        label: null,
+        area: null,
+      };
       let [x1, y1, x2, y2] = xywh2xyxy(boxes[index]);
       // Extract the bounding box coordinates from the 'boxes' tensor
       y1 = y1 * (imageHeight / 640);
@@ -141,7 +154,10 @@ export function detectionsToROIArr(
 //The getOverlap function takes two rectangles as input and
 // returns a new rectangle that represents the overlapping area between the two rectangles.
 // If there is no overlap, the function returns null.
-export function getOverlap(rectangle1, rectangle2) {
+export function getOverlap(rectangle1: Rectangle, rectangle2: Rectangle) {
+
+
+
   const intersectionX1 = Math.max(rectangle1.right_x, rectangle2.right_x)
   const intersectionX2 = Math.min(
     rectangle1.right_x + rectangle1.width,

@@ -1,7 +1,7 @@
 import labels from './labels.json'
 
 
-export function handleRendering(canvasEl, ) {}
+export function handleRendering(canvasEl,) { }
 
 export function drawCanvas(canvasEl, img) {
   canvasEl.width = getComputedStyle(canvasEl).width.split('px')[0]
@@ -116,7 +116,7 @@ export function clearCanvas(canvasRef, width, height) {
   }
 }
 
-export function xywh2xyxy(x) {
+export function xywh2xyxy(x: [number, number, number, number]) {
   //Convert boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
   var y = []
   y[0] = x[0] - x[2] / 2 //top left x
