@@ -18,6 +18,7 @@
 
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useEngineStore } from '../stores/engine'
+import { handleRendering } from '../utils/canvas'
 
 const id = ref(0)
 const video = ref(null)
@@ -38,7 +39,7 @@ onMounted(() => {
     window.setInterval(() => {
         try {
             const result = engine.processFrame(video.value)
-            renderBoxes(result)
+            handleRendering(result)
         } catch (e) { }
     }, 2000)
 })

@@ -1,5 +1,8 @@
 import labels from './labels.json'
 
+
+export function handleRendering(canvasEl, ) {}
+
 export function drawCanvas(canvasEl, img) {
   canvasEl.width = getComputedStyle(canvasEl).width.split('px')[0]
   canvasEl.height = getComputedStyle(canvasEl).height.split('px')[0]
