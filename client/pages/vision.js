@@ -90,7 +90,7 @@ export default function VisionPage() {
   return (
     <DashboardLayout>
       <Head>
-        <title>Parkerr: Vision</title>
+        <title>Parker: Vision</title>
       </Head>
       <Modal isOpen={isOpen} closeModal={closeModal}>
         <DataManger />

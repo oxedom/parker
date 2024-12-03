@@ -76,7 +76,7 @@ const Input = () => {
   return (
     <>
       <Head>
-        <title> Parkerr: Input </title>
+        <title> Parker: Input </title>
       </Head>
 
       <div className="h-screen gap-2 pt-10 flex flex-col   min-h-screen  bg-fixed bg-no-repeat bg-cover  bg-filler w-full grow items-center">

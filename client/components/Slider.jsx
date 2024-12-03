@@ -7,6 +7,7 @@
 export default function Slider({
   state,
   label,
+  override,
   max = 100,
   min = 10,
   step = 1,
@@ -20,7 +21,8 @@ export default function Slider({
       <label className="font-bold text-left drop-shadow-sm">{label}</label>
       <div className={`grid grid-cols-[auto_1fr] gap-2 whitespace-nowrap`}>
         <span className="text-left">
-          {value}
+
+          {override ? override : value}
           {unit}
         </span>
         <input

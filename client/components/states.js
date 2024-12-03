@@ -44,6 +44,11 @@ const thresholdIouState = atom({
   default: 0.2,
 });
 
+const allowWebGPUState = atom({
+  key: "allowWebGPUState",
+  default: true,
+})
+
 const showDetectionsState = atom({
   key: "showDetectionsState",
   default: true,
@@ -345,6 +350,7 @@ export {
   evaluateTimeState,
   selectedRoiState,
   detectionThresholdState,
+  allowWebGPUState,
   thresholdIouState,
   showDetectionsState,
   vehicleOnlyState,

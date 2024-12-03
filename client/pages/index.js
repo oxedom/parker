@@ -3,10 +3,11 @@ import Link from "next/link";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const Home = () => {
+   const btnStyle = `border rounded-xl m-4 text-2xl p-3 shadow-sm shadow-black text-center  over:scale-105 duration-200 bg-purple-600`
   return (
     <>
       <Head>
-        <title> Parkerr: Empower your parking </title>
+        <title> Parker: Empower your parking </title>
       </Head>
       <DashboardLayout>
         {/* Free SVG Background by <a target="_blank" href="https://bgjar.com">BGJar</a> */}
@@ -31,9 +32,9 @@ const Home = () => {
                 </p>
 
                 <Link href={"/vision"}>
-                  <button className="hidden sm:block my-5 text-2xl duration-300  rounded-lg bg-orangeFadeSides p-4 hover:scale-105">
+                  <button className={btnStyle}>
                     {" "}
-                    Try Parkerr{" "}
+                    Try Parker{" "}
                   </button>
                 </Link>
 

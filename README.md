@@ -1,4 +1,4 @@
-# Parkerr
+# Parker
 
 Parker is an open-source parking browser application that enables you to monitor parking spots using a webcam, cellphone camera, or any virtual webcam. The tool uses computer vision object detection to operate, and all computation is processed inside the browser using TensorFlow.js. Communication between a remote cellphone and the browser is enabled through WebRTC (PeerJS uses PeerServer for session metadata and candidate signaling, as well as Google STUN servers).
 
@@ -22,7 +22,7 @@ Under the MIT License.
 
 # Can Parker be processed the on a server?
 
-Yes, it can be processed on a server, Before refactoring the architecture of the entire project, a flask API was built using OpenCV and Yolo3. It worked well but it wasn't scalable. Utils Functions were created in previous versions of Parkerr that encode the images into blobs to the server. The JSON response need a bit of tweaking to be compatible, but implementing the server processing would not require too much of a refactor in the client project. If anyone is in need of help open a issue and I will gladly assist.
+Yes, it can be processed on a server, Before refactoring the architecture of the entire project, a flask API was built using OpenCV and Yolo3. It worked well but it wasn't scalable. Utils Functions were created in previous versions of Parker that encode the images into blobs to the server. The JSON response need a bit of tweaking to be compatible, but implementing the server processing would not require too much of a refactor in the client project. If anyone is in need of help open a issue and I will gladly assist.
 
 `docker pull oxedom/flask_api` <br/>
 `docker run -p 5000:5000 flask_api` <br/>

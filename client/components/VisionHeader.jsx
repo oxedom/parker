@@ -17,9 +17,8 @@ const VisionHeader = ({
   setDemo,
 }) => {
   const [qrCodeURL, setQRcodeURL] = useState("");
-  const btnStyle = `border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200 ${
-    !allowWebcam && !WebRTCMode && !demo ? " animate-pulse" : ""
-  } hover:shadow-none`;
+  const btnStyle = `border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200 ${!allowWebcam && !WebRTCMode && !demo ? " animate-pulse" : ""
+    } hover:shadow-none`;
   const handleWebcamSource = () => {
     setWebRTCMode(false);
     setDemo(false);
@@ -81,7 +80,7 @@ const VisionHeader = ({
               onClick={handleDemoSource}
               className={`bg-purple-600 ${btnStyle} `}
             >
-              Demo
+              Video Demo
             </button>
             <button
               onClick={handleWebcamSource}

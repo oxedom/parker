@@ -40,7 +40,7 @@ export default function View() {
           }}
           className="text-4xl font-bold text-center uppercase hover:cursor-pointer"
         >
-          Parkerr
+          Parker
         </h4>
 
         <span

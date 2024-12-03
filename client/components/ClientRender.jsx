@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import * as tf from "@tensorflow/tfjs";
 import Loader from "./Loader";
 import { clearCanvas } from "../libs/canvas_utility";
@@ -13,6 +12,7 @@ import {
   thresholdIouState,
   detectionThresholdState,
   fpsState,
+  allowWebGPUState,
   vehicleOnlyState,
   autoDetectState,
 } from "./states";
@@ -56,6 +56,7 @@ const ClientRender = ({
   const detectionThreshold = useRecoilValue(detectionThresholdState);
   const thresholdIou = useRecoilValue(thresholdIouState);
   const vehicleOnly = useRecoilValue(vehicleOnlyState);
+  const allowWebGPU = useRecoilValue(allowWebGPUState)
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
 
@@ -94,6 +95,24 @@ const ClientRender = ({
       console.error(error);
     }
   }
+
+
+
+  useEffect(() => {
+    async function enableTFJSgpuBackend() {
+      await import('@tensorflow/tfjs-backend-webgl')
+    }
+
+    async function enableTFJScpuBackend() {
+      await import('@tensorflow/tfjs-backend-cpu')
+    }
+
+
+    if (allowWebGPU)
+      enableTFJSgpuBackend()
+    else enableTFJScpuBackend()
+
+  }, [allowWebGPU])
 
   useEffect(() => {
     let interval_load_webcam_id;

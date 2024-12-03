@@ -6,10 +6,11 @@ import {
   fpsState,
   showDetectionsState,
   vehicleOnlyState,
+  allowWebGPUState,
 } from "./states";
 import { useRecoilValue, useRecoilState } from "recoil";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import Slider from "./Slider";
 import Button from "./Button";
@@ -26,6 +27,7 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
     useRecoilState(showDetectionsState);
   const [settingChange, setSettingsChange] = useState(false);
   const [iouThreshold, setIouThreshold] = useRecoilState(thresholdIouState);
+  const [allowWebGPU, setWebGPU] = useRecoilState(allowWebGPUState);
   const [fps, setFps] = useRecoilState(fpsState);
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [localDetectionThreshold, setLocalDetectionThreshold] =
@@ -33,6 +35,8 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
   const [localVehicleOnly, setLocalVehicleOnly] = useState(undefined);
   const [localIouThreshold, setLocalIouThreshold] = useState(undefined);
   const [localFps, setLocalFps] = useState(undefined);
+
+  const cFps = useMemo(() => 10 / (Math.pow(fps, 2)))
 
   let detectInfo = `Detection Threshold: The minimum score that a vehicle detections is to be classifed as valid, recommended to be 50`;
   let iouInfo =
@@ -80,6 +84,10 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
     processing ? setProcessing(false) : setProcessing(true);
   }
 
+  function handleWebGPUToogle() {
+    allowWebGPU ? setWebGPU(false) : setWebGPU(true)
+  }
+
   function handleDetectionsEnable() {
     if (processing && loadedCoco) {
       showDetections ? setShowDetections(false) : setShowDetections(true);
@@ -103,7 +111,7 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
         <Accordion imageHeight={imageHeight} title={"Settings"}>
           <div className="flex flex-col gap-3">
             <ToogleSwitch
-              text="Processing"
+              text="TFJS"
               boolean={processing}
               callback={handleProcessing}
             />
@@ -112,6 +120,11 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
               text="Show Boxes"
               boolean={showDetections}
               callback={handleDetectionsEnable}
+            />
+            <ToogleSwitch
+              text="WebGPU"
+              boolean={allowWebGPU}
+              callback={handleWebGPUToogle}
             />
 
             <ToogleSwitch
@@ -134,10 +147,12 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
           />
 
           <Slider
+            // reverse={true}
+            // override={cFps}
             state={[localFps, setLocalFps]}
             setSettingsChange={setSettingsChange}
             label="Render Rate"
-            max={2}
+            max={2.1}
             min={0.01}
             step={0.1}
             unit=" FPS"

@@ -14,25 +14,25 @@ import Instruction from "../components/Instruction";
 const About = () => {
   const questions = [
     {
-      question: "How does it Parkerr work?",
+      question: "How does it Parker work?",
       answer:
-        "Under the hood, Parkerr uses tensorflow.js a javascript library to run machine learning models entirely in the browser. Parkerr uses YOLO7 (You Only Look Once v7) a real-time object detection computer vision model. YOLO is fast, accurate models and simple to train. My implementation with Parkerr involves mapping the model's output to a custom data structure and integrating it into the application's data pipeline and state to be suitable for a parking app.",
+        "Under the hood, Parker uses tensorflow.js a javascript library to run machine learning models entirely in the browser. Parker uses YOLO7 (You Only Look Once v7) a real-time object detection computer vision model. YOLO is fast, accurate models and simple to train. My implementation with Parker involves mapping the model's output to a custom data structure and integrating it into the application's data pipeline and state to be suitable for a parking app.",
     },
 
     {
       question: "How does remote communication work?",
       answer:
-        "Parkerr currently implements remote communication through a P2P solution using PeerJS, a javascript library that implements a WebRTC configuration using PeerServer Cloud services and Google stuns servers.",
+        "Parker currently implements remote communication through a P2P solution using PeerJS, a javascript library that implements a WebRTC configuration using PeerServer Cloud services and Google stuns servers.",
     },
     {
       question: "What kind of video input does the application take?",
       answer:
-        "Parkerr can take webcam footage or remote video communication through another device that has a built-in camera and modern browser.",
+        "Parker can take webcam footage or remote video communication through another device that has a built-in camera and modern browser.",
     },
     {
       question: "What data is collected from the application?",
       answer:
-        "Other than site website analytics, none. Parkerr processes all of the video footage on the client side and all remote communication is p2p and private.",
+        "Other than site website analytics, none. Parker processes all of the video footage on the client side and all remote communication is p2p and private.",
     },
     {
       question: "How was the auto detect parking implemented?",
@@ -54,14 +54,14 @@ const About = () => {
   return (
     <DefaultLayout>
       <Head>
-        <title> Parkerr: About</title>
+        <title> Parker: About</title>
       </Head>
       <div className="flex-1 flex mx-auto flex-col p-10 max-w-[800px] gap-5 mt-5items-stretch  ">
         <main className="">
           <div className="text-lg  ">
             <h2 className="text-5xl text-center flex  justify-center items-center gap-5 font-bold  rounded-lg  mb-10    text-orange-500">
               {" "}
-              About Parkerr
+              About Parker
               <div>
                 <a href="https://github.com/oxedom/parker" className="  ">
                   {" "}
@@ -74,7 +74,7 @@ const About = () => {
               <p className="b-t border-black">
                 {" "}
                 <span className="text-2xl text-gray-700 font-bold">
-                  Parkerr{" "}
+                  Parker{" "}
                 </span>{" "}
                 is a open source parking browser application that enables you
                 monitor parking spots using a webcam, cellphone camera, or any

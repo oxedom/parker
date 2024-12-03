@@ -16,7 +16,7 @@ const Navbar = () => {
             <h1 className=" text-bold text-3xl      justify-center items-center text-center  font-bold  text-white    hover:cursor-pointer">
               <p className=" p-2 ml-5 uppercase flex justify-items-center items-center gap-5 ">
                 {" "}
-                Parkerr
+                Parker
               </p>
             </h1>
           </Link>
