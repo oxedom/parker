@@ -151,11 +151,11 @@ const Toolbar = ({ processing, setProcessing, loadedCoco }) => {
             // override={cFps}
             state={[localFps, setLocalFps]}
             setSettingsChange={setSettingsChange}
-            label="Render Rate"
+            label="Execute Rate"
             max={2.1}
             min={0.01}
             step={0.1}
-            unit=" FPS"
+            unit="s"
           />
 
           <Button
