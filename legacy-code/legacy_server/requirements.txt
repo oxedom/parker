@@ -1,6 +1,0 @@
-Flask==2.0.1
-numpy
-Flask-Cors==3.0.10
-opencv-python==4.6.0.66
-uWSGI==2.0.19.1
-
