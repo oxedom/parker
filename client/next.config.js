@@ -1,22 +1,10 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   // reactStrictMode: true,
-//   webpack(config) {
-//     config.module.rules.push({
-//       test: /\.svg$/i,
-//       issuer: /\.[jt]sx?$/,
-//       use: ["@svgr/webpack"],
-//     });
-
-//     return config;
-//   },
-// };
-
-// module.exports = nextConfig;
+/** @type {import('next').NextConfig} */
 module.exports = {
+  basePath: "/parker",
+  assetPrefix: "/parker/",
+  trailingSlash: true,
   eslint: { ignoreDuringBuilds: true },
   images: {
     unoptimized: true,
   },
-  /* config options here */
 };
