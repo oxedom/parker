@@ -21,16 +21,20 @@ const btnClass = (active: boolean) =>
     active ? "" : "animate-pulse"
   } hover:shadow-none`;
 
+function rerouteUrl(id: string) {
+  const url = new URL(window.location.href);
+  url.pathname = `${import.meta.env.BASE_URL}reroute`.replace(/\/{2,}/g, "/");
+  url.searchParams.set("remoteID", id);
+  return url.href;
+}
+
 async function regenerateQR(id: string) {
   if (!id) {
     qrCodeUrl.value = "";
     return;
   }
   try {
-    const url = new URL(window.location.href);
-    url.pathname = "/reroute";
-    url.searchParams.set("remoteID", id);
-    qrCodeUrl.value = await QRCode.toDataURL(url.href);
+    qrCodeUrl.value = await QRCode.toDataURL(rerouteUrl(id));
   } catch (e) {
     console.error("QR generation failed", e);
   }
@@ -40,10 +44,7 @@ watch(() => props.peerId, regenerateQR, { immediate: true });
 
 function handleCopy() {
   if (!props.peerId) return;
-  const url = new URL(window.location.href);
-  url.pathname = "/reroute";
-  url.searchParams.set("remoteID", props.peerId);
-  navigator.clipboard.writeText(url.href);
+  navigator.clipboard.writeText(rerouteUrl(props.peerId));
 }
 </script>
 
