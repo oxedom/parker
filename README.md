@@ -13,12 +13,24 @@ Under the MIT License.
 
 # Built With
 
+- Vue 3 + Vite + TypeScript
+- Pinia (state)
+- Vue Router
+- Tailwind CSS
 - TensorFlow.js
-- Tailwind
-- NextJS
 - PeerJS (WebRTC)
 - YOLO7 (Original Model)
 - YOLO7-tfjs (Ported Model)
+
+# Run locally
+
+```bash
+cd client
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # type-check + production build to client/dist
+npm run preview  # serve the production build
+```
 
 # Can Parker be processed the on a server?
 
@@ -30,7 +42,7 @@ Yes, it can be processed on a server, Before refactoring the architecture of the
 
 # What else can parker detect?
 
-[Here's a list](https://github.com/oxedom/parker/blob/main/client/libs/labels.json)
+[Here's a list](https://github.com/oxedom/parker/blob/main/client/src/lib/labels.ts)
 
 # Can I Contribute?
 
