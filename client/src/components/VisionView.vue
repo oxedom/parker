@@ -25,6 +25,7 @@ const settings = useSettingsStore();
 const dims = useDimensionsStore();
 const rois = useRoisStore();
 const detector = useDetector();
+const baseUrl = import.meta.env.BASE_URL;
 
 const {
   fps,
@@ -260,7 +261,7 @@ onBeforeUnmount(() => {
         loop
         autoplay
         playsinline
-        src="/demo.mp4"
+        :src="`${baseUrl}demo.mp4`"
         @play="onDemoPlay"
       />
 

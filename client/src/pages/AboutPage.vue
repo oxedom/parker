@@ -3,6 +3,8 @@ import DefaultLayout from "@/components/DefaultLayout.vue";
 import AppQuestion from "@/components/AppQuestion.vue";
 import AppInstruction from "@/components/AppInstruction.vue";
 
+const baseUrl = import.meta.env.BASE_URL;
+
 const questions = [
   {
     question: "How does Parker work?",
@@ -48,7 +50,7 @@ const questions = [
             About Parker
             <a href="https://github.com/oxedom/parker">
               <img
-                src="/static/icons/github-mark.png"
+                :src="`${baseUrl}static/icons/github-mark.png`"
                 alt="github"
                 width="50"
               />
@@ -72,7 +74,7 @@ const questions = [
             <ul class="grid grid-cols-none sm:grid-cols-2 gap-2">
               <li class="flex gap-2">
                 <img
-                  src="/static/tesnorflow.png"
+                  :src="`${baseUrl}static/tesnorflow.png`"
                   alt="tensorflow"
                   width="30"
                   height="30"
@@ -85,7 +87,7 @@ const questions = [
                 <span>Vue 3 + Vite</span>
               </li>
               <li class="flex gap-2">
-                <img src="/static/webRTC.png" alt="webrtc" width="30" />
+                <img :src="`${baseUrl}static/webRTC.png`" alt="webrtc" width="30" />
                 <span>WebRTC (PeerJS)</span>
               </li>
               <li class="flex gap-2 items-center">
@@ -96,7 +98,7 @@ const questions = [
                 >
               </li>
               <li class="flex gap-2 items-center">
-                <img src="/static/Tailwind.png" alt="tailwind" width="30" />
+                <img :src="`${baseUrl}static/Tailwind.png`" alt="tailwind" width="30" />
                 <a class="text-blue-500" href="https://tailwindcss.com"
                   >tailwindcss</a
                 >

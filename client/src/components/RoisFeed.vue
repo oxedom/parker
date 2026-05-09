@@ -8,6 +8,7 @@ const emit = defineEmits<{ openModal: [] }>();
 
 const rois = useRoisStore();
 const dims = useDimensionsStore();
+const baseUrl = import.meta.env.BASE_URL;
 
 function handleDeleteAll() {
   if (rois.items.length === 0) return;
@@ -56,7 +57,7 @@ function handleDeleteAll() {
       >
         <img
           v-if="r.hover"
-          src="/static/icons/delete_bin_black.png"
+          :src="`${baseUrl}static/icons/delete_bin_black.png`"
           width="40"
           height="40"
           alt="Delete"

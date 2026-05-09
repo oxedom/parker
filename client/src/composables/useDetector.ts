@@ -38,7 +38,7 @@ export function useDetector() {
     try {
       await setBackend(opts.allowWebGPU ?? true);
       const url =
-        opts.modelUrl ?? `${window.location.origin}/yolov7_web_model/model.json`;
+        opts.modelUrl ?? `${import.meta.env.BASE_URL}yolov7_web_model/model.json`;
 
       const m = await tf.loadGraphModel(url, {
         onProgress: (f) => {

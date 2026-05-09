@@ -2,6 +2,7 @@
 import { RouterLink } from "vue-router";
 import DashboardLayout from "@/components/DashboardLayout.vue";
 
+const baseUrl = import.meta.env.BASE_URL;
 const btnClass =
   "border rounded-xl m-4 text-2xl p-3 shadow-sm shadow-black text-center hover:scale-105 duration-200 bg-purple-600";
 </script>
@@ -46,7 +47,7 @@ const btnClass =
             muted
             loop
             playsinline
-            src="/demo.mp4"
+            :src="`${baseUrl}demo.mp4`"
           />
         </div>
       </header>
