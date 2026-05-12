@@ -3,19 +3,12 @@ import { useRouter } from "next/router";
 const reroute = () => {
   const router = useRouter();
   const handleReroute = (val) => {
-    const currentDomain = new URL(window.location.href);
-
+    const remoteID = router.query.remoteID;
     if (val === "input") {
-      currentDomain.pathname = "input";
-      currentDomain.searchParams.set("remoteID", router.query.remoteID);
-
-      router.push(currentDomain.href);
+      router.push({ pathname: "/input", query: { remoteID } });
     }
     if (val === "view") {
-      currentDomain.searchParams.set("remoteID", router.query.remoteID);
-
-      currentDomain.pathname = "input";
-      router.push(currentDomain.href);
+      router.push({ pathname: "/view", query: { remoteID } });
     }
   };
 

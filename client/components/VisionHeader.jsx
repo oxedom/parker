@@ -1,6 +1,7 @@
 import DisplayInfo from "./DisplayInfo";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import Button from "./Button";
 import Image from "next/image";
@@ -17,6 +18,15 @@ const VisionHeader = ({
   setDemo,
 }) => {
   const [qrCodeURL, setQRcodeURL] = useState("");
+  const router = useRouter();
+
+  const buildRerouteURL = () => {
+    const url = new URL(window.location.href);
+    url.pathname = `${router.basePath || ""}/reroute/`;
+    url.search = "";
+    url.searchParams.set("remoteID", peerId);
+    return url.href;
+  };
   const btnStyle = `border rounded-xl m-2 text-xl p-2 shadow-sm shadow-black text-center   hover:scale-105 duration-200 ${!allowWebcam && !WebRTCMode && !demo ? " animate-pulse" : ""
     } hover:shadow-none`;
   const handleWebcamSource = () => {
@@ -41,11 +51,8 @@ const VisionHeader = ({
   };
 
   useEffect(() => {
-    const currentDomain = new URL(window.location.href);
-    currentDomain.pathname = "reroute";
-    currentDomain.searchParams.set("remoteID", peerId);
-
-    generateQR(currentDomain.href);
+    if (!peerId) return;
+    generateQR(buildRerouteURL());
   }, [peerId]);
 
   const handleBack = () => {
@@ -63,10 +70,7 @@ const VisionHeader = ({
   };
 
   const handleCopy = () => {
-    const currentDomain = new URL(window.location.href);
-    currentDomain.pathname = "reroute";
-    currentDomain.searchParams.set("remoteID", peerId);
-    navigator.clipboard.writeText(currentDomain.href);
+    navigator.clipboard.writeText(buildRerouteURL());
   };
 
   return (
