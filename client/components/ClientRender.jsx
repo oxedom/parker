@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import Webcam from "react-webcam";
 import * as tf from "@tensorflow/tfjs";
 import Loader from "./Loader";
@@ -59,6 +60,7 @@ const ClientRender = ({
   const allowWebGPU = useRecoilValue(allowWebGPUState)
   const [autoDetect, setAutoDetect] = useRecoilState(autoDetectState);
   const [selectedRois, setSelectedRois] = useRecoilState(selectedRoiState);
+  const router = useRouter();
 
   let overlayXRef = useRef(null);
 
@@ -235,7 +237,7 @@ const ClientRender = ({
     let id;
     if (modelRef.current === null) {
       let yolov7 = await tf.loadGraphModel(
-        `${window.location.origin}/${modelName}_web_model/model.json`,
+        `${window.location.origin}${router.basePath || ""}/${modelName}_web_model/model.json`,
         {
           onProgress: (fractions) => {
             //Loading
