@@ -352,7 +352,7 @@ const ClientRender = ({
           controls={false}
           start="10"
           type="video/mp4"
-          src="./demo.mp4"
+          src={`${router.basePath || ""}/demo.mp4`}
         />
       ) : null}
     </section>
